@@ -10,7 +10,9 @@ Coronavirus or not, this project is being accomplished.
 
 **Purpose** (paraphrased from [Client Meet Notes](docs/client-meet-notes.md)): Software for individual homeowners to learn how to better integrate their land with the neighboring lands to make a continuous canopy and forest stage developments. Largely, to better support the local ecosystem, native plants, and a diversity of flora and fauna life.
 
+**Idea** (big picture overview of how the project will be directed): *TBD*.
+
 ### Specifics
 
- - Pure Java and JavaFX implementation.
+ - Pure Java 8 and JavaFX 2 implementation.
  - Group ID: `udel`, Artifact ID: `GardenProject`.

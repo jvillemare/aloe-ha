@@ -1,13 +1,29 @@
-Date: Thu, 12 Mar 2020 21:51:30 -0400
-Subject: CISC 275 - 011: How extensive should our concepts be?
-From: James Villemarette
-To: Terry Harvey
+From: Terry Harvey
+Date: Sat, 14 Mar 2020 09:16:35 -0400
+Subject: Re: CISC 275 - 011: How extensive should our concepts be?
+To: James Villemarette
 
-Hi Professor Harvey!
+due date is Monday after break. Emails overwhelming. not extensive, big
+picture. happy spring!
 
-You said to come up with three ideas by March 16. Is the due date still the
-same with Spring Break? And how extensive should or concepts/ideas be. just
-a paragraph or two?
+On Fri, Mar 13, 2020 at 9:19 PM James Villemarette wrote:
 
-Have a good day,
-James
+> Hey Professor Harvey,
+>
+> Just following up incase my email got lost in the shuffle.
+>
+> Regards,
+> James
+>
+> On Thu, Mar 12, 2020 at 9:51 PM James Villemarette wrote:
+>
+>> Hi Professor Harvey!
+>>
+>> You said to come up with three ideas by March 16. Is the due date still
+>> the same with Spring Break? And how extensive should or concepts/ideas be.
+>> just a paragraph or two?
+>>
+>> Have a good day,
+>> James
+>>
+>
