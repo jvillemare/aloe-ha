@@ -1,0 +1,31 @@
+
+Objective: GUI software to allow the user to create and view garden designs using native plants.
+
+- User can identify plant characteristics to narrow plant selection, e.g. light, water, bloom time, food, bloom color, soil reqs
+
+- User is given a menu of plants from which to drag onto the garden area (top view)
+
+- Plants have bloom, non-bloom, and winter images (these may be shaded ovals/circles); images must appear correctly sized relative to the garden and other plants. User can view garden at different times and images will change.
+
+- Land surrounding garden can be labeled (e.g. woods, lawn)
+
+
+Some special features that client liked:
+
+    ability to "relax" plant characteristics to see more plants
+    hover to see plant characteristics
+    "window" view from side; requires a separate set of plant images
+    0, 1, 2 years size
+    irregular shaped gardens allowed (e.g. upload a line drawing)
+    garden characteristics can be entered for parts of garden and used to narrow plant selection
+    ability to place special features (rock, path, tree, etc)
+    auto rate the garden on:
+    	number of animals fed
+    	continuous bloom
+    	happiness: degree to which plant characteristics match garden
+    	transition: degree to which garden transitions well into adjacent
+    "save" multiple versions of the garden
+
+Other special features:
+
+      Each team can add special features that they think will be enjoyed by the client. Note that these features should appear in the storyboard so that client can give feedback.
