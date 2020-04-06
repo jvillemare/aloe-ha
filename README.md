@@ -16,6 +16,14 @@ Coronavirus or not, this project is being accomplished.
 
 **Layout** (main windows and structure): See [docs/storyboard.pdf](docs/storyboard.pdf), ***pending approval***.
 
+### Team Members
+
+ - Jiamian Wang
+ - Viva Laas
+ - Megha Patel
+ - Brett Wagner
+ - James Villemarette
+
 ### Specifics
 
  - Pure Java 8 and JavaFX 2 implementation.
