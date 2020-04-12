@@ -14,7 +14,15 @@ Coronavirus or not, this project is being accomplished.
 
 **Idea** (big picture overview of how the project will be directed; [email](docs/march-18-2020-email-client-powerpoint.md)): Simple and approachable with a design software focus. It should allow a user with no gardening experience to pick up this app, and creatively use it to design their optimal garden to better serve the community.
 
-**Layout** (main windows and structure): See [docs/storyboard.pdf](docs/storyboard.pdf), ***pending approval***.
+**Layout** (main windows and structure): See [docs/storyboard-revised-and-final.pdf](docs/storyboard-revised-and-final.pdf), where there are 9 main windows: Welcome, pre-existing plants, questionnaire, overview questions, selection, plot designer, all plants, plant info, season view, and the final print preview and exporter.
+
+**Basic Features**: *Informally,*
+ - Save and load plots.
+ - Have a variety of native Delaware plants to choose from.
+ - Be able to draw where shade occurs throughout the day.
+ - User questions at the beginning adequately select relevant plants.
+ - Automatic plant compability detection based on plot.
+ - Season and year preview up to 3 years.
 
 ### Team Members
 
