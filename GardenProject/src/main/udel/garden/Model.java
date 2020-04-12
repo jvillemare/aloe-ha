@@ -1,7 +1,7 @@
-package garden;
+package main.udel.garden;
 
-import plants.Plant;
-import windows.Window;
+import main.udel.plants.Plant;
+import main.udel.windows.Window;
 
 /**
  * Updates the stage: Contains logic and data.

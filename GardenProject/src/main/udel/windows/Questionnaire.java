@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.

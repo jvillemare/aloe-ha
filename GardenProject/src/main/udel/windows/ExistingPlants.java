@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Where a user can specify what plants already exist in their garden.

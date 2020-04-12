@@ -1,4 +1,4 @@
-package enums;
+package main.udel.enums;
 
 /**
  * General season descriptions, and combinations thereof.

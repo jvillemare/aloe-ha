@@ -1,8 +1,10 @@
-package windows;
+package test.udel.windows;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import main.udel.windows.*;
 
 public class WindowTest {
 

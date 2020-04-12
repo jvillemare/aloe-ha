@@ -1,4 +1,4 @@
-package plants;
+package main.udel.plants;
 
 import java.util.Comparator;
 

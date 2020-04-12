@@ -59,6 +59,13 @@
                     <include>src</include>
                 </includes>
                 <outputDirectory>lib</outputDirectory>
+                <archive>
+		          <manifest>
+		            <addClasspath>true</addClasspath>
+		            <classpathPrefix>lib/</classpathPrefix>
+		            <mainClass>main.udel.garden.Controller</mainClass>
+		          </manifest>
+		        </archive>
             </configuration>
         </plugin>
 

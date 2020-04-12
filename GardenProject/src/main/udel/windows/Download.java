@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Where the user can export their plot as a PNG/JPEG, save it as a

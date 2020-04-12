@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Presently: Basic text description run down of all the features of the 

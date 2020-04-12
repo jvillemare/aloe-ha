@@ -1,4 +1,4 @@
-package enums;
+package main.udel.enums;
 
 /**
  * All plants that can be used in this application.

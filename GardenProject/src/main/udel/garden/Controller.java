@@ -1,4 +1,4 @@
-package garden;
+package main.udel.garden;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Welcome screen that first appears when the user starts the program.

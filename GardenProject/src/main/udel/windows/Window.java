@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * A window that will be displayed to the user.

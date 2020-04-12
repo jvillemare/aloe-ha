@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * A searchable database of all the plants a user can add to the their plot.

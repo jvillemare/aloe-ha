@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * Heart of the application: Where the user can drag plants, obstacles, shade,

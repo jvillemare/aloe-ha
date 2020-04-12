@@ -1,4 +1,4 @@
-package windows;
+package main.udel.windows;
 
 /**
  * To display all the information of a Plant to the user.

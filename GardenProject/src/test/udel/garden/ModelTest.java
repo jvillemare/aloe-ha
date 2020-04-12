@@ -1,10 +1,12 @@
-package garden;
+package test.udel.garden;
 
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 
 import org.junit.Test;
+
+import main.udel.garden.*;
 
 public class ModelTest {
 

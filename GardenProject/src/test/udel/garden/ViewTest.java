@@ -1,4 +1,4 @@
-package garden;
+package test.udel.garden;
 
 import static org.junit.Assert.*;
 

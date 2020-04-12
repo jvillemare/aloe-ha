@@ -1,9 +1,9 @@
-package plants;
+package main.udel.plants;
 
-import enums.Moisture;
-import enums.Plants;
-import enums.Seasons;
-import enums.SoilTypes;
+import main.udel.enums.Moisture;
+import main.udel.enums.Plants;
+import main.udel.enums.Seasons;
+import main.udel.enums.SoilTypes;
 
 /**
  * For every plant, there is a corresponding Plant object 

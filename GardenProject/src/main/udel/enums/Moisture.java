@@ -1,4 +1,4 @@
-package enums;
+package main.udel.enums;
 
 /**
  * TODO: What is this generally?
