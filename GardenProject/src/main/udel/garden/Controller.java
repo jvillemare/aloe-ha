@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 /**
  * Contains the start and main, ticks the application.
  * 
- * @author jvillemare
+ * @author Team 0
  */
 public class Controller extends Application {
 	

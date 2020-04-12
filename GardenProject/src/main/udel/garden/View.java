@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * Creates the stage: Loads graphics, images, and defines what the user sees.
  * 
- * @author jvillemare
+ * @author Team 0
  */
 public class View {
 	

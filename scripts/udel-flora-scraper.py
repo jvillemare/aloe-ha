@@ -74,7 +74,7 @@ for p in plants:
 	print("...loaded plant")
 	sleep(1) # to not bombard the server with requests
 
-with open('udel-flora.json', 'w') as outfile:
+with open('GardenProject/src/main/udel/plants/data/udel-flora.json', 'w') as outfile:
 	json.dump(plant_data, outfile)
 
 print("Successfully dumped plants into json file")
