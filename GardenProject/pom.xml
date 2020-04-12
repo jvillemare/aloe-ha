@@ -22,4 +22,40 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <directory>target</directory>
+    <outputDirectory>target/classes</outputDirectory>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <sourceDirectory>src</sourceDirectory>
+    <scriptSourceDirectory>src</scriptSourceDirectory>
+    <testSourceDirectory>src</testSourceDirectory>
+    <testResources>
+        <testResource>
+            <directory>test</directory>
+        </testResource>
+    </testResources>
+
+    <plugins>
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+                <includes>
+                    <include>src</include>
+                </includes>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+                <outputDirectory>lib</outputDirectory>
+            </configuration>
+        </plugin>
+
+    </plugins>
+</build>
 </project>
