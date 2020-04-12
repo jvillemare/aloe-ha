@@ -14,7 +14,7 @@ public abstract class Window {
 	}
 	
 	public String getTitle() {
-		return this.title + "spoiler";
+		return this.title;
 	};
 
 }

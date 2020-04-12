@@ -9,7 +9,8 @@ public class WindowTest {
 	@Test
 	public void test() {
 		PlotDesign w = new PlotDesign();
-		assertTrue(w.getTitle() == "this should fail");
+		System.out.println(w.getTitle());
+		assertTrue(w.getTitle().equals("Plot Designer"));
 	}
 
 }
