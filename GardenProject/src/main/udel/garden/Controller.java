@@ -1,5 +1,6 @@
 package main.udel.garden;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -20,15 +21,22 @@ public class Controller extends Application {
 		view = new View(primaryStage);
 		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
 		
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root, 400, 400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		new AnimationTimer() {
+            public void handle(long currentNanoTime)
+            {
+                //increment the x and y coordinates, alter direction if necessary
+                model.update();
+                //input the x coordinates, y coordinates, and direction picture
+                view.update(model.getWindow());
+                
+                // TODO: Is this how we want to handle it later?
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 	}
 	
     public static void main( String[] args ) {

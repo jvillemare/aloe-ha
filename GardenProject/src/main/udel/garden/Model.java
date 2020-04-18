@@ -39,6 +39,13 @@ public class Model {
 	}
 	
 	/**
+	 * TODO: Figure out later...
+	 */
+	public void update() {
+		
+	}
+	
+	/**
 	 * Gets the current Window that should be displayed to the user.
 	 * 
 	 * @return current Window.
