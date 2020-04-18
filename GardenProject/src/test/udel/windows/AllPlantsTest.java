@@ -11,7 +11,9 @@ public class AllPlantsTest {
 
 	@Test
 	public void test() {
-		assertTrue(new AllPlants() instanceof AllPlants);
+		AllPlants w = new AllPlants();
+		System.out.println(w.getTitle());
+		assertTrue(w.getTitle().contentEquals("Plant Database"));
 	}
 
 }
