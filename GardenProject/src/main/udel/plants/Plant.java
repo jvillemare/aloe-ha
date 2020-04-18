@@ -40,7 +40,7 @@ public class Plant {
 	
 	SoilTypes soilType;
 	
-	Plant(Plants name, String description, Seasons bloomTime, double light,
+	public Plant(Plants name, String description, Seasons bloomTime, double light,
 			Moisture moisture, SoilTypes soilType) {
 		this.name = name;
 		this.description = description;
