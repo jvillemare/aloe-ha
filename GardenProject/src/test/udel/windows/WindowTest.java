@@ -9,10 +9,11 @@ import main.udel.windows.*;
 public class WindowTest {
 
 	@Test
-	public void test() {
-		PlotDesign w = new PlotDesign();
+	public void testWindow() {
+		Window w = new PlotDesign();
 		System.out.println(w.getTitle());
 		assertTrue(w.getTitle().equals("Plot Designer"));
+		assertTrue(w.getScene() instanceof javafx.scene.Scene);
 	}
-
+	
 }
