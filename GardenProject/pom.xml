@@ -68,7 +68,16 @@
 		        </archive>
             </configuration>
         </plugin>
-
+        <plugin>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-maven-plugin</artifactId>
+			<version>0.0.2</version>
+			<configuration>
+			<release>13</release>
+				<compilerArgs>--enable-preview</compilerArgs>
+				<mainClass>pkgMain.MyMovingImage0</mainClass>
+			</configuration>
+		</plugin>
     </plugins>
 </build>
 </project>
