@@ -45,5 +45,10 @@ public enum Plants {
 	}
 	
 	// TODO: Getters for all Strings, or just make it public?
-
+	//public String getPlantName() {
+		//return this.clade +", " + this.
+	//}
+	//}
+	
+	
 }

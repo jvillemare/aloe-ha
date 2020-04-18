@@ -7,7 +7,23 @@ package main.udel.enums;
  */
 public enum Seasons {
 
-	WINTER, SPRING, SUMMER, FALL, WINTER_SPRING, SPRING_SUMMER, SUMMER_FALL, 
-		YEARROUND;
+	WINTER("Winter"), 
+	SPRING("Spring"), 
+	SUMMER("Summer"), 
+	FALL("Fall"), 
+	WINTER_SPRING("Winter-Spring"), 
+	SPRING_SUMMER("Spring-Summer"), 
+	SUMMER_FALL("Summer-Fall"), 
+	YEARROUND("Yearround");
+	
+	
+	private String season = null;
+	
+	private Seasons(String s){
+		season = s;
+	}
+	public String getSeason() {
+		return season;
+	}
 	
 }
