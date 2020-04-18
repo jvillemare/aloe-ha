@@ -41,6 +41,15 @@ public class View {
         this.root.getChildren().add(this.canvas);
         this.gc = this.canvas.getGraphicsContext2D();
 	}
+
+	/**
+	 * TODO: Figure out...
+	 * 
+	 * @param objects
+	 */
+	public void update(Object... objects) {
+
+	}
 	
 	/**
 	 * Width of the canvas that is displayed to the user.
