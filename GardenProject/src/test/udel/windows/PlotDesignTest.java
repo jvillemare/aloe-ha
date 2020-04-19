@@ -25,7 +25,8 @@ public class PlotDesignTest {
 	@Test
 	public void setObstacleTest() {
 		PlotDesign p = new PlotDesign();
-		p.setObstacle();
+		p.setObstacle(new Object());
+		assertTrue(p.setObstacle(new Object()) instanceof Object);
 	}
 	
 	@Test

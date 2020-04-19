@@ -25,8 +25,8 @@ public class PlotDesign extends Window {
 		
 	}
 	
-	public void setObstacle() {
-		
+	public Object setObstacle(Object obstacle) {
+		return null;
 	}
 	
 	public Plant setPlant(Plant p) {

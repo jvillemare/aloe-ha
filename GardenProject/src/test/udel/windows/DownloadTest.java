@@ -19,15 +19,15 @@ public class DownloadTest {
 	@Test
 	public void savePNGTest() {
 		Download w = new Download();
-		w.savePNG();
-		assertTrue(w.savePNG());
+		w.savePNG(null);
+		assertTrue(w.savePNG(null));
 	}
 
 	@Test
 	public void saveTest() {
 		Download w = new Download();
-		w.save();
-		assertTrue(w.save());
+		w.save(null);
+		assertTrue(w.save(null));
 	}
 	
 	@Test

@@ -23,7 +23,7 @@ public class Download extends Window {
 	 * saves the PNG plant 
 	 * @return true if it saved and false if it did not
 	 */
-	public Boolean savePNG() {
+	public boolean savePNG(String filename) {
 		return false;
 	}
 	
@@ -31,7 +31,7 @@ public class Download extends Window {
 	 * saves the plant
 	 * @return true if saved and false if it did not
 	 */
-	public Boolean save() {
+	public boolean save(String filename) {
 		return false;
 	}
 	

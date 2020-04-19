@@ -15,7 +15,7 @@ public class AllPlants extends Window {
 	/**
 	 * Array of Plants
 	 */
-	private Plant plants[];
+	private Plant[] plants;
 	
 	/**
 	 * Button that saves ...
