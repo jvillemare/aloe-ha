@@ -2,18 +2,21 @@ package main.udel.enums;
 
 /**
  * General season descriptions, and combinations thereof.
+ * Used in Questionnaire and Plant Info
  * 
  * @author Team 0
  */
+
+/*
+ * 
+ */
+
 public enum Seasons {
 
 	WINTER("Winter"), 
 	SPRING("Spring"), 
 	SUMMER("Summer"), 
 	FALL("Fall"), 
-	WINTER_SPRING("Winter-Spring"), 
-	SPRING_SUMMER("Spring-Summer"), 
-	SUMMER_FALL("Summer-Fall"), 
 	YEARROUND("Yearround");
 	
 	

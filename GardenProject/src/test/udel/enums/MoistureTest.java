@@ -10,8 +10,8 @@ public class MoistureTest {
 
 	@Test
 	public void testWinter() {
-		Moisture m = Moisture.LOW;
-		assertTrue(m.getMoistureLevel().equals("low"));
+		Moisture m = Moisture.DRY;
+		assertTrue(m.name().toLowerCase().equals("dry"));
 	}
 
 	

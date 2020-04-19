@@ -6,23 +6,18 @@ package main.udel.enums;
  *
  * @author Team 0
  */
+
+/*
+ * 
+ */
+
 public enum SoilTypes {
 	
-	CLAY("clay"),
-	SANDY("sandy"), 
-	SILTY("silty"), 
-	PEATY("peaty"), 
-	CHALKY("chalky"), 
-	LOAMY("loamy");
+	PEATY,
+	LOAMY,
+	SANDY,
+	CHALKY,
+	CLAY,
+	SILTY;
 	
-	
-private String soilType = null;
-	
-	private SoilTypes(String s){
-		soilType = s;
-	}
-	public String getSoilType() {
-		return soilType;
-	}
-
 }

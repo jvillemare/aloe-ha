@@ -11,7 +11,7 @@ public class SoilTypesTest {
 	@Test
 	public void testSoilType() {
 		SoilTypes sl = SoilTypes.PEATY;
-		assertTrue(sl.getSoilType().equals("peaty"));
+		assertTrue(sl.name().toLowerCase().equals("peaty"));
 	}
 
 }
