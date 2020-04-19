@@ -6,11 +6,6 @@ package main.udel.enums;
  * 
  * @author Team 0
  */
-
-/*
- * 
- */
-
 public enum Seasons {
 
 	WINTER("Winter"), 
