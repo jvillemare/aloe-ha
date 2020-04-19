@@ -24,7 +24,7 @@ public enum SoilTypes {
 		return name;
 	}
 	
-	public String getPHTyple() {
+	public String getPHType() {
 		return ph;
 	}
 	
