@@ -1,7 +1,6 @@
 package test.udel.garden;
 
 import org.junit.Test;
-
 import junit.framework.TestCase;
 
 import main.udel.garden.*;

@@ -18,10 +18,13 @@ package main.udel.enums;
  * Process follows this website's plant soil PH:
  * https://mtcubacenter.org/plants/moonbeam-whorled-tickseed/
  *
+ * Contains different Soil Types 
+ * Used in Questionnaire and Plant Info
+ *
  * @author Team 0
  */
 public enum SoilTypes {
-	
+
 	CLAY("clay", "adaptable"), SANDY("sandy", "adaptable"), SILTY("silty", "adaptable"), 
 	PEATY("peaty", "acidic"), CHALKY("chalky", "alkaline"), LOAMY("loamy", "adaptable");
 	
@@ -42,5 +45,4 @@ public enum SoilTypes {
 		return ph;
 	}
 	
-
 }

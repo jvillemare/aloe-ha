@@ -1,6 +1,7 @@
 package main.udel.windows;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 /**
  * A window that will be displayed to the user.
