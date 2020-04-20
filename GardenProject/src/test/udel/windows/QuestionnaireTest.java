@@ -11,7 +11,6 @@ public class QuestionnaireTest {
 	@Test
 	public void testQuestionnaire() {
 		Questionnaire q = new Questionnaire();
-		System.out.println(q.getTitle());
 		assertTrue(q.getTitle().equals("Questions About Your Garden..."));
 	}
 }
