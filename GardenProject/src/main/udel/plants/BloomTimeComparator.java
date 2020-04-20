@@ -29,8 +29,25 @@ public class BloomTimeComparator implements Comparator<Plant> {
 	}
 	
 	public int compare(Plant a, Plant b) {
-		// TODO: Implement
-		return 0;
+		if (a.bloomTime == b.bloomTime) {
+			return 0;
+		}
+		else if(this.descending) {
+			if (a.bloomTime.ordinal() < b.bloomTime.ordinal()) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else {
+			if(a.bloomTime.ordinal() < b.bloomTime.ordinal()) {
+				return -1;	
+			}
+			else {
+				return 1;
+			}
+		}
 	}
 	
 }
