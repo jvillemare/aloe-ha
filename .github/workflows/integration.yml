@@ -23,7 +23,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: cd GardenProject/ && mvn --no-transfer-progress install
+      run: cd GardenProject/ && mvn --no-transfer-progress install -X
     - name: Maven Package
       run: mvn package --file pom.xml
     - name: Run Tests
