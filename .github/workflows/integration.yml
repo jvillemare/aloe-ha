@@ -22,6 +22,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Purge OpenJFX
+      run: apt purge openjfx
+    - name: Install OpenJFX 8
+      run: apt install openjfx=8u161-b12-1ubuntu2 libopenjfx-jni=8u161-b12-1ubuntu2 libopenjfx-java=8u161-b12-1ubuntu2
     - name: Build with Maven
       run: cd GardenProject/ && mvn --no-transfer-progress install -X
     - name: Maven Package
