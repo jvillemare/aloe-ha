@@ -1,1 +1,1 @@
-Creating merge conflict for class example
+Creating merge conflict for class example 2
