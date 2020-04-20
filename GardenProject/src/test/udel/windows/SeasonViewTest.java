@@ -11,7 +11,6 @@ public class SeasonViewTest {
 	@Test
 	public void testSeasonView() {
 		SeasonView s = new SeasonView();
-		System.out.println(s.getTitle());
 		assertTrue(s.getTitle().equals("Garden Previewer"));
 	}
 }

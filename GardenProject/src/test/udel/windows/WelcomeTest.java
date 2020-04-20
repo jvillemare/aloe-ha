@@ -11,7 +11,6 @@ public class WelcomeTest {
 	@Test
 	public void testWelcome() {
 		Welcome w = new Welcome();
-		System.out.println(w.getTitle());
 		assertTrue(w.getTitle().equals("Welcome Menu"));
 	}
 }

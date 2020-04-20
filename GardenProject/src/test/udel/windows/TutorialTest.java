@@ -11,7 +11,6 @@ public class TutorialTest {
 	@Test
 	public void testTutorial() {
 		Tutorial t = new Tutorial();
-		System.out.println(t.getTitle());
 		assertTrue(t.getTitle().equals("Tutorial Window"));
 	}
 

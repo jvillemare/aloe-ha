@@ -11,7 +11,6 @@ public class WindowTest {
 	@Test
 	public void testWindow() {
 		Window w = new PlotDesign();
-		System.out.println(w.getTitle());
 		assertTrue(w.getTitle().equals("Plot Designer"));
 		assertTrue(w.getScene() instanceof javafx.scene.Scene);
 	}
