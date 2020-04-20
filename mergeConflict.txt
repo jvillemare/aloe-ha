@@ -1,1 +1,2 @@
 Creating merge conflict for class example3
+Jiamian Wang
