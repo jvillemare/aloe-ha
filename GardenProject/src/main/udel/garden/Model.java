@@ -1,7 +1,7 @@
 package main.udel.garden;
 
 import main.udel.plants.Plant;
-import main.udel.windows.Window;
+import main.udel.windows.*;
 
 /**
  * Updates the stage: Contains logic and data.
@@ -41,6 +41,20 @@ public class Model {
 	public Model(int width, int height) {
 		this.width = width;
 		this.height = height;
+		
+		this.windows = new Window[]{
+			new AllPlants(),
+			new Download(),
+			new ExistingPlants(),
+			new PlantInfo(),
+			new PlotDesign(),
+			new Questionnaire(),
+			new SeasonView(),
+			new Tutorial(),
+			new Welcome()
+		};
+		
+		this.currentWindow = this.windows[8];
 	}
 	
 	/**

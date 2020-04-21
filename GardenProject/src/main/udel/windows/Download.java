@@ -1,5 +1,6 @@
 package main.udel.windows;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 /**
@@ -10,6 +11,8 @@ import javafx.scene.control.Button;
  */
 public class Download extends Window {
 	
+	private Scene scene;
+	
 	/**
 	 * button that brings to previous window
 	 */
@@ -17,6 +20,12 @@ public class Download extends Window {
 
 	public Download() {
 		super("Load or Save Your Plot");
+	}
+	
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
 	}
 	
 	/**

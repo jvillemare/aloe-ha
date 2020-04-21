@@ -1,5 +1,6 @@
 package main.udel.windows;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import main.udel.plants.Plant;
 
@@ -11,13 +12,15 @@ import main.udel.plants.Plant;
  */
 public class AllPlants extends Window {
 	
+	private Scene scene;
+	
 	/**
 	 * Array of Plants
 	 */
 	private Plant[] plants;
 	
 	/**
-	 * Button that saves ...
+	 * Button that saves ... TODO what?
 	 */
 	private Button saveButton;
 	
@@ -33,6 +36,12 @@ public class AllPlants extends Window {
 	
 	public AllPlants() {
 		super("Plant Database");
+	}
+	
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
 	}
 
 }

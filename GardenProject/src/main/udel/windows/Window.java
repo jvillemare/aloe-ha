@@ -30,8 +30,6 @@ public abstract class Window {
 	 * TODO: Document later...
 	 * @return
 	 */
-	public Scene getScene() {
-		return this.scene;
-	}
+	public abstract Scene getScene();
 
 }

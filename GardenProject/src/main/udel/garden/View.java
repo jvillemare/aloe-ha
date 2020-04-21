@@ -34,15 +34,9 @@ public class View {
 		
 		this.theStage.setTitle("Garden Project v0.1");
 
-        this.root = new Group();
-        this.theScene = new Scene(this.root);
-        this.theStage.setScene(theScene);
-
-        this.canvas = new Canvas(canvasWidth, canvasHeight);
-        this.root.getChildren().add(this.canvas);
-        this.gc = this.canvas.getGraphicsContext2D();
-        
         this.window = w;
+        this.theStage.setScene(this.window.getScene());
+        this.theStage.show();
 	}
 
 	/**
@@ -54,6 +48,7 @@ public class View {
 		if(this.window.equals(w) == false) {
 			this.window = w;
 			theStage.setScene(this.window.getScene());
+			theStage.setTitle(this.window.getTitle());
 		}
 	}
 	
@@ -62,8 +57,8 @@ public class View {
 	 * 
 	 * @return canvas width in pixels.
 	 */
-	public int getCanvasWidth() {
-		return this.canvasWidth;
+	public static int getCanvasWidth() {
+		return canvasWidth;
 	}
 	
 	/**
@@ -71,8 +66,8 @@ public class View {
 	 * 
 	 * @return canvas height in pixels.
 	 */
-	public int getCanvasHeight() {
-		return this.canvasHeight;
+	public static int getCanvasHeight() {
+		return canvasHeight;
 	}
 
 }
