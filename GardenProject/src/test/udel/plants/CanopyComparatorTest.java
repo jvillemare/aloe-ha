@@ -35,24 +35,24 @@ public class CanopyComparatorTest {
 	@Test
 	public void sameCanopyTest() {
 		CanopyComparator c = new CanopyComparator(true);
-		Plant pine = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
+		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
 		assertTrue(c.compare(pine, flower) == 0);
 	}
 	
 	@Test
 	public void descendTest() {
 		CanopyComparator c = new CanopyComparator(true);
-		Plant pine = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.EMERGENT);
-		Plant flower = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
+		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.EMERGENT);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
 		assertTrue(c.compare(pine, flower) < 0);
 	}
 	
 	@Test
 	public void ascendTest() {
 		CanopyComparator c = new CanopyComparator(false);
-		Plant pine = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, Seasons.WINTER, 0, null, null, Canopy.EMERGENT);
+		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.FLOOR);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, null, null, Canopy.EMERGENT);
 		assertTrue(c.compare(pine, flower) < 0);
 	}
 

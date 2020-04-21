@@ -18,8 +18,8 @@ public class Controller extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		view = new View(primaryStage);
 		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
+		view = new View(primaryStage, model.getWindow());
 		
 		new AnimationTimer() {
             public void handle(long currentNanoTime)

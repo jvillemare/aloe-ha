@@ -7,7 +7,6 @@ import java.lang.reflect.Field;
 import org.junit.Test;
 
 import main.udel.enums.Moisture;
-import main.udel.enums.Plants;
 import main.udel.enums.Seasons;
 import main.udel.enums.SoilTypes;
 import main.udel.garden.Model;
@@ -37,24 +36,24 @@ public class BloomTimeComparatorTest {
 	@Test
 	public void sameSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(true);
-		Plant pine = new Plant(null, null, Seasons.WINTER, 0, null, null, null);
-		Plant flower = new Plant(null, null, Seasons.WINTER, 0, null, null, null);
+		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, null, null, null);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, null, null, null);
 		assertTrue(b.compare(pine, flower) == 0);
 	}
 
 	@Test
 	public void ascendSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(true);
-		Plant flower = new Plant(null, null, Seasons.SUMMER, 0, null, null, null);
-		Plant pine = new Plant(null, null, Seasons.FALL, 0, null, null, null);
+		Plant flower = new Plant(null, null, null, Seasons.SUMMER, 0, null, null, null);
+		Plant pine = new Plant(null, null, null, Seasons.FALL, 0, null, null, null);
 		assertTrue(b.compare(flower, pine) < 0);
 	}
 	
 	@Test
 	public void descendSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(false);
-		Plant flower = new Plant(null, null, Seasons.SUMMER, 0, null, null, null);
-		Plant pine = new Plant(null, null, Seasons.FALL, 0, null, null, null);
+		Plant flower = new Plant(null, null, null, Seasons.SUMMER, 0, null, null, null);
+		Plant pine = new Plant(null, null, null, Seasons.FALL, 0, null, null, null);
 		assertTrue(b.compare(flower, pine) > 0);
 	}
 }

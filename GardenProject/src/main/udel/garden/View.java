@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import main.udel.windows.Window;
 
 /**
  * Creates the stage: Loads graphics, images, and defines what the user sees.
@@ -26,9 +27,9 @@ public class View {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	
-	public View(Stage theStage) {
-		this.theStage = theStage;
-		
+	private Window window;
+	
+	public View(Stage theStage, Window w) {
 		this.theStage = theStage;
 		
 		this.theStage.setTitle("Garden Project v0.1");
@@ -40,6 +41,8 @@ public class View {
         this.canvas = new Canvas(canvasWidth, canvasHeight);
         this.root.getChildren().add(this.canvas);
         this.gc = this.canvas.getGraphicsContext2D();
+        
+        this.window = w;
 	}
 
 	/**
@@ -47,8 +50,11 @@ public class View {
 	 * 
 	 * @param objects
 	 */
-	public void update(Object... objects) {
-
+	public void update(Window w) {
+		if(this.window.equals(w) == false) {
+			this.window = w;
+			theStage.setScene(this.window.getScene());
+		}
 	}
 	
 	/**

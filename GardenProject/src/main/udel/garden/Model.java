@@ -26,6 +26,11 @@ public class Model {
 	private Window[] windows;
 	
 	/**
+	 * The current window being displayed to the user.
+	 */
+	private Window currentWindow;
+	
+	/**
 	 * All the plants.
 	 */
 	private Plant[] plants;
@@ -51,15 +56,15 @@ public class Model {
 	 * @return current Window.
 	 */
 	public Window getWindow() {
-		// TODO: Implement
-		return null;
+		return currentWindow;
 	}
 	
 	/**
 	 * Change the current that is displayed to another window.
+	 * @param w 
 	 */
-	public void setWindow() {
-		// TODO: Implement
+	public void setWindow(Window w) {
+		currentWindow = w;
 	}
 	
 	/**

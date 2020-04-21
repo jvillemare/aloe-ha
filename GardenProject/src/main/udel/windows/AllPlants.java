@@ -1,6 +1,5 @@
 package main.udel.windows;
 
-
 import javafx.scene.control.Button;
 import main.udel.plants.Plant;
 

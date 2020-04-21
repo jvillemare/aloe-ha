@@ -10,7 +10,7 @@ import main.udel.windows.PlotDesign;
 public class PlotDesignTest {
 
 	@Test
-	public void PlotDesignTest() {
+	public void plotDesignTest() {
 		PlotDesign p = new PlotDesign();
 		System.out.println(p.getTitle());
 		assertTrue(p.getTitle().equals("Plot Designer"));
@@ -38,8 +38,7 @@ public class PlotDesignTest {
 	@Test
 	public void setPlantTest() {
 		PlotDesign p = new PlotDesign();
-		p.setPlant(new Plant(null, null, null, 0, null, null));
-		
+		p.setPlant(new Plant(null, null, null, null, 0, null, null, null));
 	}
 	
 }
