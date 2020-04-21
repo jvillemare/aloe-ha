@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,25 +49,22 @@ public class PlantLoader {
 
 	public static void main(String[] args) throws IOException {
 		Path startingDir = Paths.get(System.getProperty("user.dir"));
-        String pattern = "*.json";
-        Finder finder = new Finder(pattern);
-        Files.walkFileTree(startingDir, finder);
-        finder.done();
-        String b = "\"C:\\Users\\got2b\\Documents\\College\\College-Sophomore\\CISC 275\\GardenProject\\cisc275-011-team-0\\GardenProject\\src\\main\\udel\\plants\\data\\sunny-edge-plants-data.json\"";
-        b = b.replace("\\", "/");
-        b = b.substring(1, b.length()-1);
-        Path a = Paths.get(b);
-        for (Path p : finder.files.keySet()) {
-        	a = p;
-        }
-		List<String> notShort = readFile(a.toString());
-		ArrayList<String> plants = new ArrayList<>();
-		for (String s : notShort) {
-			String[] words = s.split("}");
-			plants.addAll(Arrays.asList(words));
-		}
-		for (String c : plants) {
-			System.out.println(c);
+		String pattern = "*.json";
+		Finder finder = new Finder(pattern);
+		Files.walkFileTree(startingDir, finder);
+		finder.done();
+		Path a = null;
+		for (Path p : finder.files) {
+			List<String> notShort = readFile(p.toString());
+			ArrayList<String> plants = new ArrayList<>();
+			for (String s : notShort) {
+				String[] words = s.split("}");
+				plants.addAll(Arrays.asList(words));
+			}
+			for (String c : plants) {
+				c = c.substring(2);
+				System.out.println(c);
+			}
 		}
 	}
 
@@ -74,14 +72,14 @@ public class PlantLoader {
 
 		private final PathMatcher matcher;
 		private int numMatches = 0;
-		private HashMap<Path, Path> files = new HashMap<>();
+		private LinkedList<Path> files = new LinkedList<>();
 
 		Finder(String pattern) {
 			matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
 		}
-		
+
 		public void toString(Path p) {
-			
+
 		}
 
 		// Compares the glob pattern against
@@ -89,16 +87,16 @@ public class PlantLoader {
 		void find(Path file) {
 			Path name = file.getFileName();
 			if (name != null && matcher.matches(name)) {
-				files.put(file, file);
+				files.add(file);
 				numMatches++;
-				//System.out.println(file);
+				// System.out.println(file);
 			}
 		}
 
 		// Prints the total number of
 		// matches to standard out.
 		void done() {
-			//System.out.println("Matched: " + numMatches);
+			// System.out.println("Matched: " + numMatches);
 		}
 
 		// Invoke the pattern matching
