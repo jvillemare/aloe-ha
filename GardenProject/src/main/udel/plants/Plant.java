@@ -1,5 +1,6 @@
 package main.udel.plants;
 
+import main.udel.enums.Canopy;
 import main.udel.enums.Moisture;
 import main.udel.enums.Plants;
 import main.udel.enums.Seasons;
@@ -40,14 +41,45 @@ public class Plant {
 	
 	SoilTypes soilType;
 	
+	private Canopy canopy;
+	
 	public Plant(Plants name, String description, Seasons bloomTime, double light,
-			Moisture moisture, SoilTypes soilType) {
+			Moisture moisture, SoilTypes soilType, Canopy canopy) {
 		this.name = name;
 		this.description = description;
 		this.bloomTime = bloomTime;
 		this.light = light;
 		this.moisture = moisture;
 		this.soilType = soilType;
+		this.canopy = canopy;
+	}
+
+	public Plants getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Seasons getBloomTime() {
+		return bloomTime;
+	}
+
+	public double getLight() {
+		return light;
+	}
+
+	public Moisture getMoisture() {
+		return moisture;
+	}
+
+	public SoilTypes getSoilType() {
+		return soilType;
+	}
+	
+	public Canopy getCanopy() {
+		return this.canopy;
 	}
 	
 }

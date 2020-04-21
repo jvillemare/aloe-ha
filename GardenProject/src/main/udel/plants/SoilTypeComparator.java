@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 public class SoilTypeComparator implements Comparator<Plant>{
 
-	
 	private boolean phDescending;
 	
 	/**
