@@ -7,7 +7,7 @@ package main.udel.windows;
  */
 public class Welcome extends Window {
 	
-	public Welcome(String title) {
+	public Welcome() {
 		super("Welcome Menu");
 	}
 	
