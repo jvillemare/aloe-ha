@@ -25,15 +25,17 @@ package main.udel.enums;
  */
 public enum SoilTypes {
 
-	CLAY("clay", "adaptable"), SANDY("sandy", "adaptable"), SILTY("silty", "adaptable"), 
-	PEATY("peaty", "acidic"), CHALKY("chalky", "alkaline"), LOAMY("loamy", "adaptable");
+	CLAY("clay"), 
+	SANDY("sandy"), 
+	LOAMY("loamy"),
+	ANY("any soil");
 	
 	private String name = null;
-	private String ph = null;
+	//private String ph = null;
 	
-	private SoilTypes(String s, String p) {
+	private SoilTypes(String s /*, String p */) {
 		name = s;
-		ph = p;
+		//ph = p;
 		
 	}
 	
@@ -41,8 +43,22 @@ public enum SoilTypes {
 		return name;
 	}
 	
-	public String getPHType() {
+	/*public String getPHType() {
 		return ph;
+	}*/
+	
+	public SoilTypes getSoilTexture(String s) {
+		if (s.equalsIgnoreCase("Clay")) {
+			return CLAY;
+		}else if (s.equalsIgnoreCase("Sandy")) {
+			return SANDY;
+		}else if (s.equalsIgnoreCase("Loamy")) {
+			return LOAMY;
+		}else {
+			return ANY;
+		}
 	}
+	
+	
 	
 }

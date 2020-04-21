@@ -8,15 +8,14 @@ public class SoilTypeComparator implements Comparator<Plant>{
 	
 	/**
 	 * By default, assume sorting a list of plants by soil type, descending.
-	 * Note: descending means most alkaline first to most acidic while ascending is opposite.
+	 * Note: descending means descending alphabetic order
 	 */
 	public SoilTypeComparator() {
 		this.phDescending = true;
 	}
 	
 	/**
-	 * Sort a list of plants by bloom time and specify whether it is ascending
-	 * or descending.
+	 * Sort a list of plants by alphabetic order
 	 * 
 	 * @param descending	true for descending, false for ascending.
 	 */
@@ -26,9 +25,9 @@ public class SoilTypeComparator implements Comparator<Plant>{
 	
 	public int compare(Plant a, Plant b) {
 		if (phDescending) {
-			return a.soilType.getPHType().compareTo(b.soilType.getPHType());
+			return a.soilType.getName().compareTo(b.soilType.getName());
 		}else {
-			return b.soilType.getPHType().compareTo(b.soilType.getPHType());
+			return b.soilType.getName().compareTo(b.soilType.getName());
 		}
 	}
 	
