@@ -1,5 +1,6 @@
 package main.udel.garden;
 
+import main.udel.enums.Windows;
 import main.udel.plants.Plant;
 import main.udel.windows.*;
 
@@ -42,19 +43,18 @@ public class Model {
 		this.width = width;
 		this.height = height;
 		
-		this.windows = new Window[]{
-			new AllPlants(),
-			new Download(),
-			new ExistingPlants(),
-			new PlantInfo(),
-			new PlotDesign(),
-			new Questionnaire(),
-			new SeasonView(),
-			new Tutorial(),
-			new Welcome()
-		};
+		windows = new Window[Windows.values().length];
 		
-		this.currentWindow = this.windows[8];
+		windows[Windows.AllPlants.ordinal()] = new AllPlants();
+		windows[Windows.Download.ordinal()] = new Download();
+		windows[Windows.PlantInfo.ordinal()] = new PlantInfo();
+		windows[Windows.PlotDesign.ordinal()] = new PlotDesign();
+		windows[Windows.Questionnaire.ordinal()] = new Questionnaire();
+		windows[Windows.SeasonView.ordinal()] = new SeasonView();
+		windows[Windows.Tutorial.ordinal()] = new Tutorial();
+		windows[Windows.Welcome.ordinal()] = new Welcome(this);
+		
+		this.currentWindow = this.windows[Windows.Welcome.ordinal()];
 	}
 	
 	/**
@@ -79,6 +79,10 @@ public class Model {
 	 */
 	public void setWindow(Window w) {
 		currentWindow = w;
+	}
+	
+	public void setWindow(Windows w) {
+		currentWindow = windows[w.ordinal()];
 	}
 	
 	/**

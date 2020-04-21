@@ -49,6 +49,7 @@ public class View {
 			this.window = w;
 			theStage.setScene(this.window.getScene());
 			theStage.setTitle(this.window.getTitle());
+			System.out.println("View: Now showing " + this.window.getTitle() + " window");
 		}
 	}
 	

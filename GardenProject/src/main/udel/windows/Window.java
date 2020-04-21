@@ -20,7 +20,7 @@ public abstract class Window {
 	
 	/**
 	 * Document later...
-	 * @return
+	 * @return ...
 	 */
 	public String getTitle() {
 		return this.title;
@@ -28,7 +28,7 @@ public abstract class Window {
 	
 	/**
 	 * TODO: Document later...
-	 * @return
+	 * @return ...
 	 */
 	public abstract Scene getScene();
 

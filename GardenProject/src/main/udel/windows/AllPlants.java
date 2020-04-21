@@ -1,7 +1,9 @@
 package main.udel.windows;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import main.udel.plants.Plant;
 
 /**
@@ -13,6 +15,7 @@ import main.udel.plants.Plant;
 public class AllPlants extends Window {
 	
 	private Scene scene;
+	private Group root;
 	
 	/**
 	 * Array of Plants
@@ -36,6 +39,12 @@ public class AllPlants extends Window {
 	
 	public AllPlants() {
 		super("Plant Database");
+		
+		Label label = new Label("So many plants...");
+		
+		this.root = new Group();
+		root.getChildren().add(label);
+		this.scene = new Scene(this.root, 200, 200);
 	}
 	
 	@Override

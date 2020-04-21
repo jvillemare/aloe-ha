@@ -40,7 +40,7 @@ public class Controller extends Application {
 	}
 	
     public static void main( String[] args ) {
-        System.out.println( "Hello World!" );
+        System.out.println("GardenProject starting...");
         launch(args);
     }
     
