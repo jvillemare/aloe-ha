@@ -46,7 +46,7 @@ public class ModelTest {
 	@Test
 	public void testSetWindow() {
 		Model m = new Model(0, 1);
-		Window w = new AllPlants();
+		Window w = new AllPlants(m);
 		m.setWindow(w);
 		assertTrue(m.getWindow().equals(w));
 		assertTrue(m.getWindow() instanceof AllPlants);

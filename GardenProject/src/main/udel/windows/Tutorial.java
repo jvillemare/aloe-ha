@@ -1,6 +1,7 @@
 package main.udel.windows;
 
 import javafx.scene.Scene;
+import main.udel.garden.Model;
 
 /**
  * Presently: Basic text description run down of all the features of the 
@@ -12,8 +13,8 @@ public class Tutorial extends Window {
 	
 	private Scene scene;
 
-	public Tutorial() {
-		super("Tutorial Window");
+	public Tutorial(Model m) {
+		super(m, "Tutorial Window");
 	}
 
 	@Override

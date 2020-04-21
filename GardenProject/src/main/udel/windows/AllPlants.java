@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import main.udel.garden.Model;
 import main.udel.plants.Plant;
 
 /**
@@ -37,8 +38,8 @@ public class AllPlants extends Window {
 	 */
 	private Button backButton;
 	
-	public AllPlants() {
-		super("Plant Database");
+	public AllPlants(Model m) {
+		super(m, "Plant Database");
 		
 		Label label = new Label("So many plants...");
 		

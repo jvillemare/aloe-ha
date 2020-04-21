@@ -45,16 +45,17 @@ public class Model {
 		
 		windows = new Window[Windows.values().length];
 		
-		windows[Windows.AllPlants.ordinal()] = new AllPlants();
-		windows[Windows.Download.ordinal()] = new Download();
-		windows[Windows.PlantInfo.ordinal()] = new PlantInfo();
-		windows[Windows.PlotDesign.ordinal()] = new PlotDesign();
-		windows[Windows.Questionnaire.ordinal()] = new Questionnaire();
-		windows[Windows.SeasonView.ordinal()] = new SeasonView();
-		windows[Windows.Tutorial.ordinal()] = new Tutorial();
+		windows[Windows.AllPlants.ordinal()] = new AllPlants(this);
+		windows[Windows.Download.ordinal()] = new Download(this);
+		windows[Windows.ExistingPlants.ordinal()] = new ExistingPlants(this);
+		windows[Windows.PlantInfo.ordinal()] = new PlantInfo(this);
+		windows[Windows.PlotDesign.ordinal()] = new PlotDesign(this);
+		windows[Windows.Questionnaire.ordinal()] = new Questionnaire(this);
+		windows[Windows.SeasonView.ordinal()] = new SeasonView(this);
+		windows[Windows.Tutorial.ordinal()] = new Tutorial(this);
 		windows[Windows.Welcome.ordinal()] = new Welcome(this);
 		
-		this.currentWindow = this.windows[Windows.Welcome.ordinal()];
+		this.currentWindow = windows[Windows.Welcome.ordinal()];
 	}
 	
 	/**
@@ -81,6 +82,10 @@ public class Model {
 		currentWindow = w;
 	}
 	
+	/**
+	 * TODO: Document later...
+	 * @param w
+	 */
 	public void setWindow(Windows w) {
 		currentWindow = windows[w.ordinal()];
 	}

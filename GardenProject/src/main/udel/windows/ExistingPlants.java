@@ -2,6 +2,7 @@ package main.udel.windows;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import main.udel.garden.Model;
 import main.udel.plants.Plant;
 
 /**
@@ -18,8 +19,8 @@ public class ExistingPlants extends Window {
 	private Button backButton;
 	private Button nextButton;
 	
-	public ExistingPlants() {
-		super("What Plants are in your Garden?");
+	public ExistingPlants(Model m) {
+		super(m, "What Plants are in your Garden?");
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import main.udel.garden.Model;
 import main.udel.garden.View;
 import main.udel.windows.AllPlants;
 import main.udel.windows.Window;
@@ -15,6 +16,7 @@ import org.testfx.framework.junit.ApplicationTest;
 public class ViewTest extends ApplicationTest {
 	
 	private Stage stage = null;
+	private Model m;
 	
 	/**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
@@ -22,17 +24,18 @@ public class ViewTest extends ApplicationTest {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        this.m = new Model(0, 1);
     }
 
 	@Test
 	public void testConstructor() {
-		Window w = new AllPlants();
+		Window w = new AllPlants(m);
 		View v = new View(stage, w);
 	}
 	
 	@Test
 	public void testConstructorWithStage() {
-		Window w = new AllPlants();
+		Window w = new AllPlants(m);
 		View v = new View(stage, w);
 	}
 	

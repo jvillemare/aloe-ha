@@ -17,12 +17,9 @@ public class Welcome extends Window {
 	
 	private Group root;
 	private Scene scene;
-	private Model model;
 	
 	public Welcome(Model m) {
-		super("Welcome Menu");
-		
-		this.model = m;
+		super(m, "Welcome Menu");
 		
 		Button btn = new Button();
         btn.setText("Say 'Hello World'");
@@ -30,7 +27,7 @@ public class Welcome extends Window {
  
             @Override
             public void handle(ActionEvent event) {
-                m.setWindow(Windows.AllPlants);
+                getModel().setWindow(Windows.AllPlants);
             }
         });
 		

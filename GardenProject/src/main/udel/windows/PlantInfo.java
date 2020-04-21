@@ -2,6 +2,7 @@ package main.udel.windows;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import main.udel.garden.Model;
 import main.udel.plants.Plant;
 
 /**
@@ -16,8 +17,8 @@ public class PlantInfo extends Window {
 	private Plant plantArray[];
 	private Button backButton;
 
-	public PlantInfo() {
-		super("Plant Info: Pine Trees");
+	public PlantInfo(Model m) {
+		super(m, "Plant Info: Pine Trees");
 	}
 	
 	@Override
