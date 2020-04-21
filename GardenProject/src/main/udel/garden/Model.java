@@ -75,14 +75,6 @@ public class Model {
 	}
 	
 	/**
-	 * Change the current that is displayed to another window.
-	 * @param w 
-	 */
-	public void setWindow(Window w) {
-		currentWindow = w;
-	}
-	
-	/**
 	 * TODO: Document later...
 	 * @param w
 	 */

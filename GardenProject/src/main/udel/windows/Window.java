@@ -2,6 +2,7 @@ package main.udel.windows;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import main.udel.enums.Windows;
 import main.udel.garden.Model;
 
 /**
@@ -21,12 +22,8 @@ public abstract class Window {
 		this.title = title;
 	}
 	
-	/**
-	 * TODO: Document later...
-	 * @return
-	 */
-	public Model getModel() {
-		return this.model;
+	public void switchToWindow(Windows w) {
+		this.model.setWindow(w);
 	}
 	
 	/**

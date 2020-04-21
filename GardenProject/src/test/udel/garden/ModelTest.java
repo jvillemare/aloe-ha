@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 
 import org.junit.Test;
 
+import main.udel.enums.Windows;
 import main.udel.garden.*;
 import main.udel.plants.Plant;
 import main.udel.windows.AllPlants;
@@ -46,9 +47,7 @@ public class ModelTest {
 	@Test
 	public void testSetWindow() {
 		Model m = new Model(0, 1);
-		Window w = new AllPlants(m);
-		m.setWindow(w);
-		assertTrue(m.getWindow().equals(w));
+		m.setWindow(Windows.AllPlants);
 		assertTrue(m.getWindow() instanceof AllPlants);
 	}
 	

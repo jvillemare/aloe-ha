@@ -17,22 +17,23 @@ public class Welcome extends Window {
 	
 	private Group root;
 	private Scene scene;
+	Button helloWorld;
 	
 	public Welcome(Model m) {
 		super(m, "Welcome Menu");
 		
-		Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+		helloWorld = new Button();
+		helloWorld.setText("Say 'Hello World'");
+		helloWorld.setOnAction(new EventHandler<ActionEvent>() {
  
             @Override
             public void handle(ActionEvent event) {
-                getModel().setWindow(Windows.AllPlants);
+                switchToWindow(Windows.AllPlants);
             }
         });
 		
 		this.root = new Group();
-		root.getChildren().add(btn);
+		root.getChildren().add(helloWorld);
 		this.scene = new Scene(this.root);
 	}
 
