@@ -1,7 +1,10 @@
 package main.udel.windows;
 
-
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import main.udel.garden.Model;
 import main.udel.plants.Plant;
 
 /**
@@ -12,13 +15,16 @@ import main.udel.plants.Plant;
  */
 public class AllPlants extends Window {
 	
+	private Scene scene;
+	private Group root;
+	
 	/**
 	 * Array of Plants
 	 */
 	private Plant[] plants;
 	
 	/**
-	 * Button that saves ...
+	 * Button that saves ... TODO what?
 	 */
 	private Button saveButton;
 	
@@ -32,8 +38,20 @@ public class AllPlants extends Window {
 	 */
 	private Button backButton;
 	
-	public AllPlants() {
-		super("Plant Database");
+	public AllPlants(Model m) {
+		super(m, "Plant Database");
+		
+		Label label = new Label("So many plants...");
+		
+		this.root = new Group();
+		root.getChildren().add(label);
+		this.scene = new Scene(this.root, 200, 200);
+	}
+	
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
 	}
 
 }

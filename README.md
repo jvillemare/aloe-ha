@@ -1,5 +1,7 @@
 # cisc275-011-team-0
 
+![Java CI with Maven](https://github.com/CISC275-S2020/team-11-0/workflows/Java%20CI%20with%20Maven/badge.svg)
+
 This semester's project will involve working in a team composed of students from your 275 lecture section. Teams will design and implement software for a client of the professor's choosing. The project grade will be composed of a number of parts, including multiple presentations, all parts of the software engineering cycle, quality of teamwork and team evaluations, and final presentation. Projects which pass the final presentation may present their work to faculty, administration, and adoring fans. Client may select any or all software to use in presentations and distribute from their website.
 
 Coronavirus or not, this project is being accomplished.

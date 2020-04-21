@@ -18,8 +18,8 @@ public class Controller extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		view = new View(primaryStage);
 		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
+		view = new View(primaryStage, model.getWindow());
 		
 		new AnimationTimer() {
             public void handle(long currentNanoTime)
@@ -40,7 +40,7 @@ public class Controller extends Application {
 	}
 	
     public static void main( String[] args ) {
-        System.out.println( "Hello World!" );
+        System.out.println("GardenProject starting...");
         launch(args);
     }
     

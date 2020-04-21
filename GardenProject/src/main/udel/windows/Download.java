@@ -1,6 +1,8 @@
 package main.udel.windows;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import main.udel.garden.Model;
 
 /**
  * Where the user can export their plot as a PNG/JPEG, save it as a
@@ -10,13 +12,30 @@ import javafx.scene.control.Button;
  */
 public class Download extends Window {
 	
+	private Scene scene;
+	
+	private static final String downloadSceneTitle = "Load or Save Your Plot";
+	private String lastSaveFile;
+	
 	/**
 	 * button that brings to previous window
 	 */
 	private Button backButton;
 
-	public Download() {
-		super("Load or Save Your Plot");
+	public Download(Model m) {
+		super(m, downloadSceneTitle);
+		this.lastSaveFile = "";
+	}
+	
+	public Download(Model m, String lastSaveFile) {
+		super(m, downloadSceneTitle);
+		this.lastSaveFile = lastSaveFile;
+	}
+	
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
 	}
 	
 	/**

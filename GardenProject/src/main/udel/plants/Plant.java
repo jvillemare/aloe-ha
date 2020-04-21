@@ -2,7 +2,6 @@ package main.udel.plants;
 
 import main.udel.enums.Canopy;
 import main.udel.enums.Moisture;
-import main.udel.enums.Plants;
 import main.udel.enums.Seasons;
 import main.udel.enums.SoilTypes;
 
@@ -14,9 +13,14 @@ import main.udel.enums.SoilTypes;
 public class Plant {
 
 	/**
-	 * Name of the plant.
+	 * Common names of a plant.
 	 */
-	Plants name;
+	String[] commonNames;
+	
+	/**
+	 * Linnaeus <code>Genus species</code> name of the plant.
+	 */
+	String latinName;
 	
 	/**
 	 * Short description of the visual characteristics of the plant, or any
@@ -43,9 +47,11 @@ public class Plant {
 	
 	private Canopy canopy;
 	
-	public Plant(Plants name, String description, Seasons bloomTime, double light,
-			Moisture moisture, SoilTypes soilType, Canopy canopy) {
-		this.name = name;
+	public Plant(String[] commonNames, String latinName, String description, 
+			Seasons bloomTime, double light, Moisture moisture, 
+			SoilTypes soilType, Canopy canopy) {
+		this.commonNames = commonNames;
+		this.latinName = latinName;
 		this.description = description;
 		this.bloomTime = bloomTime;
 		this.light = light;
@@ -54,8 +60,12 @@ public class Plant {
 		this.canopy = canopy;
 	}
 
-	public Plants getName() {
-		return name;
+	public String[] getCommonNames() {
+		return commonNames;
+	}
+	
+	public String getLatinName() {
+		return latinName;
 	}
 
 	public String getDescription() {

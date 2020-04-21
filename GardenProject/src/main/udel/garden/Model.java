@@ -1,7 +1,8 @@
 package main.udel.garden;
 
+import main.udel.enums.Windows;
 import main.udel.plants.Plant;
-import main.udel.windows.Window;
+import main.udel.windows.*;
 
 /**
  * Updates the stage: Contains logic and data.
@@ -26,6 +27,11 @@ public class Model {
 	private Window[] windows;
 	
 	/**
+	 * The current window being displayed to the user.
+	 */
+	private Window currentWindow;
+	
+	/**
 	 * All the plants.
 	 */
 	private Plant[] plants;
@@ -36,6 +42,20 @@ public class Model {
 	public Model(int width, int height) {
 		this.width = width;
 		this.height = height;
+		
+		windows = new Window[Windows.values().length];
+		
+		windows[Windows.AllPlants.ordinal()] = new AllPlants(this);
+		windows[Windows.Download.ordinal()] = new Download(this);
+		windows[Windows.ExistingPlants.ordinal()] = new ExistingPlants(this);
+		windows[Windows.PlantInfo.ordinal()] = new PlantInfo(this);
+		windows[Windows.PlotDesign.ordinal()] = new PlotDesign(this);
+		windows[Windows.Questionnaire.ordinal()] = new Questionnaire(this);
+		windows[Windows.SeasonView.ordinal()] = new SeasonView(this);
+		windows[Windows.Tutorial.ordinal()] = new Tutorial(this);
+		windows[Windows.Welcome.ordinal()] = new Welcome(this);
+		
+		this.currentWindow = windows[Windows.Welcome.ordinal()];
 	}
 	
 	/**
@@ -51,15 +71,15 @@ public class Model {
 	 * @return current Window.
 	 */
 	public Window getWindow() {
-		// TODO: Implement
-		return null;
+		return currentWindow;
 	}
 	
 	/**
-	 * Change the current that is displayed to another window.
+	 * TODO: Document later...
+	 * @param w
 	 */
-	public void setWindow() {
-		// TODO: Implement
+	public void setWindow(Windows w) {
+		currentWindow = windows[w.ordinal()];
 	}
 	
 	/**

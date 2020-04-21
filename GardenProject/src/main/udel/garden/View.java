@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import main.udel.windows.Window;
 
 /**
  * Creates the stage: Loads graphics, images, and defines what the user sees.
@@ -26,20 +27,16 @@ public class View {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	
-	public View(Stage theStage) {
-		this.theStage = theStage;
-		
+	private Window window;
+	
+	public View(Stage theStage, Window w) {
 		this.theStage = theStage;
 		
 		this.theStage.setTitle("Garden Project v0.1");
 
-        this.root = new Group();
-        this.theScene = new Scene(this.root);
-        this.theStage.setScene(theScene);
-
-        this.canvas = new Canvas(canvasWidth, canvasHeight);
-        this.root.getChildren().add(this.canvas);
-        this.gc = this.canvas.getGraphicsContext2D();
+        this.window = w;
+        this.theStage.setScene(this.window.getScene());
+        this.theStage.show();
 	}
 
 	/**
@@ -47,8 +44,13 @@ public class View {
 	 * 
 	 * @param objects
 	 */
-	public void update(Object... objects) {
-
+	public void update(Window w) {
+		if(this.window.equals(w) == false) {
+			this.window = w;
+			theStage.setScene(this.window.getScene());
+			theStage.setTitle(this.window.getTitle());
+			System.out.println("View: Now showing " + this.window.getTitle() + " window");
+		}
 	}
 	
 	/**
@@ -56,8 +58,8 @@ public class View {
 	 * 
 	 * @return canvas width in pixels.
 	 */
-	public int getCanvasWidth() {
-		return this.canvasWidth;
+	public static int getCanvasWidth() {
+		return canvasWidth;
 	}
 	
 	/**
@@ -65,8 +67,8 @@ public class View {
 	 * 
 	 * @return canvas height in pixels.
 	 */
-	public int getCanvasHeight() {
-		return this.canvasHeight;
+	public static int getCanvasHeight() {
+		return canvasHeight;
 	}
 
 }

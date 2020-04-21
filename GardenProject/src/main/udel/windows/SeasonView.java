@@ -1,5 +1,8 @@
 package main.udel.windows;
 
+import javafx.scene.Scene;
+import main.udel.garden.Model;
+
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
  * down the line.
@@ -8,8 +11,16 @@ package main.udel.windows;
  */
 public class SeasonView extends Window {
 	
-	public SeasonView() {
-		super("Garden Previewer");
+	private Scene scene;
+	
+	public SeasonView(Model m) {
+		super(m, "Garden Previewer");
+	}
+	
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
 	}
 
 }

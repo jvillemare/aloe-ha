@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import main.udel.garden.Model;
 import main.udel.windows.AllPlants;
 import main.udel.windows.Download;
 import main.udel.windows.PlotDesign;
@@ -12,34 +13,39 @@ public class DownloadTest {
 
 	@Test
 	public void Downloadtest() {
-		Download w = new Download();
+		Model m = new Model(0, 1);
+		Download w = new Download(m);
 		assertTrue(w.getTitle().equals("Load or Save Your Plot"));
 	}
 	
 	@Test
 	public void savePNGTest() {
-		Download w = new Download();
+		Model m = new Model(0, 1);
+		Download w = new Download(m);
 		w.savePNG(null);
 		assertTrue(w.savePNG(null));
 	}
 
 	@Test
 	public void saveTest() {
-		Download w = new Download();
+		Model m = new Model(0, 1);
+		Download w = new Download(m);
 		w.save(null);
 		assertTrue(w.save(null));
 	}
 	
 	@Test
 	public void loadTest() {
-		Download w = new Download();
+		Model m = new Model(0, 1);
+		Download w = new Download(m);
 		w.load();
 		assertTrue(w.load() instanceof PlotDesign);
 	}
 	
 	@Test
 	public void exitTest() {
-		Download w = new Download();
+		Model m = new Model(0, 1);
+		Download w = new Download(m);
 		w.exit();
 	}
 }

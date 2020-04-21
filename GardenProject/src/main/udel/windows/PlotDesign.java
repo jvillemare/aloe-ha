@@ -1,6 +1,8 @@
 package main.udel.windows;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import main.udel.garden.Model;
 import main.udel.plants.Plant;
 
 /**
@@ -10,6 +12,8 @@ import main.udel.plants.Plant;
  * @author Team 0
  */
 public class PlotDesign extends Window {
+	
+	private Scene scene;
 
 	private int statistics[];
 	private Button saveButton;
@@ -17,11 +21,17 @@ public class PlotDesign extends Window {
 	private Button loadButton;
 	private Button nextButton;
 	
-	public PlotDesign() {
-		super("Plot Designer");
+	public PlotDesign(Model m) {
+		super(m, "Plot Designer");
 	}
 	
-	public void getObstacle(){
+	@Override
+	public Scene getScene() {
+		// TODO Auto-generated method stub
+		return this.scene;
+	}
+	
+	public void getObstacle() {
 		
 	}
 	
