@@ -1,7 +1,14 @@
 package main.udel.windows;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import main.udel.enums.Windows;
 import main.udel.garden.Model;
 
 /**
@@ -12,24 +19,53 @@ import main.udel.garden.Model;
  */
 public class Download extends Window {
 	
+	private Group root;
 	private Scene scene;
+	
+	private BorderPane borderPane;
+	private VBox vbox;
+	private Text text;
 	
 	private static final String downloadSceneTitle = "Load or Save Your Plot";
 	private String lastSaveFile;
 	
-	/**
-	 * button that brings to previous window
-	 */
-	private Button backButton;
+	private Button back;
 
 	public Download(Model m) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = "";
+		
+		borderPane = new BorderPane();
+		vbox = new VBox();
+		
+		text = new Text("Congrats! You've created your Garden! How would you like to save?");
+		text.setWrappingWidth(800);
+		text.setStyle("-fx-font-size: 20px;");
+		vbox.getChildren().addAll(text);
+		
+		back = new Button("Go Back");
+		back.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+            	switchToWindow(Windows.Questionnaire);
+            }
+        });
+		
+		borderPane.setTop(vbox);
+		borderPane.setLeft(back);
+		
+		this.root = new Group();
+		root.getChildren().add(borderPane);
+		this.scene = new Scene(this.root);
 	}
 	
 	public Download(Model m, String lastSaveFile) {
 		super(m, downloadSceneTitle);
-		this.lastSaveFile = lastSaveFile;
+		this.lastSaveFile = lastSaveFile;		
+		
+		
+		
 	}
 	
 	@Override

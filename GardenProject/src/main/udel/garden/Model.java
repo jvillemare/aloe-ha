@@ -54,6 +54,7 @@ public class Model {
 		windows[Windows.SeasonView.ordinal()] = new SeasonView(this);
 		windows[Windows.Tutorial.ordinal()] = new Tutorial(this);
 		windows[Windows.Welcome.ordinal()] = new Welcome(this);
+		windows[Windows.PlantSelection.ordinal()] = new PlantSelection(this);
 		
 		this.currentWindow = windows[Windows.Welcome.ordinal()];
 	}

@@ -43,6 +43,8 @@ public class AllPlants extends Window {
 		
 		Label label = new Label("So many plants...");
 		
+		//brings you too outside database
+		
 		this.root = new Group();
 		root.getChildren().add(label);
 		this.scene = new Scene(this.root, 200, 200);
