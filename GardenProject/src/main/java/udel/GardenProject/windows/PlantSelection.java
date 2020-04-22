@@ -1,4 +1,4 @@
-package main.udel.windows;
+package udel.GardenProject.windows;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import main.udel.enums.Windows;
-import main.udel.garden.Model;
-import main.udel.plants.Plant;
+import udel.GardenProject.enums.Windows;
+import udel.GardenProject.garden.Model;
+import udel.GardenProject.plants.Plant;
 
 /**
  * To display all the information of a Plant to the user.
