@@ -36,7 +36,7 @@ public class Plant {
 	/**
 	 * When the plant reaches peak bloom.
 	 */
-	Seasons bloomTime;
+	boolean[] bloomTime;
 	
 	/**
 	 * Percentage of light that plant normally receives from the sun during the
@@ -46,15 +46,34 @@ public class Plant {
 	 */
 	double light;
 	
+	/**
+	 * Moisture level required in soil for plant
+	 */
 	Moisture moisture;
 	
+	/**
+	 * Soil type required for plant
+	 */
 	SoilTypes soilType;
 	
+	/**
+	 *Height of plant
+	 */
 	private Canopy canopy;
 	
+	/**
+	 * Delaware native plant status
+	 */
+	private boolean delawareNative;
+	
+	/**
+	 * Invasive species status
+	 */
+	private boolean invasive;
+	
 	public Plant(String[] commonNames, String latinName, String description, 
-			Seasons bloomTime, double light, Moisture moisture, 
-			SoilTypes soilType, Canopy canopy) {
+			boolean[] bloomTime, double light, Moisture moisture, 
+			SoilTypes soilType, Canopy canopy, boolean delawareNative, boolean invasive) {
 		this.commonNames = commonNames;
 		this.latinName = latinName;
 		this.description = description;
@@ -63,6 +82,8 @@ public class Plant {
 		this.moisture = moisture;
 		this.soilType = soilType;
 		this.canopy = canopy;
+		this.delawareNative = delawareNative;
+		this.invasive = invasive;
 	}
 
 	public String[] getCommonNames() {
@@ -77,7 +98,7 @@ public class Plant {
 		return description;
 	}
 
-	public Seasons getBloomTime() {
+	public boolean[] getBloomTime() {
 		return bloomTime;
 	}
 
@@ -95,6 +116,14 @@ public class Plant {
 	
 	public Canopy getCanopy() {
 		return this.canopy;
+	}
+	
+	public boolean getDelawareNative() {
+		return this.delawareNative;
+	}
+	
+	public boolean getInvasive() {
+		return this.invasive;
 	}
 	
 }
