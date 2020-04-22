@@ -1,6 +1,5 @@
 package udel.GardenProject.windows;
 
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
-
 
 /**
  * Welcome screen that first appears when the user starts the program.
@@ -42,7 +40,6 @@ public class Welcome extends Window {
 	 */
 	public Welcome(Model m) {
 		super(m, "Welcome Menu");
-
 
 		flow = new FlowPane(Orientation.HORIZONTAL);
 		flow.setPadding(new Insets(5, 0, 5, 0));
@@ -90,8 +87,8 @@ public class Welcome extends Window {
 		flow.getChildren().addAll(startNewPlot, loadSavedPlot, tutorialButton);
 
 		this.root = new Group();
-		root.getChildren().add(helloWorld);
-		this.scene = new Scene(this.root, 150, 150);
+		root.getChildren().add(flow);
+		this.scene = new Scene(this.root, 550, 350);
 	}
 
 	@Override
