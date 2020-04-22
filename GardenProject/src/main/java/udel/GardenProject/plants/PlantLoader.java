@@ -545,10 +545,8 @@ public class PlantLoader {
 
 	public static void merge() throws FileNotFoundException, IOException, ParseException {
 		HashMap<String, Plant> merge = new HashMap<>();
-		int total = 0;
 		for (Plant p : loadFlora()) {
 			merge.put(p.getLatinName(), p);
-			total ++;
 		}
 		for (Plant p : loadNative()) {
 			if (merge.get(p.getLatinName()) != null) {
@@ -651,7 +649,6 @@ public class PlantLoader {
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
-			total++;
 		}
 
 		for (Plant p : loadSunny()) {
@@ -755,12 +752,10 @@ public class PlantLoader {
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
-			total++;
 		}
 		for (String key : merge.keySet()) {
 			plants.add(merge.get(key));
 		}
-		System.out.println(total);
 	}
 
 	/**
