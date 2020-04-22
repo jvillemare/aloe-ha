@@ -31,7 +31,7 @@ public class Controller extends Application {
                 
                 // TODO: Is this how we want to handle it later?
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
