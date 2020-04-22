@@ -27,4 +27,13 @@ public class PlantInfo extends Window {
 		return this.scene;
 	}
 	
+	/**
+	 * Change PlantInfo's scene and display a plant's info by it's latin name.
+	 * 
+	 * @param plantLatinName Linnaeus Genus species plant name.
+	 */
+	public void displayPlant(String plantLatinName) {
+		// TODO: Keep String or use different param?
+	}
+	
 }

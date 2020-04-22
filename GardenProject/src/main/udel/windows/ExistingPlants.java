@@ -14,14 +14,22 @@ public class ExistingPlants extends Window {
 	
 	private Scene scene;
 
+	// TODO: Change to ArrayList?
 	private Plant existingPlant[];
 	
 	private Button backButton;
 	private Button nextButton;
 	
+	/**
+	 * Create an ExistingPlants window instance.
+	 * 
+	 * @param m Model
+	 */
 	public ExistingPlants(Model m) {
 		super(m, "What Plants are in your Garden?");
 	}
+	
+	// TODO: Constructor to pass in plant array?
 	
 	@Override
 	public Scene getScene() {
@@ -29,10 +37,20 @@ public class ExistingPlants extends Window {
 		return this.scene;
 	}
 	
+	/**
+	 * Return a list of all existing plants.
+	 * 
+	 * @return array of all plants available in GardenProject.
+	 */
 	public Plant[] getExistingPlants() {
 		return this.existingPlant;
 	}
 	
+	/**
+	 * Set all the existing plants.
+	 * 
+	 * @param p	list of plants to use in project.
+	 */
 	public void setExistingPlants(Plant p) {
 		
 	}

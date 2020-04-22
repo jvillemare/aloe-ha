@@ -2,6 +2,11 @@ package main.udel.plants;
 
 import java.util.Comparator;
 
+/**
+ * Compare plants by Canopy level, by default descending.
+ * 
+ * @author Team 0
+ */
 public class CanopyComparator implements Comparator<Plant> {
 
 	private boolean descending;

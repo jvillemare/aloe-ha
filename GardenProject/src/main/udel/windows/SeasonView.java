@@ -13,6 +13,11 @@ public class SeasonView extends Window {
 	
 	private Scene scene;
 	
+	/**
+	 * Create a SeasonView window instance.
+	 * 
+	 * @param m Model
+	 */
 	public SeasonView(Model m) {
 		super(m, "Garden Previewer");
 	}

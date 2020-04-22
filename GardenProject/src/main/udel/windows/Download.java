@@ -22,11 +22,23 @@ public class Download extends Window {
 	 */
 	private Button backButton;
 
+	/**
+	 * Assume the user has no last save file downloaded.
+	 * 
+	 * @param m	Model
+	 */
 	public Download(Model m) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = "";
 	}
 	
+	/**
+	 * Create a new Download window and specify where the user's last save file
+	 * is.
+	 * 
+	 * @param m				Model
+	 * @param lastSaveFile	Path of the user's last save file.
+	 */
 	public Download(Model m, String lastSaveFile) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = lastSaveFile;
@@ -39,34 +51,47 @@ public class Download extends Window {
 	}
 	
 	/**
-	 * saves the PNG plant 
+	 * Saves the a PNG of the plot to a file.
+	 * 
+	 * @param	filename	Path where the file should be saved.
+	 * 
 	 * @return true if it saved and false if it did not
+	 * @see javafx.stage.FileChooser
 	 */
 	public boolean savePNG(String filename) {
 		return false;
 	}
 	
 	/**
-	 * saves the plant
+	 * Saves the plot as a <code>.gardenproject</code> file.
+	 * 
+	 * @param	filename	Path where the file should be saved.
+	 * 
 	 * @return true if saved and false if it did not
+	 * @see javafx.stage.FileChooser
 	 */
 	public boolean save(String filename) {
 		return false;
 	}
 	
 	/**
-	 * loads the plotdesign of a window
-	 * @return the plotdesign desired
+	 * Loads a plot from a <code>.gardenproject</code> file as a PlotDesign
+	 * instance.
+	 * 
+	 * @param	filename	Path where the file should be saved.
+	 * 
+	 * @return the PlotDesign desired
+	 * @see javafx.stage.FileChooser
 	 */
-	public PlotDesign load() {
+	public PlotDesign load(String filename) {
 		return null;
 	}
 	
 	/**
-	 * exits
+	 * Exit the GardenProject program.
 	 */
 	public void exit() {
-		
+		// TODO: Implement
 	}
 	
 }

@@ -1,8 +1,9 @@
 package main.udel.enums;
 
 /**
- * Contains the different sunlight and shade levels
- * Used in Questionnaire and Plant Info
+ * Contains the different sunlight and shade levels. Used in Questionnaire and 
+ * Plant Info.
+ * 
  * 
  * @author Team 0
  */

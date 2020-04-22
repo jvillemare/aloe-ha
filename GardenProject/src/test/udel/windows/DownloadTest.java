@@ -38,8 +38,9 @@ public class DownloadTest {
 	public void loadTest() {
 		Model m = new Model(0, 1);
 		Download w = new Download(m);
-		w.load();
-		assertTrue(w.load() instanceof PlotDesign);
+		w.load("fake.gardenproject"); // TODO: Generate real GardenProject save
+		// -file when we have the save/load functionality working
+		assertTrue(w.load("fake.gardenproject") instanceof PlotDesign);
 	}
 	
 	@Test

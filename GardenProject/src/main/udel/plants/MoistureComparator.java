@@ -2,8 +2,12 @@ package main.udel.plants;
 
 import java.util.Comparator;
 
+/**
+ * Sort plants by Moisture, by default descending.
+ * 
+ * @author Team 0
+ */
 public class MoistureComparator implements Comparator<Plant> {
-
 	
 	private boolean descending;
 
@@ -28,4 +32,5 @@ public class MoistureComparator implements Comparator<Plant> {
 		// TODO: Implement
 		return 0;
 	}
+	
 }

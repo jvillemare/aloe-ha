@@ -6,7 +6,12 @@ import main.udel.enums.Seasons;
 import main.udel.enums.SoilTypes;
 
 /**
- * For every plant, there is a corresponding Plant object 
+ * For every plant, there is a corresponding Plant object that contains as much
+ * information that can be loaded by PlantLoader.
+ * 
+ * Plant data was gathered from public domain sources using Python scripts, and
+ * the plant data is stored as <code>.json</code> files in 
+ * <code>main.udel.plants.data</code>
  * 
  * @author Team 0
  */

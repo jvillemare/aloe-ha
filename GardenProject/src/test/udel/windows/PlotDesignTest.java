@@ -37,7 +37,8 @@ public class PlotDesignTest {
 	public void getPlantTest() {
 		Model m = new Model(0, 1);
 		PlotDesign p = new PlotDesign(m);
-		p.getPlant();
+		p.getPlant(); // TODO: Have a real plant name be loaded when PlantLoader implemented
+		
 	}
 	
 	@Test

@@ -2,6 +2,11 @@ package main.udel.plants;
 
 import java.util.Comparator;
 
+/**
+ * Sort plants by SoilType, by default pH descending.
+ * 
+ * @author Team 0
+ */
 public class SoilTypeComparator implements Comparator<Plant>{
 
 	private boolean phDescending;

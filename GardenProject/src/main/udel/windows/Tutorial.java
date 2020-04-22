@@ -13,6 +13,11 @@ public class Tutorial extends Window {
 	
 	private Scene scene;
 
+	/**
+	 * Create a Tutorial window instance.
+	 * 
+	 * @param m Model
+	 */
 	public Tutorial(Model m) {
 		super(m, "Tutorial Window");
 	}

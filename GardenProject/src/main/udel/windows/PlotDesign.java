@@ -21,6 +21,11 @@ public class PlotDesign extends Window {
 	private Button loadButton;
 	private Button nextButton;
 	
+	/**
+	 * Create a new PlotDesign window instance.
+	 * 
+	 * @param m Model
+	 */
 	public PlotDesign(Model m) {
 		super(m, "Plot Designer");
 	}
@@ -31,6 +36,8 @@ public class PlotDesign extends Window {
 		return this.scene;
 	}
 	
+	/**
+	 */
 	public void getObstacle() {
 		
 	}

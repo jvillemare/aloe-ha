@@ -12,6 +12,11 @@ public class Questionnaire extends Window {
 	
 	private Scene scene;
 	
+	/**
+	 * Create a Questionnaire window instance.
+	 * 
+	 * @param m Model
+	 */
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
 	}

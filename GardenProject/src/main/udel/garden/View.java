@@ -32,10 +32,7 @@ public class View {
 	public View(Stage theStage, Window w) {
 		this.theStage = theStage;
 		
-		this.theStage.setTitle("Garden Project v0.1");
-
-        this.window = w;
-        this.theStage.setScene(this.window.getScene());
+		update(w);
         this.theStage.show();
 	}
 
@@ -45,7 +42,7 @@ public class View {
 	 * @param objects
 	 */
 	public void update(Window w) {
-		if(this.window.equals(w) == false) {
+		if(this.window == null || this.window.equals(w) == false) {
 			this.window = w;
 			theStage.setScene(this.window.getScene());
 			theStage.setTitle(this.window.getTitle());

@@ -19,6 +19,11 @@ public class Welcome extends Window {
 	private Scene scene;
 	Button helloWorld;
 	
+	/**
+	 * Create a Welcome screen window instance.
+	 * 
+	 * @param m Model
+	 */
 	public Welcome(Model m) {
 		super(m, "Welcome Menu");
 		
@@ -34,7 +39,7 @@ public class Welcome extends Window {
 		
 		this.root = new Group();
 		root.getChildren().add(helloWorld);
-		this.scene = new Scene(this.root);
+		this.scene = new Scene(this.root, 150, 150);
 	}
 
 	@Override
