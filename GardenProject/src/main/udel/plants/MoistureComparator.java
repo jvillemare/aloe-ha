@@ -26,9 +26,9 @@ public class MoistureComparator implements Comparator<Plant> {
 
 	public int compare(Plant a, Plant b) {
 		if (descending) {
-			return a.moisture.getIntensity() - b.moisture.getIntensity();
+			return a.moisture.ordinal() - b.moisture.ordinal();
 		}else {
-			return b.moisture.getIntensity() - a.moisture.getIntensity();
+			return b.moisture.ordinal() - a.moisture.ordinal();
 		}
 	}
 }

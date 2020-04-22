@@ -8,21 +8,22 @@ package main.udel.enums;
  */
 public enum Moisture {
 	
-	DRY(1),
-	DRY_MOIST(2),
-	MOIST(3),
-	MOIST_DAMP(4),
-	DAMP(5);
+	DRY,
+	DRY_MOIST,
+	MOIST,
+	MOIST_DAMP,
+	DAMP;
 
-	private int intensity = 0;
+	//private int intensity = 0;
 	
-	private Moisture(int intensity) {
-		this.intensity = intensity;
+	private Moisture() {
+		//this.intensity = intensity;
 	}
 	
+	/*
 	public int getIntensity() {
 		return intensity;
-	}
+	} */
 	
 	public Moisture getMoisture(String s) {
 		if (s.equalsIgnoreCase("Wet") || s.equalsIgnoreCase("Damp")){
