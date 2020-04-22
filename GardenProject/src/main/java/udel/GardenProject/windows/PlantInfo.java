@@ -18,7 +18,13 @@ public class PlantInfo extends Window {
 	private Button backButton;
 
 	public PlantInfo(Model m) {
-		super(m, "Plant Info: Pine Trees");
+		super(m, "Plant Info: Pine Trees"); // this will have to change to the name of the plant they've clicked on
+		
+		
+		
+		// pop up window
+		
+		
 	}
 	
 	@Override

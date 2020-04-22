@@ -10,8 +10,8 @@ public class SoilTypesTest {
 
 	@Test
 	public void testSoilType() {
-		SoilTypes sl = SoilTypes.PEATY;
-		assertTrue(sl.name().toLowerCase().equals("peaty"));
+		SoilTypes sl = SoilTypes.CLAY;
+		assertTrue(sl.name().toLowerCase().equals("clay"));
 	}
 
 }

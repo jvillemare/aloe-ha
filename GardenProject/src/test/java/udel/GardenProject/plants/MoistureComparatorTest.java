@@ -44,7 +44,7 @@ public class MoistureComparatorTest {
 	public void ascendMoistureTest() {
 		MoistureComparator c = new MoistureComparator(false);
 		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.AVERAGE, null, Canopy.FLOOR);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.MOIST, null, Canopy.FLOOR);
 		assertTrue(c.compare(pine, flower) < 0);
 	}
 	
@@ -52,7 +52,7 @@ public class MoistureComparatorTest {
 	public void descendMoistureTest() {
 		MoistureComparator c = new MoistureComparator(true);
 		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.AVERAGE, null, Canopy.FLOOR);
+		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.MOIST, null, Canopy.FLOOR);
 		assertTrue(c.compare(pine, flower) > 0);
 	}
 	
