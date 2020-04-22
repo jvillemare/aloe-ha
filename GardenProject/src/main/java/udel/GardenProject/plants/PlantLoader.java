@@ -771,10 +771,4 @@ public class PlantLoader {
 		merge();
 		return plants;
 	}
-
-	public static void main(String[] args) throws IOException, ParseException {
-		ArrayList<Plant> p = getPlants();
-		System.out.println(p.get(0).description);
-	}
-
 }
