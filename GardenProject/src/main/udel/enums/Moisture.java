@@ -14,16 +14,6 @@ public enum Moisture {
 	MOIST_DAMP,
 	DAMP;
 
-	//private int intensity = 0;
-	
-	private Moisture() {
-		//this.intensity = intensity;
-	}
-	
-	/*
-	public int getIntensity() {
-		return intensity;
-	} */
 	
 	public Moisture getMoisture(String s) {
 		if (s.equalsIgnoreCase("Wet") || s.equalsIgnoreCase("Damp")){

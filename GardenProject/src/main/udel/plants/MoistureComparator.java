@@ -9,6 +9,7 @@ public class MoistureComparator implements Comparator<Plant> {
 
 	/**
 	 * By default, assume sorting a list of plants by moisture, descending.
+	 * Descending means most wet to least wet.
 	 */
 	public MoistureComparator() {
 		this.descending = true;

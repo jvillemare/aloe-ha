@@ -4,14 +4,14 @@ import java.util.Comparator;
 
 public class SoilTypeComparator implements Comparator<Plant>{
 
-	private boolean phDescending;
+	private boolean descending;
 	
 	/**
 	 * By default, assume sorting a list of plants by soil type, descending.
 	 * Note: descending means descending alphabetic order
 	 */
 	public SoilTypeComparator() {
-		this.phDescending = true;
+		this.descending = true;
 	}
 	
 	/**
@@ -20,11 +20,11 @@ public class SoilTypeComparator implements Comparator<Plant>{
 	 * @param descending	true for descending, false for ascending.
 	 */
 	public SoilTypeComparator(boolean descending) {
-		this.phDescending = descending;
+		this.descending = descending;
 	}
 	
 	public int compare(Plant a, Plant b) {
-		if (phDescending) {
+		if (descending) {
 			return a.soilType.getName().compareTo(b.soilType.getName());
 		}else {
 			return b.soilType.getName().compareTo(b.soilType.getName());
