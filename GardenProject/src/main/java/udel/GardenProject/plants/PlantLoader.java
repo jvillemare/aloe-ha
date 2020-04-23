@@ -87,7 +87,7 @@ public class PlantLoader {
 				common = com.split(";");
 			}
 			bloom = bloomCalc(obj.getJSONObject(plant).getString("Flowering Period"), "seasons");
-			description = description + System.lineSeparator() + "Name Meaning: "
+			description = description + System.lineSeparator() + "Meaning of Name: "
 					+ obj.getJSONObject(plant).getString("Meaning of Scientific Name");
 			description = description + System.lineSeparator() + "Life Form: "
 					+ obj.getJSONObject(plant).getString("Life Form");
@@ -155,11 +155,15 @@ public class PlantLoader {
 			for (int i = 0; i < alias.length(); i++) {
 				comm.add(alias.getString(i));
 			}
+			if (obj.getJSONObject(plant).getString("states").contains("DE")) {
+				nativ = true;
+			}
 			common = comm.toArray(new String[0]);
 			if (obj.getJSONObject(plant).has("plant types")) {
 				String type = obj.getJSONObject(plant).getString("plant types");
 				if (type.contains("Grass") || type.contains("Herb") || type.contains("Fern")
-						|| type.contains("medium shrub") || obj.getJSONObject(plant).has("ground cover")) {
+						|| type.contains("medium shrub") || obj.getJSONObject(plant).has("ground cover")
+						|| type.contains("Low Shrub")) {
 					canopy = canopy.FLOOR;
 				} else if (type.contains("Understory") || type.contains("Tall Shrub")) {
 					canopy = Canopy.UNDERSTORY;
@@ -201,6 +205,7 @@ public class PlantLoader {
 					break;
 				case "Clay, Loamy, Sandy":
 					soilType = SoilTypes.ANY;
+					break;
 				case "Loamy, Sandy":
 					soilType = SoilTypes.LOAMY;
 					break;
@@ -245,7 +250,7 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("family");
 			description = description + System.lineSeparator() + "Habitat: "
 					+ obj.getJSONObject(plant).getString("habitat");
-			description = description + System.lineSeparator() + "Region: "
+			description = description + System.lineSeparator() + "Regions: "
 					+ obj.getJSONObject(plant).getString("regions");
 			description = description + System.lineSeparator() + "States: "
 					+ obj.getJSONObject(plant).getString("states");
