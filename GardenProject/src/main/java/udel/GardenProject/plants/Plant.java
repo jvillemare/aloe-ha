@@ -20,23 +20,23 @@ public class Plant {
 	/**
 	 * Common names of a plant.
 	 */
-	String[] commonNames;
+	private String[] commonNames;
 	
 	/**
 	 * Linnaeus <code>Genus species</code> name of the plant.
 	 */
-	String latinName;
+	private String latinName;
 	
 	/**
 	 * Short description of the visual characteristics of the plant, or any
 	 * other notable aspects.
 	 */
-	String description;
+	private String description;
 	
 	/**
 	 * When the plant reaches peak bloom.
 	 */
-	boolean[] bloomTime;
+	private boolean[] bloomTime;
 	
 	/**
 	 * Percentage of light that plant normally receives from the sun during the
@@ -44,17 +44,17 @@ public class Plant {
 	 * 
 	 * From 0.0 to 1.0 
 	 */
-	double light;
+	private double light;
 	
 	/**
 	 * Moisture level required in soil for plant
 	 */
-	Moisture moisture;
+	private Moisture moisture;
 	
 	/**
 	 * Soil type required for plant
 	 */
-	SoilTypes soilType;
+	private SoilTypes soilType;
 	
 	/**
 	 *Height of plant

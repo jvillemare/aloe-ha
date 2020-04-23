@@ -30,9 +30,7 @@ public class BloomTimeComparator implements Comparator<Plant> {
 
 	
 	public int compare(Plant a, Plant b) {
-		if (a.bloomTime == b.bloomTime) {
-			return 0;
-		} else if (this.descending) {
+		if (this.descending) {
 			int aInd = -1;
 			int bInd = -1;
 			boolean[] aBloom = a.getBloomTime();
@@ -48,6 +46,9 @@ public class BloomTimeComparator implements Comparator<Plant> {
 					bInd = i;
 					break;
 				}
+			}
+			if (bInd == aInd) {
+				return 0;
 			}
 			if (aInd == -1) {
 				//By Default, Plants with not bloom data are ordered last;
@@ -79,6 +80,9 @@ public class BloomTimeComparator implements Comparator<Plant> {
 					bInd = i;
 					break;
 				}
+			}
+			if (bInd == aInd) {
+				return 0;
 			}
 			if (aInd == -1) {
 				//By Default, Plants with not bloom data are ordered last;

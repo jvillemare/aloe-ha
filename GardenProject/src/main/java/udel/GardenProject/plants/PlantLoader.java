@@ -32,7 +32,6 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
 
-
 /**
  * Load all the plants from local file databases.
  * 
@@ -40,7 +39,6 @@ import udel.GardenProject.enums.SoilTypes;
  */
 public class PlantLoader {
 
-	
 	public static final String floraPath = "src/main/resources/plantData/udel-flora.json";
 	public static final String sunnyPath = "src/main/resources/plantData/sunny-edge-plants-data.json";
 	public static final String nativePath = "src/main/resources/plantData/native-plant-center.json";
@@ -410,9 +408,6 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("fruit");
 			description = description + System.lineSeparator() + "Other: "
 					+ obj.getJSONObject(plant).getString("notes");
-			if (plant.equals("Serviceberry")) {
-				System.out.println("target");
-			}
 			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
 		}
 		return result;
@@ -440,7 +435,8 @@ public class PlantLoader {
 	 * 
 	 * @param bloom - string containing a specific time or a range of times
 	 * @param arr   - Name of array to compare data in bloom to
-	 * @return boolean[] - an array of 12 booleans referring to the 12 months of bloom time
+	 * @return boolean[] - an array of 12 booleans referring to the 12 months of
+	 *         bloom time
 	 */
 	public static boolean[] bloomCalc(String bloom, String arr) {
 		boolean[] year = { false, false, false, false, false, false, false, false, false, false, false, false };
@@ -773,8 +769,5 @@ public class PlantLoader {
 		merge();
 		return plants;
 	}
-	
-	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		getPlants();
-	}
+
 }
