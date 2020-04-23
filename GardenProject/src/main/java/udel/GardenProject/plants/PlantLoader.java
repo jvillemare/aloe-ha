@@ -86,6 +86,8 @@ public class PlantLoader {
 			} else {
 				common = com.split(";");
 			}
+			invade = getBool(obj.getJSONObject(plant).getString("Invasive"));
+			nativ = getBool(obj.getJSONObject(plant).getString("Native Plant"));
 			bloom = bloomCalc(obj.getJSONObject(plant).getString("Flowering Period"), "seasons");
 			description = description + System.lineSeparator() + "Meaning of Name: "
 					+ obj.getJSONObject(plant).getString("Meaning of Scientific Name");
@@ -109,10 +111,7 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("Physiographic Province");
 			description = description + System.lineSeparator() + "Additional Info: "
 					+ obj.getJSONObject(plant).getString("Additional Info");
-			invade = getBool(obj.getJSONObject(plant).getString("Invasive"));
-			nativ = getBool(obj.getJSONObject(plant).getString("Native Plant"));
 			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
-
 		}
 		return result;
 	}
@@ -445,6 +444,7 @@ public class PlantLoader {
 	 */
 	public static boolean[] bloomCalc(String bloom, String arr) {
 		boolean[] year = { false, false, false, false, false, false, false, false, false, false, false, false };
+		//Following 12 lines standardize bloom String
 		if (bloom.equals("May-June, Sept.")) {
 			bloom = "May-September";
 		}
@@ -546,6 +546,12 @@ public class PlantLoader {
 		return -1;
 	}
 
+	/**
+	 * Goes through all of the data from the imported files and removes any duplicates
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void merge() throws FileNotFoundException, IOException, ParseException {
 		HashMap<String, Plant> merge = new HashMap<>();
 		for (Plant p : loadFlora()) {

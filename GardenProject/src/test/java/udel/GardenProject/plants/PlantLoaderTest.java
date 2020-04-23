@@ -21,9 +21,10 @@ public class PlantLoaderTest {
 	
 	@BeforeClass
     public static void setup() throws FileNotFoundException, IOException, ParseException {
-        plants = PlantLoader.getPlants();
+        plants = PlantLoader.getPlants(); //Set up Plant array
     }
 	
+	@Test
 	public void notEmptyTest() {
 		assertTrue(plants.size() > 0);
 	}
@@ -46,7 +47,7 @@ public class PlantLoaderTest {
 		assertTrue(good);
 	}
 	
-	@Test
+	@Test //Made sure a plant from the sunny data was added.
 	public void sunnyElementTest() {
 		Plant plant = null;
 		for(int i = 1; i < plants.size(); i++) {
@@ -78,7 +79,7 @@ public class PlantLoaderTest {
 		assertTrue(plant.getSoilType() == null);
 	}
 	
-	@Test
+	@Test //Made sure a plant from the flora data was added.
 	public void floraElementTest() {
 		Plant plant = null;
 		for(int i = 1; i < plants.size(); i++) {
@@ -114,7 +115,7 @@ public class PlantLoaderTest {
 		assertTrue(plant.getSoilType() == null);
 	}
 	
-	@Test
+	@Test //Made sure a plant from the native data was added.
 	public void nativeElementTest() {
 		Plant plant = null;
 		for(int i = 1; i < plants.size(); i++) {
