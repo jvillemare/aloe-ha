@@ -393,7 +393,7 @@ public class PlantLoader {
 				canopy = Canopy.EMERGENT;
 				break;
 			case "substory":
-				canopy = Canopy.CANOPY;
+				canopy = Canopy.UNDERSTORY;
 				break;
 			case "shrublayer":
 			case "herblayer":
@@ -401,16 +401,18 @@ public class PlantLoader {
 				canopy = Canopy.FLOOR;
 				break;
 			}
-
+			bloom = bloomCalc(obj.getJSONObject(plant).getString("bloom"), "months");
 			description = description + System.lineSeparator() + "Color: "
 					+ obj.getJSONObject(plant).getString("color");
-			bloom = bloomCalc(obj.getJSONObject(plant).getString("bloom"), "months");
 			description = description + System.lineSeparator() + "Height: "
-					+ obj.getJSONObject(plant).getString("height");
+					+ obj.getJSONObject(plant).getString("height").replace("\\u2019", "'");
 			description = description + System.lineSeparator() + "Fruit: "
 					+ obj.getJSONObject(plant).getString("fruit");
 			description = description + System.lineSeparator() + "Other: "
 					+ obj.getJSONObject(plant).getString("notes");
+			if (plant.equals("Serviceberry")) {
+				System.out.println("target");
+			}
 			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
 		}
 		return result;
@@ -770,5 +772,9 @@ public class PlantLoader {
 	public static ArrayList<Plant> getPlants() throws FileNotFoundException, IOException, ParseException {
 		merge();
 		return plants;
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
+		getPlants();
 	}
 }
