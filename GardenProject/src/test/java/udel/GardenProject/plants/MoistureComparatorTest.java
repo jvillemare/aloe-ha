@@ -35,24 +35,24 @@ public class MoistureComparatorTest {
 	@Test
 	public void sameMoistureTest() {
 		MoistureComparator c = new MoistureComparator(true);
-		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
+		Plant pine = new Plant(null, null, null, null, 0, Moisture.DRY, null, Canopy.FLOOR, false, false);
+		Plant flower = new Plant(null, null, null, null, 0, Moisture.DRY, null, Canopy.FLOOR, false, false);
 		assertTrue(c.compare(pine, flower) == 0);
 	}
 	
 	@Test
 	public void ascendMoistureTest() {
 		MoistureComparator c = new MoistureComparator(false);
-		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.MOIST, null, Canopy.FLOOR);
+		Plant pine = new Plant(null, null, null, null, 0, Moisture.DRY, null, Canopy.FLOOR, false, false);
+		Plant flower = new Plant(null, null, null, null, 0, Moisture.MOIST, null, Canopy.FLOOR, false, false);
 		assertTrue(c.compare(pine, flower) < 0);
 	}
 	
 	@Test
 	public void descendMoistureTest() {
 		MoistureComparator c = new MoistureComparator(true);
-		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.DRY, null, Canopy.FLOOR);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, Moisture.MOIST, null, Canopy.FLOOR);
+		Plant pine = new Plant(null, null, null, null, 0, Moisture.DRY, null, Canopy.FLOOR, false, false);
+		Plant flower = new Plant(null, null, null, null, 0, Moisture.MOIST, null, Canopy.FLOOR, false, false);
 		assertTrue(c.compare(pine, flower) > 0);
 	}
 	
