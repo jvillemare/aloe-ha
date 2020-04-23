@@ -180,7 +180,7 @@ public class SeasonView extends Window {
 		seasonHBox = new HBox(summer, spring, fall, winter);
 		yearHBox = new HBox(year0, year1, year2);
 		viewHBox = new HBox(birdsEyeView, windowView);
-		
+		 
 		/**
 		 * TODO: add listeners to the toggleButtons
 		 */
