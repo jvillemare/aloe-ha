@@ -45,7 +45,7 @@ public class PlotDesignTest {
 	public void setPlantTest() {
 		Model m = new Model(0, 1);
 		PlotDesign p = new PlotDesign(m);
-		p.setPlant(new Plant(null, null, null, null, 0, null, null, null, false, false));
+		p.setPlant(new Plant(null, null, null, null, 0, null, null, null, false, false, null));
 	}
 	
 }

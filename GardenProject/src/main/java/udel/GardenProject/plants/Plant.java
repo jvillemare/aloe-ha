@@ -2,6 +2,7 @@ package udel.GardenProject.plants;
 
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
+import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
 
@@ -71,9 +72,14 @@ public class Plant {
 	 */
 	private boolean invasive;
 	
+	/**
+	 * Source(s) where plant data came from 
+	 */
+	private PlantDataSource[] source;
+	
 	public Plant(String[] commonNames, String latinName, String description, 
 			boolean[] bloomTime, double light, Moisture moisture, 
-			SoilTypes soilType, Canopy canopy, boolean delawareNative, boolean invasive) {
+			SoilTypes soilType, Canopy canopy, boolean delawareNative, boolean invasive, PlantDataSource[] source) {
 		this.commonNames = commonNames;
 		this.latinName = latinName;
 		this.description = description;
@@ -84,6 +90,7 @@ public class Plant {
 		this.canopy = canopy;
 		this.delawareNative = delawareNative;
 		this.invasive = invasive;
+		this.source = source;
 	}
 
 	public String[] getCommonNames() {
@@ -124,6 +131,10 @@ public class Plant {
 	
 	public boolean getInvasive() {
 		return this.invasive;
+	}
+	
+	public PlantDataSource[] getSource() {
+		return this.source;
 	}
 	
 }

@@ -36,22 +36,22 @@ public class SoilTypeComparatorTest {
 	@Test
 	public void sameSoilTest() {
 		SoilTypeComparator c = new SoilTypeComparator(true);
-		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false);
-		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false);
+		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null);
+		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null);
 		assertTrue(c.compare(pine, flower) == 0);
 	}
 	
 	public void ascendTest() {
 		SoilTypeComparator c = new SoilTypeComparator(false);
-		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.SANDY, null, false, false);
-		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false);
+		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.SANDY, null, false, false, null);
+		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null);
 		assertTrue(c.compare(pine, flower) > 0);
 	}
 	
 	public void descendTest() {
 		SoilTypeComparator c = new SoilTypeComparator(true);
-		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.LOAMY, null, false, false);
-		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false);
+		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.LOAMY, null, false, false, null);
+		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null);
 		assertTrue(c.compare(pine, flower) < 0);
 	}
 }

@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
+import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
 
@@ -68,6 +69,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
+		PlantDataSource[] source = {PlantDataSource.UDEL};
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -111,7 +113,7 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("Physiographic Province");
 			description = description + System.lineSeparator() + "Additional Info: "
 					+ obj.getJSONObject(plant).getString("Additional Info");
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
 		}
 		return result;
 	}
@@ -137,6 +139,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
+		PlantDataSource[] source = {PlantDataSource.NPC};
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -293,7 +296,7 @@ public class PlantLoader {
 					description = description + System.lineSeparator() + "Image Link: " + ima;
 				}
 			}
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
 		}
 		return result;
 	}
@@ -316,6 +319,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
+		PlantDataSource[] source = {PlantDataSource.SUNNYEDGE};
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -412,7 +416,7 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("fruit");
 			description = description + System.lineSeparator() + "Other: "
 					+ obj.getJSONObject(plant).getString("notes");
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
 		}
 		return result;
 	}
@@ -570,6 +574,7 @@ public class PlantLoader {
 				boolean pNativ = p.getDelawareNative();
 				boolean pInvade = p.getInvasive();
 				Canopy pCanopy = p.getCanopy();
+				PlantDataSource[] pSource = p.getSource();
 				String[] iCommon = in.getCommonNames();
 				String iDescription = in.getDescription();
 				boolean[] iBloom = in.getBloomTime();
@@ -579,6 +584,7 @@ public class PlantLoader {
 				boolean iNativ = in.getDelawareNative();
 				boolean iInvade = in.getInvasive();
 				Canopy iCanopy = in.getCanopy();
+				PlantDataSource[] iSource = in.getSource();
 				if (pCommon == null) {
 					pCommon = iCommon;
 				} else if (iCommon == null) {
@@ -653,8 +659,19 @@ public class PlantLoader {
 				} else {
 					pInvade = false;
 				}
+				int sourceLength = pSource.length + iSource.length;
+				PlantDataSource[] sources = new PlantDataSource[sourceLength];
+				int count = 0;
+				for (PlantDataSource s : pSource) {
+					sources[count] = s;
+					count++;
+				}
+				for (PlantDataSource s : iSource) {
+					sources[count] = s;
+					count++;
+				} 
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade));
+						pNativ, pInvade, sources));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
@@ -673,6 +690,7 @@ public class PlantLoader {
 				boolean pNativ = p.getDelawareNative();
 				boolean pInvade = p.getInvasive();
 				Canopy pCanopy = p.getCanopy();
+				PlantDataSource[] pSource = p.getSource();
 				String[] iCommon = in.getCommonNames();
 				String iDescription = in.getDescription();
 				boolean[] iBloom = in.getBloomTime();
@@ -682,6 +700,7 @@ public class PlantLoader {
 				boolean iNativ = in.getDelawareNative();
 				boolean iInvade = in.getInvasive();
 				Canopy iCanopy = in.getCanopy();
+				PlantDataSource[] iSource = in.getSource();
 				if (pCommon == null) {
 					pCommon = iCommon;
 				} else if (iCommon == null) {
@@ -756,8 +775,19 @@ public class PlantLoader {
 				} else {
 					pInvade = false;
 				}
+				int sourceLength = pSource.length + iSource.length;
+				PlantDataSource[] sources = new PlantDataSource[sourceLength];
+				int count = 0;
+				for (PlantDataSource s : pSource) {
+					sources[count] = s;
+					count++;
+				}
+				for (PlantDataSource s : iSource) {
+					sources[count] = s;
+					count++;
+				} 
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade));
+						pNativ, pInvade, sources));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
