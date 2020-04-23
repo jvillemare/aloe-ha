@@ -1,24 +1,11 @@
 package udel.GardenProject.plants;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -30,7 +17,6 @@ import org.json.JSONObject;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
-import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
 
 /**
@@ -47,7 +33,7 @@ public class PlantLoader {
 	private static final String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
 	private static final String[] seasons = { "Winter", "Spring", "Summer", "Fall" };
-	private static ArrayList<Plant> plants = new ArrayList<>();
+	private static Plant[] plants;
 
 	/**
 	 * Loads plants from local file Udel-Flora.json
@@ -792,21 +778,24 @@ public class PlantLoader {
 			}
 			merge.put(p.getLatinName(), p);
 		}
+		int count = 0;
+		plants = new Plant[merge.keySet().size()];
 		for (String key : merge.keySet()) {
-			plants.add(merge.get(key));
+			plants[count] = merge.get(key);
+			count++;
 		}
 	}
 
 	/**
-	 * Adds all the plants from the local files to a single ArrayList<Plant>
+	 * Adds all the plants from the local files to a single array of Plant objects
 	 * 
-	 * @return an ArrayList<Plant> that contains all of the plants from the local
+	 * @return an array that contains all of the plants from the local
 	 *         files
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static ArrayList<Plant> getPlants() throws FileNotFoundException, IOException, ParseException {
+	public static Plant[] getPlants() throws FileNotFoundException, IOException, ParseException {
 		merge();
 		return plants;
 	}
