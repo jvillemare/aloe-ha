@@ -68,8 +68,10 @@ for p in plants:
 		missed_plants.append(p.text)
 		continue
 
+	profile_html = profile_html.find('table', attrs={'class': 'bordered', 'border': '0', 'cellspacing':'0', 'cellpadding':'0'}).find('tbody').find_all('tr')[2:]
+
 	plant_info = {}
-	plant_info['symbol'] = profile_html.find('th').text
+	plant_info['symbol'] = p.find('th').text
 	plant_info['group'] = profile_html.find('th').text
 	plant_info['family'] = profile_html.find('th').text
 	plant_info['duration'] = profile_html.find('th').text
@@ -78,6 +80,8 @@ for p in plants:
 
 	if last_plant != None:
 		plant_info['alias'] = last_plant.find('td', attrs={'class': 'resultsind1'}).replace('<em>', '').replace('</em>', ' ')
+	else:
+		plant_info['alias'] = list()
 
 	for i in range(0, len(plant_record), 2):
 		clean_text = plant_record[i + 1].text
@@ -88,6 +92,7 @@ for p in plants:
 	plant_data[p.text] = plant_info
 	last_plant = None
 	print("...loaded plant")
+	break
 	sleep(1) # to not bombard the server with requests
 
 with open('nrcs-data.json', 'w') as outfile:
