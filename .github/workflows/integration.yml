@@ -11,26 +11,18 @@ on:
 
 jobs:
   build:
-    container: 
+    container:
       image: maven:3.6.1-jdk-8
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
-    - name: Install OpenJFX 8
-      run: grep '^deb ' /etc/apt/sources.list | perl -pe 's/deb /deb-src /' >> /etc/apt/sources.list && apt-get update && apt-get build-dep openjfx=8u141-b14-3~deb9u1 -y && apt-get install openjfx=8u141-b14-3~deb9u1 -y
-    - name: Test Java and Javac Versions
-      run: java -version && javac -version
-    - name: Setup Maven
-      run: export MAVEN_OPTS="--module-path /usr/share/openjfx/lib --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"
-    - name: Build with Maven
-      run: cd GardenProject/ && mvn --no-transfer-progress install -X 
-    - name: Maven Package
-      run: mvn package --file pom.xml
-    - name: Run Tests
-      run: mvn test
+        java-version: 11
+    - name: Maven Install
+      run: mvn --no-transfer-progress -f GardenProject install -DskipTests=true -X
+    - name: Maven Test
+      run: mvn -f GardenProject test
