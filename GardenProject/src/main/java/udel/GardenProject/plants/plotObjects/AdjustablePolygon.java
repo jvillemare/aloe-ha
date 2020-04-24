@@ -28,7 +28,7 @@ public class AdjustablePolygon {
 	private Polygon polygon;
 	private ObservableList<Anchor> anchors;
 	private boolean visible=true;
-	private Button b;
+	private Button b = new Button();
 	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty) {
 		polygon=new Polygon();
 		//set stroke color to black
@@ -48,6 +48,15 @@ public class AdjustablePolygon {
         	    100.0+startx, 0.0+starty,
         	    50.0+startx, 0.0+starty
         	    });
+        polygon.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				double x = mouseEvent.getX();
+				double y = mouseEvent.getY();
+				polygon.setLayoutX(polygon.getLayoutX() + x);
+				polygon.setLayoutY(polygon.getLayoutY() + y);
+			}
+		});
         //get the anchors list and set the color to given anchorColor
 		anchors=createAnchors(polygon, polygon.getPoints(),anchorColor);
 		
@@ -62,7 +71,7 @@ public class AdjustablePolygon {
 	}
 	//Generate edit button
 	public Button genButton(double x, double y) {
-		
+		b=new Button();
 		b.setText("Stop Editing");
 		b.setLayoutX(x);
 		b.setLayoutY(y);
@@ -145,11 +154,12 @@ public class AdjustablePolygon {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double newX = mouseEvent.getX() + dragDelta.x;
-                    if (newX > 0 && newX < getParent().getLayoutBounds().getWidth()) {
+                    System.out.println(getParent().getScene().getHeight()+" "+getParent().getScene().getWidth());
+                    if (newX < getParent().getScene().getWidth()) {
                         setCenterX(newX);
                     }
                     double newY = mouseEvent.getY() + dragDelta.y;
-                    if (newY > 0 && newY < getParent().getLayoutBounds().getHeight()) {//getParent().getLayoutBounds
+                    if (newY < getParent().getScene().getHeight()) {//getParent().getLayoutBounds
                         setCenterY(newY);
                     }
                 }
