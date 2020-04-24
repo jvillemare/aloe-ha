@@ -44,23 +44,23 @@ public class Download extends Window {
 	 * Buttons to go back, load, and download
 	 */
 	private Button back, load, downloadButton;
-	
+
 	/**
 	 * Used to center button
 	 */
 	private TilePane tilePane;
-	
+
 	/**
-	 * Used for grouping all the saving methods 
+	 * Used for grouping all the saving methods
 	 */
 	private ToggleGroup saveGroup;
-	
+
 	/**
-	 * Toggles between how the user wants to save. 
-	 * User will be able to save one type of file at a time 
+	 * Toggles between how the user wants to save. User will be able to save one
+	 * type of file at a time
 	 */
 	private ToggleButton pngSave;
-	
+
 	/**
 	 * Used to show which image they will be saving
 	 */
@@ -69,7 +69,7 @@ public class Download extends Window {
 	/**
 	 * Assume the user has no last save file downloaded.
 	 *
-	 * @param m	Model
+	 * @param m Model
 	 */
 	public Download(Model m) {
 		super(m, downloadSceneTitle);
@@ -81,17 +81,17 @@ public class Download extends Window {
 		tilePane = new TilePane();
 
 		saveOptions.setPadding(new Insets(10, 10, 10, 10));
-		
+
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
 		text.setWrappingWidth(800);
 		text.setStyle("-fx-font-size: 20px;");
 		vbox.getChildren().addAll(text);
-		
+
 		saveGroup = new ToggleGroup();
 		pngSave = new ToggleButton("PNG");
-		pngSave.setToggleGroup(saveGroup);	
+		pngSave.setToggleGroup(saveGroup);
 		saveOptions.getChildren().add(pngSave);
-		
+
 		/**
 		 * TODO: add a listener for the save toggles to get which option the user chose
 		 */
@@ -99,43 +99,43 @@ public class Download extends Window {
 		back = new Button("Go Back");
 		back.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-            	System.out.println("Back: Going back to seasonView");
-            	switchToWindow(Windows.SeasonView); 
-            }
-        });
-		
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Back: Going back to seasonView");
+				switchToWindow(Windows.SeasonView);
+			}
+		});
+
 		load = new Button("Load");
 		load.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-            	System.out.println("Load: Loading garden to load menu");
-            	/**
-            	 * TODO: implement function to load plot in the load option at the welcome menu
-            	 * loadPlot(current plot); ??? 
-            	 */
-            }
-        });
-		
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Load: Loading garden to load menu");
+				/**
+				 * TODO: implement function to load plot in the load option at the welcome menu
+				 * loadPlot(current plot); ???
+				 */
+			}
+		});
+
 		downloadButton = new Button("Download");
 		downloadButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-            	System.out.println("Download: downloading png");
-            	
-            }
-        });
-		
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Download: downloading png");
+
+			}
+		});
+
 		square = new Rectangle();
 		square.setHeight(530);
-        square.setWidth(830);
-        square.setStroke(Color.BLACK);
-        square.setFill(null);
+		square.setWidth(830);
+		square.setStroke(Color.BLACK);
+		square.setFill(null);
 
-        borderPane.setCenter(square);
+		borderPane.setCenter(square);
 		borderPane.setTop(vbox);
 		borderPane.setRight(saveOptions);
 
@@ -143,8 +143,8 @@ public class Download extends Window {
 		tilePane.setPadding(new Insets(5));
 		tilePane.setHgap(100);
 		tilePane.getChildren().addAll(back, downloadButton);
-		
-		borderPane.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null,null)));
+
+		borderPane.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(tilePane);
@@ -155,17 +155,14 @@ public class Download extends Window {
 	}
 
 	/**
-	 * Create a new Download window and specify where the user's last save file
-	 * is.
+	 * Create a new Download window and specify where the user's last save file is.
 	 *
-	 * @param m				Model
-	 * @param lastSaveFile	Path of the user's last save file.
+	 * @param m            Model
+	 * @param lastSaveFile Path of the user's last save file.
 	 */
 	public Download(Model m, String lastSaveFile) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = lastSaveFile;
-
-
 
 	}
 
@@ -178,7 +175,7 @@ public class Download extends Window {
 	/**
 	 * Saves the a PNG of the plot to a file.
 	 *
-	 * @param	filename	Path where the file should be saved.
+	 * @param filename Path where the file should be saved.
 	 *
 	 * @return true if it saved and false if it did not
 	 * @see javafx.stage.FileChooser
@@ -190,7 +187,7 @@ public class Download extends Window {
 	/**
 	 * Saves the plot as a <code>.gardenproject</code> file.
 	 *
-	 * @param	filename	Path where the file should be saved.
+	 * @param filename Path where the file should be saved.
 	 *
 	 * @return true if saved and false if it did not
 	 * @see javafx.stage.FileChooser
@@ -203,7 +200,7 @@ public class Download extends Window {
 	 * Loads a plot from a <code>.gardenproject</code> file as a PlotDesign
 	 * instance.
 	 *
-	 * @param	filename	Path where the file should be saved.
+	 * @param filename Path where the file should be saved.
 	 *
 	 * @return the PlotDesign desired
 	 * @see javafx.stage.FileChooser
