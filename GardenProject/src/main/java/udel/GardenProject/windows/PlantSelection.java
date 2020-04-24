@@ -33,7 +33,7 @@ public class PlantSelection extends Window {
 	
 
 	public PlantSelection(Model m) {
-		super(m, "Plant Info: Pine Trees");
+		super(m, "Plant Selection");
 		
 		borderPane = new BorderPane();
 		vbox = new VBox();
