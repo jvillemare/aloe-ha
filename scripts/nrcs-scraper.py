@@ -30,7 +30,7 @@ for p in plants:
 	scientific_name = ""
 	common_name = ""
 
-	print(p.prettify())
+	#print(p.prettify())
 
 	if last_plant == None:
 		for sn_part in p.find_all('td')[0].find('a').find_all('em'):
@@ -61,12 +61,13 @@ for p in plants:
 	while attempts > 0:
 		attempts -= 1
 
-		profile = requests.get('https://plants.sc.egov.usda.gov/core/profile?' + query)
-		characteristics = requests.get('https://plants.sc.egov.usda.gov/java/charProfile?' + query)
-
 		try:
+			profile = requests.get('https://plants.sc.egov.usda.gov/core/profile?' + query)
+			characteristics = requests.get('https://plants.sc.egov.usda.gov/java/charProfile?' + query)
+
 			profile_html = BeautifulSoup(profile.text, 'html.parser')
 			characteristics_html = BeautifulSoup(characteristics.text, 'html.parser')
+
 			profile.close()
 			characteristics.close()
 		except UnicodeDecodeError:
@@ -77,6 +78,10 @@ for p in plants:
 			print("AttributeError: Error in processing website response, trying again (" + str(attempts) + " attempts left) ...")
 			sleep(1)
 			continue
+		except ConnectionError:
+			print('ConnectionError: Server didn\'t respond in time. Waiting 10 seconds...')
+			sleep(10)
+			continue
 		else:
 			if profile.status_code == 200 and characteristics.status_code == 200:
 				break
@@ -85,8 +90,8 @@ for p in plants:
 			print('one of the status codes not okay. trying again...')
 
 	if attempts == 0:
-		print('Unable to load \'' + p.text + '\' plant, skipping...')
-		missed_plants.append(p.text)
+		print('Unable to load \'' + common_name + '\' plant, skipping...')
+		missed_plants.append(common_name)
 		continue
 
 	plant_info = {}
@@ -95,16 +100,33 @@ for p in plants:
 	for an_image in profile_html.find_all('a', attrs={'title': 'click to view a large image'}):
 		plant_info['images'].append('https://plants.sc.egov.usda.gov' + an_image.find('img')['src'])
 
-	profile_html = profile_html.find('table', attrs={'class': 'bordered', 'border': '0', 'cellspacing':'0', 'cellpadding':'0'}).find_all('tr')[2:]
 
-	plant_info['common_name'] = common_name
-	plant_info['symbol'] = p.find('th').text
-	plant_info['group'] = ' '.join(profile_html[0].find_all('td')[1].text.split())
-	plant_info['family'] = ' '.join(profile_html[1].find_all('td')[1].text.split())
-	plant_info['duration'] = ' '.join(profile_html[2].find_all('td')[1].text.split())
-	plant_info['growth_habitat'] = ' '.join(profile_html[3].find_all('td')[1].text.split())
-	plant_info['native_status'] = ' '.join(profile_html[4].find_all('td')[1].text.split())
+	profile_present = True
 
+	for paragraph in profile_html.find_all('p'):
+		if paragraph.text.rstrip().lstrip() == 'No Data Found':
+			profile_present = False
+
+	if profile_present is True:
+		profile_html = profile_html.find('table', attrs={'class': 'bordered', 'border': '0', 'cellspacing':'0', 'cellpadding':'0'}).find_all('tr')[2:]
+		plant_info['common_name'] = common_name
+		plant_info['symbol'] = p.find('th').text
+		plant_info['group'] = ' '.join(profile_html[0].find_all('td')[1].text.split())
+		plant_info['family'] = ' '.join(profile_html[1].find_all('td')[1].text.split())
+		plant_info['duration'] = ' '.join(profile_html[2].find_all('td')[1].text.split())
+		plant_info['growth_habitat'] = ' '.join(profile_html[3].find_all('td')[1].text.split())
+		plant_info['native_status'] = ' '.join(profile_html[4].find_all('td')[1].text.split())
+	else:
+		missed_plants.append(p.find('th').text)
+		plant_info['common_name'] = ''
+		plant_info['symbol'] = p.find('th').text
+		plant_info['group'] = ''
+		plant_info['family'] = ''
+		plant_info['duration'] = ''
+		plant_info['growth_habitat'] = ''
+		plant_info['native_status'] = ''
+
+	plant_info['profile_present'] = profile_present
 	plant_info['alias'] = ''
 
 	if last_plant != None:
@@ -112,28 +134,36 @@ for p in plants:
 		for sn_part in last_plant.find_all('td')[0].find('a').find_all('em'):
 			plant_info['alias'] += sn_part.text + ' '
 		plant_info['alias'] = plant_info['alias'].rstrip()
+		last_plant = None
 
-	characteristics_html = characteristics_html.find_all('table', attrs={'cellpadding': '3'})[0].find_all('tr')
+	characteristics_present = True
+
+	try:
+		characteristics_html = characteristics_html.find_all('table', attrs={'cellpadding': '3'})[0].find_all('tr')
+	except IndexError:
+		characteristics_present = False
 
 	category = None
 
-	for i in range(0, len(characteristics_html)):
-		if len(characteristics_html[i].find_all('td')) == 1:
-			future_key = characteristics_html[i].find('td').text.encode('ascii', 'ignore').decode('ascii', 'ignore')
+	if characteristics_present:
+		for i in range(0, len(characteristics_html)):
+			if len(characteristics_html[i].find_all('td')) == 1:
+				future_key = characteristics_html[i].find('td').text.encode('ascii', 'ignore').decode('ascii', 'ignore')
 
-			if len(future_key) == 0:
-				break
+				if len(future_key) == 0:
+					break
 
-			plant_info[future_key] = dict()
-			category = future_key
-		else:
-			plant_info[category][characteristics_html[i].find_all('td')[0].text.encode('ascii', 'ignore').decode('ascii', 'ignore')] = characteristics_html[i].find_all('td')[1].text
+				plant_info[future_key] = dict()
+				category = future_key
+			else:
+				plant_info[category][characteristics_html[i].find_all('td')[0].text.encode('ascii', 'ignore').decode('ascii', 'ignore')] = characteristics_html[i].find_all('td')[1].text
 
+	plant_info['characteristics_present'] = characteristics_present
 	plant_data[scientific_name] = plant_info
 	print("...loaded plant")
 	sleep(1) # to not bombard the server with requests
 
-print(json.dumps(plant_data, indent=2))
+#print(json.dumps(plant_data, indent=2))
 
 with open('nrcs-data.json', 'w') as outfile:
 	json.dump(plant_data, outfile)
@@ -145,7 +175,7 @@ if len(missed_plants) > 0:
 	print('BEGIN: Had trouble loading the following plants:')
 	print(missed_plants)
 	print('END: Had trouble loading the following plants')
-	with open('udel-flora-scraper-errors.txt', 'w') as outfile:
+	with open('nrcs-scraper-errors.txt', 'w') as outfile:
 		outfile.write('ERROR: Some plants were missed when scraping\n')
 		outfile.write('BEGIN: Had trouble loading the following plants:\n')
 		for p in missed_plants:
