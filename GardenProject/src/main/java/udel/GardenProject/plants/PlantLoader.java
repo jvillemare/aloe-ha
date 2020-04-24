@@ -37,11 +37,17 @@ public class PlantLoader {
 
 	/**
 	 * Loads plants from local file Udel-Flora.json
-	 * 
-	 * Default plant attributes: commonNames: null latinName: given latinName in
-	 * file description: "Description: " bloomTime: null light: -1 moisture: null
-	 * soilType: null canopy: null delawareNative: false
-	 * 
+	 * <br>
+	 * Default plant attributes:
+	 * <li>commonNames: null
+	 * <li>latinName: given latinName in file
+	 * <li>description: "Description: "
+	 * <li>bloomTime: null
+	 * <li>light: -1 moisture: null
+	 * <li>soilType: null
+	 * <li>canopy: null
+	 * <li>delawareNative: false
+	 * <li>source: {PlantDataSource.UDEL}
 	 * @return an ArrayList<Plant> with the plants from Udel-Flora.json
 	 * @throws ParseException
 	 * @throws IOException
@@ -106,11 +112,17 @@ public class PlantLoader {
 
 	/**
 	 * Loads plants from local file native-plant-center.json
-	 * 
-	 * Default plant attributes: commonNames: null latinName: given latinName in
-	 * file description: "Description: " bloomTime: null light: -1 moisture: null
-	 * soilType: null canopy: null delawareNative: false
-	 * 
+	 * <br>
+	 * Default plant attributes:
+	 * <li>commonNames: null
+	 * <li>latinName: given latinName in file
+	 * <li>description: "Description: "
+	 * <li>bloomTime: null
+	 * <li>light: -1 moisture: null
+	 * <li>soilType: null
+	 * <li>canopy: null
+	 * <li>delawareNative: false
+	 * <li>source: {PlantDataSource.NPC}
 	 * @return an ArrayList<Plant> with the plants from native-plant-center.json
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -289,10 +301,17 @@ public class PlantLoader {
 
 	/**
 	 * Loads plants from local file sunny-edge-plants-data.json
-	 * 
-	 * Default plant attributes: commonNames: null latinName: given latinName in
-	 * file description: "Description: " bloomTime: null light: -1 moisture: null
-	 * soilType: null canopy: null delawareNative: false
+	 * <br>
+	 * Default plant attributes:
+	 * <li>commonNames: null
+	 * <li>latinName: given latinName in file
+	 * <li>description: "Description: "
+	 * <li>bloomTime: null
+	 * <li>light: -1 moisture: null
+	 * <li>soilType: null
+	 * <li>canopy: null
+	 * <li>delawareNative: false
+	 * <li>source: {PlantDataSource.NPC}
 	 * 
 	 * @return an ArrayList<Plant> with the plants from sunny-edge-plants-data.json
 	 * @throws FileNotFoundException
@@ -410,7 +429,7 @@ public class PlantLoader {
 	/**
 	 * Helper function to generate boolean from string
 	 * 
-	 * @param yesNo - String containing one of the following string literals: "Yes"
+	 * @param yesNo - String containing one of the following String literals: "Yes"
 	 *              or "No"
 	 * @return boolean - "Yes" returns true and "No" returns false
 	 */
@@ -789,7 +808,7 @@ public class PlantLoader {
 	/**
 	 * Adds all the plants from the local files to a single array of Plant objects
 	 * 
-	 * @return an array that contains all of the plants from the local
+	 * @return An array that contains all of the plants from the local
 	 *         files
 	 * @throws ParseException
 	 * @throws IOException
