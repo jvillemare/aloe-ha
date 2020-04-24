@@ -32,7 +32,7 @@ public class PlantSelection extends Window {
 	private Plant plantArray[]; 
 	
 
-	public PlantSelection(Model m) {
+	public PlantSelection(Model m) { 
 		super(m, "Plant Selection");
 		
 		borderPane = new BorderPane();

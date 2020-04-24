@@ -102,7 +102,7 @@ public class Download extends Window {
             @Override
             public void handle(ActionEvent event) {
             	System.out.println("Back: Going back to seasonView");
-            	switchToWindow(Windows.SeasonView);
+            	switchToWindow(Windows.SeasonView); 
             }
         });
 		
