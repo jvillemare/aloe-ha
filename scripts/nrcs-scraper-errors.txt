@@ -1,0 +1,8 @@
+ERROR: Some plants were missed when scraping
+BEGIN: Had trouble loading the following plants:
+MIGU
+'ala'a
+Hawai'i pritchardia
+catclaw acacia
+whitethorn acacia
+END: Had trouble loading the following plants
