@@ -28,7 +28,7 @@ public class AdjustablePolygon {
 	private Polygon polygon;
 	private ObservableList<Anchor> anchors;
 	private boolean visible=true;
-	private Button b = new Button();
+	private Button b;
 	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty) {
 		polygon=new Polygon();
 		//set stroke color to black
@@ -38,7 +38,7 @@ public class AdjustablePolygon {
 		//fill the polygon with given color
 		polygon.setFill(color);
 		//initial a polygon
-        polygon.getPoints().addAll(new Double[]{
+        /*polygon.getPoints().addAll(new Double[]{
         	    0.0+startx, 0.0+starty,
         	    0.0+startx, 25.0+starty,
         	    0.0+startx, 50.0+starty,
@@ -47,7 +47,19 @@ public class AdjustablePolygon {
         	    100.0+startx, 25.0+starty,
         	    100.0+startx, 0.0+starty,
         	    50.0+startx, 0.0+starty
+        	    });*/
+		polygon.getPoints().addAll(new Double[]{
+        	    0.0, 0.0,
+        	    0.0, 25.0,
+        	    0.0, 50.0,
+        	    50.0, 50.0,
+        	    100.0, 50.0,
+        	    100.0, 25.0,
+        	    100.0, 0.0,
+        	    50.0, 0.0
         	    });
+		polygon.setLayoutX(startx);
+		polygon.setLayoutY(starty);
         polygon.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -154,12 +166,12 @@ public class AdjustablePolygon {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double newX = mouseEvent.getX() + dragDelta.x;
-                    System.out.println(getParent().getScene().getHeight()+" "+getParent().getScene().getWidth());
-                    if (newX < getParent().getScene().getWidth()) {
+                    System.out.println(getLayoutX()+newX+" ");
+                    if (getLayoutX()+newX>=0 && newX < getParent().getScene().getWidth()) {
                         setCenterX(newX);
                     }
                     double newY = mouseEvent.getY() + dragDelta.y;
-                    if (newY < getParent().getScene().getHeight()) {//getParent().getLayoutBounds
+                    if (getLayoutY()+newY>=0 && newY < getParent().getScene().getHeight()) {//getParent().getLayoutBounds
                         setCenterY(newY);
                     }
                 }
