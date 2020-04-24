@@ -3,15 +3,21 @@ package udel.GardenProject.windows;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
@@ -30,9 +36,10 @@ public class Tutorial extends Window {
 	private Scene scene;
 	private ScrollPane scroll;
 	private VBox vbox;
-	private Text text;
+	private Text welcomeText;
 	private BorderPane borderPane;
 	private Button back;
+	private AnchorPane welcomePane;
 
 
 	/**
@@ -46,25 +53,22 @@ public class Tutorial extends Window {
 
 	public Tutorial(Model m) {
 		super(m, "Tutorial Window");
-
+		
 		borderPane = new BorderPane();
+		borderPane.setStyle("-fx-background-color: DAE6F3;");
+		
 		vbox = new VBox();
-
-		/*
-		 * Text and images for the tutorial will be added here
-		 */
-		text = new Text("This is the tutorial frame\n\n\n\n\n\n\n\ns");
-		text.setWrappingWidth(800);
-		text.setStyle("-fx-font-size: 20px;");
-		vbox.getChildren().addAll(text);
-
-		scroll = new ScrollPane();
-		scroll.setContent(vbox);
-		scroll.setFitToWidth(true);
-		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-		borderPane.setRight(scroll);
-
+		
+		Text welcometxt = new Text("Welcome to the Tutorial!");
+		welcometxt.setFont(new Font(25));
+		welcometxt.setFill(Color.DARKGREEN);
+		
+		StackPane welcomePane = new StackPane();
+		welcomePane.getChildren().add(welcometxt);
+		welcomePane.setStyle("-fx-background-color: DAE6F3;");
+		
+		borderPane.setTop(welcomePane);
+		
 		back = new Button("Back to Main");
 		back.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -74,12 +78,37 @@ public class Tutorial extends Window {
             	switchToWindow(Windows.Welcome);
             }
         });
+		
+		scroll = new ScrollPane();
+		scroll.setContent(vbox);
+		scroll.setFitToWidth(true);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
-		borderPane.setBottom(back);
+		borderPane.setCenter(scroll);
+		
+		Text tutorial = new Text("1. Select \"Start New Plot\" Button\n\n"
+				+ "2. Select Plants that are Within your Garden\n\n"
+				+ "3. Answer Some Questions about your Garden\n\n"
+				+ "4. Select the Plants you wish to have according to your Selections\n\n"
+				+ "5. Drag and Drop the plants to Where you Want Them in your Garden\n\n");
+		
+		tutorial.setFont(new Font(20));
+		tutorial.setFill(Color.DARKGREEN);
+		
+		scroll.setContent(tutorial);
+		
+		
+		StackPane backPane = new StackPane();
+		backPane.getChildren().add(back);
+		backPane.setStyle("-fx-background-color: DAE6F3;");
+
+		borderPane.setBottom(backPane);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root);
+		
 	}
 
 	@Override
