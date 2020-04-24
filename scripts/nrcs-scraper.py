@@ -28,10 +28,18 @@ for p in plants:
 		continue
 
 	scientific_name = ""
-	common_name = p.find_all('td')[1].text
+	common_name = ""
 
-	for sn_part in p.find_all('td')[0].find('a').find_all('em'):
-		scientific_name = scientific_name + sn_part.text + ' '
+	print(p.prettify())
+
+	if last_plant == None:
+		for sn_part in p.find_all('td')[0].find('a').find_all('em'):
+			scientific_name = scientific_name + sn_part.text + ' '
+		common_name = p.find_all('td')[1].text
+	else:
+		for sn_part in p.find('td').find_all('em'):
+			scientific_name = scientific_name + sn_part.text + ' '
+		common_name = last_plant.find_all('td')[1].text
 
 	scientific_name = scientific_name.rstrip()
 
@@ -81,9 +89,14 @@ for p in plants:
 		missed_plants.append(p.text)
 		continue
 
+	plant_info = {}
+	plant_info['images'] = list()
+
+	for an_image in profile_html.find_all('a', attrs={'title': 'click to view a large image'}):
+		plant_info['images'].append('https://plants.sc.egov.usda.gov' + an_image.find('img')['src'])
+
 	profile_html = profile_html.find('table', attrs={'class': 'bordered', 'border': '0', 'cellspacing':'0', 'cellpadding':'0'}).find_all('tr')[2:]
 
-	plant_info = {}
 	plant_info['common_name'] = common_name
 	plant_info['symbol'] = p.find('th').text
 	plant_info['group'] = ' '.join(profile_html[0].find_all('td')[1].text.split())
@@ -92,11 +105,13 @@ for p in plants:
 	plant_info['growth_habitat'] = ' '.join(profile_html[3].find_all('td')[1].text.split())
 	plant_info['native_status'] = ' '.join(profile_html[4].find_all('td')[1].text.split())
 
+	plant_info['alias'] = ''
+
 	if last_plant != None:
-		plant_info['alias'] = last_plant.find('td', attrs={'class': 'resultsind1'}).replace('<em>', '').replace('</em>', ' ')
-		last_plant = None
-	else:
-		plant_info['alias'] = list()
+		plant_info['alias'] = ''
+		for sn_part in last_plant.find_all('td')[0].find('a').find_all('em'):
+			plant_info['alias'] += sn_part.text + ' '
+		plant_info['alias'] = plant_info['alias'].rstrip()
 
 	characteristics_html = characteristics_html.find_all('table', attrs={'cellpadding': '3'})[0].find_all('tr')
 
