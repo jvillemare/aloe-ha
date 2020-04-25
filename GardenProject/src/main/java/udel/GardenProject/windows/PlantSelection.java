@@ -32,8 +32,8 @@ public class PlantSelection extends Window {
 	private Plant plantArray[]; 
 	
 
-	public PlantSelection(Model m) {
-		super(m, "Plant Info: Pine Trees");
+	public PlantSelection(Model m) { 
+		super(m, "Plant Selection");
 		
 		borderPane = new BorderPane();
 		vbox = new VBox();

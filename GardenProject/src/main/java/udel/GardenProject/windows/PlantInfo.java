@@ -1,7 +1,10 @@
 package udel.GardenProject.windows;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
 
@@ -18,11 +21,21 @@ public class PlantInfo extends Window {
 	private Button backButton;
 
 	public PlantInfo(Model m) {
-		super(m, "Plant Info: Pine Trees"); // this will have to change to the name of the plant they've clicked on
+		super(m, "Plant Info: "); 
+		// this will have to change to the name of the plant they've clicked on
 		
 		
 		
 		// pop up window
+		
+		backButton = new Button("Go Back");
+		backButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+            	switchToWindow(Windows.Questionnaire);
+            }
+        });
 		
 		
 	}

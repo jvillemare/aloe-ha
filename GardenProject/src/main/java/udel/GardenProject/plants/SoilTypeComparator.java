@@ -30,9 +30,9 @@ public class SoilTypeComparator implements Comparator<Plant>{
 	
 	public int compare(Plant a, Plant b) {
 		if (descending) {
-			return a.soilType.getName().compareTo(b.soilType.getName());
+			return a.getSoilType().getName().compareTo(b.getSoilType().getName());
 		}else {
-			return b.soilType.getName().compareTo(b.soilType.getName());
+			return b.getSoilType().getName().compareTo(a.getSoilType().getName());
 		}
 	}
 	

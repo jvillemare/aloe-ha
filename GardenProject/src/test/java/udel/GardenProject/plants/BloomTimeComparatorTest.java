@@ -36,24 +36,29 @@ public class BloomTimeComparatorTest {
 	@Test
 	public void sameSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(true);
-		Plant pine = new Plant(null, null, null, Seasons.WINTER, 0, null, null, null);
-		Plant flower = new Plant(null, null, null, Seasons.WINTER, 0, null, null, null);
+		boolean[] arr = {false, false, false, false, false, false, false, false, false, false, false, false};
+		Plant pine = new Plant(null, null, null, arr, 0, null, null, null, false, false, null);
+		Plant flower = new Plant(null, null, null, arr, 0, null, null, null, false, false, null);
 		assertTrue(b.compare(pine, flower) == 0);
 	}
 
 	@Test
 	public void ascendSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(true);
-		Plant flower = new Plant(null, null, null, Seasons.SUMMER, 0, null, null, null);
-		Plant pine = new Plant(null, null, null, Seasons.FALL, 0, null, null, null);
+		boolean[] arr1 = {false, true, true, false, false, false, false, false, false, false, false, false};
+		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null);
 		assertTrue(b.compare(flower, pine) < 0);
 	}
 	
 	@Test
 	public void descendSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(false);
-		Plant flower = new Plant(null, null, null, Seasons.SUMMER, 0, null, null, null);
-		Plant pine = new Plant(null, null, null, Seasons.FALL, 0, null, null, null);
+		boolean[] arr1 = {false, true, true, false, false, false, false, false, false, false, false, false};
+		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null);
 		assertTrue(b.compare(flower, pine) > 0);
 	}
 }
