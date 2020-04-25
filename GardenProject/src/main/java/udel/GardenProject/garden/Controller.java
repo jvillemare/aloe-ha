@@ -22,11 +22,8 @@ public class Controller extends Application {
 		view = new View(primaryStage, model.getWindow());
 		
 		new AnimationTimer() {
-            public void handle(long currentNanoTime)
-            {
-                //increment the x and y coordinates, alter direction if necessary
+            public void handle(long currentNanoTime) {
                 model.update();
-                //input the x coordinates, y coordinates, and direction picture
                 view.update(model.getWindow());
                 
                 // TODO: Is this how we want to handle it later?

@@ -26,7 +26,5 @@ hs_err_pid*
 # macstuff
 .DS_Store
 
-#eclipsestuff
-GardenProject/.settings/*
-GardenProject/.classpath
+# eclipse stuff
 RemoteSystemsTempFiles/
