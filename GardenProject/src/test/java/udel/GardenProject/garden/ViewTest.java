@@ -5,13 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.windows.AllPlants;
+import udel.GardenProject.windows.Welcome;
 import udel.GardenProject.windows.Window;
 
 import org.testfx.api.FxAssert;
@@ -22,6 +25,7 @@ public class ViewTest extends ApplicationTest {
 	
 	private Model m;
 	private View v;
+	private Stage stage;
 	
 	/**
      * Will be called with {@code @Before} semantics, i. e. before each test 
@@ -31,20 +35,23 @@ public class ViewTest extends ApplicationTest {
      */
     @Override
     public void start(Stage stage) {
-        stage.setScene(new Scene(new StackPane(), 100, 100));
-        stage.show();
-        m = new Model(0, 1);
-        Window w = new AllPlants(m);
-        v = new View(stage, w);
+    	stage = stage;
+    	stage.setScene(new Scene(new StackPane(), 100, 100));
+    	//this.stage.show();
+    	
+    	//m = new Model(100, 100);
+		//Window w = new Welcome(m);
+		//v = new View(this.stage, w);
     }
     
 	@Test
-	public void testConstructor() {
-		v.toString();
+	public void testUpdate() {
+		//Platform.setImplicitExit(false);
+		//m.setWindow(Windows.Tutorial);
+		//System.out.println("hey");
 	}
 	
 	/*
-	
 	@Test
 	public void testConstructorWithStage() {
 		Window w = new AllPlants(m);
