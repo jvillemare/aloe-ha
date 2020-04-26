@@ -110,10 +110,8 @@ public class AllPlants extends Window {
 				@Override
 				public void handle(ActionEvent event) {
 					System.out.println("Info: Retreiving Plant information");
-					//switchToWindow(Windows.PlantInfo);
-					//getModel().getWindow(Windows.PlantInfo).displayPlant(myCoolPlant, Windows.PlantSelection);
-					m.setWindow(Windows.PlantInfo);
-					m.getWindow().displayPlant(m.getPlants().get(0), Windows.AllPlants);
+					getModel().setPlantInfoPlant(getModel().getPlants().get(0));
+					switchToWindow(Windows.PlantInfo);
 				}
 			});
 

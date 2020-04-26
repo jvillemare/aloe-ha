@@ -90,6 +90,14 @@ public abstract class Window {
 	}
 	
 	/**
+	 * Trigger a Window to update any of it's attributes or call any of its 
+	 * methods to refresh.<br><br>
+	 * 
+	 * Invoked by the Model whenever a Window is being switched to.
+	 */
+	public void refresh() { }
+	
+	/**
 	 * Code executed when the application is being stopped. Invoked by 
 	 * Controller.<br><br>
 	 * 
@@ -101,9 +109,5 @@ public abstract class Window {
 	 * @see udel.GardenProject.garden.Controller
 	 */
 	public void stop() { }
-
-	public void displayPlant(Plant plant, Windows allplants) {
-		
-	}
 
 }

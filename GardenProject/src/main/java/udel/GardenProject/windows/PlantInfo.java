@@ -38,9 +38,7 @@ public class PlantInfo extends Window {
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: "); 		
 		
-		borderPane = new BorderPane();
-		
-		
+		borderPane = new BorderPane();		
 		
 	}
 	
@@ -58,6 +56,10 @@ public class PlantInfo extends Window {
 		return desire;
 	}
 	
+	public void refresh() {
+		displayPlant(getModel().getPlantInfoPlant());
+	}
+	
 	/**
 	 * Change PlantInfo's scene and display a plant's info by it's latin name.
 	 * This will be used by PlantSelection and AllPlants for their button
@@ -65,9 +67,7 @@ public class PlantInfo extends Window {
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
 	 */
-	
-	@Override
-	public void displayPlant(Plant plant, Windows previousWindow) {
+	public void displayPlant(Plant plant) {
 		// TODO: Keep String or use different param?
 		
 		setTitle("Plant Info: " + plant.getLatinName());
@@ -90,6 +90,7 @@ public class PlantInfo extends Window {
 		
 		information.getChildren().addAll(light, moisture, soil, canopy);
 		
+		// TODO: getImages() can be null/empty
 		String path = plant.getImages()[0];
 		
 		plantImage = new Image(path, 300, 100, true, true);
@@ -111,7 +112,7 @@ public class PlantInfo extends Window {
 
             @Override
             public void handle(ActionEvent event) {
-            	switchToWindow(previousWindow);
+            	getModel().goToLastWindow();
             }
         });
 		
