@@ -29,7 +29,19 @@ import javafx.scene.text.Text;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.plants.plotObjects.PlotBirdBath;
+import udel.GardenProject.plants.plotObjects.PlotFence;
+import udel.GardenProject.plants.plotObjects.PlotForest;
 import udel.GardenProject.plants.plotObjects.PlotObject;
+import udel.GardenProject.plants.plotObjects.PlotOther;
+import udel.GardenProject.plants.plotObjects.PlotPath;
+import udel.GardenProject.plants.plotObjects.PlotPatio;
+import udel.GardenProject.plants.plotObjects.PlotPlayground;
+import udel.GardenProject.plants.plotObjects.PlotPool;
+import udel.GardenProject.plants.plotObjects.PlotRoad;
+import udel.GardenProject.plants.plotObjects.PlotRock;
+import udel.GardenProject.plants.plotObjects.PlotShed;
+import udel.GardenProject.plants.plotObjects.PlotTrees;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -377,7 +389,7 @@ public class Questionnaire extends Window {
 
 		nearPlot.add(q2checkBox1);
 		nearPlot.add(q2checkBox2);
-		// getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+		getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
 
 		inPlot.add(q3checkBox1);
 		inPlot.add(q3checkBox2);
@@ -389,7 +401,7 @@ public class Questionnaire extends Window {
 		inPlot.add(q3checkBox8);
 		inPlot.add(q3checkBox9);
 		inPlot.add(q3checkBox10);
-		// getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+		getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
 
 		getSession().setMoistureOfPlot(q4ChoiceBox.getValue());
 		getSession().setSoilTypeOfPlot(q5ChoiceBox.getValue());
@@ -424,17 +436,13 @@ public class Questionnaire extends Window {
 
 		plotNearArr = new ArrayList<PlotObject>();
 
-		/**
-		 * TODO: Create Plot Objects for each of the items found near the garden to be
-		 * passed into the arrayList
-		 */
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
 				if (cb.get(counter).getText().equals("Road")) {
-					// plotNearArr.add(PlotObject.ROAD);
+					plotNearArr.add(new PlotRoad());
 				} else if (cb.get(counter).getText().equals("Forest")) {
-					// plotNearArr.add(PlotObject.ROAD);
+					plotNearArr.add(new PlotForest());
 				}
 
 			}
@@ -455,30 +463,26 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
-				/**
-				 * TODO: Create Plot Objects for each of the items found inside the garden to be
-				 * passed into the arrayList
-				 */
 				if (cb.get(counter).getText().equals("Fence")) {
-					// plotInArr.add(PlotObject.FENCE);
+					plotInArr.add(new PlotFence());
 				} else if (cb.get(counter).getText().equals("Pool")) {
-					// plotInArr.add(PlotObject.POOL);
+					plotInArr.add(new PlotPool());
 				} else if (cb.get(counter).getText().equals("Playground")) {
-					// plotInArr.add(PlotObject.PLAYGROUND);
+					plotInArr.add(new PlotPlayground());
 				} else if (cb.get(counter).getText().equals("Path")) {
-					// plotInArr.add(PlotObject.PATH);
+					plotInArr.add(new PlotPath());
 				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
-					// plotInArr.add(PlotObject.TREES);
+					plotInArr.add(new PlotTrees());
 				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
-					// plotInArr.add(PlotObject.PATIO);
+					plotInArr.add(new PlotPatio());
 				} else if (cb.get(counter).getText().equals("Bird Bath/Feeder")) {
-					// plotInArr.add(PlotObject.BIRDFEEDER);
+					plotInArr.add(new PlotBirdBath());
 				} else if (cb.get(counter).getText().equals("Shed")) {
-					// plotInArr.add(PlotObject.SHED);
+					plotInArr.add(new PlotShed());
 				} else if (cb.get(counter).getText().equals("Rocks")) {
-					// plotInArr.add(PlotObject.ROCKS);
+					plotInArr.add(new PlotRock());
 				} else if (cb.get(counter).getText().equals("Other")) {
-					// plotInArr.add(PlotObject.OTHER);
+					plotInArr.add(new PlotOther());
 				}
 
 			}
