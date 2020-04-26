@@ -18,7 +18,7 @@ package udel.GardenProject.garden;
  * 
  * Why is this rule? Why does it throw an exception? God knows.<br><br>
  * 
- * I wasted 20 hours on this.
+ * I wasted 20 hours on this. Do not touch it.
  * 
  * @author Team 0
  * @see <a href="https://stackoverflow.com/a/57691362/13158722">What made me

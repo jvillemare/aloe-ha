@@ -806,15 +806,17 @@ public class PlantLoader {
 	}
 
 	/**
-	 * Adds all the plants from the local files to a single array of Plant objects
+	 * Adds all the plants from the local files to a single array of Plant 
+	 * objects.
 	 * 
 	 * @return An array that contains all of the plants from the local
-	 *         files
+	 *         files.
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static Plant[] getPlants() throws FileNotFoundException, IOException, ParseException {
+	public static Plant[] getPlants() throws FileNotFoundException, IOException, 
+	ParseException {
 		merge();
 		return plants;
 	}

@@ -1,7 +1,18 @@
 package udel.GardenProject.garden;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plants.PlantLoader;
 import udel.GardenProject.windows.*;
 
 /**
@@ -12,14 +23,19 @@ import udel.GardenProject.windows.*;
 public class Model {
 	
 	/**
-	 * Width of stage.
+	 * Suggested width of stage for Window objects.
 	 */
 	private int width;
 	
 	/**
-	 * Height of stage.
+	 * Suggested height of stage for Window objects.
 	 */
 	private int height;
+	
+	/**
+	 * Where on the user's OS can we save Application 
+	 */
+	private String appDataDirectory;
 	
 	/**
 	 * All the windows that can be displayed to the user.
@@ -34,15 +50,236 @@ public class Model {
 	/**
 	 * All the plants.
 	 */
-	private Plant[] plants;
+	private ArrayList<Plant> plants;
 	
-	// TODO: How to handle current Window? With a Window object or int pointing
-	// to index of current Window?
+	/**
+	 * Where all the user data is collected and stored.
+	 */
+	private Session session;
 	
+	/**
+	 * Constructor, initialize everything.
+	 * 
+	 * @param width
+	 * @param height
+	 */
 	public Model(int width, int height) {
 		this.width = width;
 		this.height = height;
+		this.session = new Session();
 		
+		determineAppDataDirectory();
+		setupWindows();
+		
+		try {
+			this.plants = (ArrayList<Plant>) Arrays.asList(PlantLoader.getPlants());
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+			System.out.println("ERROR: Problem with reading Plant data JSON files...");
+			System.exit(1);
+		}
+	}
+	
+	/**
+	 * If the user is on the PlotDesign Window, it repeatedly checks the plot
+	 * for collision errors, invasive plants, and evaluates it.
+	 */
+	public void update() {
+		// TODO: Implement for PlotDesign...
+	}
+	
+	/**
+	 * Gets the current Window that should be displayed to the user.
+	 * 
+	 * @return current Window.
+	 */
+	public Window getWindow() {
+		return currentWindow;
+	}
+	
+	/**
+	 * Change the current Window.
+	 * @param w A Window specified by the Windows enum.
+	 */
+	public void setWindow(Windows w) {
+		currentWindow = windows[w.ordinal()];
+	}
+	
+	/**
+	 * Get the suggested scene width for a Window object.
+	 * @return width as an integer.
+	 */
+	public int getWidth() {
+		return this.width;
+	}
+	
+	/**
+	 * Get the suggested scene height for a Window object.
+	 * @return height as an integer.
+	 */
+	public int getHeight() {
+		return this.height;
+	}
+	
+	/**
+	 * Get Session that holds all user state information.
+	 * 
+	 * @return Session instance.
+	 */
+	public Session getSession() {
+		return this.session;
+	}
+	
+	/**
+	 * Search the array of plants and return an array of all Plants that match
+	 * the query. If the query matches the latin or any of the common names, 
+	 * that plant is returned.<br><br>
+	 * 
+	 * Comparators can be used on the results.
+	 * 
+	 * @param	query	Simple, non-regex query where the query can appear
+	 * 					anywhere in the plant latin or common name.
+	 * @return	null if no matching results, a Plant array of all matching 
+	 * 			results.
+	 */
+	public ArrayList<Plant> searchPlants(String query) {
+		ArrayList<Plant> results = new ArrayList<Plant>();
+		
+		Iterator<Plant> pIterator = plants.iterator();
+		while(pIterator.hasNext()) {
+			Plant p = pIterator.next();
+			boolean addToResults = false;
+			
+			if(p.getLatinName().contains(query))
+				addToResults = true;
+			
+			for(String commonName : p.getCommonNames())
+				if(commonName.contains(query))
+					addToResults = true;
+			
+			if(addToResults)
+				results.add(p);
+		}
+		
+		return results;
+	}
+	
+	/**
+	 * Safely <i>cache</i> a file to a user's computer. Hides all exceptions and
+	 * potential errors.
+	 * 
+	 * @param filepath	Path and filename where to save the file in the user's
+	 * 					<code>appDataDirectory</code>.
+	 * @return true if successful in caching the file, false if not.
+	 * @see {@link #loadCacheFile(String) loadCacheFile}
+	 */
+	public boolean saveCacheFile(Object o, String filepath) {
+		try {
+			FileOutputStream file = new FileOutputStream(appDataDirectory + filepath); 
+	        ObjectOutputStream out = new ObjectOutputStream(file); 
+	          
+	        out.writeObject(o); 
+	          
+	        out.close(); 
+	        file.close(); 
+		} catch(IOException e) {
+			System.out.println("Model: Failed to save cache file");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Safely <i>load</i> a file to a user's computer. Hides all exceptions and
+	 * potential errors.<br><br>
+	 * 
+	 * This can also be used to check if a file exists in cache if this method
+	 * returns false.
+	 * 
+	 * @param filepath	Path and filename where to load the file in the user's
+	 * 					<code>appDataDirectory</code>.
+	 * @return file object
+	 * @see {@link #saveCacheFile(String) saveCacheFile}
+	 */
+	public boolean loadCacheFile(String filepath) {
+		return true;
+	}
+	
+	/**
+	 * Save the current Session to the specified filepath.<br><br>
+	 * 
+	 * <b>NOTE</b>: This does not add the extension <code>.gardenproject</code>
+	 * to the save file, you must specify that manually in the JavaFX 
+	 * FileChooser as the default extension.
+	 * 
+	 * @param filepath Absolute filepath and filename on disk.
+	 */
+	public boolean saveSession(String filepath) {
+        try {    
+            FileOutputStream file = new FileOutputStream(filepath); 
+            ObjectOutputStream out = new ObjectOutputStream(file); 
+              
+            out.writeObject(this.session); 
+              
+            out.close(); 
+            file.close(); 
+              
+            System.out.println("Model: Saved Session at " + filepath); 
+        } catch(IOException ex) { 
+            System.out.println("Model: IOException is caught, failed to save file");
+            return false;
+        } 
+        return true;
+	}
+	
+	/**
+	 * Load a new Session from the specified filepath.<br><br>
+	 * 
+	 * @param filepath Absolute filepath and filename on disk.
+	 */
+	public boolean loadSession(String filepath) {
+        try {    
+            FileInputStream file = new FileInputStream(filepath); 
+            ObjectInputStream in = new ObjectInputStream(file); 
+              
+            this.session = (Session)in.readObject(); 
+              
+            in.close(); 
+            file.close(); 
+              
+            System.out.println("Model: Loaded Session from " + filepath); 
+        } catch(IOException ex) { 
+            System.out.println("Model: IOException is caught, failed to load file");
+            return false;
+        } catch(ClassNotFoundException ex)  { 
+            System.out.println("Model: ClassNotFoundException is caught, invalid file");
+            return false;
+        } 
+        return true;
+	}
+	
+	/**
+	 * Determine where the Operating System's Application Data directory is
+	 * located.<br><br>
+	 * 
+	 * Borrow from <a href="https://stackoverflow.com/questions/9235734/">
+	 * StackOverflow</a>.
+	 */
+	private void determineAppDataDirectory() {
+		String OS = (System.getProperty("os.name")).toUpperCase();
+
+		if (OS.contains("WIN")) { // windows
+			appDataDirectory = System.getenv("AppData");
+		} else { // Mac, Linux, other...
+			appDataDirectory = System.getProperty("user.home");
+			appDataDirectory += "/Library/Application Support";
+		}
+	}
+	
+	/**
+	 * Setup all the Windows objects of the project.
+	 */
+	private void setupWindows() {
 		windows = new Window[Windows.values().length];
 		
 		windows[Windows.AllPlants.ordinal()] = new AllPlants(this);
@@ -60,41 +297,14 @@ public class Model {
 	}
 	
 	/**
-	 * TODO: Figure out later...
-	 */
-	public void update() {
-		
-	}
-	
-	/**
-	 * Gets the current Window that should be displayed to the user.
+	 * Code executed when the application is stopped. Invoked by Controller.
 	 * 
-	 * @return current Window.
+	 * @see udel.GardenProject.garden.Controller
 	 */
-	public Window getWindow() {
-		return currentWindow;
-	}
-	
-	/**
-	 * TODO: Document later...
-	 * @param w
-	 */
-	public void setWindow(Windows w) {
-		currentWindow = windows[w.ordinal()];
-	}
-	
-	/**
-	 * Search the array of plants and return an array of all Plants that match
-	 * the query.
-	 * 
-	 * @param	query	Simple, non-regex query where the query can appear
-	 * 					anywhere in the plant latin or common name.
-	 * @return	null if no matching results, a Plant array of all matching 
-	 * 			results.
-	 */
-	public Plant[] searchPlants(String query) {
-		// TODO: Implement
-		return null;
+	public void stop() {
+		for(Window w : windows) {
+			w.stop();
+		}
 	}
 
 }

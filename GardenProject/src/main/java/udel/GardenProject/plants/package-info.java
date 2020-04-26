@@ -1,7 +1,7 @@
 /**
- * TODO: Decide which purpose:
- *  1. All the plant objects that can be dropped into the garden plot viewer.
- *  2. Interpreter that loads plant info from a USDA database or something.
+ * Contains the Plant class that stores all the information that can be obtained
+ * by the PlantLoader, and Comparators to sort the a list of Plant objects for
+ * searching.
  *  
  * @author Team 0
  */

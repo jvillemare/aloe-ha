@@ -36,6 +36,15 @@ public class Controller extends Application {
         }.start();
 	}
 	
+	@Override
+	public void stop() {
+		System.out.println("Stopping GardenProject...");
+		
+		model.stop();
+		
+		System.out.println("Goodbye.");
+	}
+	
     public static void main( String[] args ) {
         System.out.println("GardenProject starting...");
         launch(args);
