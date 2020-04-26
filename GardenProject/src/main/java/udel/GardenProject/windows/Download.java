@@ -33,9 +33,17 @@ public class Download extends Window {
 	private Group root;
 	private Scene scene;
 
-	private BorderPane borderPane;
+	private BorderPane borderPane; 
+
+	/**
+	 * Boxes for text at top and Buttons at the bottom
+	 */
 	private VBox vbox, bottomBoxes;
 	private Text text;
+
+	/**
+	 * Used for saving options (PNG etc....)
+	 */
 	private HBox saveOptions;
 
 	private static final String downloadSceneTitle = "Load or Save Your Plot";
@@ -137,7 +145,6 @@ public class Download extends Window {
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
-		
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(5));
 		tilePane.setHgap(100);
@@ -145,13 +152,12 @@ public class Download extends Window {
 
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
-		
+
 		borderPane.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
 		borderPane.setCenter(square);
-		//borderPane.setRight(saveOptions);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
