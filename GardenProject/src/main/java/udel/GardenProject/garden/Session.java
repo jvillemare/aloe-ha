@@ -3,6 +3,8 @@ package udel.GardenProject.garden;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
+import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.plants.plotObjects.PlotObject;
 
 /**
@@ -54,6 +56,44 @@ public class Session implements Serializable {
 	private String plotName = "";
 	
 	/**
+	 * Width and Length of the users plot in feet
+	 */
+	private int widthOfUserPlot = 0;
+	private int lengthOfUserPlot = 0;
+	
+	/**
+	 * Users objects on their plot
+	 */
+	private ArrayList<PlotObject> objectsNearPlot;
+	private ArrayList<PlotObject> objectsInPlot;
+	
+	/**
+	 * User's moisture level of their plot
+	 */
+	private String moistureOfPlot = "";
+	
+	/**
+	 * User's soil type of their plot
+	 */
+	private String soilTypeOfPlot = "";
+	
+	/**
+	 * Users sunlight of their plot
+	 */
+	private String sunlightOfPlot = "";
+	
+	/**
+	 * User's selected seasons for blooms
+	 */
+	private ArrayList<Seasons> seasonsUserSelected;
+	
+	/**
+	 * User's selected colors for flowers 
+	 */
+	private ArrayList<Color> colorsUserSelected;
+	
+	
+	/**
 	 * Objects to be displayed on PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
@@ -91,6 +131,80 @@ public class Session implements Serializable {
 	public void setPlot(ArrayList<PlotObject> plot) {
 		unsaved = true;
 		this.plot = plot;
+	}
+	
+	public void setWidthOfUserPlot(int w) {
+		this.widthOfUserPlot = w;
+	}
+	
+	public int getWidthOfUserPlot() {
+		return widthOfUserPlot;
+	}
+	
+	public void setLengthOfUserPlot(int w) {
+		this.lengthOfUserPlot = w;
+	}
+	
+	public int getLengthOfUserPlot() {
+		return lengthOfUserPlot;
+	}
+	
+	
+
+	public void setObjectsNearPlot(ArrayList<PlotObject> near) {
+		this.objectsNearPlot = near;
+	}
+	
+	public ArrayList<PlotObject> getObjectsNearPlot() {
+		return objectsNearPlot;
+	}
+	
+	public void setObjectsInPlot(ArrayList<PlotObject> in) {
+		this.objectsInPlot = in;
+	}
+	
+	public ArrayList<PlotObject> getObjectsInPlot() {
+		return objectsInPlot;
+	}
+	
+	public String getMoistureOfPlot() {
+		return moistureOfPlot;
+	}
+
+	public void setMoistureOfPlot(String m) {
+		this.moistureOfPlot = m;
+	}
+	
+	public String getSoilTypeOfPlot() {
+		return soilTypeOfPlot;
+	}
+
+	public void setSoilTypeOfPlot(String st) {
+		this.soilTypeOfPlot = st;
+	}
+	
+	public String getSunlightOfPlot() {
+		return sunlightOfPlot;
+	}
+
+	public void setSunlightOfPlot(String sun) {
+		this.sunlightOfPlot = sun;
+	}
+	
+	public void setSeasonsUserSelected(ArrayList<Seasons> season) {
+		this.seasonsUserSelected = season;
+	}
+	
+	public ArrayList<Seasons> getSeasonsUserSelected() {
+		return seasonsUserSelected;
+	}
+	
+	public void setColorsUserWants(ArrayList<Color> color) {
+		this.colorsUserSelected = color;
+	}
+	
+	public ArrayList<Color> getColorsUserSelected() {
+		return colorsUserSelected;
 	}
 
 }
