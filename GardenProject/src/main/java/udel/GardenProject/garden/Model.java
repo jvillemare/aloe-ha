@@ -72,7 +72,7 @@ public class Model {
 		setupWindows();
 		
 		try {
-			this.plants = (ArrayList<Plant>) Arrays.asList(PlantLoader.getPlants());
+			this.plants = new ArrayList<Plant>(Arrays.asList(PlantLoader.getPlants()));
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
