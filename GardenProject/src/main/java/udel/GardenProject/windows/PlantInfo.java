@@ -52,7 +52,7 @@ public class PlantInfo extends Window {
 	
 	
 	public Text makeText(String info) {
-		Text desire = new Text(info);
+		Text desire = new Text("\t" + info);
 		desire.setFont(new Font(18));
 		desire.setFill(Color.DARKGREEN);
 		return desire;
@@ -87,12 +87,12 @@ public class PlantInfo extends Window {
 		Text soil = makeText("Soil Type: " + plant.getSoilType());
 		Text canopy = makeText("Canopy: " + plant.getCanopy()); 
 		
+		
 		information.getChildren().addAll(light, moisture, soil, canopy);
 		
 		String path = plant.getImages()[0];
-		String pathtoImage = plant.getImages()[0];
 		
-		plantImage = new Image(path);
+		plantImage = new Image(path, 300, 100, true, true);
 		
 		ImageView img = new ImageView();
 		img.setImage(plantImage);
@@ -101,6 +101,10 @@ public class PlantInfo extends Window {
 		borderPane.setCenter(information);
 		borderPane.setTop(namePane);
 		borderPane.setStyle("-fx-background-color: DAE6F3;");
+		
+		StackPane button = new StackPane();
+		button.setStyle("-fx-background-color: DAE6F3;");
+		
 		
 		backButton = new Button("Go Back");
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -111,7 +115,9 @@ public class PlantInfo extends Window {
             }
         });
 		
-		borderPane.setBottom(backButton);
+		button.getChildren().add(backButton);
+		
+		borderPane.setBottom(button);
 		
 		this.root = new Group();
 		root.getChildren().add(borderPane);
