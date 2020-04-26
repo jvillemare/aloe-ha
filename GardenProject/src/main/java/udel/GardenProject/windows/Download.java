@@ -163,12 +163,10 @@ public class Download extends Window {
 	public Download(Model m, String lastSaveFile) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = lastSaveFile;
-
 	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
 	}
 

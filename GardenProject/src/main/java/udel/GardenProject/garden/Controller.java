@@ -26,7 +26,7 @@ public class Controller extends Application {
                 model.update();
                 view.update(model.getWindow());
                 
-                // TODO: Is this how we want to handle it later?
+                // TODO: Is this how we want to handle this?
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -34,6 +34,15 @@ public class Controller extends Application {
                 }
             }
         }.start();
+	}
+	
+	@Override
+	public void stop() {
+		System.out.println("Stopping GardenProject...");
+		
+		model.stop();
+		
+		System.out.println("Goodbye.");
 	}
 	
     public static void main( String[] args ) {

@@ -15,31 +15,45 @@ import udel.GardenProject.windows.Window;
 public class View {
 	
 	/**
-	 * local reference to stage.
+	 * Local reference to stage.
 	 */
 	private Stage theStage;
 	
+	/**
+	 * Default Scene width, can be overridden by Window objects.
+	 */
 	private final static int canvasWidth = 500;
+	
+	/**
+	 * DefaDefaultutl Scene height, can be overridden by Window objects.
+	 */
 	private final static int canvasHeight = 300;
 	
-	private Group root;
-	private Scene theScene;
-	private Canvas canvas;
-	private GraphicsContext gc;
-	
+	/**
+	 * Reference to the current window object being displayed.
+	 */
 	private Window window;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param theStage JavaFX Stage instance.
+	 * @param w The first window to be displayed.
+	 */
 	public View(Stage theStage, Window w) {
-		this.theStage = theStage;
-		
+		this.theStage = theStage;	
 		update(w);
         this.theStage.show();
 	}
 
 	/**
-	 * TODO: Figure out...
+	 * Updates the current Window object (if need be) and stores a reference to
+	 * the current window.
 	 * 
-	 * @param objects
+	 * Uses the current window to set the stage's scene and title.
+	 * 
+	 * @param w The current Window object that should be shown to the user. If 
+	 * 			it is changed, then that new Window is stored.
 	 */
 	public void update(Window w) {
 		if(this.window == null || this.window.equals(w) == false) {

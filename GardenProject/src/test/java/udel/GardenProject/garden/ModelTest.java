@@ -3,6 +3,7 @@ package udel.GardenProject.garden;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -54,32 +55,32 @@ public class ModelTest {
 	@Test
 	public void testSearchPlantsEmpty() {
 		Model m = new Model(0, 1);
-		Plant[] p1 = m.searchPlants("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		Plant[] p2 = m.searchPlants("bingo bongo nonsense hippity hoppity");
-		Plant[] p3 = m.searchPlants("null****************");
-		Plant[] p4 = m.searchPlants("n/a");
+		ArrayList<Plant> p1 = m.searchPlants("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		ArrayList<Plant> p2 = m.searchPlants("bingo bongo nonsense hippity hoppity");
+		ArrayList<Plant> p3 = m.searchPlants("null****************");
+		ArrayList<Plant> p4 = m.searchPlants("n/a");
 		
-		assertTrue(p1.length == 0);
-		assertTrue(p2.length == 0);
-		assertTrue(p3.length == 0);
-		assertTrue(p4.length == 0);
+		assertTrue(p1.size() == 0);
+		assertTrue(p2.size() == 0);
+		assertTrue(p3.size() == 0);
+		assertTrue(p4.size() == 0);
 	}
 	
 	@Test
 	public void testSearchPlantsHasResults() {
 		Model m = new Model(0, 1);
-		Plant[] p1 = m.searchPlants("pine");
-		Plant[] p2 = m.searchPlants("");
-		Plant[] p3 = m.searchPlants("dogwood");
-		Plant[] p4 = m.searchPlants("Acer negundo");
+		ArrayList<Plant> p1 = m.searchPlants("pine");
+		ArrayList<Plant> p2 = m.searchPlants("");
+		ArrayList<Plant> p3 = m.searchPlants("dogwood");
+		ArrayList<Plant> p4 = m.searchPlants("Acer negundo");
 		
 		// could be multiples of these plants
-		assertTrue(p1.length > 0);
-		assertTrue(p2.length > 0);
-		assertTrue(p3.length > 0);
+		assertTrue(p1.size() > 0);
+		assertTrue(p2.size() > 0);
+		assertTrue(p3.size() > 0);
 		
 		// should only be one of these plants
-		assertTrue(p4.length == 1);
+		assertTrue(p4.size() == 1);
 	}
 
 }
