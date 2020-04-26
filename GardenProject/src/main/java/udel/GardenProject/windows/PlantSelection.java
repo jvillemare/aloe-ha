@@ -112,6 +112,7 @@ public class PlantSelection extends Window {
 				public void handle(ActionEvent event) {
 					System.out.println("Info: Retreiving Plant information");
 					switchToWindow(Windows.PlantInfo);
+					//getModel().getWindow(Windows.PlantInfo).displayPlant(myCoolPlant, Windows.PlantSelection);
 				}
 			});
 

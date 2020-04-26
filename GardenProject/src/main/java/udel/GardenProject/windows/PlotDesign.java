@@ -228,9 +228,26 @@ public class PlotDesign extends Window {
 		editPlotButton = new Button("Edit Plot");
 		editPlotButton.setPadding(new Insets(10, 5, 10, 5));
 		editPlotButton.setStyle("-fx-font-size: 50px;");
-		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
-				transitionTxt, transitionBar, editPlotText, editPlotButton);
+		
+		Text goToPlantData = new Text("\nGet More Plants");
+		goToPlantData.setStyle("-fx-font-size: 20px;");
+		Button plantDataButton = new Button("Plant Database");
+		plantDataButton.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.AllPlants);
+			}
+		});
+		
+		plantDataButton.setPadding(new Insets(10, 5, 10, 5));
+		plantDataButton.setStyle("-fx-font-size: 50px;");
+
+		
+		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
+				transitionTxt, transitionBar, editPlotText, editPlotButton, goToPlantData, plantDataButton);
+		
+		
 		box = new Rectangle(620, 550);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
