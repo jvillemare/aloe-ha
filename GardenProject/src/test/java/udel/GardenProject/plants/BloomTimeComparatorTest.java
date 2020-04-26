@@ -37,8 +37,8 @@ public class BloomTimeComparatorTest {
 	public void sameSeasonTest() {
 		BloomTimeComparator b = new BloomTimeComparator(true);
 		boolean[] arr = {false, false, false, false, false, false, false, false, false, false, false, false};
-		Plant pine = new Plant(null, null, null, arr, 0, null, null, null, false, false, null);
-		Plant flower = new Plant(null, null, null, arr, 0, null, null, null, false, false, null);
+		Plant pine = new Plant(null, null, null, arr, 0, null, null, null, false, false, null, null);
+		Plant flower = new Plant(null, null, null, arr, 0, null, null, null, false, false, null, null);
 		assertTrue(b.compare(pine, flower) == 0);
 	}
 
@@ -47,8 +47,8 @@ public class BloomTimeComparatorTest {
 		BloomTimeComparator b = new BloomTimeComparator(true);
 		boolean[] arr1 = {false, true, true, false, false, false, false, false, false, false, false, false};
 		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
-		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null);
-		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null);
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null, null);
 		assertTrue(b.compare(flower, pine) < 0);
 	}
 	
@@ -57,8 +57,8 @@ public class BloomTimeComparatorTest {
 		BloomTimeComparator b = new BloomTimeComparator(false);
 		boolean[] arr1 = {false, true, true, false, false, false, false, false, false, false, false, false};
 		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
-		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null);
-		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null);
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null, null);
 		assertTrue(b.compare(flower, pine) > 0);
 	}
 }

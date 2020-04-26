@@ -76,10 +76,12 @@ public class Plant {
 	 * Source(s) where plant data came from
 	 */
 	private PlantDataSource[] source;
+	
+	private String[] images;
 
 	public Plant(String[] commonNames, String latinName, String description, boolean[] bloomTime, double light,
 			Moisture moisture, SoilTypes soilType, Canopy canopy, boolean delawareNative, boolean invasive,
-			PlantDataSource[] source) {
+			PlantDataSource[] source, String[] images) {
 		this.commonNames = commonNames;
 		this.latinName = latinName;
 		this.description = description;
@@ -91,6 +93,7 @@ public class Plant {
 		this.delawareNative = delawareNative;
 		this.invasive = invasive;
 		this.source = source;
+		this.images = images;
 	}
 
 	public String[] getCommonNames() {
@@ -135,6 +138,10 @@ public class Plant {
 
 	public PlantDataSource[] getSource() {
 		return this.source;
+	}
+	
+	public String[] getImages() {
+		return this.images;
 	}
 
 }
