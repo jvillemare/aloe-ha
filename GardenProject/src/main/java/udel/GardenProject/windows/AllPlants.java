@@ -83,7 +83,7 @@ public class AllPlants extends Window {
 		flow.setStyle("-fx-background-color: DAE6F3;");
 
 		// This is used for testing purposes
-		int num = 20;
+		int num = 10;
 		Image pages[] = new Image[num];
 		for (int i = 0; i < num; i++) {
 			Plant p = getModel().getPlants().get(i);

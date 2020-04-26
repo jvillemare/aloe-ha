@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -34,6 +35,8 @@ public class PlantInfo extends Window {
 	private VBox information;
 	
 	private BorderPane borderPane;
+	
+	private ScrollPane scroll;
 
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: "); 		
@@ -86,30 +89,41 @@ public class PlantInfo extends Window {
 		Text moisture = makeText("Moisture: " + plant.getMoisture());
 		Text soil = makeText("Soil Type: " + plant.getSoilType());
 		Text canopy = makeText("Canopy: " + plant.getCanopy()); 
+		Text description = makeText(plant.getDescription());
 		
 		
-		information.getChildren().addAll(light, moisture, soil, canopy);
+		information.getChildren().addAll(light, moisture, soil, canopy, description);
 		
-		// TODO: getImages() can be null/empty
+		scroll = new ScrollPane();
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setVmax(440);
+		scroll.setPrefSize(695, 520);
+		
+		scroll.setContent(information);
 		
 		String[] plantImg = plant.getImages();
 		
 		if(plantImg != null) {
 			String path = plant.getImages()[0];
 			
-			plantImage = new Image(path, 300, 100, true, true);
+			plantImage = new Image(path, 300, 300, true, true);
 		}else {
 			plantImage = new Image(
-					getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 100, true, true);
+					getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 300, true, true);
 		}
 		
 		
+		StackPane image = new StackPane();
+		image.setStyle("-fx-background-color: DAE6F3;");
 		
 		ImageView img = new ImageView();
 		img.setImage(plantImage);
 		
-		borderPane.setLeft(img);
-		borderPane.setCenter(information);
+		image.getChildren().add(img);
+		
+		borderPane.setLeft(image);
+		borderPane.setCenter(scroll);
 		borderPane.setTop(namePane);
 		borderPane.setStyle("-fx-background-color: DAE6F3;");
 		
