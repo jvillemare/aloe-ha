@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
+import udel.GardenProject.plants.Plant;
 
 /**
  * A window that can be displayed to the user.
@@ -100,5 +101,9 @@ public abstract class Window {
 	 * @see udel.GardenProject.garden.Controller
 	 */
 	public void stop() { }
+
+	public void displayPlant(Plant plant, Windows allplants) {
+		
+	}
 
 }

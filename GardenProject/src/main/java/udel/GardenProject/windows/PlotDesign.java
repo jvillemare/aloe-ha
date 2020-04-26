@@ -241,7 +241,7 @@ public class PlotDesign extends Window {
 		});
 		
 		plantDataButton.setPadding(new Insets(10, 5, 10, 5));
-		plantDataButton.setStyle("-fx-font-size: 50px;");
+		plantDataButton.setStyle("-fx-font-size: 20px;");
 
 		
 		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,

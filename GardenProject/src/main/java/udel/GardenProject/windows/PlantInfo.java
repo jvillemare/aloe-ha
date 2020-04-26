@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -30,6 +31,8 @@ public class PlantInfo extends Window {
 	private Button backButton;
 	private Image plantImage;
 	
+	private VBox information;
+	
 	private BorderPane borderPane;
 
 	public PlantInfo(Model m) {
@@ -47,6 +50,14 @@ public class PlantInfo extends Window {
 		return this.scene;
 	}
 	
+	
+	public Text makeText(String info) {
+		Text desire = new Text(info);
+		desire.setFont(new Font(18));
+		desire.setFill(Color.DARKGREEN);
+		return desire;
+	}
+	
 	/**
 	 * Change PlantInfo's scene and display a plant's info by it's latin name.
 	 * This will be used by PlantSelection and AllPlants for their button
@@ -54,6 +65,8 @@ public class PlantInfo extends Window {
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
 	 */
+	
+	@Override
 	public void displayPlant(Plant plant, Windows previousWindow) {
 		// TODO: Keep String or use different param?
 		
@@ -67,21 +80,25 @@ public class PlantInfo extends Window {
 		namePane.getChildren().add(name);
 		namePane.setStyle("-fx-background-color: DAE6F3;");
 		
-		Text light = new Text("Light: " + plant.getLight());
-		Text bloom = new Text("Bloom Season: " + plant.getBloomTime());
-		Text description = new Text (plant.getDescription());
-		Text info = new Text(bloom + "\n"
-				+ light + "\n" + description);
-		info.setFont(new Font(18));
-		info.setFill(Color.DARKGREEN);
+		information = new VBox();
+		
+		Text light = makeText("Light: " + plant.getLight());
+		Text moisture = makeText("Moisture: " + plant.getMoisture());
+		Text soil = makeText("Soil Type: " + plant.getSoilType());
+		Text canopy = makeText("Canopy: " + plant.getCanopy()); 
+		
+		information.getChildren().addAll(light, moisture, soil, canopy);
+		
+		String path = plant.getImages()[0];
+		String pathtoImage = plant.getImages()[0];
+		
+		plantImage = new Image(path);
 		
 		ImageView img = new ImageView();
-		plantImage = new Image(getClass().getResourceAsStream("/buttonImages/seed.png"),
-				300, 100, true, true);
 		img.setImage(plantImage);
 		
 		borderPane.setLeft(img);
-		borderPane.setCenter(info);
+		borderPane.setCenter(information);
 		borderPane.setTop(namePane);
 		borderPane.setStyle("-fx-background-color: DAE6F3;");
 		
