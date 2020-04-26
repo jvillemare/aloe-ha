@@ -5,7 +5,7 @@ public enum PlantDataSource {
 	UDEL("University of Delaware Flora Database"), 
 	NPC("Chesapeake Bay Native Plant Center"), 
 	SUNNYEDGE("Sunny Edge Plants in Arden, Newark"),
-	NRCS("USDA\"s Natural Resources Conservation Service");
+	NRCS("USDA's Natural Resources Conservation Service");
 	
 	private String source;
 	

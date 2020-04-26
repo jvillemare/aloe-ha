@@ -76,6 +76,7 @@ public class PlantLoaderTest {
 		for (PlantDataSource s : plant.getSource()) {
 			assertTrue(s.compareTo(PlantDataSource.SUNNYEDGE) == 0);
 		}
+		assertTrue(plant.getImages() == null);
 	}
 
 	@Test // Made sure a plant from the flora data was added.
@@ -113,6 +114,7 @@ public class PlantLoaderTest {
 		for (PlantDataSource s : plant.getSource()) {
 			assertTrue(s.compareTo(PlantDataSource.UDEL) == 0);
 		}
+		assertTrue(plant.getImages() == null);
 	}
 
 	@Test // Made sure a plant from the native data was added.
@@ -131,8 +133,7 @@ public class PlantLoaderTest {
 				+ System.lineSeparator() + "Flower Color: white or pink-tinged" + System.lineSeparator()
 				+ "Fall Color: crimson red" + System.lineSeparator() + "Fruit: Berry; black" + System.lineSeparator()
 				+ "Other: can be pruned as hedge" + System.lineSeparator()
-				+ "Link: http://www.nativeplantcenter.net/plants/photinia-melanocarpa/" + System.lineSeparator()
-				+ "Image Link: http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Photinia-melanocarpa-Aronia-m-USFWS-BES.jpg";
+				+ "Link: http://www.nativeplantcenter.net/plants/photinia-melanocarpa/";
 		assertTrue(plant.getDescription().equals(des));
 		assertTrue(plant.getCanopy() == Canopy.FLOOR);
 		assertTrue(plant.getLight() == .83);
@@ -151,6 +152,10 @@ public class PlantLoaderTest {
 		}
 		for (PlantDataSource s : plant.getSource()) {
 			assertTrue(s.compareTo(PlantDataSource.NPC) == 0);
+		}
+		String[] img = {"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Photinia-melanocarpa-Aronia-m-USFWS-BES.jpg"};
+		for (int i = 0; i < plant.getImages().length; i++) {
+			assertTrue(plant.getImages()[i].equals(img.clone()[i]));
 		}
 	}
 

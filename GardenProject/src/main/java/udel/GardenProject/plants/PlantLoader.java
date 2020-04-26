@@ -29,6 +29,7 @@ public class PlantLoader {
 	public static final String floraPath = "src/main/resources/plantData/udel-flora.json";
 	public static final String sunnyPath = "src/main/resources/plantData/sunny-edge-plants-data.json";
 	public static final String nativePath = "src/main/resources/plantData/native-plant-center.json";
+	public static final String nrcsPath = "src/main/resources/plantData/nrcs-data.json";
 
 	private static final String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
@@ -36,8 +37,7 @@ public class PlantLoader {
 	private static Plant[] plants;
 
 	/**
-	 * Loads plants from local file Udel-Flora.json
-	 * <br>
+	 * Loads plants from local file Udel-Flora.json <br>
 	 * Default plant attributes:
 	 * <li>commonNames: null
 	 * <li>latinName: given latinName in file
@@ -48,6 +48,7 @@ public class PlantLoader {
 	 * <li>canopy: null
 	 * <li>delawareNative: false
 	 * <li>source: {PlantDataSource.UDEL}
+	 * 
 	 * @return an ArrayList<Plant> with the plants from Udel-Flora.json
 	 * @throws ParseException
 	 * @throws IOException
@@ -61,7 +62,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
-		PlantDataSource[] source = {PlantDataSource.UDEL};
+		PlantDataSource[] source = { PlantDataSource.UDEL };
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -73,6 +74,7 @@ public class PlantLoader {
 			boolean nativ = false;
 			boolean invade = false;
 			Canopy canopy = null;
+			String[] images = null;
 			latin = plant;
 			String com = obj.getJSONObject(plant).getString("Synonym");
 			if (com.equals("--")) {
@@ -105,14 +107,14 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("Physiographic Province");
 			description = description + System.lineSeparator() + "Additional Info: "
 					+ obj.getJSONObject(plant).getString("Additional Info");
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
+					source, images));
 		}
 		return result;
 	}
 
 	/**
-	 * Loads plants from local file native-plant-center.json
-	 * <br>
+	 * Loads plants from local file native-plant-center.json <br>
 	 * Default plant attributes:
 	 * <li>commonNames: null
 	 * <li>latinName: given latinName in file
@@ -123,6 +125,7 @@ public class PlantLoader {
 	 * <li>canopy: null
 	 * <li>delawareNative: false
 	 * <li>source: {PlantDataSource.NPC}
+	 * 
 	 * @return an ArrayList<Plant> with the plants from native-plant-center.json
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -137,7 +140,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
-		PlantDataSource[] source = {PlantDataSource.NPC};
+		PlantDataSource[] source = { PlantDataSource.NPC };
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -149,16 +152,17 @@ public class PlantLoader {
 			boolean nativ = false;
 			boolean invade = false;
 			Canopy canopy = null;
+			String[] images = null;
 			latin = plant;
 			JSONArray alias = obj.getJSONObject(plant).getJSONArray("alias");
 			List<String> comm = new ArrayList<>();
 			for (int i = 0; i < alias.length(); i++) {
 				comm.add(alias.getString(i));
 			}
+			common = comm.toArray(new String[0]);
 			if (obj.getJSONObject(plant).getString("states").contains("DE")) {
 				nativ = true;
 			}
-			common = comm.toArray(new String[0]);
 			if (obj.getJSONObject(plant).has("plant types")) {
 				String type = obj.getJSONObject(plant).getString("plant types");
 				if (type.contains("Grass") || type.contains("Herb") || type.contains("Fern")
@@ -194,10 +198,12 @@ public class PlantLoader {
 			if (obj.getJSONObject(plant).has("soil texture")) {
 				String soTy = obj.getJSONObject(plant).getString("soil texture");
 				switch (soTy) {
+				// Lack of breaks intentional -> Want same result as following case.
 				case "Clay":
 					soilType = SoilTypes.CLAY;
 					break;
 				case "Loamy":
+				case "Loamy, Sandy":
 					soilType = SoilTypes.LOAMY;
 					break;
 				case "Sandy":
@@ -206,18 +212,17 @@ public class PlantLoader {
 				case "Clay, Loamy, Sandy":
 					soilType = SoilTypes.ANY;
 					break;
-				case "Loamy, Sandy":
-					soilType = SoilTypes.LOAMY;
-					break;
 				}
 			}
 			if (obj.getJSONObject(plant).has("soil moisture")) {
 				String soM = obj.getJSONObject(plant).getString("soil moisture");
 				switch (soM) {
+				// Lack of breaks intentional -> Want same result as following case.
 				case "Dry":
 					moisture = Moisture.DRY;
 					break;
 				case "Moist":
+				case "Dry, Moist, Wet":
 					moisture = Moisture.MOIST;
 					break;
 				case "Moist, Wet":
@@ -226,21 +231,23 @@ public class PlantLoader {
 				case "Dry, Moist":
 					moisture = Moisture.DRY_MOIST;
 					break;
-				case "Dry, Moist, Wet":
-					moisture = Moisture.MOIST;
-					break;
 				case "Flooded, Moist, Wet":
-					moisture = Moisture.DAMP;
-					break;
+				case "Flooded, Wet":
+				case "Dry, Flooded, Moist, Wet":
 				case "Wet":
 					moisture = Moisture.DAMP;
 					break;
-				case "Dry, Flooded, Moist, Wet":
-					moisture = Moisture.DAMP;
-					break;
-				case "Flooded, Wet":
-					moisture = Moisture.DAMP;
-					break;
+				}
+			}
+			if (obj.getJSONObject(plant).get("image").getClass().equals(String.class)) {
+				images = new String[1];
+				images[0] = obj.getJSONObject(plant).getString("image");
+			} else {
+				JSONArray im = obj.getJSONObject(plant).getJSONArray("image");
+				int len = im.length();
+				images = new String[len];
+				for (int i = 0; i < len; i++) {
+					images[i] = im.getString(i);
 				}
 			}
 			if (obj.getJSONObject(plant).has("blooms")) {
@@ -284,24 +291,14 @@ public class PlantLoader {
 				description = description + System.lineSeparator() + "Link: "
 						+ obj.getJSONObject(plant).getString("link");
 			}
-			if (obj.getJSONObject(plant).get("image").getClass().equals(String.class)) {
-				description = description + System.lineSeparator() + "Image Link: "
-						+ obj.getJSONObject(plant).getString("image");
-			} else {
-				JSONArray im = obj.getJSONObject(plant).getJSONArray("image");
-				for (int i = 0; i < im.length(); i++) {
-					String ima = im.getString(i);
-					description = description + System.lineSeparator() + "Image Link: " + ima;
-				}
-			}
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
+					source, images));
 		}
 		return result;
 	}
 
 	/**
-	 * Loads plants from local file sunny-edge-plants-data.json
-	 * <br>
+	 * Loads plants from local file sunny-edge-plants-data.json <br>
 	 * Default plant attributes:
 	 * <li>commonNames: null
 	 * <li>latinName: given latinName in file
@@ -324,7 +321,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
-		PlantDataSource[] source = {PlantDataSource.SUNNYEDGE};
+		PlantDataSource[] source = { PlantDataSource.SUNNYEDGE };
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
@@ -336,6 +333,7 @@ public class PlantLoader {
 			boolean nativ = false;
 			boolean invade = false;
 			Canopy canopy = null;
+			String[] images = null;
 			latin = obj.getJSONObject(plant).getString("latin");
 			common = new String[1];
 			common[0] = plant;
@@ -347,18 +345,17 @@ public class PlantLoader {
 			}
 			sun = sun.replace(".", "");
 			switch (sun) {
+			// Lack of breaks intentional -> Want same result as following case.
 			case "sun":
 				light = 1;
 				break;
 			case "sun/ptshade":
+			case "sun/ptsun":
 				light = .83;
 				break;
 			case "sun/shade":
 			case "ptshade":
 				light = .67;
-				break;
-			case "sun/ptsun":
-				light = .83;
 				break;
 			case "ptsun":
 				light = .5;
@@ -421,7 +418,106 @@ public class PlantLoader {
 					+ obj.getJSONObject(plant).getString("fruit");
 			description = description + System.lineSeparator() + "Other: "
 					+ obj.getJSONObject(plant).getString("notes");
-			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade, source));
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
+					source, images));
+		}
+		return result;
+	}
+
+	public static ArrayList<Plant> loadNRCS() throws FileNotFoundException {
+		ArrayList<Plant> result = new ArrayList<>();
+		File myObj = new File(nrcsPath);
+		Scanner myReader = new Scanner(myObj);
+		String data = myReader.nextLine();
+		myReader.close();
+		JSONObject obj = new JSONObject(data);
+		Set<String> latinNames = obj.keySet();
+		PlantDataSource[] source = { PlantDataSource.NRCS };
+		for (String plant : latinNames) {
+			String latin = null;
+			String[] common = null;
+			String description = "Description: ";
+			boolean[] bloom = null;
+			double light = -1;
+			Moisture moisture = null;
+			SoilTypes soilType = null;
+			boolean nativ = false;
+			boolean invade = false;
+			Canopy canopy = null;
+			String[] images = null;
+			latin = plant;
+			JSONArray im = obj.getJSONObject(plant).getJSONArray("images");
+			int len = im.length();
+			if (len != 0) {
+				images = new String[len];
+				for (int i = 0; i < len; i++) {
+					images[i] = im.getString(i);
+				}
+			}
+			if (obj.getJSONObject(plant).getBoolean("profile_present")) {
+				common = new String[1];
+				common[0] = obj.getJSONObject(plant).getString("common_name");
+				if (obj.getJSONObject(plant).getString("native_status").contains("L48 N")) {
+					nativ = true;
+				}
+				else if(obj.getJSONObject(plant).getString("native_status").contains("L48 I")) {
+					nativ = false;
+				}
+				description = description + System.lineSeparator() + "Symbol: "
+						+ obj.getJSONObject(plant).getString("symbol");
+				description = description + System.lineSeparator() + "Group: "
+						+ obj.getJSONObject(plant).getString("group");
+				description = description + System.lineSeparator() + "Family: "
+						+ obj.getJSONObject(plant).getString("family");
+				description = description + System.lineSeparator() + "Duration: "
+						+ obj.getJSONObject(plant).getString("duration");
+				description = description + System.lineSeparator() + "Growth Habitat: "
+						+ obj.getJSONObject(plant).getString("growth_habitat");
+			}
+			if (obj.getJSONObject(plant).getBoolean("characteristics_present")) {
+				JSONObject morph = obj.getJSONObject(plant).getJSONObject("Morphology/Physiology");
+				String growth = morph.getString("Active Growth Period");
+				switch (growth) {
+				case "Spring":
+					bloom = bloomCalc("Spring", "seasons");
+					break;
+				case "Spring and Summer":
+					bloom = bloomCalc("Spring-Summer", "seasons");
+					break;
+				case "Spring, Summer, Fall":
+					bloom = bloomCalc("Spring-Fall", "seasons");
+					break;
+				case "Spring and Fall":
+					bloom = combineBoolArr(bloomCalc("Spring", "seasons"), bloomCalc("Fall", "seasons"));
+					break;
+				case "Summer":
+					bloom = bloomCalc("Summer", "seasons");
+					break;
+				case "Summer and Fall":
+					bloom = bloomCalc("Summer-Fall", "seasons");
+					break;
+				case "Fall":
+					bloom = bloomCalc("Fall", "seasons");
+					break;
+				case "Fall, Winter and Spring":
+					bloom = combineBoolArr(bloomCalc("Fall", "seasons"), bloomCalc("Winter-Spring", "seasons"));
+					break;
+				case "Year Round":
+					bloom = bloomCalc("Winter-Fall", "seasons");
+					break;
+				case "":
+					bloom = null;
+					break;
+				}
+				description = description + System.lineSeparator() + "After Harvest Regrowth Rate: "
+						+ morph.getString("After Harvest Regrowth Rate");
+				description = description + System.lineSeparator() + "Bloat: "
+						+ morph.getString("Bloat");
+				description = description + System.lineSeparator() + "C:N Ratio: "
+						+ morph.getString("C:N Ratio");
+			}
+			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
+					source, images));
 		}
 		return result;
 	}
@@ -453,7 +549,7 @@ public class PlantLoader {
 	 */
 	public static boolean[] bloomCalc(String bloom, String arr) {
 		boolean[] year = { false, false, false, false, false, false, false, false, false, false, false, false };
-		//Following 12 lines standardize bloom String
+		// Following 12 lines standardize bloom String
 		if (bloom.equals("May-June, Sept.")) {
 			bloom = "May-September";
 		}
@@ -537,6 +633,23 @@ public class PlantLoader {
 		}
 		return year;
 	}
+	
+	/**
+	 * Takes in 2 boolean arrays of length 12. Each index corresponds to a month. It is used to combine bloomtimes
+	 * 
+	 * @param arr1 boolean array of length 12
+	 * @param arr2 Another boolean array of length 12
+	 * @return a boolean array where each index is true if either arr1 or arr2 had true at that same index.
+	 */
+	public static boolean[] combineBoolArr(boolean[] arr1, boolean[] arr2) {
+		boolean[] result = new boolean[12];
+		for (int i = 0; i < 12; i++) {
+			if (arr1[i] || arr2[i]) {
+				result[i] = true;
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * Helper function for bloomCalc to determine specific months or seasons
@@ -556,7 +669,9 @@ public class PlantLoader {
 	}
 
 	/**
-	 * Goes through all of the data from the imported files and removes any duplicates
+	 * Goes through all of the data from the imported files and removes any
+	 * duplicates
+	 * 
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParseException
@@ -580,6 +695,13 @@ public class PlantLoader {
 				boolean pInvade = p.getInvasive();
 				Canopy pCanopy = p.getCanopy();
 				PlantDataSource[] pSource = p.getSource();
+				String[] pImages = p.getImages();
+				int pLen;
+				if (pImages == null) {
+					pLen = 0;
+				} else {
+					pLen = pImages.length;
+				}
 				String[] iCommon = in.getCommonNames();
 				String iDescription = in.getDescription();
 				boolean[] iBloom = in.getBloomTime();
@@ -590,6 +712,14 @@ public class PlantLoader {
 				boolean iInvade = in.getInvasive();
 				Canopy iCanopy = in.getCanopy();
 				PlantDataSource[] iSource = in.getSource();
+				String[] iImages = in.getImages();
+				int iLen;
+				if (iImages == null) {
+					iLen = 0;
+				} else {
+					iLen = iImages.length;
+				}
+				String[] images = new String[pLen + iLen];
 				if (pCommon == null) {
 					pCommon = iCommon;
 				} else if (iCommon == null) {
@@ -674,9 +804,18 @@ public class PlantLoader {
 				for (PlantDataSource s : iSource) {
 					sources[count] = s;
 					count++;
-				} 
+				}
+				int index = 0;
+				for (int i = 0; i < pLen; i++) {
+					images[index] = pImages[i];
+					index++;
+				}
+				for (int i = 0; i < iLen; i++) {
+					images[index] = iImages[i];
+					index++;
+				}
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, sources));
+						pNativ, pInvade, sources, images));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
@@ -696,6 +835,13 @@ public class PlantLoader {
 				boolean pInvade = p.getInvasive();
 				Canopy pCanopy = p.getCanopy();
 				PlantDataSource[] pSource = p.getSource();
+				String[] pImages = p.getImages();
+				int pLen;
+				if (pImages == null) {
+					pLen = 0;
+				} else {
+					pLen = pImages.length;
+				}
 				String[] iCommon = in.getCommonNames();
 				String iDescription = in.getDescription();
 				boolean[] iBloom = in.getBloomTime();
@@ -706,6 +852,14 @@ public class PlantLoader {
 				boolean iInvade = in.getInvasive();
 				Canopy iCanopy = in.getCanopy();
 				PlantDataSource[] iSource = in.getSource();
+				String[] iImages = in.getImages();
+				int iLen;
+				if (iImages == null) {
+					iLen = 0;
+				} else {
+					iLen = iImages.length;
+				}
+				String[] images = new String[pLen + iLen];
 				if (pCommon == null) {
 					pCommon = iCommon;
 				} else if (iCommon == null) {
@@ -790,9 +944,18 @@ public class PlantLoader {
 				for (PlantDataSource s : iSource) {
 					sources[count] = s;
 					count++;
-				} 
+				}
+				int index = 0;
+				for (int i = 0; i < pLen; i++) {
+					images[index] = pImages[i];
+					index++;
+				}
+				for (int i = 0; i < iLen; i++) {
+					images[index] = iImages[i];
+					index++;
+				}
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, sources));
+						pNativ, pInvade, sources, images));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
@@ -808,8 +971,7 @@ public class PlantLoader {
 	/**
 	 * Adds all the plants from the local files to a single array of Plant objects
 	 * 
-	 * @return An array that contains all of the plants from the local
-	 *         files
+	 * @return An array that contains all of the plants from the local files
 	 * @throws ParseException
 	 * @throws IOException
 	 * @throws FileNotFoundException
@@ -817,6 +979,10 @@ public class PlantLoader {
 	public static Plant[] getPlants() throws FileNotFoundException, IOException, ParseException {
 		merge();
 		return plants;
+	}
+
+	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
+		loadNRCS();
 	}
 
 }

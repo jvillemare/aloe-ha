@@ -30,7 +30,7 @@ public class ExistingPlantsTest {
 	public void setExistingPlantsTest() {
 		Model m = new Model(0, 1);
 		ExistingPlants w = new ExistingPlants(m);
-		Plant p = new Plant(null, null, null, null, 0, null, null, null, false, false, null);
+		Plant p = new Plant(null, null, null, null, 0, null, null, null, false, false, null, null);
 		w.setExistingPlants(p);
 		
 	}
