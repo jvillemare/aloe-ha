@@ -142,7 +142,6 @@ public class AllPlants extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Going Back to Plot");
 				switchToWindow(Windows.PlotDesign);
 			}
 		});

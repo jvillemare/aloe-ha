@@ -236,8 +236,6 @@ public class PlotDesign extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-
-				System.out.println("PlantDatatbase: selected");
 				switchToWindow(Windows.AllPlants);
 			}
 		});
