@@ -32,13 +32,22 @@ public abstract class Window {
 	}
 	
 	/**
-	 * Helper function: Switch to a Window described by the Windows enum.
+	 * Helper method: Switch to a Window described by the Windows enum.
 	 * 
 	 * @param w Windows object.
 	 * @see main.udel.enums.Windows
 	 */
-	public void switchToWindow(Windows w) {
+	public final void switchToWindow(Windows w) {
 		this.model.setWindow(w);
+	}
+	
+	/**
+	 * Get the model.
+	 * 
+	 * @return Model reference.
+	 */
+	public final Model getModel() {
+		return this.model;
 	}
 	
 	/**
@@ -46,7 +55,7 @@ public abstract class Window {
 	 * 
 	 * @return title
 	 */
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
 	}
 	
@@ -55,7 +64,7 @@ public abstract class Window {
 	 * 
 	 * @param title	New title of the Window object.
 	 */
-	public void setTitle(String title) {
+	public final void setTitle(String title) {
 		// TODO: May not update title in View immediately because of its logic.
 		// ...figure that out
 		this.title = title;
@@ -75,7 +84,7 @@ public abstract class Window {
 	 * 
 	 * @return Session instance.
 	 */
-	public Session getSession() {
+	public final Session getSession() {
 		return this.model.getSession();
 	}
 	
