@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -46,7 +47,15 @@ public class ExistingPlants extends Window {
 	// TODO: Change to ArrayList?
 	private Plant existingPlant[];
 
+	/**
+	 * For getting rid of duplicates the user has entered
+	 */
 	private static HashSet<String> existingPlants = new HashSet();
+
+	/**
+	 * Used to convert HashSet existingPlants into an ArrayList
+	 */
+	private List<String> existingPlantsList;
 
 	/**
 	 * Used for the buttons at the top of the screen
@@ -196,7 +205,8 @@ public class ExistingPlants extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Next: going to questionnaire");
-				System.out.println(existingPlants);
+				existingPlantsList = new ArrayList<String>(existingPlants);
+				System.out.println(existingPlantsList);
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
