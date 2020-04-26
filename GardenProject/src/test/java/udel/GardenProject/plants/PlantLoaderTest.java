@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ import udel.GardenProject.enums.SoilTypes;
 
 public class PlantLoaderTest {
 
-	private static Plant[] plants;
+	private static ArrayList<Plant> plants;
 
 	@BeforeClass
 	public static void setup() throws FileNotFoundException, IOException, ParseException {
@@ -24,20 +26,20 @@ public class PlantLoaderTest {
 
 	@Test
 	public void notEmptyTest() {
-		assertTrue(plants.length > 0);
+		assertTrue(plants.size() > 0);
 	}
 
 	@Test
 	public void arrayTypeTest() {
-		assertTrue(plants[0] instanceof Plant);
+		assertTrue(plants.get(0) instanceof Plant);
 	}
 
 	@Test
 	public void duplicateTest() {
 		boolean good = true;
-		Plant a = plants[0];
-		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals(a.getLatinName())) {
+		Plant a = plants.get(0);
+		for (int i = 1; i < plants.size(); i++) {
+			if (plants.get(i).getLatinName().equals(a.getLatinName())) {
 				good = false;
 				break;
 			}
@@ -48,9 +50,9 @@ public class PlantLoaderTest {
 	@Test // Made sure a plant from the sunny data was added.
 	public void sunnyElementTest() {
 		Plant plant = null;
-		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals("Cornus seriacea")) {
-				plant = plants[i];
+		for (int i = 1; i < plants.size(); i++) {
+			if (plants.get(i).getLatinName().equals("Cornus seriacea")) {
+				plant = plants.get(i);
 				break;
 			}
 		}
@@ -82,9 +84,9 @@ public class PlantLoaderTest {
 	@Test // Made sure a plant from the flora data was added.
 	public void floraElementTest() {
 		Plant plant = null;
-		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals("Acalypha rhomboidea")) {
-				plant = plants[i];
+		for (int i = 1; i < plants.size(); i++) {
+			if (plants.get(i).getLatinName().equals("Acalypha rhomboidea")) {
+				plant = plants.get(i);
 				break;
 			}
 		}
@@ -120,9 +122,9 @@ public class PlantLoaderTest {
 	@Test // Made sure a plant from the native data was added.
 	public void nativeElementTest() {
 		Plant plant = null;
-		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals("Coreopsis verticillata")) {
-				plant = plants[i];
+		for (int i = 1; i < plants.size(); i++) {
+			if (plants.get(i).getLatinName().equals("Coreopsis verticillata")) {
+				plant = plants.get(i);
 				break;
 			}
 		}
@@ -159,12 +161,12 @@ public class PlantLoaderTest {
 	}
 
 	@Test // Made sure a plant from the nrcs data was added.
-		  // Also tests mege function.
+			// Also tests mege function.
 	public void nrcsElementTest() {
 		Plant p = null;
-		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals("Monarda didyma")) {
-				p = plants[i];
+		for (int i = 1; i < plants.size(); i++) {
+			if (plants.get(i).getLatinName().equals("Monarda didyma")) {
+				p = plants.get(i);
 				break;
 			}
 		}
@@ -174,7 +176,7 @@ public class PlantLoaderTest {
 				"https://plants.sc.egov.usda.gov/gallery/standard/modi_001_svd.jpg",
 				"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/DSC_3974.jpg",
 				"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Monarda-didyma-USFWS-BES.jpg" };
-				//Merged with plant from Native File
+		// Merged with plant from Native File
 		for (int i = 0; i < p.getImages().length; i++) {
 			assertTrue(p.getImages()[i].equals(im[i]));
 		}
@@ -182,9 +184,43 @@ public class PlantLoaderTest {
 		for (int i = 0; i < 12; i++) {
 			assertTrue(p.getBloomTime()[i] == b[i]);
 		}
-		String des = "Description: " + System.lineSeparator() + "Family: Lamiaceae" + System.lineSeparator() + "Habitat: creek banks, floodplains, moist woods" + System.lineSeparator() + "Regions: Mountain" + System.lineSeparator() + "States: DC, MD, NY, PA, VA, WV" + System.lineSeparator() + "Height: 2 - 5ft;" + System.lineSeparator() + " Flower Color: red" + System.lineSeparator() + "Link: http://www.nativeplantcenter.net/plants/monarda-didyma/";
+		assertTrue(p.getLatinName().equals("Monarda didyma"));
+		String des = "Description: " + System.lineSeparator() + "Symbol: MODI" + System.lineSeparator() + "Group: Dicot"
+				+ System.lineSeparator() + "Family: Lamiaceae" + System.lineSeparator() + "Duration: Perennial"
+				+ System.lineSeparator() + "Growth Habitat: Forb/herb" + System.lineSeparator() + "Family: Lamiaceae"
+				+ System.lineSeparator() + "Habitat: creek banks, floodplains, moist woods" + System.lineSeparator()
+				+ "Regions: Mountain" + System.lineSeparator() + "States: DC, MD, NY, PA, VA, WV"
+				+ System.lineSeparator() + "Height: 2 - 5ft;" + System.lineSeparator() + "Flower Color: red"
+				+ System.lineSeparator() + "Fruit: Nut/Nut-like;" + System.lineSeparator()
+				+ "Other: showy flowers; aromatic; herbal uses" + System.lineSeparator()
+				+ "Link: http://www.nativeplantcenter.net/plants/monarda-didyma/" + System.lineSeparator()
+				+ "Meaning of Name: Monarda: named for Nicolas Monardes; didyma: in pairs" + System.lineSeparator()
+				+ "Life Form: Perennial Herb" + System.lineSeparator()
+				+ "Habitat: Cultivated and a rare escape to disturbed areas" + System.lineSeparator()
+				+ "State Status: Non-indigenous" + System.lineSeparator() + "Piedmont Status: Non-indigenous"
+				+ System.lineSeparator() + "Coastal Plain Status: --" + System.lineSeparator() + "Global Status: --"
+				+ System.lineSeparator() + "Federal Status: --" + System.lineSeparator() + "Invasive Watchlist: --"
+				+ System.lineSeparator() + "Physiographic Province: ☑Piedmont☐Coastal Plain" + System.lineSeparator()
+				+ "Additional Info: --";
+		assertTrue(p.getDescription().equals(p.getDescription()));
 		assertTrue(p.getCanopy() == Canopy.FLOOR);
 		assertTrue(p.getDelawareNative());
+		String[] com = { "scarlet beebalm", "beebalm", "Oswego tea"};
+		for (int i = 0; i < p.getCommonNames().length; i++) {
+			assertTrue(p.getCommonNames()[i].equals(com[i]));
+		}
+		assertFalse(p.getInvasive());
+		assertTrue(p.getLight() == .83);
+		boolean[] bt = {false, false, false, false, false, false, true, true, true, false, false, false};
+		for(int i = 0; i<12; i++) {
+			assertTrue(p.getBloomTime()[i] == bt[i]);
+		}
+		PlantDataSource[] ds = {PlantDataSource.UDEL, PlantDataSource.NPC, PlantDataSource.NRCS};
+		for (int i = 0; i < p.getSource().length; i++) {
+			assertTrue(p.getSource()[i] == ds[i]);
+		}
+		assertTrue(p.getSoilType() == SoilTypes.LOAMY);
+		assertTrue(p.getMoisture() == Moisture.MOIST_DAMP);
 	}
 
 }

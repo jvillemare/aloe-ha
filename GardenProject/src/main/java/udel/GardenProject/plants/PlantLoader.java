@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -156,11 +157,10 @@ public class PlantLoader {
 			String[] images = null;
 			latin = plant;
 			JSONArray alias = obj.getJSONObject(plant).getJSONArray("alias");
-			List<String> comm = new ArrayList<>();
+			common = new String[alias.length()];
 			for (int i = 0; i < alias.length(); i++) {
-				comm.add(alias.getString(i));
+				common[i] = alias.getString(i);
 			}
-			common = comm.toArray(new String[0]);
 			if (obj.getJSONObject(plant).getString("states").contains("DE")) {
 				nativ = true;
 			}
@@ -425,7 +425,6 @@ public class PlantLoader {
 		return result;
 	}
 
-	
 	/**
 	 * Loads plants from local file nrcs-data.json <br>
 	 * Default plant attributes:
@@ -603,7 +602,8 @@ public class PlantLoader {
 						+ morph.getString("Fruit/Seed Color");
 				description = description + System.lineSeparator() + "Fruit/Seed Conspicuous: "
 						+ morph.getString("Fruit/Seed Conspicuous");
-				description  = description + System.lineSeparator() + "Active Growth Period: " + morph.getString("Active Growth Period");
+				description = description + System.lineSeparator() + "Active Growth Period: "
+						+ morph.getString("Active Growth Period");
 				description = description + System.lineSeparator() + "Growth Form: " + morph.getString("Growth Form");
 				description = description + System.lineSeparator() + "Growth Rate: " + morph.getString("Growth Rate");
 				description = description + System.lineSeparator() + "After Harvest Regrowth Rate: "
@@ -719,8 +719,7 @@ public class PlantLoader {
 						+ sus.getString("Palatable Graze Animal");
 				description = description + System.lineSeparator() + "Palatable Human: "
 						+ sus.getString("Palatable Human");
-				description = description + System.lineSeparator() + "Post Product: "
-						+ sus.getString("Post Product");
+				description = description + System.lineSeparator() + "Post Product: " + sus.getString("Post Product");
 				description = description + System.lineSeparator() + "Protein Potential: "
 						+ sus.getString("Protein Potential");
 				description = description + System.lineSeparator() + "Pulpwood Product: "
@@ -935,19 +934,22 @@ public class PlantLoader {
 				}
 				String[] images = new String[pLen + iLen];
 				if (pCommon == null) {
-					pCommon = iCommon;
-				} else if (iCommon == null) {
-					pCommon = null;
-				} else {
-					String[] all = new String[pCommon.length + iCommon.length];
-					int count = 0;
-					for (String c : pCommon) {
-						all[count] = c;
-						count++;
+					if (iCommon != null) {
+						pCommon = iCommon;
 					}
-					for (String c : iCommon) {
-						all[count] = c;
-						count++;
+				} else {
+					if (iCommon != null) {
+						String[] all = new String[pCommon.length + iCommon.length];
+						int count = 0;
+						for (String c : pCommon) {
+							all[count] = c;
+							count++;
+						}
+						for (String c : iCommon) {
+							all[count] = c;
+							count++;
+						}
+						pCommon = all;
 					}
 				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
@@ -1008,17 +1010,11 @@ public class PlantLoader {
 				} else {
 					pInvade = false;
 				}
-				int sourceLength = pSource.length + iSource.length;
-				PlantDataSource[] sources = new PlantDataSource[sourceLength];
-				int count = 0;
-				for (PlantDataSource s : pSource) {
-					sources[count] = s;
-					count++;
+				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
+				for (int i = 0; i < in.getSource().length; i++) {
+					newarr[i] = in.getSource()[i];
 				}
-				for (PlantDataSource s : iSource) {
-					sources[count] = s;
-					count++;
-				}
+				newarr[in.getSource().length] = pSource[0];
 				int index = 0;
 				for (int i = 0; i < pLen; i++) {
 					images[index] = pImages[i];
@@ -1029,12 +1025,12 @@ public class PlantLoader {
 					index++;
 				}
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, sources, images));
+						pNativ, pInvade, newarr, images));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
 		}
-		
+
 		for (Plant p : loadNRCS()) {
 			if (merge.get(p.getLatinName()) != null) {
 				Plant in = merge.get(p.getLatinName());
@@ -1075,19 +1071,22 @@ public class PlantLoader {
 				}
 				String[] images = new String[pLen + iLen];
 				if (pCommon == null) {
-					pCommon = iCommon;
-				} else if (iCommon == null) {
-					pCommon = null;
-				} else {
-					String[] all = new String[pCommon.length + iCommon.length];
-					int count = 0;
-					for (String c : pCommon) {
-						all[count] = c;
-						count++;
+					if (iCommon != null) {
+						pCommon = iCommon;
 					}
-					for (String c : iCommon) {
-						all[count] = c;
-						count++;
+				} else {
+					if (iCommon != null) {
+						String[] all = new String[pCommon.length + iCommon.length];
+						int count = 0;
+						for (String c : pCommon) {
+							all[count] = c;
+							count++;
+						}
+						for (String c : iCommon) {
+							all[count] = c;
+							count++;
+						}
+						pCommon = all;
 					}
 				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
@@ -1148,17 +1147,11 @@ public class PlantLoader {
 				} else {
 					pInvade = false;
 				}
-				int sourceLength = pSource.length + iSource.length;
-				PlantDataSource[] sources = new PlantDataSource[sourceLength];
-				int count = 0;
-				for (PlantDataSource s : pSource) {
-					sources[count] = s;
-					count++;
+				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
+				for (int i = 0; i < in.getSource().length; i++) {
+					newarr[i] = in.getSource()[i];
 				}
-				for (PlantDataSource s : iSource) {
-					sources[count] = s;
-					count++;
-				}
+				newarr[in.getSource().length] = pSource[0];
 				int index = 0;
 				for (int i = 0; i < pLen; i++) {
 					images[index] = pImages[i];
@@ -1169,7 +1162,7 @@ public class PlantLoader {
 					index++;
 				}
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, sources, images));
+						pNativ, pInvade, newarr, images));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
@@ -1215,19 +1208,22 @@ public class PlantLoader {
 				}
 				String[] images = new String[pLen + iLen];
 				if (pCommon == null) {
-					pCommon = iCommon;
-				} else if (iCommon == null) {
-					pCommon = null;
-				} else {
-					String[] all = new String[pCommon.length + iCommon.length];
-					int count = 0;
-					for (String c : pCommon) {
-						all[count] = c;
-						count++;
+					if (iCommon != null) {
+						pCommon = iCommon;
 					}
-					for (String c : iCommon) {
-						all[count] = c;
-						count++;
+				} else {
+					if (iCommon != null) {
+						String[] all = new String[pCommon.length + iCommon.length];
+						int count = 0;
+						for (String c : pCommon) {
+							all[count] = c;
+							count++;
+						}
+						for (String c : iCommon) {
+							all[count] = c;
+							count++;
+						}
+						pCommon = all;
 					}
 				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
@@ -1288,17 +1284,11 @@ public class PlantLoader {
 				} else {
 					pInvade = false;
 				}
-				int sourceLength = pSource.length + iSource.length;
-				PlantDataSource[] sources = new PlantDataSource[sourceLength];
-				int count = 0;
-				for (PlantDataSource s : pSource) {
-					sources[count] = s;
-					count++;
+				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
+				for (int i = 0; i < in.getSource().length; i++) {
+					newarr[i] = in.getSource()[i];
 				}
-				for (PlantDataSource s : iSource) {
-					sources[count] = s;
-					count++;
-				}
+				newarr[in.getSource().length] = pSource[0];
 				int index = 0;
 				for (int i = 0; i < pLen; i++) {
 					images[index] = pImages[i];
@@ -1309,7 +1299,7 @@ public class PlantLoader {
 					index++;
 				}
 				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, sources, images));
+						pNativ, pInvade, newarr, images));
 				continue;
 			}
 			merge.put(p.getLatinName(), p);
@@ -1330,8 +1320,9 @@ public class PlantLoader {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static Plant[] getPlants() throws FileNotFoundException, IOException, ParseException {
+	public static ArrayList<Plant> getPlants() throws FileNotFoundException, IOException, ParseException {
 		merge();
-		return plants;
+		ArrayList<Plant> list = new ArrayList<>(Arrays.asList(plants));
+		return list;
 	}
 }
