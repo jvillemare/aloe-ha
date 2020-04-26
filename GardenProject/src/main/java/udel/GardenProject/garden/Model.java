@@ -79,7 +79,6 @@ public class Model {
 		this.session = new Session();
 		
 		determineAppDataDirectory();
-		setupWindows();
 		
 		try {
 			this.plants = PlantLoader.getPlants();
@@ -88,6 +87,7 @@ public class Model {
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
 			System.exit(1);
 		}
+		setupWindows();
 	}
 	
 	/**

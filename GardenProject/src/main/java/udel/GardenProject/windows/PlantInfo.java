@@ -91,9 +91,19 @@ public class PlantInfo extends Window {
 		information.getChildren().addAll(light, moisture, soil, canopy);
 		
 		// TODO: getImages() can be null/empty
-		String path = plant.getImages()[0];
 		
-		plantImage = new Image(path, 300, 100, true, true);
+		String[] plantImg = plant.getImages();
+		
+		if(plantImg != null) {
+			String path = plant.getImages()[0];
+			
+			plantImage = new Image(path, 300, 100, true, true);
+		}else {
+			plantImage = new Image(
+					getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 100, true, true);
+		}
+		
+		
 		
 		ImageView img = new ImageView();
 		img.setImage(plantImage);

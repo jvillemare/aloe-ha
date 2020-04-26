@@ -55,9 +55,7 @@ public class AllPlants extends Window {
 	
 	public AllPlants(Model m) {
 		super(m, "Plant Database");
-		
-		Label label = new Label("So many plants...");
-		
+				
 		border = new BorderPane();
 		
 		//left side will be filter
@@ -85,9 +83,23 @@ public class AllPlants extends Window {
 		flow.setStyle("-fx-background-color: DAE6F3;");
 
 		// This is used for testing purposes
-		Image pages[] = new Image[40];
-		for (int i = 0; i < 40; i++) {
-			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
+		int num = 20;
+		Image pages[] = new Image[num];
+		for (int i = 0; i < num; i++) {
+			Plant p = getModel().getPlants().get(i);
+			
+			String[] plantImg = p.getImages();
+			
+			if (plantImg != null) {
+				pages[i] = new Image(
+						p.getImages()[0], 
+						350, 100, true, true);
+			}else {
+				pages[i] = new Image(
+						getClass().getResourceAsStream("/buttonImages/tree.png"),
+						350, 100, true, true);
+			}
+			
 			ImageView imageView = new ImageView(pages[i]);
 			Button addPlant = new Button("Add Plant");
 
@@ -110,7 +122,7 @@ public class AllPlants extends Window {
 				@Override
 				public void handle(ActionEvent event) {
 					System.out.println("Info: Retreiving Plant information");
-					getModel().setPlantInfoPlant(getModel().getPlants().get(0));
+					getModel().setPlantInfoPlant(p);
 					switchToWindow(Windows.PlantInfo);
 				}
 			});
