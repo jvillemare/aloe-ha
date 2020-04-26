@@ -100,6 +100,42 @@ public class Questionnaire extends Window {
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
 
+		borderPane = new BorderPane();
+		vbox = new VBox();
+		tilePane = new TilePane();
+
+		text = new Text(
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
+		text.setWrappingWidth(800);
+		text.setStyle("-fx-font-size: 20px;");
+
+		populateQuestionnaire();
+		createButtons();
+
+		tilePane.setAlignment(Pos.CENTER);
+		tilePane.setPadding(new Insets(5));
+		tilePane.setHgap(100);
+		tilePane.getChildren().addAll(backToExistingPlants, save, toPlotDesign);
+
+		scroll = new ScrollPane();
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		scroll.setVmax(440);
+		scroll.setPrefSize(850, 600);
+		scroll.setContent(vbox);
+
+		borderPane.setRight(scroll);
+		borderPane.setTop(vbox);
+		borderPane.setBottom(tilePane);
+
+		this.root = new Group();
+		root.getChildren().add(borderPane);
+		this.scene = new Scene(this.root, 850, 650);
+	}
+
+	/**
+	 * Pulls together the questions and how it is handled into the vbox
+	 */
+	public void populateQuestionnaire() {
 		String[] questions = { "1) What would you like to name your Garden?",
 				"2) How big is the plot you wish to plant your garden",
 				"3) Is your plot near any of the following? (Please select all that apply)",
@@ -110,16 +146,39 @@ public class Questionnaire extends Window {
 				"8) When would you like to see your garden bloom? (Please select all that apply?",
 				"9) What color blooms would you like to see in your garden? (Please select all that apply)" };
 
-		borderPane = new BorderPane();
-		vbox = new VBox();
-		tilePane = new TilePane();
-
-		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setWrappingWidth(800);
-		text.setStyle("-fx-font-size: 20px;");
-
 		q0 = new Text(questions[0]);
+		createQ1();
+
+		q1 = new Text(questions[1]);
+		createQ2();
+
+		q2 = new Text(questions[2]);
+		createQ3();
+
+		q3 = new Text(questions[3]);
+		createQ4();
+
+		q4 = new Text(questions[4]);
+		createQ5();
+
+		q5 = new Text(questions[5]);
+		createQ6();
+
+		q6 = new Text(questions[6]);
+		createQ7();
+
+		q7 = new Text(questions[7]);
+		createQ8();
+
+		q8 = new Text(questions[8]);
+		createQ9();
+
+		vbox.setPadding(new Insets(10, 10, 10, 10));
+		vbox.getChildren().addAll(text, q0, hbname, q1, hbwidth, hbheight, q2, q2ListView, q3, q3ListView, q4,
+				q4ChoiceBox, q5, q5ChoiceBox, q6, q6ChoiceBox, q7, q7ListView, q8, q8ListView);
+	}
+
+	public void createQ1() {
 		q0.setWrappingWidth(800);
 		q0.setStyle("-fx-font-size: 20px;");
 
@@ -128,8 +187,9 @@ public class Questionnaire extends Window {
 		hbname = new HBox();
 		hbname.getChildren().addAll(gardenLabel, textField);
 		hbname.setSpacing(10);
+	}
 
-		q1 = new Text(questions[1]);
+	public void createQ2() {
 		q1.setWrappingWidth(800);
 		q1.setStyle("-fx-font-size: 20px;");
 
@@ -144,8 +204,9 @@ public class Questionnaire extends Window {
 		hbheight = new HBox();
 		hbheight.getChildren().addAll(gardenHeight, q1textField2);
 		hbheight.setSpacing(10);
+	}
 
-		q2 = new Text(questions[2]);
+	public void createQ3() {
 		q2.setWrappingWidth(800);
 		q2.setStyle("-fx-font-size: 20px;");
 
@@ -156,8 +217,9 @@ public class Questionnaire extends Window {
 		ObservableList<CheckBox> q1items = FXCollections.observableArrayList(q2checkBox1, q2checkBox2);
 		q2ListView.setItems(q1items);
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
 
-		q3 = new Text(questions[3]);
+	public void createQ4() {
 		q3.setWrappingWidth(800);
 		q3.setStyle("-fx-font-size: 20px;");
 
@@ -177,32 +239,35 @@ public class Questionnaire extends Window {
 				q3checkBox4, q3checkBox5, q3checkBox6, q3checkBox7, q3checkBox8, q3checkBox9, q3checkBox10);
 		q3ListView.setItems(q2items);
 		q3ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
 
-		q4 = new Text(questions[4]);
+	public void createQ5() {
 		q4.setWrappingWidth(800);
 		q4.setStyle("-fx-font-size: 20px;");
 
 		q4ChoiceBox = new ChoiceBox<>();
 		q4ChoiceBox.getItems().addAll("Dry", "Dry-moist", "Moist", "Moist-damp", "Damp",
 				"My plot has different moisture");
+	}
 
-		q5 = new Text(questions[5]);
+	public void createQ6() {
 		q5.setWrappingWidth(800);
 		q5.setStyle("-fx-font-size: 20px;");
 
 		q5ChoiceBox = new ChoiceBox<>();
-		q5ChoiceBox.getItems().addAll("Peaty", "Loamy", "Sandy", "Chalky", "Clay", "Silty",
-				"My plot has different soil types");
+		q5ChoiceBox.getItems().addAll("Clay", "Sandy", "Loamy", "My plot has different soil types");
+	}
 
-		q6 = new Text(questions[6]);
+	public void createQ7() {
 		q6.setWrappingWidth(800);
 		q6.setStyle("-fx-font-size: 20px;");
 
 		q6ChoiceBox = new ChoiceBox<>();
 		q6ChoiceBox.getItems().addAll("Full-sun", "Partial-shade", "Partial-sun", "Full-shade",
 				"My plot receives different levels of sunlight");
+	}
 
-		q7 = new Text(questions[7]);
+	public void createQ8() {
 		q7.setWrappingWidth(800);
 		q7.setStyle("-fx-font-size: 20px;");
 
@@ -217,13 +282,14 @@ public class Questionnaire extends Window {
 				q7checkBox4, q7checkBox5);
 		q7ListView.setItems(q7items);
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
 
-		q8 = new Text(questions[8]);
+	public void createQ9() {
 		q8.setWrappingWidth(800);
 		q8.setStyle("-fx-font-size: 20px;");
 
 		q8checkBox1 = new CheckBox("White");
-		q8checkBox2 = new CheckBox("Yello");
+		q8checkBox2 = new CheckBox("Yellow");
 		q8checkBox3 = new CheckBox("Orange");
 		q8checkBox4 = new CheckBox("Red");
 		q8checkBox5 = new CheckBox("Purple/Violet");
@@ -236,11 +302,9 @@ public class Questionnaire extends Window {
 				q8checkBox4, q8checkBox5, q8checkBox6, q8checkBox7, q8checkBox8);
 		q8ListView.setItems(q8items);
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
 
-		vbox.setPadding(new Insets(10, 10, 10, 10));
-		vbox.getChildren().addAll(text, q0, hbname, q1, hbwidth, hbheight, q2, q2ListView, q3, q3ListView, q4,
-				q4ChoiceBox, q5, q5ChoiceBox, q6, q6ChoiceBox, q7, q7ListView, q8, q8ListView);
-
+	public void createButtons() {
 		backToExistingPlants = new Button("Go Back");
 		backToExistingPlants.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -267,25 +331,6 @@ public class Questionnaire extends Window {
 				switchToWindow(Windows.PlantSelection);
 			}
 		});
-
-		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(100);
-		tilePane.getChildren().addAll(backToExistingPlants, save, toPlotDesign);
-
-		scroll = new ScrollPane();
-		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setVmax(440);
-		scroll.setPrefSize(850, 600);
-		scroll.setContent(vbox);
-
-		borderPane.setRight(scroll);
-		borderPane.setTop(vbox);
-		borderPane.setBottom(tilePane);
-
-		this.root = new Group();
-		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 850, 650);
 	}
 
 	@Override
