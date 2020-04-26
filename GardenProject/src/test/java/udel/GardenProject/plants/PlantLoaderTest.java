@@ -121,42 +121,70 @@ public class PlantLoaderTest {
 	public void nativeElementTest() {
 		Plant plant = null;
 		for (int i = 1; i < plants.length; i++) {
-			if (plants[i].getLatinName().equals("Photinia melanocarpa")) {
+			if (plants[i].getLatinName().equals("Coreopsis verticillata")) {
 				plant = plants[i];
 				break;
 			}
 		}
-		String des = "Description: " + System.lineSeparator() + "Family: Rosaceae" + System.lineSeparator()
-				+ "Habitat: bog, swamp, spring, dune, cliff, old field, clearings; wet or dry thickets, creek banks, wet acid sand, balds; thin soils and rock outcroppings"
-				+ System.lineSeparator() + "Regions: Coastal Plain, Mountain, Piedmont" + System.lineSeparator()
-				+ "States: DE, MD, NY, PA, VA, WV" + System.lineSeparator() + "Height: 3 - 6ft; Spread"
-				+ System.lineSeparator() + "Flower Color: white or pink-tinged" + System.lineSeparator()
-				+ "Fall Color: crimson red" + System.lineSeparator() + "Fruit: Berry; black" + System.lineSeparator()
-				+ "Other: can be pruned as hedge" + System.lineSeparator()
-				+ "Link: http://www.nativeplantcenter.net/plants/photinia-melanocarpa/";
+		String des = "Description: " + System.lineSeparator() + "Family: Asteraceae" + System.lineSeparator()
+				+ "Habitat: tolerates poor soils; dry open woods and clearings; roadsides" + System.lineSeparator()
+				+ "Regions: Piedmont" + System.lineSeparator() + "States: DC, MD, VA, WV" + System.lineSeparator()
+				+ "Height: 0.5 - 3.5ft;" + System.lineSeparator() + "Flower Color: yellow" + System.lineSeparator()
+				+ "Fruit: Capsule;" + System.lineSeparator() + "Ground Cover: Provides Ground Cover"
+				+ System.lineSeparator() + "Link: http://www.nativeplantcenter.net/plants/coreopsis-verticillata/";
 		assertTrue(plant.getDescription().equals(des));
 		assertTrue(plant.getCanopy() == Canopy.FLOOR);
 		assertTrue(plant.getLight() == .83);
-		assertTrue(plant.getSoilType() == SoilTypes.ANY);
-		assertTrue(plant.getMoisture() == Moisture.MOIST);
-		assertTrue(plant.getLatinName().equals("Photinia melanocarpa"));
-		assertTrue(plant.getDelawareNative());
+		assertTrue(plant.getSoilType() == SoilTypes.LOAMY);
+		assertTrue(plant.getMoisture() == Moisture.DRY_MOIST);
+		assertTrue(plant.getLatinName().equals("Coreopsis verticillata"));
+		assertFalse(plant.getDelawareNative());
 		assertFalse(plant.getInvasive());
-		String[] com = { "black chokeberry" };
+		String[] com = { "threadleaf coreopsis" };
 		for (int i = 0; i < plant.getCommonNames().length; i++) {
 			assertTrue(plant.getCommonNames()[i].equals(com[i]));
 		}
-		boolean[] bloom = { false, false, false, true, true, false, false, false, false, false, false, false };
+		boolean[] bloom = { false, false, false, false, false, true, true, true, true, true, false, false };
 		for (int i = 0; i < plant.getBloomTime().length; i++) {
 			assertTrue(plant.getBloomTime()[i] == bloom[i]);
 		}
 		for (PlantDataSource s : plant.getSource()) {
 			assertTrue(s.compareTo(PlantDataSource.NPC) == 0);
 		}
-		String[] img = {"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Photinia-melanocarpa-Aronia-m-USFWS-BES.jpg"};
+		String[] img = {
+				"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Coreopsis-verticillata-USFWS-BES.jpg" };
 		for (int i = 0; i < plant.getImages().length; i++) {
 			assertTrue(plant.getImages()[i].equals(img.clone()[i]));
 		}
+	}
+
+	@Test // Made sure a plant from the nrcs data was added.
+		  // Also tests mege function.
+	public void nrcsElementTest() {
+		Plant p = null;
+		for (int i = 1; i < plants.length; i++) {
+			if (plants[i].getLatinName().equals("Monarda didyma")) {
+				p = plants[i];
+				break;
+			}
+		}
+		String[] im = { "https://plants.sc.egov.usda.gov/gallery/standard/modi_002_svp.jpg",
+				"https://plants.sc.egov.usda.gov/gallery/standard/modi_003_shp.jpg",
+				"https://plants.sc.egov.usda.gov/gallery/standard/modi_sht.jpg",
+				"https://plants.sc.egov.usda.gov/gallery/standard/modi_001_svd.jpg",
+				"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/DSC_3974.jpg",
+				"http://www.nativeplantcenter.net/wp-content/uploads/2016/05/Monarda-didyma-USFWS-BES.jpg" };
+				//Merged with plant from Native File
+		for (int i = 0; i < p.getImages().length; i++) {
+			assertTrue(p.getImages()[i].equals(im[i]));
+		}
+		boolean[] b = PlantLoader.bloomCalc("Summer", "seasons");
+		for (int i = 0; i < 12; i++) {
+			assertTrue(p.getBloomTime()[i] == b[i]);
+		}
+		String des = "Description: " + System.lineSeparator() + "Family: Lamiaceae" + System.lineSeparator() + "Habitat: creek banks, floodplains, moist woods" + System.lineSeparator() + "Regions: Mountain" + System.lineSeparator() + "States: DC, MD, NY, PA, VA, WV" + System.lineSeparator() + "Height: 2 - 5ft;" + System.lineSeparator() + " Flower Color: red" + System.lineSeparator() + "Link: http://www.nativeplantcenter.net/plants/monarda-didyma/";
+		assertTrue(p.getCanopy() == Canopy.FLOOR);
+		assertTrue(p.getDelawareNative());
 	}
 
 }

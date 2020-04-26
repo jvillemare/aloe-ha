@@ -1334,11 +1334,4 @@ public class PlantLoader {
 		merge();
 		return plants;
 	}
-	
-	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		System.out.print("It made ");
-		merge();
-		System.out.println("an array of plants");
-	}
-
 }
