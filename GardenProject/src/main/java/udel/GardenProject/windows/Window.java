@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.Session;
 
 /**
  * A window that can be displayed to the user.
@@ -31,13 +32,22 @@ public abstract class Window {
 	}
 	
 	/**
-	 * Helper function: Switch to a Window described by the Windows enum.
+	 * Helper method: Switch to a Window described by the Windows enum.
 	 * 
 	 * @param w Windows object.
 	 * @see main.udel.enums.Windows
 	 */
-	public void switchToWindow(Windows w) {
+	public final void switchToWindow(Windows w) {
 		this.model.setWindow(w);
+	}
+	
+	/**
+	 * Get the model.
+	 * 
+	 * @return Model reference.
+	 */
+	public final Model getModel() {
+		return this.model;
 	}
 	
 	/**
@@ -45,9 +55,20 @@ public abstract class Window {
 	 * 
 	 * @return title
 	 */
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
-	};
+	}
+	
+	/**
+	 * Update the current title of the Window.
+	 * 
+	 * @param title	New title of the Window object.
+	 */
+	public final void setTitle(String title) {
+		// TODO: May not update title in View immediately because of its logic.
+		// ...figure that out
+		this.title = title;
+	}
 	
 	/**
 	 * Abstract. All Windows must specify how they're scene is returned, and
@@ -56,5 +77,28 @@ public abstract class Window {
 	 * @return A Window's specific scene.
 	 */
 	public abstract Scene getScene();
+	
+	/**
+	 * Helper method, gets the Session object that stores all of the user state
+	 * data.
+	 * 
+	 * @return Session instance.
+	 */
+	public final Session getSession() {
+		return this.model.getSession();
+	}
+	
+	/**
+	 * Code executed when the application is being stopped. Invoked by 
+	 * Controller.<br><br>
+	 * 
+	 * Default implementation is to do nothing. This may need to be implemented
+	 * for each Window, depending.<br><br>
+	 * 
+	 * Call any save methods or tear down.
+	 * 
+	 * @see udel.GardenProject.garden.Controller
+	 */
+	public void stop() { }
 
 }

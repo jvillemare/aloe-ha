@@ -33,9 +33,18 @@ public class Download extends Window {
 	private Group root;
 	private Scene scene;
 
-	private BorderPane borderPane;
-	private VBox vbox, saveOptions;
+	private BorderPane borderPane; 
+
+	/**
+	 * Boxes for text at top and Buttons at the bottom
+	 */
+	private VBox vbox, bottomBoxes;
 	private Text text;
+
+	/**
+	 * Used for saving options (PNG etc....)
+	 */
+	private HBox saveOptions;
 
 	private static final String downloadSceneTitle = "Load or Save Your Plot";
 	private String lastSaveFile;
@@ -77,7 +86,7 @@ public class Download extends Window {
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
-		saveOptions = new VBox();
+		saveOptions = new HBox();
 		tilePane = new TilePane();
 
 		saveOptions.setPadding(new Insets(10, 10, 10, 10));
@@ -90,6 +99,7 @@ public class Download extends Window {
 		saveGroup = new ToggleGroup();
 		pngSave = new ToggleButton("PNG");
 		pngSave.setToggleGroup(saveGroup);
+		saveOptions.setAlignment(Pos.CENTER);
 		saveOptions.getChildren().add(pngSave);
 
 		/**
@@ -135,23 +145,23 @@ public class Download extends Window {
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
-		borderPane.setCenter(square);
-		borderPane.setTop(vbox);
-		borderPane.setRight(saveOptions);
-
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(5));
 		tilePane.setHgap(100);
 		tilePane.getChildren().addAll(back, downloadButton);
 
+		bottomBoxes = new VBox();
+		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
+
 		borderPane.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		borderPane.setTop(vbox);
-		borderPane.setBottom(tilePane);
+		borderPane.setBottom(bottomBoxes);
+		borderPane.setCenter(square);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 900, 610);
+		this.scene = new Scene(this.root, 850, 650);
 	}
 
 	/**
@@ -163,12 +173,10 @@ public class Download extends Window {
 	public Download(Model m, String lastSaveFile) {
 		super(m, downloadSceneTitle);
 		this.lastSaveFile = lastSaveFile;
-
 	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
 	}
 

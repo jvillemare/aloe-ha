@@ -1313,7 +1313,8 @@ public class PlantLoader {
 	}
 
 	/**
-	 * Adds all the plants from the local files to a single array of Plant objects
+	 * Adds all the plants from the local files to a single array of Plant 
+	 * objects.
 	 * 
 	 * @return An array that contains all of the plants from the local files
 	 * @throws ParseException

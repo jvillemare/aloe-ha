@@ -1,5 +1,7 @@
 package udel.GardenProject.plants.plotObjects;
 
+import java.io.Serializable;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -17,14 +19,12 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
 
-
-
 /**
  * Arbitrary polygon that can be moved around within a Scene.
  * 
  * @author Team 0
  */
-public class AdjustablePolygon {
+public class AdjustablePolygon implements Serializable {
 	private Polygon polygon;
 	private ObservableList<Anchor> anchors;
 	private boolean visible=true;
