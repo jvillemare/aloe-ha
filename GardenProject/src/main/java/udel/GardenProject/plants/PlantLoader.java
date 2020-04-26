@@ -459,8 +459,7 @@ public class PlantLoader {
 				common[0] = obj.getJSONObject(plant).getString("common_name");
 				if (obj.getJSONObject(plant).getString("native_status").contains("L48 N")) {
 					nativ = true;
-				}
-				else if(obj.getJSONObject(plant).getString("native_status").contains("L48 I")) {
+				} else if (obj.getJSONObject(plant).getString("native_status").contains("L48 I")) {
 					nativ = false;
 				}
 				description = description + System.lineSeparator() + "Symbol: "
@@ -509,13 +508,141 @@ public class PlantLoader {
 					bloom = null;
 					break;
 				}
+				String ht = morph.getString("Height, Mature (feet)");
+				if (!ht.equals("")) {
+					double height = Double.valueOf(ht);
+					if (height > 164) {
+						canopy = Canopy.EMERGENT;
+					} else if (height > 98) {
+						canopy = Canopy.CANOPY;
+					} else if (height > 16) {
+						canopy = Canopy.UNDERSTORY;
+					} else {
+						canopy = Canopy.FLOOR;
+					}
+				}
+				JSONObject growthReq = obj.getJSONObject(plant).getJSONObject("Growth Requirements");
+				boolean[] st = { false, false, false };
+				if (growthReq.getString("Adapted to Coarse Textured Soils").equals("Yes")) {
+					st[1] = true;
+				}
+				if (growthReq.getString("Adapted to Fine Textured Soils").equals("Yes")) {
+					st[0] = true;
+				}
+				if (growthReq.getString("Adapted to Medium Textured Soils").equals("Yes")) {
+					st[2] = true;
+				}
+				if (st[0] && st[1] && st[2]) {
+					soilType = SoilTypes.ANY;
+				} else if (st[0] && st[1]) {
+					soilType = SoilTypes.CLAY;
+				} else if (st[0] && st[2]) {
+					soilType = SoilTypes.LOAMY;
+				} else if (st[1] && st[2]) {
+					soilType = SoilTypes.LOAMY;
+				} else if (st[0]) {
+					soilType = SoilTypes.CLAY;
+				} else if (st[1]) {
+					soilType = SoilTypes.SANDY;
+				} else if (st[2]) {
+					soilType = SoilTypes.LOAMY;
+				}
+				String moist = growthReq.getString("Moisture Use");
+				switch (moist) {
+				case "Low":
+					moisture = Moisture.DRY;
+					break;
+				case "Medium":
+					moisture = Moisture.MOIST;
+					break;
+				case "High":
+					moisture = Moisture.DAMP;
+					break;
+				}
+				description = description + System.lineSeparator() + "Height at 20 Years, Maximum (feet): "
+						+ morph.getString("Height at 20 Years, Maximum (feet)");
+				description = description + System.lineSeparator() + "Height, Mature (feet): "
+						+ morph.getString("Height, Mature (feet)");
+				description = description + System.lineSeparator() + "Shape and Orientation: "
+						+ morph.getString("Shape and Orientation");
+				description = description + System.lineSeparator() + "Lifespan: " + morph.getString("Lifespan");
+				description = description + System.lineSeparator() + "Flower Color: " + morph.getString("Flower Color");
+				description = description + System.lineSeparator() + "Foliage Color: "
+						+ morph.getString("Foliage Color");
+				description = description + System.lineSeparator() + "Foliage Porosity Summer: "
+						+ morph.getString("Foliage Porosity Summer");
+				description = description + System.lineSeparator() + "Foliage Porosity Winter: "
+						+ morph.getString("Foliage Porosity Winter");
+				description = description + System.lineSeparator() + "Foliage Texture: "
+						+ morph.getString("Foliage Texture");
+				description = description + System.lineSeparator() + "Leaf Retention: "
+						+ morph.getString("Leaf Retention");
+				description = description + System.lineSeparator() + "Moisture Use: "
+						+ growthReq.getString("Moisture Use");
+				description = description + System.lineSeparator() + "Fruit/Seed Color: "
+						+ morph.getString("Fruit/Seed Color");
+				description = description + System.lineSeparator() + "Fruit/Seed Conspicuous: "
+						+ morph.getString("Fruit/Seed Conspicuous");
+				description = description + System.lineSeparator() + "Growth Form: " + morph.getString("Growth Form");
+				description = description + System.lineSeparator() + "Growth Rate: " + morph.getString("Growth Rate");
 				description = description + System.lineSeparator() + "After Harvest Regrowth Rate: "
 						+ morph.getString("After Harvest Regrowth Rate");
-				description = description + System.lineSeparator() + "Bloat: "
-						+ morph.getString("Bloat");
-				description = description + System.lineSeparator() + "C:N Ratio: "
-						+ morph.getString("C:N Ratio");
+				description = description + System.lineSeparator() + "Bloat: " + morph.getString("Bloat");
+				description = description + System.lineSeparator() + "C:N Ratio: " + morph.getString("C:N Ratio");
+				description = description + System.lineSeparator() + "Coppice Potential: "
+						+ morph.getString("Coppice Potential");
+				description = description + System.lineSeparator() + "Fall Conspicuous: "
+						+ morph.getString("Fall Conspicuous");
+				description = description + System.lineSeparator() + "Fire Resistant: "
+						+ morph.getString("Fire Resistant");
+				description = description + System.lineSeparator() + "Flower Conspicuous: "
+						+ morph.getString("Flower Conspicuous");
+				description = description + System.lineSeparator() + "Known Allelopath: "
+						+ morph.getString("Known Allelopath");
+				description = description + System.lineSeparator() + "Low Growing Grass: "
+						+ morph.getString("Low Growing Grass");
+				description = description + System.lineSeparator() + "Nitrogen Fixation: "
+						+ morph.getString("Nitrogen Fixation");
+				description = description + System.lineSeparator() + "Resprout Ability: "
+						+ morph.getString("Resprout Ability");
+				description = description + System.lineSeparator() + "Toxicity: " + morph.getString("Toxicity");
+				description = description + System.lineSeparator() + "CaCO3 Tolerance: "
+						+ growthReq.getString("CaCO3 Tolerance");
+				description = description + System.lineSeparator() + "Cold Stratification Required: "
+						+ growthReq.getString("Cold Stratification Required");
+				description = description + System.lineSeparator() + "Drought Tolerance: "
+						+ growthReq.getString("Drought Tolerance");
+				description = description + System.lineSeparator() + "Fertility Requirement: "
+						+ growthReq.getString("Fertility Requirement");
+				description = description + System.lineSeparator() + "Fire Tolerance: "
+						+ growthReq.getString("Fire Tolerance");
+				description = description + System.lineSeparator() + "Frost Free Days, Minimum: "
+						+ growthReq.getString("Frost Free Days, Minimum");
+				description = description + System.lineSeparator() + "Hedge Tolerance: "
+						+ growthReq.getString("Hedge Tolerance");
+				description = description + System.lineSeparator() + "pH, Minimum: "
+						+ growthReq.getString("pH, Minimum");
+				description = description + System.lineSeparator() + "pH, Maximum: "
+						+ growthReq.getString("pH, Maximum");
+				description = description + System.lineSeparator() + "Planting Density per Acre, Minimum: "
+						+ growthReq.getString("Planting Density per Acre, Minimum");
+				description = description + System.lineSeparator() + "Planting Density per Acre, Maximum: "
+						+ growthReq.getString("Planting Density per Acre, Maximum");
+				description = description + System.lineSeparator() + "Precipitation, Minimum: "
+						+ growthReq.getString("Precipitation, Minimum");
+				description = description + System.lineSeparator() + "Precipitation, Maximum: "
+						+ growthReq.getString("Precipitation, Maximum");
+				description = description + System.lineSeparator() + "Root Depth, Minimum (inches): "
+						+ growthReq.getString("Root Depth, Minimum (inches)");
+				description = description + System.lineSeparator() + "Salinity Tolerance: "
+						+ growthReq.getString("Salinity Tolerance");
+				description = description + System.lineSeparator() + "Shade Tolerance: "
+						+ growthReq.getString("Shade Tolerance");
+				description = description + System.lineSeparator() + "Temperature, Minimum (F): "
+						+ growthReq.getString("Temperature, Minimum (F)");
+				
 			}
+
 			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
 					source, images));
 		}
@@ -633,13 +760,15 @@ public class PlantLoader {
 		}
 		return year;
 	}
-	
+
 	/**
-	 * Takes in 2 boolean arrays of length 12. Each index corresponds to a month. It is used to combine bloomtimes
+	 * Takes in 2 boolean arrays of length 12. Each index corresponds to a month. It
+	 * is used to combine bloomtimes
 	 * 
 	 * @param arr1 boolean array of length 12
 	 * @param arr2 Another boolean array of length 12
-	 * @return a boolean array where each index is true if either arr1 or arr2 had true at that same index.
+	 * @return a boolean array where each index is true if either arr1 or arr2 had
+	 *         true at that same index.
 	 */
 	public static boolean[] combineBoolArr(boolean[] arr1, boolean[] arr2) {
 		boolean[] result = new boolean[12];
@@ -767,12 +896,12 @@ public class PlantLoader {
 					}
 				}
 				if (pSoilType == null) {
-					if (iMoisture != null) {
+					if (iSoilType != null) {
 						pSoilType = iSoilType;
 					}
 				} else {
-					if (iMoisture != null) {
-						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
+					if (iSoilType != null) {
+						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
 					}
 				}
 				if (pCanopy == null) {
@@ -907,12 +1036,12 @@ public class PlantLoader {
 					}
 				}
 				if (pSoilType == null) {
-					if (iMoisture != null) {
+					if (iSoilType != null) {
 						pSoilType = iSoilType;
 					}
 				} else {
-					if (iMoisture != null) {
-						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
+					if (iSoilType != null) {
+						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
 					}
 				}
 				if (pCanopy == null) {
