@@ -38,18 +38,6 @@ public class PlantInfo extends Window {
 		borderPane = new BorderPane();
 		
 		
-		backButton = new Button("Go Back");
-		backButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-            	switchToWindow(Windows.Questionnaire);
-            }
-        });
-		
-		borderPane.setBottom(backButton);
-		
-		
 		
 	}
 	
