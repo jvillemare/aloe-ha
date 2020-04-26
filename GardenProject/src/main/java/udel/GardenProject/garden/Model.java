@@ -122,6 +122,15 @@ public class Model {
 	}
 	
 	/**
+	 * Get the master ArrayList of Plants.
+	 * 
+	 * @return all plants.
+	 */
+	public ArrayList<Plant> getPlants() {
+		return this.plants;
+	}
+	
+	/**
 	 * Get Session that holds all user state information.
 	 * 
 	 * @return Session instance.
