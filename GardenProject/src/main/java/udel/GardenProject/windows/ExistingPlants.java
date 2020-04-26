@@ -7,6 +7,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -40,6 +45,8 @@ public class ExistingPlants extends Window {
 
 	// TODO: Change to ArrayList?
 	private Plant existingPlant[];
+
+	private static HashSet<String> existingPlants = new HashSet();
 
 	/**
 	 * Used for the buttons at the top of the screen
@@ -76,7 +83,7 @@ public class ExistingPlants extends Window {
 	/**
 	 * Used for displaying what the user selected
 	 */
-	private static VBox selection;
+	private static FlowPane selection;
 
 	private TextField text;
 
@@ -110,12 +117,17 @@ public class ExistingPlants extends Window {
 		tilePane.getChildren().addAll(backToMain, save, nextButton);
 
 		scroll = new ScrollPane();
-		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setVmax(440);
-		scroll.setPrefSize(690, 600);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setPrefSize(730, 600);
 		scroll.setContent(vbox);
 
-		selection = new VBox();
+		selection = new FlowPane();
+		selection.setPadding(new Insets(5, 5, 5, 5));
+		selection.setVgap(10);
+		selection.setHgap(10);
+		selection.setMaxWidth(700);
+		selection.setStyle("-fx-background-color: DAE6F3;");
 
 		vbox.getChildren().add(selection);
 
@@ -126,7 +138,7 @@ public class ExistingPlants extends Window {
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 860, 640);
+		this.scene = new Scene(this.root, 900, 640);
 	}
 
 	// TODO: Constructor to pass in plant array?
@@ -184,6 +196,7 @@ public class ExistingPlants extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Next: going to questionnaire");
+				System.out.println(existingPlants);
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -235,13 +248,14 @@ public class ExistingPlants extends Window {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle("-fx-font-weight: bold");
-								TextArea textarea = new TextArea(label.getText());
-								textarea.setPrefHeight(label.getHeight() + 10);
+								existingPlants.add(label.getText());
+
+								Text textarea = new Text(label.getText());
+								textarea.setStyle("-fx-font-size: 20px;");
 								System.out.println("You selected a plant from the dropdown --> " + label.getText());
 
 								Button deleteButton = new Button("X");
-								HBox selectedPlant = new HBox();
-								selectedPlant.setMaxWidth(500);
+								HBox selectedPlant = new HBox(100);
 								selectedPlant.getChildren().addAll(textarea, deleteButton);
 
 								selection.getChildren().addAll(selectedPlant);
@@ -249,7 +263,8 @@ public class ExistingPlants extends Window {
 									@Override
 									public void handle(ActionEvent event) {
 										System.out.println("X: removing selection");
-										textarea.clear();
+										existingPlants.remove(label.getText());
+										selectedPlant.getChildren().removeAll(deleteButton, textarea);
 									}
 								});
 							}
