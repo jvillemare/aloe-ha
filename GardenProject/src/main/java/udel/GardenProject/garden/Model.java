@@ -174,8 +174,9 @@ public class Model {
 	 * @see {@link #loadCacheFile(String) loadCacheFile}
 	 */
 	public boolean saveCacheFile(Object o, String filepath) {
+		String realFilepath = calculateFilepath(filepath);
 		try {
-			FileOutputStream file = new FileOutputStream(appDataDirectory + filepath); 
+			FileOutputStream file = new FileOutputStream(appDataDirectory + realFilepath); 
 	        ObjectOutputStream out = new ObjectOutputStream(file); 
 	          
 	        out.writeObject(o); 
@@ -183,7 +184,7 @@ public class Model {
 	        out.close(); 
 	        file.close(); 
 		} catch(IOException e) {
-			System.out.println("Model: Failed to save cache file");
+			System.out.println("Model: Failed to save cache file at " + realFilepath);
 			return false;
 		}
 		return true;
@@ -201,8 +202,84 @@ public class Model {
 	 * @return file object
 	 * @see {@link #saveCacheFile(String) saveCacheFile}
 	 */
-	public boolean loadCacheFile(String filepath) {
+	public Object loadCacheFile(String filepath) {
+		String realFilepath = calculateFilepath(filepath);
+		// TODO: Change, how to return input stream but also close it before
+		// returning it??
+		try {    
+            FileInputStream file = new FileInputStream(realFilepath); 
+            ObjectInputStream in = new ObjectInputStream(file); 
+              
+            this.session = (Session)in.readObject(); 
+              
+            in.close(); 
+            file.close(); 
+              
+            System.out.println("Model: Loaded Session from " + realFilepath); 
+        } catch(IOException ex) { 
+            System.out.println("Model: IOException is caught, failed to load file from " 
+            		+ realFilepath);
+            return false;
+        } catch(ClassNotFoundException ex)  { 
+            System.out.println("Model: ClassNotFoundException is caught, invalid file at "
+            		+ realFilepath);
+            return false;
+        } 
+        return true;
+	}
+	
+	/**
+	 * Start a brand new Session, and save the old one at it's last saved
+	 * location, if it has one.
+	 * 
+	 * @return False if there is no last saved file path, and the UI needs to 
+	 * 			ask the user where to save it. True if successful in loading new
+	 * 			session.
+	 * @throws Exception if it failed to save the current session, ask the user
+	 * 			again. 
+	 */
+	public boolean startNewSession() throws Exception {
+		if(session.getLastSavedFilepath().isEmpty())
+			return false;
+		if(saveSession(session.getLastSavedFilepath()) == false)
+			throw new Exception("Model: Failed to save current Session where it should go at "
+					+ session.getLastSavedFilepath());
+		session = new Session();
 		return true;
+	}
+	
+	/**
+	 * Start a new Session from one that was previously saved to disk.
+	 * 
+	 * @param filepath Relative filepath of the save.
+	 * @return False if there is no last saved file path, and the UI needs to
+	 *			ask the user where to save it. True if successful in loading new
+	 *			session.
+	 * @throws Exception if it failed to save the current session, ask the user
+	 * 			again. 
+	 */
+	public boolean startNewSessionFromSavedSession(String filepath) throws Exception {
+		if(session.getLastSavedFilepath().isEmpty())
+			return false;
+		if(saveSession(session.getLastSavedFilepath()) == false)
+			throw new Exception("Model: Failed to save current Session");
+		return loadSession(filepath);
+	}
+	
+	/**
+	 * Save the current session. Throws an exception if Model doesn't know where
+	 * to save to.
+	 * 
+	 * @return True if successful (with disk) in saving. False if not.
+	 * @throws Exception When there is no lastSavedFilepath specified in the
+	 * 			Session, and the UI needs to prompt the user to ask where to
+	 * 			save to.
+	 * @see {@link #saveSession(String) saveSession}
+	 */
+	public boolean saveSession() throws Exception {
+		if(session.getLastSavedFilepath().isEmpty())
+			throw new Exception("Session is missing a savepath");
+		return saveSession(session.getLastSavedFilepath());
 	}
 	
 	/**
@@ -219,6 +296,7 @@ public class Model {
             FileOutputStream file = new FileOutputStream(filepath); 
             ObjectOutputStream out = new ObjectOutputStream(file); 
               
+            session.setLastSavedFilepath(filepath);
             out.writeObject(this.session); 
               
             out.close(); 
@@ -256,6 +334,10 @@ public class Model {
             return false;
         } 
         return true;
+	}
+	
+	private String calculateFilepath(String filepath) {
+		return this.appDataDirectory + filepath;
 	}
 	
 	/**
@@ -304,6 +386,17 @@ public class Model {
 	public void stop() {
 		for(Window w : windows) {
 			w.stop();
+		}
+		
+		if(session.isUnsaved()) {
+			if(session.getLastSavedFilepath().isEmpty() == false) {
+				try {
+					saveSession();
+				} catch (Exception e) {
+					System.out.println("Model: Unable to save current Session" +
+							" as there's no location specified, continuing exit");
+				}
+			}
 		}
 	}
 
