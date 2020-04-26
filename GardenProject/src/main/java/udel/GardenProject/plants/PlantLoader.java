@@ -18,6 +18,7 @@ import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 
 /**
  * Load all the plants from local file databases.
@@ -424,6 +425,23 @@ public class PlantLoader {
 		return result;
 	}
 
+	
+	/**
+	 * Loads plants from local file nrcs-data.json <br>
+	 * Default plant attributes:
+	 * <li>commonNames: null
+	 * <li>latinName: given latinName in file
+	 * <li>description: "Description: "
+	 * <li>bloomTime: null
+	 * <li>light: -1 moisture: null
+	 * <li>soilType: null
+	 * <li>canopy: null
+	 * <li>delawareNative: false
+	 * <li>source: {PlantDataSource.NRCS}
+	 * 
+	 * @return an ArrayList<Plant> with the plants from nrcs-data.json
+	 * @throws FileNotFoundException
+	 */
 	public static ArrayList<Plant> loadNRCS() throws FileNotFoundException {
 		ArrayList<Plant> result = new ArrayList<>();
 		File myObj = new File(nrcsPath);
@@ -475,39 +493,6 @@ public class PlantLoader {
 			}
 			if (obj.getJSONObject(plant).getBoolean("characteristics_present")) {
 				JSONObject morph = obj.getJSONObject(plant).getJSONObject("Morphology/Physiology");
-				String growth = morph.getString("Active Growth Period");
-				switch (growth) {
-				case "Spring":
-					bloom = bloomCalc("Spring", "seasons");
-					break;
-				case "Spring and Summer":
-					bloom = bloomCalc("Spring-Summer", "seasons");
-					break;
-				case "Spring, Summer, Fall":
-					bloom = bloomCalc("Spring-Fall", "seasons");
-					break;
-				case "Spring and Fall":
-					bloom = combineBoolArr(bloomCalc("Spring", "seasons"), bloomCalc("Fall", "seasons"));
-					break;
-				case "Summer":
-					bloom = bloomCalc("Summer", "seasons");
-					break;
-				case "Summer and Fall":
-					bloom = bloomCalc("Summer-Fall", "seasons");
-					break;
-				case "Fall":
-					bloom = bloomCalc("Fall", "seasons");
-					break;
-				case "Fall, Winter and Spring":
-					bloom = combineBoolArr(bloomCalc("Fall", "seasons"), bloomCalc("Winter-Spring", "seasons"));
-					break;
-				case "Year Round":
-					bloom = bloomCalc("Winter-Fall", "seasons");
-					break;
-				case "":
-					bloom = null;
-					break;
-				}
 				String ht = morph.getString("Height, Mature (feet)");
 				if (!ht.equals("")) {
 					double height = Double.valueOf(ht);
@@ -559,6 +544,41 @@ public class PlantLoader {
 					moisture = Moisture.DAMP;
 					break;
 				}
+				String shade = growthReq.getString("Shade Tolerance");
+				switch (shade) {
+				case "Tolerant":
+					light = .33;
+					break;
+				case "Intolerant":
+					light = 1;
+					break;
+				case "Intermediate":
+					light = .67;
+					break;
+				}
+				JSONObject reproduce = obj.getJSONObject(plant).getJSONObject("Reproduction");
+				String bp = reproduce.getString("Bloom Period");
+				switch (bp) {
+				case "Spring":
+				case "Early Spring":
+				case "Mid Spring":
+				case "Late Spring":
+					bloom = bloomCalc("Spring", "seasons");
+					break;
+				case "Early Summer":
+				case "Mid Summer":
+				case "Late Summer":
+				case "Summer":
+					bloom = bloomCalc("Summer", "seasons");
+					break;
+				case "Fall":
+					bloom = bloomCalc("Fall", "seasons");
+				case "Winter":
+				case "Late Winter":
+					bloom = bloomCalc("Winter", "seasons");
+					break;
+				}
+				JSONObject sus = obj.getJSONObject(plant).getJSONObject("Suitability/Use");
 				description = description + System.lineSeparator() + "Height at 20 Years, Maximum (feet): "
 						+ morph.getString("Height at 20 Years, Maximum (feet)");
 				description = description + System.lineSeparator() + "Height, Mature (feet): "
@@ -583,6 +603,7 @@ public class PlantLoader {
 						+ morph.getString("Fruit/Seed Color");
 				description = description + System.lineSeparator() + "Fruit/Seed Conspicuous: "
 						+ morph.getString("Fruit/Seed Conspicuous");
+				description  = description + System.lineSeparator() + "Active Growth Period: " + morph.getString("Active Growth Period");
 				description = description + System.lineSeparator() + "Growth Form: " + morph.getString("Growth Form");
 				description = description + System.lineSeparator() + "Growth Rate: " + morph.getString("Growth Rate");
 				description = description + System.lineSeparator() + "After Harvest Regrowth Rate: "
@@ -640,9 +661,73 @@ public class PlantLoader {
 						+ growthReq.getString("Shade Tolerance");
 				description = description + System.lineSeparator() + "Temperature, Minimum (F): "
 						+ growthReq.getString("Temperature, Minimum (F)");
-				
+				description = description + System.lineSeparator() + "Commercial Availability: "
+						+ reproduce.getString("Commercial Availability");
+				description = description + System.lineSeparator() + "Fruit/Seed Abundance: "
+						+ reproduce.getString("Fruit/Seed Abundance");
+				description = description + System.lineSeparator() + "Fruit/Seed Period Begin: "
+						+ reproduce.getString("Fruit/Seed Period Begin");
+				description = description + System.lineSeparator() + "Fruit/Seed Period End: "
+						+ reproduce.getString("Fruit/Seed Period End");
+				description = description + System.lineSeparator() + "Fruit/Seed Persistence: "
+						+ reproduce.getString("Fruit/Seed Persistence");
+				description = description + System.lineSeparator() + "Propagated by Bare Root: "
+						+ reproduce.getString("Propagated by Bare Root");
+				description = description + System.lineSeparator() + "Propagated by Bulb: "
+						+ reproduce.getString("Propagated by Bulb");
+				description = description + System.lineSeparator() + "Propagated by Container: "
+						+ reproduce.getString("Propagated by Container");
+				description = description + System.lineSeparator() + "Propagated by Corm: "
+						+ reproduce.getString("Propagated by Corm");
+				description = description + System.lineSeparator() + "Propagated by Cuttings: "
+						+ reproduce.getString("Propagated by Cuttings");
+				description = description + System.lineSeparator() + "Propagated by Seed: "
+						+ reproduce.getString("Propagated by Seed");
+				description = description + System.lineSeparator() + "Propagated by Sod: "
+						+ reproduce.getString("Propagated by Sod");
+				description = description + System.lineSeparator() + "Propagated by Sprigs: "
+						+ reproduce.getString("Propagated by Sprigs");
+				description = description + System.lineSeparator() + "Propagated by Tubers: "
+						+ reproduce.getString("Propagated by Tubers");
+				description = description + System.lineSeparator() + "Seed per Pound: "
+						+ reproduce.getString("Seed per Pound");
+				description = description + System.lineSeparator() + "Seed Spread Rate: "
+						+ reproduce.getString("Seed Spread Rate");
+				description = description + System.lineSeparator() + "Seedling Vigor: "
+						+ reproduce.getString("Seedling Vigor");
+				description = description + System.lineSeparator() + "Small Grain: "
+						+ reproduce.getString("Small Grain");
+				description = description + System.lineSeparator() + "Vegetative Spread Rate: "
+						+ reproduce.getString("Vegetative Spread Rate");
+				description = description + System.lineSeparator() + "Berry/Nut/Seed Product: "
+						+ sus.getString("Berry/Nut/Seed Product");
+				description = description + System.lineSeparator() + "Christmas Tree Product: "
+						+ sus.getString("Christmas Tree Product");
+				description = description + System.lineSeparator() + "Fodder Product: "
+						+ sus.getString("Fodder Product");
+				description = description + System.lineSeparator() + "Fuelwood Product: "
+						+ sus.getString("Fuelwood Product");
+				description = description + System.lineSeparator() + "Lumber Product: "
+						+ sus.getString("Lumber Product");
+				description = description + System.lineSeparator() + "Naval Store Product: "
+						+ sus.getString("Naval Store Product");
+				description = description + System.lineSeparator() + "Nursery Stock Product: "
+						+ sus.getString("Nursery Stock Product");
+				description = description + System.lineSeparator() + "Palatable Browse Animal: "
+						+ sus.getString("Palatable Browse Animal");
+				description = description + System.lineSeparator() + "Palatable Graze Animal: "
+						+ sus.getString("Palatable Graze Animal");
+				description = description + System.lineSeparator() + "Palatable Human: "
+						+ sus.getString("Palatable Human");
+				description = description + System.lineSeparator() + "Post Product: "
+						+ sus.getString("Post Product");
+				description = description + System.lineSeparator() + "Protein Potential: "
+						+ sus.getString("Protein Potential");
+				description = description + System.lineSeparator() + "Pulpwood Product: "
+						+ sus.getString("Pulpwood Product");
+				description = description + System.lineSeparator() + "Veneer Product: "
+						+ sus.getString("Veneer Product");
 			}
-
 			result.add(new Plant(common, latin, description, bloom, light, moisture, soilType, canopy, nativ, invade,
 					source, images));
 		}
@@ -949,6 +1034,146 @@ public class PlantLoader {
 			}
 			merge.put(p.getLatinName(), p);
 		}
+		
+		for (Plant p : loadNRCS()) {
+			if (merge.get(p.getLatinName()) != null) {
+				Plant in = merge.get(p.getLatinName());
+				String latin = p.getLatinName();
+				String[] pCommon = p.getCommonNames();
+				String pDescription = p.getDescription();
+				boolean[] pBloom = p.getBloomTime();
+				double pLight = p.getLight();
+				Moisture pMoisture = p.getMoisture();
+				SoilTypes pSoilType = p.getSoilType();
+				boolean pNativ = p.getDelawareNative();
+				boolean pInvade = p.getInvasive();
+				Canopy pCanopy = p.getCanopy();
+				PlantDataSource[] pSource = p.getSource();
+				String[] pImages = p.getImages();
+				int pLen;
+				if (pImages == null) {
+					pLen = 0;
+				} else {
+					pLen = pImages.length;
+				}
+				String[] iCommon = in.getCommonNames();
+				String iDescription = in.getDescription();
+				boolean[] iBloom = in.getBloomTime();
+				double iLight = in.getLight();
+				Moisture iMoisture = in.getMoisture();
+				SoilTypes iSoilType = in.getSoilType();
+				boolean iNativ = in.getDelawareNative();
+				boolean iInvade = in.getInvasive();
+				Canopy iCanopy = in.getCanopy();
+				PlantDataSource[] iSource = in.getSource();
+				String[] iImages = in.getImages();
+				int iLen;
+				if (iImages == null) {
+					iLen = 0;
+				} else {
+					iLen = iImages.length;
+				}
+				String[] images = new String[pLen + iLen];
+				if (pCommon == null) {
+					pCommon = iCommon;
+				} else if (iCommon == null) {
+					pCommon = null;
+				} else {
+					String[] all = new String[pCommon.length + iCommon.length];
+					int count = 0;
+					for (String c : pCommon) {
+						all[count] = c;
+						count++;
+					}
+					for (String c : iCommon) {
+						all[count] = c;
+						count++;
+					}
+				}
+				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
+				if (pBloom == null) {
+					pBloom = iBloom;
+				} else if (iBloom != null) {
+					for (int i = 0; i < iBloom.length; i++) {
+						if (iBloom[i]) {
+							pBloom[i] = true;
+						}
+					}
+				}
+				if (pLight == -1) {
+					if (iLight == -1) {
+						pLight = -1;
+					} else {
+						pLight = iLight;
+					}
+				} else {
+					if (iLight != -1) {
+						pLight = (iLight + pLight) / 2;
+					}
+				}
+				if (pMoisture == null) {
+					if (iMoisture != null) {
+						pMoisture = iMoisture;
+					}
+				} else {
+					if (iMoisture != null) {
+						pMoisture = Moisture.values()[((pMoisture.ordinal() + iMoisture.ordinal()) / 2)];
+					}
+				}
+				if (pSoilType == null) {
+					if (iSoilType != null) {
+						pSoilType = iSoilType;
+					}
+				} else {
+					if (iSoilType != null) {
+						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
+					}
+				}
+				if (pCanopy == null) {
+					if (iCanopy != null) {
+						pCanopy = iCanopy;
+					}
+				} else {
+					if (iCanopy != null) {
+						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
+					}
+				}
+				if (iNativ || pNativ) {
+					pNativ = true;
+				} else {
+					pNativ = false;
+				}
+				if (iInvade || pInvade) {
+					pInvade = true;
+				} else {
+					pInvade = false;
+				}
+				int sourceLength = pSource.length + iSource.length;
+				PlantDataSource[] sources = new PlantDataSource[sourceLength];
+				int count = 0;
+				for (PlantDataSource s : pSource) {
+					sources[count] = s;
+					count++;
+				}
+				for (PlantDataSource s : iSource) {
+					sources[count] = s;
+					count++;
+				}
+				int index = 0;
+				for (int i = 0; i < pLen; i++) {
+					images[index] = pImages[i];
+					index++;
+				}
+				for (int i = 0; i < iLen; i++) {
+					images[index] = iImages[i];
+					index++;
+				}
+				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
+						pNativ, pInvade, sources, images));
+				continue;
+			}
+			merge.put(p.getLatinName(), p);
+		}
 
 		for (Plant p : loadSunny()) {
 			if (merge.get(p.getLatinName()) != null) {
@@ -1109,9 +1334,11 @@ public class PlantLoader {
 		merge();
 		return plants;
 	}
-
+	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
-		loadNRCS();
+		System.out.print("It made ");
+		merge();
+		System.out.println("an array of plants");
 	}
 
 }
