@@ -43,6 +43,11 @@ public class Model {
 	private Window[] windows;
 	
 	/**
+	 * The last window that was displayed to the user.
+	 */
+	private Window lastWindow;
+	
+	/**
 	 * The current window being displayed to the user.
 	 */
 	private Window currentWindow;
@@ -51,6 +56,11 @@ public class Model {
 	 * All the plants.
 	 */
 	private ArrayList<Plant> plants;
+	
+	/**
+	 * The plant to be shown in the PlantInfo window.
+	 */
+	private Plant plantInfoPlant;
 	
 	/**
 	 * Where all the user data is collected and stored.
@@ -97,11 +107,38 @@ public class Model {
 	}
 	
 	/**
+	 * Call the current Window's refresh() method.
+	 */
+	public void refreshCurrentWindow() {
+		currentWindow.refresh();
+	}
+	
+	/**
 	 * Change the current Window.
 	 * @param w A Window specified by the Windows enum.
 	 */
 	public void setWindow(Windows w) {
+		lastWindow = currentWindow;
 		currentWindow = windows[w.ordinal()];
+		currentWindow.refresh();
+	}
+	
+	/**
+	 * Go back to the last window.
+	 */
+	public void goToLastWindow() {
+		Window temp = currentWindow;
+		currentWindow = lastWindow;
+		lastWindow = temp;
+		currentWindow.refresh();
+	}
+	
+	/**
+	 * TODO: Later..
+	 * @return
+	 */
+	public Window getLastWindow() {
+		return this.lastWindow;
 	}
 	
 	/**
@@ -406,6 +443,14 @@ public class Model {
 				}
 			}
 		}
+	}
+
+	public Plant getPlantInfoPlant() {
+		return plantInfoPlant;
+	}
+
+	public void setPlantInfoPlant(Plant plantInfoPlant) {
+		this.plantInfoPlant = plantInfoPlant;
 	}
 
 }

@@ -5,10 +5,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -30,14 +32,16 @@ public class PlantInfo extends Window {
 	private Button backButton;
 	private Image plantImage;
 	
+	private VBox information;
+	
 	private BorderPane borderPane;
+	
+	private ScrollPane scroll;
 
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: "); 		
 		
-		borderPane = new BorderPane();
-		
-		
+		borderPane = new BorderPane();		
 		
 	}
 	
@@ -47,6 +51,18 @@ public class PlantInfo extends Window {
 		return this.scene;
 	}
 	
+	
+	public Text makeText(String info) {
+		Text desire = new Text("\t" + info);
+		desire.setFont(new Font(18));
+		desire.setFill(Color.DARKGREEN);
+		return desire;
+	}
+	
+	public void refresh() {
+		displayPlant(getModel().getPlantInfoPlant());
+	}
+	
 	/**
 	 * Change PlantInfo's scene and display a plant's info by it's latin name.
 	 * This will be used by PlantSelection and AllPlants for their button
@@ -54,7 +70,7 @@ public class PlantInfo extends Window {
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
 	 */
-	public void displayPlant(Plant plant, Windows previousWindow) {
+	public void displayPlant(Plant plant) {
 		// TODO: Keep String or use different param?
 		
 		setTitle("Plant Info: " + plant.getLatinName());
@@ -67,34 +83,66 @@ public class PlantInfo extends Window {
 		namePane.getChildren().add(name);
 		namePane.setStyle("-fx-background-color: DAE6F3;");
 		
-		Text light = new Text("Light: " + plant.getLight());
-		Text bloom = new Text("Bloom Season: " + plant.getBloomTime());
-		Text description = new Text (plant.getDescription());
-		Text info = new Text(bloom + "\n"
-				+ light + "\n" + description);
-		info.setFont(new Font(18));
-		info.setFill(Color.DARKGREEN);
+		information = new VBox();
+		
+		Text light = makeText("Light: " + plant.getLight());
+		Text moisture = makeText("Moisture: " + plant.getMoisture());
+		Text soil = makeText("Soil Type: " + plant.getSoilType());
+		Text canopy = makeText("Canopy: " + plant.getCanopy()); 
+		Text description = makeText(plant.getDescription());
+		
+		
+		information.getChildren().addAll(light, moisture, soil, canopy, description);
+		
+		scroll = new ScrollPane();
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setVmax(440);
+		scroll.setPrefSize(695, 520);
+		
+		scroll.setContent(information);
+		
+		String[] plantImg = plant.getImages();
+		
+		if(plantImg != null) {
+			String path = plant.getImages()[0];
+			
+			plantImage = new Image(path, 300, 300, true, true);
+		}else {
+			plantImage = new Image(
+					getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 300, true, true);
+		}
+		
+		
+		StackPane image = new StackPane();
+		image.setStyle("-fx-background-color: DAE6F3;");
 		
 		ImageView img = new ImageView();
-		plantImage = new Image(getClass().getResourceAsStream("/buttonImages/seed.png"),
-				300, 100, true, true);
 		img.setImage(plantImage);
 		
-		borderPane.setLeft(img);
-		borderPane.setCenter(info);
+		image.getChildren().add(img);
+		
+		borderPane.setLeft(image);
+		borderPane.setCenter(scroll);
 		borderPane.setTop(namePane);
 		borderPane.setStyle("-fx-background-color: DAE6F3;");
+		
+		StackPane button = new StackPane();
+		button.setStyle("-fx-background-color: DAE6F3;");
+		
 		
 		backButton = new Button("Go Back");
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-            	switchToWindow(previousWindow);
+            	getModel().goToLastWindow();
             }
         });
 		
-		borderPane.setBottom(backButton);
+		button.getChildren().add(backButton);
+		
+		borderPane.setBottom(button);
 		
 		this.root = new Group();
 		root.getChildren().add(borderPane);
