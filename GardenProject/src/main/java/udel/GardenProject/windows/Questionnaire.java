@@ -1,5 +1,9 @@
 package udel.GardenProject.windows;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,21 +15,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.plants.plotObjects.PlotBirdBath;
+import udel.GardenProject.plants.plotObjects.PlotFence;
+import udel.GardenProject.plants.plotObjects.PlotForest;
+import udel.GardenProject.plants.plotObjects.PlotObject;
+import udel.GardenProject.plants.plotObjects.PlotOther;
+import udel.GardenProject.plants.plotObjects.PlotPath;
+import udel.GardenProject.plants.plotObjects.PlotPatio;
+import udel.GardenProject.plants.plotObjects.PlotPlayground;
+import udel.GardenProject.plants.plotObjects.PlotPool;
+import udel.GardenProject.plants.plotObjects.PlotRoad;
+import udel.GardenProject.plants.plotObjects.PlotRock;
+import udel.GardenProject.plants.plotObjects.PlotShed;
+import udel.GardenProject.plants.plotObjects.PlotTrees;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -86,6 +102,29 @@ public class Questionnaire extends Window {
 	public CheckBox q7checkBox1, q7checkBox2, q7checkBox3, q7checkBox4, q7checkBox5;
 	public CheckBox q8checkBox1, q8checkBox2, q8checkBox3, q8checkBox4, q8checkBox5, q8checkBox6, q8checkBox7,
 			q8checkBox8;
+
+	/**
+	 * Used to iterate through and see which selections are checked by the user
+	 */
+	public ArrayList<CheckBox> nearPlot = new ArrayList<CheckBox>();
+	public ArrayList<CheckBox> inPlot = new ArrayList<CheckBox>();
+	public ArrayList<CheckBox> seasonWant = new ArrayList<CheckBox>();
+	public ArrayList<CheckBox> colorWant = new ArrayList<CheckBox>();
+
+	/**
+	 * PlotObject arrays for what the user has in or near their garden
+	 */
+	public ArrayList<PlotObject> plotNearArr, plotInArr;
+
+	/**
+	 * The seasons the user wants to see their plants bloom
+	 */
+	public ArrayList<Seasons> seasonArr;
+
+	/**
+	 * Colors the user wants to see in their garden
+	 */
+	public ArrayList<Color> colorArr;
 
 	/**
 	 * Used for user input
@@ -175,7 +214,7 @@ public class Questionnaire extends Window {
 	}
 
 	public void createQ2() {
-		q1 = createText("2) How big is the plot you wish to plant your garden");
+		q1 = createText("2) How big is the plot you wish to plant your garden (in ft). (NO LETTERS ALLOWED)");
 
 		gardenWidth = new Label("Width:");
 		q1textField1 = new TextField();
@@ -317,7 +356,7 @@ public class Questionnaire extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Save: saving questionnaire responses");
-				getResponses();
+				saveResponses();
 
 			}
 		});
@@ -340,10 +379,180 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * TODO:
+	 * Saves and sends responses to model
 	 */
-	private void getResponses() {
+	private void saveResponses() {
 
+		getSession().setPlotName(textField.getText());
+		getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
+		getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+
+		nearPlot.add(q2checkBox1);
+		nearPlot.add(q2checkBox2);
+		getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+
+		inPlot.add(q3checkBox1);
+		inPlot.add(q3checkBox2);
+		inPlot.add(q3checkBox3);
+		inPlot.add(q3checkBox4);
+		inPlot.add(q3checkBox5);
+		inPlot.add(q3checkBox6);
+		inPlot.add(q3checkBox7);
+		inPlot.add(q3checkBox8);
+		inPlot.add(q3checkBox9);
+		inPlot.add(q3checkBox10);
+		getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+
+		getSession().setMoistureOfPlot(q4ChoiceBox.getValue());
+		getSession().setSoilTypeOfPlot(q5ChoiceBox.getValue());
+		getSession().setSunlightOfPlot(q6ChoiceBox.getValue());
+
+		seasonWant.add(q7checkBox1);
+		seasonWant.add(q7checkBox2);
+		seasonWant.add(q7checkBox3);
+		seasonWant.add(q7checkBox4);
+		seasonWant.add(q7checkBox5);
+		getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
+
+		colorWant.add(q8checkBox1);
+		colorWant.add(q8checkBox2);
+		colorWant.add(q8checkBox3);
+		colorWant.add(q8checkBox4);
+		colorWant.add(q8checkBox5);
+		colorWant.add(q8checkBox6);
+		colorWant.add(q8checkBox7);
+		colorWant.add(q8checkBox8);
+		getSession().setColorsUserWants(checkSelectedColor(colorWant));
+
+	}
+
+	/**
+	 * Checks which options are selected by the user and returns an arraylist of
+	 * PlotObjects
+	 * 
+	 * @param cb
+	 */
+	public ArrayList<PlotObject> checkSelectedNearPlot(ArrayList<CheckBox> cb) {
+
+		plotNearArr = new ArrayList<PlotObject>();
+
+		for (int counter = 0; counter < cb.size(); counter++) {
+			if (cb.get(counter).isSelected()) {
+
+				if (cb.get(counter).getText().equals("Road")) {
+					plotNearArr.add(new PlotRoad());
+				} else if (cb.get(counter).getText().equals("Forest")) {
+					plotNearArr.add(new PlotForest());
+				}
+
+			}
+		}
+		return plotNearArr;
+	}
+
+	/**
+	 * Checks which options are selected by the user and returns an arraylist of
+	 * PlotObjects
+	 * 
+	 * @param cb
+	 */
+	public ArrayList<PlotObject> checkSelectedInPlot(ArrayList<CheckBox> cb) {
+
+		plotInArr = new ArrayList<PlotObject>();
+
+		for (int counter = 0; counter < cb.size(); counter++) {
+			if (cb.get(counter).isSelected()) {
+
+				if (cb.get(counter).getText().equals("Fence")) {
+					plotInArr.add(new PlotFence());
+				} else if (cb.get(counter).getText().equals("Pool")) {
+					plotInArr.add(new PlotPool());
+				} else if (cb.get(counter).getText().equals("Playground")) {
+					plotInArr.add(new PlotPlayground());
+				} else if (cb.get(counter).getText().equals("Path")) {
+					plotInArr.add(new PlotPath());
+				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
+					plotInArr.add(new PlotTrees());
+				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
+					plotInArr.add(new PlotPatio());
+				} else if (cb.get(counter).getText().equals("Bird Bath/Feeder")) {
+					plotInArr.add(new PlotBirdBath());
+				} else if (cb.get(counter).getText().equals("Shed")) {
+					plotInArr.add(new PlotShed());
+				} else if (cb.get(counter).getText().equals("Rocks")) {
+					plotInArr.add(new PlotRock());
+				} else if (cb.get(counter).getText().equals("Other")) {
+					plotInArr.add(new PlotOther());
+				}
+
+			}
+		}
+		return plotInArr;
+	}
+
+	/**
+	 * Checks which options are selected by the user and returns an arraylist of
+	 * seasons
+	 * 
+	 * @param cb
+	 */
+	public ArrayList<Seasons> checkSelectedSeasons(ArrayList<CheckBox> cb) {
+
+		seasonArr = new ArrayList<Seasons>();
+
+		for (int counter = 0; counter < cb.size(); counter++) {
+			if (cb.get(counter).isSelected()) {
+
+				if (cb.get(counter).getText().equals("Winter")) {
+					seasonArr.add(Seasons.WINTER);
+				} else if (cb.get(counter).getText().equals("Summer")) {
+					seasonArr.add(Seasons.SUMMER);
+				} else if (cb.get(counter).getText().equals("Spring")) {
+					seasonArr.add(Seasons.SPRING);
+				} else if (cb.get(counter).getText().equals("Fall")) {
+					seasonArr.add(Seasons.FALL);
+				} else if (cb.get(counter).getText().equals("Yearround")) {
+					seasonArr.add(Seasons.YEARROUND);
+				}
+			}
+		}
+		return seasonArr;
+	}
+
+	/**
+	 * Checks which options are selected by the user and returns an arraylist of
+	 * colors
+	 * 
+	 * @param cb
+	 */
+	public ArrayList<Color> checkSelectedColor(ArrayList<CheckBox> cb) {
+
+		colorArr = new ArrayList<Color>();
+
+		for (int counter = 0; counter < cb.size(); counter++) {
+			if (cb.get(counter).isSelected()) {
+
+				if (cb.get(counter).getText().equals("White")) {
+					colorArr.add(Color.WHITE);
+				} else if (cb.get(counter).getText().equals("Yellow")) {
+					colorArr.add(Color.YELLOW);
+				} else if (cb.get(counter).getText().equals("Orange")) {
+					colorArr.add(Color.ORANGE);
+				} else if (cb.get(counter).getText().equals("Red")) {
+					colorArr.add(Color.RED);
+				} else if (cb.get(counter).getText().equals("Purple/Violet")) {
+					colorArr.add(Color.PURPLE);
+					colorArr.add(Color.VIOLET);
+				} else if (cb.get(counter).getText().equals("Blue")) {
+					colorArr.add(Color.BLUE);
+				} else if (cb.get(counter).getText().equals("Green")) {
+					colorArr.add(Color.GREEN);
+				} else if (cb.get(counter).getText().equals("Brown")) {
+					colorArr.add(Color.BROWN);
+				}
+			}
+		}
+		return colorArr;
 	}
 
 }
