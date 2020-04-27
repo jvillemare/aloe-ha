@@ -75,6 +75,9 @@ public class Download extends Window {
 	 */
 	private Rectangle square;
 
+	/**
+	 * The option of saving the user has chosen
+	 */
 	private String chosenSave;
 
 	/**
