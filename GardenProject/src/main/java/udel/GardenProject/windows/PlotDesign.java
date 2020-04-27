@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -15,14 +16,18 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plants.plotObjects.AdjustablePolygon;
+import udel.GardenProject.plants.plotObjects.PlotObject;
 
 /**
  * Heart of the application: Where the user can drag plants, obstacles, shade,
@@ -103,6 +108,8 @@ public class PlotDesign extends Window {
 	 */
 	private Rectangle box;
 
+	private StackPane centerBox;
+
 	/**
 	 * Create a new PlotDesign window instance.
 	 *
@@ -116,6 +123,12 @@ public class PlotDesign extends Window {
 		leftDropdownVBox = new VBox();
 		leftDropdownVBox.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		tilePane = new TilePane();
+
+		centerBox = new StackPane();
+		box = new Rectangle(620, 550);
+		box.setStroke(Color.BLACK);
+		box.setFill(Color.WHITE);
+		centerBox.getChildren().add(box);
 
 		text = new Text(
 				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
@@ -228,7 +241,20 @@ public class PlotDesign extends Window {
 		editPlotButton = new Button("Edit Plot");
 		editPlotButton.setPadding(new Insets(10, 5, 10, 5));
 		editPlotButton.setStyle("-fx-font-size: 50px;");
-		
+
+		editPlotButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Edit Plot Button");
+
+				AdjustablePolygon poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40);
+				centerBox.getChildren().add(poly.getPolygon());
+				centerBox.getChildren().addAll(poly.getAnchors());
+
+			}
+		});
+
 		Text goToPlantData = new Text("\nGet More Plants");
 		goToPlantData.setStyle("-fx-font-size: 20px;");
 		Button plantDataButton = new Button("Plant Database");
@@ -239,18 +265,12 @@ public class PlotDesign extends Window {
 				switchToWindow(Windows.AllPlants);
 			}
 		});
-		
+
 		plantDataButton.setPadding(new Insets(10, 5, 10, 5));
 		plantDataButton.setStyle("-fx-font-size: 20px;");
 
-		
 		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
 				transitionTxt, transitionBar, editPlotText, editPlotButton, goToPlantData, plantDataButton);
-		
-		
-		box = new Rectangle(620, 550);
-		box.setStroke(Color.BLACK);
-		box.setFill(Color.WHITE);
 
 		leftDropdownVBox.setPrefWidth(255);
 		leftDropdownVBox.setPrefHeight(550);
@@ -269,7 +289,7 @@ public class PlotDesign extends Window {
 		borderPane.setRight(autoRateVBox);
 		borderPane.setLeft(leftDropdownVBox);
 		borderPane.setBottom(tilePane);
-		borderPane.setCenter(box);
+		borderPane.setCenter(centerBox);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
