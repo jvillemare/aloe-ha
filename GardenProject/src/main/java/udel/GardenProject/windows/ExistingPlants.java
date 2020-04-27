@@ -217,8 +217,15 @@ public class ExistingPlants extends Window {
 	 */
 	public void createSearch() {
 
-		// array is just for testing
-		String[] options = { "pine tree", "lavendar", "sun flower" };
+		int len  = this.getModel().getPlants().size();
+		String[] options = new String[len];
+		for(int i = 0; i < len; i++) {
+			options[i] = this.getModel().getPlants().get(i).getLatinName();
+			if (this.getModel().getPlants().get(i).getCommonNames() != null) {
+				String common1 = this.getModel().getPlants().get(i).getCommonNames()[0];
+				options[i] = options[i] + " (" + common1 + ")";
+			}
+		}
 
 		text = new TextField();
 		text.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -258,25 +265,29 @@ public class ExistingPlants extends Window {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle("-fx-font-weight: bold");
-								existingPlants.add(label.getText());
+								if (existingPlants.add(label.getText())) {
 
-								Text textarea = new Text(label.getText());
-								textarea.setStyle("-fx-font-size: 20px;");
-								System.out.println("You selected a plant from the dropdown --> " + label.getText());
+									Text textarea = new Text(label.getText());
+									textarea.setStyle("-fx-font-size: 20px;");
+									System.out.println("You selected a plant from the dropdown --> " + label.getText());
 
-								Button deleteButton = new Button("X");
-								HBox selectedPlant = new HBox(100);
-								selectedPlant.getChildren().addAll(textarea, deleteButton);
+									Button deleteButton = new Button("X");
+									HBox selectedPlant = new HBox(100);
+									selectedPlant.getChildren().addAll(textarea, deleteButton);
 
-								selection.getChildren().addAll(selectedPlant);
-								deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(ActionEvent event) {
-										System.out.println("X: removing selection");
-										existingPlants.remove(label.getText());
-										selectedPlant.getChildren().removeAll(deleteButton, textarea);
-									}
-								});
+									selection.getChildren().addAll(selectedPlant);
+									deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+										@Override
+										public void handle(ActionEvent event) {
+											System.out.println("X: removing selection");
+											existingPlants.remove(label.getText());
+											selectedPlant.getChildren().removeAll(deleteButton, textarea);
+										}
+									});
+								}
+								else {
+									System.out.println(label.getText() + " is already selected.");
+								}
 							}
 						}
 					}
