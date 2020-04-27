@@ -168,6 +168,7 @@ public class PlantSelection extends Window {
 				@Override
 				public void handle(ActionEvent event) {
 					System.out.println("Info: Retreiving Plant information");
+					getModel().setPlantInfoPlant(getModel().getPlants().get(0));
 					switchToWindow(Windows.PlantInfo);
 				}
 			});
