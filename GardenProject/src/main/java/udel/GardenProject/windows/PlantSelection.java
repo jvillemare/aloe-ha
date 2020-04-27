@@ -76,6 +76,28 @@ public class PlantSelection extends Window {
 
 		vbox.getChildren().addAll(text, toggles);
 
+		/**
+		 * TODO: need to get the proper information of the categories
+		 */
+		trees.setOnAction((ActionEvent e) -> {
+			System.out.println("trees");
+			// set so user is only looking at plant in the tree category
+
+		});
+		bushes.setOnAction((ActionEvent e) -> {
+			System.out.println("bushes");
+			// set so user is only looking at plant in the bushes category
+
+		});
+		flowers.setOnAction((ActionEvent e) -> {
+			System.out.println("flowers");
+			// set so user is only looking at plant in the flowers category
+		});
+		/*
+		 * May need to add more toggles depending on how many categories we want to do
+		 * and how many comparators we want to make
+		 */
+
 		createButtons();
 
 		flow = new FlowPane();
@@ -85,7 +107,10 @@ public class PlantSelection extends Window {
 		flow.setPrefWrapLength(870);
 		flow.setStyle("-fx-background-color: DAE6F3;");
 
-		// This is used for testing purposes
+		/**
+		 * TODO: Fix this so the correct plants under each label are shown This is used
+		 * for testing purposes
+		 */
 		Image pages[] = new Image[40];
 		for (int i = 0; i < 40; i++) {
 			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
