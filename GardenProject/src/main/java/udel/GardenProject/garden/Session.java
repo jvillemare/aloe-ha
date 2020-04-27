@@ -101,6 +101,21 @@ public class Session implements Serializable {
 	 * Objects to be displayed on PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
+	
+	/**
+	 * Season selected by user from SeasonView
+	 */
+	private String seasonInput;
+	
+	/**
+	 * Year selected by user from SeasonView
+	 */
+	private int yearInput;
+	
+	/**
+	 * Type of view selected by user from SeasonView
+	 */
+	private String viewInput;
 
 	public boolean isUnsaved() {
 		return unsaved;
@@ -209,6 +224,30 @@ public class Session implements Serializable {
 	
 	public ArrayList<Color> getColorsUserSelected() {
 		return colorsUserSelected;
+	}
+	
+	public String getSeasonInput() {
+		return seasonInput;
+	}
+
+	public void setSeasonInput(String s) {
+		this.seasonInput = s;
+	}
+	
+	public int getYearInput() {
+		return yearInput;
+	}
+
+	public void setYearInput(int y) {
+		this.yearInput = y;
+	}
+	
+	public String getViewInput() {
+		return viewInput;
+	}
+
+	public void setViewInput(String v) {
+		this.viewInput = v;
 	}
 
 }

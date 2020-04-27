@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
@@ -70,7 +69,7 @@ public class SeasonView extends Window {
 	 */
 	private ToggleButton spring, summer, winter, fall;
 	private ToggleButton year0, year1, year2;
-	private ToggleButton windowView, birdsEyeView;
+	private ToggleButton windowView, topView;
 
 	/**
 	 * Used to hold the toggle groups
@@ -81,6 +80,21 @@ public class SeasonView extends Window {
 	 * Prospective area where the image of the garden plot should be
 	 */
 	private Rectangle square;
+
+	/**
+	 * Final toggle the user chose for season
+	 */
+	public String chooseSeason;
+
+	/**
+	 * Final toggle the user chose for the year
+	 */
+	public int chosenYear;
+
+	/**
+	 * Final toggle the user chose for the type of view
+	 */
+	public String chosenView;
 
 	/**
 	 * Create a SeasonView window instance.
@@ -123,10 +137,10 @@ public class SeasonView extends Window {
 		year2.setToggleGroup(yearGroup);
 
 		viewGroup = new ToggleGroup();
-		birdsEyeView = new ToggleButton("View from Top");
+		topView = new ToggleButton("View from Top");
 		windowView = new ToggleButton("View from Window");
 
-		birdsEyeView.setToggleGroup(viewGroup);
+		topView.setToggleGroup(viewGroup);
 		windowView.setToggleGroup(viewGroup);
 
 		back = new Button("Back to Plot Design");
@@ -144,8 +158,8 @@ public class SeasonView extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Save: saving season/year/window options");
-				// add function to save the options the user chose
+				System.out.println("Saving: " + chooseSeason + ", " + chosenYear + ", " + chosenView);
+				getInput();
 			}
 		});
 
@@ -178,12 +192,51 @@ public class SeasonView extends Window {
 
 		seasonHBox = new HBox(summer, spring, fall, winter);
 		yearHBox = new HBox(year0, year1, year2);
-		viewHBox = new HBox(birdsEyeView, windowView);
+		viewHBox = new HBox(topView, windowView);
 
-		/**
-		 * TODO: add listeners to the toggleButtons
-		 */
 		toggleOptionsTilePane.getChildren().addAll(seasonHBox, yearHBox, viewHBox);
+
+		summer.setOnAction((ActionEvent e) -> {
+			System.out.println("summer");
+			chooseSeason = "summer";
+		});
+		spring.setOnAction((ActionEvent e) -> {
+			System.out.println("spring");
+			chooseSeason = "spring";
+
+		});
+		winter.setOnAction((ActionEvent e) -> {
+			System.out.println("winter");
+			chooseSeason = "winter";
+		});
+		fall.setOnAction((ActionEvent e) -> {
+			System.out.println("fall");
+			chooseSeason = "fall";
+		});
+
+		year0.setOnAction((ActionEvent e) -> {
+			System.out.println("year0");
+			chosenYear = 0;
+
+		});
+		year1.setOnAction((ActionEvent e) -> {
+			System.out.println("year1");
+			chosenYear = 1;
+		});
+		year2.setOnAction((ActionEvent e) -> {
+			System.out.println("year2");
+			chosenYear = 2;
+		});
+
+		windowView.setOnAction((ActionEvent e) -> {
+			System.out.println("Window view");
+			chosenView = "window";
+		});
+		topView.setOnAction((ActionEvent e) -> {
+			System.out.println("top View");
+			chosenView = "top";
+
+		});
 
 		layoutCenterVBox.setBackground(new Background(new BackgroundFill(Color.YELLOWGREEN, null, null)));
 		layoutCenterVBox.getChildren().addAll(imageVBox, toggleOptionsTilePane);
@@ -199,9 +252,13 @@ public class SeasonView extends Window {
 	}
 
 	/**
-	 * TODO: Add a function that gets the user input
+	 * Sends input from user to the session after user clicks SAVE
 	 */
 	public void getInput() {
+
+		getSession().setSeasonInput(chooseSeason);
+		getSession().setYearInput(chosenYear);
+		getSession().setViewInput(chosenView);
 
 	}
 
