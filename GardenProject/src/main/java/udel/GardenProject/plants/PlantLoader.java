@@ -952,6 +952,9 @@ public class PlantLoader {
 						pCommon = all;
 					}
 				}
+				if (pCommon != null) {
+					Arrays.sort(pCommon);
+				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
 				if (pBloom == null) {
 					pBloom = iBloom;
@@ -1089,6 +1092,9 @@ public class PlantLoader {
 						pCommon = all;
 					}
 				}
+				if (pCommon != null) {
+					Arrays.sort(pCommon);
+				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
 				if (pBloom == null) {
 					pBloom = iBloom;
@@ -1225,6 +1231,9 @@ public class PlantLoader {
 						}
 						pCommon = all;
 					}
+				}
+				if (pCommon != null) {
+					Arrays.sort(pCommon);
 				}
 				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
 				if (pBloom == null) {
