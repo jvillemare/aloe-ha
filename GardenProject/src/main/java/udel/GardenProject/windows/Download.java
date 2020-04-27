@@ -33,7 +33,7 @@ public class Download extends Window {
 	private Group root;
 	private Scene scene;
 
-	private BorderPane borderPane; 
+	private BorderPane borderPane;
 
 	/**
 	 * Boxes for text at top and Buttons at the bottom
@@ -76,6 +76,11 @@ public class Download extends Window {
 	private Rectangle square;
 
 	/**
+	 * The option of saving the user has chosen
+	 */
+	private String saveOption;
+
+	/**
 	 * Assume the user has no last save file downloaded.
 	 *
 	 * @param m Model
@@ -102,9 +107,11 @@ public class Download extends Window {
 		saveOptions.setAlignment(Pos.CENTER);
 		saveOptions.getChildren().add(pngSave);
 
-		/**
-		 * TODO: add a listener for the save toggles to get which option the user chose
-		 */
+		pngSave.setOnAction((ActionEvent e) -> {
+			System.out.println("png selected");
+			saveOption = "PNG";
+
+		});
 
 		back = new Button("Go Back");
 		back.setOnAction(new EventHandler<ActionEvent>() {
@@ -122,10 +129,8 @@ public class Download extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Load: Loading garden to load menu");
-				/**
-				 * TODO: implement function to load plot in the load option at the welcome menu
-				 * loadPlot(current plot); ???
-				 */
+				System.out.println("Load: .gardenProject");
+				saveOption = "gardenProject";
 			}
 		});
 
@@ -134,7 +139,8 @@ public class Download extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Download: downloading png");
+				System.out.println("Download: " + saveOption);
+				getInput();
 
 			}
 		});
@@ -222,6 +228,16 @@ public class Download extends Window {
 	 */
 	public void exit() {
 		// TODO: Implement
+	}
+
+	/**
+	 * Sends the type of file the user want to save to the session after user clicks
+	 * download
+	 */
+	public void getInput() {
+
+		getSession().setSaveOption(saveOption);
+
 	}
 
 }
