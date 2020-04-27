@@ -11,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -109,6 +112,10 @@ public class PlotDesign extends Window {
 	private Rectangle box;
 
 	private StackPane centerBox;
+	
+	private AdjustablePolygon poly;
+	
+	private Group group;//--------------
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -123,12 +130,14 @@ public class PlotDesign extends Window {
 		leftDropdownVBox = new VBox();
 		leftDropdownVBox.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		tilePane = new TilePane();
+		
+		group = new Group(); //-------------------------
 
 		centerBox = new StackPane();
 		box = new Rectangle(620, 550);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
-		centerBox.getChildren().add(box);
+		group.getChildren().add(box);
 
 		text = new Text(
 				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
@@ -191,15 +200,90 @@ public class PlotDesign extends Window {
 		flow.setStyle("-fx-background-color: DAE6F3;");
 
 		// This is used for testing purposes
-		Button pages[] = new Button[30];
-		for (int i = 0; i < 30; i++) {
-			pages[i] = new Button("hi");
-			pages[i].setStyle("-fx-font-size: 32px;");
-			flow.getChildren().add(pages[i]);
-		}
+		
+		Image pages[] = new Image[40];
+		for (int i = 0; i < 40; i++) {
+			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
+			ImageView imageView = new ImageView(pages[i]);
+			flow.getChildren().add(imageView);
+			
+			
+			
+			imageView.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
+				@Override
+				public void handle(MouseEvent event) {
+					System.out.println("dragging image");
+
+					Node n = (Node)event.getSource();
+					imageView.setLayoutX(imageView.getX() + event.getX()); 
+					imageView.setY(imageView.getY() + event.getY());
+					
+					n.setTranslateX(imageView.getX());
+			    	n.setTranslateY(imageView.getY());
+			    	
+					//imageView.setimg(n);
+
+				}
+			});
+			
+			imageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					System.out.println("image released");
+
+					Node n = (Node)event.getSource();
+					/*
+					if(n.getTranslateX()>=150 && originX<150) {
+						imageView.addimg(n.getTranslateX(),n.getTranslateY());
+					}
+					else if(n.getTranslateX()<150&& originX>=150){
+						n.setVisible(false);
+					}
+					*/
+					
+					if(n.getTranslateX()>=150 ) {
+						//imageView.addimg(n.getTranslateX(),n.getTranslateY());
+						
+						
+						imageView.setTranslateX(imageView.getX());
+						imageView.setTranslateY(imageView.getY());
+				    	ImageView iv = new ImageView();
+				    	Image im = new Image(getClass().getResourceAsStream("/img/hen.png"));
+				    	iv.setImage(im);
+				    	iv.setPreserveRatio(true);
+				    	iv.setFitHeight(100);
+				    	//iv.setOnMouseDragged(im.getHandlerForDrag());
+				    	//iv.setOnMousePressed(im.getHandlerForClick());
+				    	//iv.setOnMouseReleased(imc.getHandlerForRelease());
+				    	iv.setTranslateX(iv.getX());
+				    	iv.setTranslateY(iv.getY());
+				    	flow.getChildren().add(iv);
+						
+						
+						
+						
+					}
+					else if(n.getTranslateX()<150){
+						n.setVisible(false);
+					}
+
+				}
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		
 		scroll = new ScrollPane();
-		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVmax(440);
 		scroll.setPrefSize(850, 600);
@@ -236,11 +320,13 @@ public class PlotDesign extends Window {
 		autoRateVBox.setPrefHeight(550);
 		autoRateVBox.setPadding(new Insets(5, 5, 5, 5));
 
-		editPlotText = new Text("\nEdit Your Plot");
+		editPlotText = new Text("\nAddPlot");
 		editPlotText.setStyle("-fx-font-size: 20px;");
 		editPlotButton = new Button("Edit Plot");
 		editPlotButton.setPadding(new Insets(10, 5, 10, 5));
-		editPlotButton.setStyle("-fx-font-size: 50px;");
+		editPlotButton.setStyle("-fx-font-size: 20px;");
+		
+		
 
 		editPlotButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -248,9 +334,11 @@ public class PlotDesign extends Window {
 			public void handle(ActionEvent event) {
 				System.out.println("Edit Plot Button");
 
-				AdjustablePolygon poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40);
-				centerBox.getChildren().add(poly.getPolygon());
-				centerBox.getChildren().addAll(poly.getAnchors());
+				poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40);
+				group.getChildren().add(poly.getPolygon());
+				group.getChildren().addAll(poly.getAnchors());
+				autoRateVBox.getChildren().addAll(poly.genButton(400, 100));
+				
 
 			}
 		});
@@ -270,7 +358,7 @@ public class PlotDesign extends Window {
 		plantDataButton.setStyle("-fx-font-size: 20px;");
 
 		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
-				transitionTxt, transitionBar, editPlotText, editPlotButton, goToPlantData, plantDataButton);
+				transitionTxt, transitionBar, editPlotText, editPlotButton, /* poly.genButton(400, 100),    */   goToPlantData, plantDataButton);
 
 		leftDropdownVBox.setPrefWidth(255);
 		leftDropdownVBox.setPrefHeight(550);
@@ -289,7 +377,7 @@ public class PlotDesign extends Window {
 		borderPane.setRight(autoRateVBox);
 		borderPane.setLeft(leftDropdownVBox);
 		borderPane.setBottom(tilePane);
-		borderPane.setCenter(centerBox);
+		borderPane.setCenter(group);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
@@ -341,6 +429,8 @@ public class PlotDesign extends Window {
 			}
 		});
 	}
+	
+	
 
 	@Override
 	public Scene getScene() {
@@ -348,8 +438,7 @@ public class PlotDesign extends Window {
 		return this.scene;
 	}
 
-	/**
-	 */
+	
 	public void getObstacle() {
 
 	}
@@ -365,5 +454,6 @@ public class PlotDesign extends Window {
 	public void getPlant() {
 
 	}
-
+	
+	
 }
