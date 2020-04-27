@@ -3,6 +3,7 @@ package udel.GardenProject.windows;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -120,6 +121,7 @@ public class PlotDesign extends Window {
 	 * Used for placement of adjustable polygon and plants/obstacles etc
 	 */
 	private Group group;
+	double xbound;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -208,23 +210,8 @@ public class PlotDesign extends Window {
 			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
 			ImageView imageView = new ImageView(pages[i]);
 			flow.getChildren().add(imageView);
-
-			imageView.setOnMouseDragged(new EventHandler<MouseEvent>() {
-
-				@Override
-				public void handle(MouseEvent event) {
-					System.out.println("dragging image");
-
-					Node n = (Node) event.getSource();
-					imageView.setLayoutX(imageView.getX() + event.getX());
-					imageView.setY(imageView.getY() + event.getY());
-
-					n.setTranslateX(imageView.getX());
-					n.setTranslateY(imageView.getY());
-
-				}
-			});
-
+						
+			imageView.setOnMouseDragged(getHandlerForDrag());	
 			imageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 				@Override
@@ -422,5 +409,25 @@ public class PlotDesign extends Window {
 	public void getPlant() {
 
 	}
+	
+	public void addimage(ImageView img) {
+		group.getChildren().add(img);
+		System.out.println("added");
+	}
+	public void drag(MouseEvent event) {
+		System.out.println("dragging image");
+		ImageView n = (ImageView)event.getSource();
+		ImageView tmp=new ImageView(n.getImage());
+		System.out.println(n.getX());
+		xbound=n.getParent().getLayoutBounds().getMaxX();
+		System.out.println(n.getScene().getWidth());
+		if(!n.getParent().getLayoutBounds().contains(new Point2D(n.getX()+event.getX(),n.getY()+event.getY()))) {
+			addimage(tmp);
+		}
+		
+	}
 
+	public EventHandler getHandlerForDrag() {
+		return event -> drag((MouseEvent) event);
+	}
 }
