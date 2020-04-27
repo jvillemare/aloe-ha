@@ -205,7 +205,7 @@ public class PlantLoaderTest {
 		assertTrue(p.getDescription().equals(p.getDescription()));
 		assertTrue(p.getCanopy() == Canopy.FLOOR);
 		assertTrue(p.getDelawareNative());
-		String[] com = { "scarlet beebalm", "beebalm", "Oswego tea"};
+		String[] com = { "Oswego tea", "beebalm", "scarlet beebalm"};
 		for (int i = 0; i < p.getCommonNames().length; i++) {
 			assertTrue(p.getCommonNames()[i].equals(com[i]));
 		}

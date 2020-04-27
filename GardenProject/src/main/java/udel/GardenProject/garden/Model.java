@@ -13,8 +13,8 @@ import java.util.Iterator;
 
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
-import udel.GardenProject.plants.PlantLatinNameComparator;
 import udel.GardenProject.plants.PlantLoader;
+import udel.GardenProject.plants.PlantNameComparator;
 import udel.GardenProject.windows.*;
 
 /**
@@ -88,7 +88,7 @@ public class Model {
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
 			System.exit(1);
 		}
-		Collections.sort(this.plants, new PlantLatinNameComparator());
+		Collections.sort(this.plants, new PlantNameComparator(true, false));
 		setupWindows();
 	}
 	
