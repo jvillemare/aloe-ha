@@ -1,5 +1,6 @@
 package udel.GardenProject.garden;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -224,7 +225,10 @@ public class Model {
 	public boolean saveCacheFile(Object o, String filepath) {
 		String realFilepath = calculateFilepath(filepath);
 		try {
-			FileOutputStream file = new FileOutputStream(appDataDirectory + realFilepath); 
+			System.out.println(realFilepath);
+			File tmp=new File(realFilepath);
+			tmp.createNewFile();
+			FileOutputStream file = new FileOutputStream(tmp); 
 	        ObjectOutputStream out = new ObjectOutputStream(file); 
 	          
 	        out.writeObject(o); 
@@ -232,6 +236,7 @@ public class Model {
 	        out.close(); 
 	        file.close(); 
 		} catch(IOException e) {
+			System.out.println(e);
 			System.out.println("Model: Failed to save cache file at " + realFilepath);
 			return false;
 		}
@@ -400,6 +405,9 @@ public class Model {
 
 		if (OS.contains("WIN")) { // windows
 			appDataDirectory = System.getenv("AppData");
+			if(!appDataDirectory.endsWith("\\")){
+				appDataDirectory=appDataDirectory+"\\";
+			}
 		} else { // Mac, Linux, other...
 			appDataDirectory = System.getProperty("user.home");
 			appDataDirectory += "/Library/Application Support";
