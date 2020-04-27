@@ -78,7 +78,7 @@ public class Download extends Window {
 	/**
 	 * The option of saving the user has chosen
 	 */
-	private String chosenSave;
+	private String saveOption;
 
 	/**
 	 * Assume the user has no last save file downloaded.
@@ -109,7 +109,7 @@ public class Download extends Window {
 
 		pngSave.setOnAction((ActionEvent e) -> {
 			System.out.println("png selected");
-			chosenSave = "png";
+			saveOption = "PNG";
 
 		});
 
@@ -129,10 +129,8 @@ public class Download extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Load: Loading garden to load menu");
-				/**
-				 * TODO: implement function to load plot in the load option at the welcome menu
-				 * loadPlot(current plot); ???
-				 */
+				System.out.println("Load: .gardenProject");
+				saveOption = "gardenProject";
 			}
 		});
 
@@ -141,7 +139,7 @@ public class Download extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Download: " + chosenSave);
+				System.out.println("Download: " + saveOption);
 				getInput();
 
 			}
@@ -238,7 +236,7 @@ public class Download extends Window {
 	 */
 	public void getInput() {
 
-		getSession().setSaveOption(chosenSave);
+		getSession().setSaveOption(saveOption);
 
 	}
 
