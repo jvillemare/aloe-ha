@@ -418,8 +418,14 @@ public class Questionnaire extends Window {
 
 	}
 
-	public String getChoice(ChoiceBox<String> q4ChoiceBox2) {
-		String x = q4ChoiceBox2.getValue().toString();
+	/**
+	 * Extracts String value from choice box. Used on button call save
+	 * 
+	 * @param q4ChoiceBox2
+	 * @return
+	 */
+	public String getChoice(ChoiceBox<String> choice) {
+		String x = choice.getValue().toString();
 		return x;
 	}
 
