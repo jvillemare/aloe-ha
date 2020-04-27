@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -34,20 +33,53 @@ public class PlantSelection extends Window {
 	private Group root;
 	private Scene scene;
 
+	/**
+	 * Used for overall layout
+	 */
 	private BorderPane borderPane;
+
+	/**
+	 * Hold the buttons at the bottom of the screen
+	 */
 	private TilePane tilePane;
+
+	/**
+	 * Used to hold the text and the toggles at the top of the screen
+	 */
 	private VBox vbox;
+
+	/**
+	 * Information at the top of the screen
+	 */
 	private Text text;
 
+	/**
+	 * Navigation buttons at the bottom of the screen
+	 */
 	private Button back, next;
 
+	/**
+	 * Allows scrolling for all the plants shown in categories
+	 */
 	private ScrollPane scroll;
+
+	/**
+	 * Holds all the images of the plants
+	 */
 	private FlowPane flow;
 
 	private Plant plantArray[];
 
 	private HBox toggles;
+
+	/**
+	 * Holds the category toggles together so the user can only pick one at a time
+	 */
 	private ToggleGroup plantGroup;
+
+	/**
+	 * Toggles for category of plants
+	 */
 	private ToggleButton trees, bushes, flowers;
 
 	public PlantSelection(Model m) {
@@ -94,7 +126,7 @@ public class PlantSelection extends Window {
 			// set so user is only looking at plant in the flowers category
 		});
 		/*
-		 * May need to add more toggles depending on how many categories we want to do
+		 * My need to add more toggles depending on how many categories we want to do
 		 * and how many comparators we want to make
 		 */
 
@@ -136,7 +168,6 @@ public class PlantSelection extends Window {
 				@Override
 				public void handle(ActionEvent event) {
 					System.out.println("Info: Retreiving Plant information");
-					getModel().setPlantInfoPlant(getModel().getPlants().get(0));
 					switchToWindow(Windows.PlantInfo);
 				}
 			});
