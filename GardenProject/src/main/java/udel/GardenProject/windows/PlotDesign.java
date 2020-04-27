@@ -112,11 +112,15 @@ public class PlotDesign extends Window {
 	 */
 	private Rectangle box;
 
-	private StackPane centerBox;
-	
+	/**
+	 * The adjustable plot for the user to move around.
+	 */
 	private AdjustablePolygon poly;
-	
-	private Group group;//--------------
+
+	/**
+	 * Used for placement of adjustable polygon and plants/obstacles etc
+	 */
+	private Group group;
 	double xbound;
 
 	/**
@@ -132,10 +136,8 @@ public class PlotDesign extends Window {
 		leftDropdownVBox = new VBox();
 		leftDropdownVBox.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
 		tilePane = new TilePane();
-		
-		group = new Group(); //-------------------------
+		group = new Group();
 
-		centerBox = new StackPane();
 		box = new Rectangle(620, 550);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
@@ -208,68 +210,38 @@ public class PlotDesign extends Window {
 			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
 			ImageView imageView = new ImageView(pages[i]);
 			flow.getChildren().add(imageView);
-			
-			
-			
-			imageView.setOnMouseDragged(getHandlerForDrag());
-
-
-			
+						
+			imageView.setOnMouseDragged(getHandlerForDrag());	
 			imageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 				@Override
 				public void handle(MouseEvent event) {
 					System.out.println("image released");
 
-					Node n = (Node)event.getSource();
-					/*
-					if(n.getTranslateX()>=150 && originX<150) {
-						imageView.addimg(n.getTranslateX(),n.getTranslateY());
-					}
-					else if(n.getTranslateX()<150&& originX>=150){
-						n.setVisible(false);
-					}
-					*/
-					
-					if(n.getTranslateX()>=150 ) {
-						//imageView.addimg(n.getTranslateX(),n.getTranslateY());
-						
-						
-						imageView.setTranslateX(imageView.getX());
-						imageView.setTranslateY(imageView.getY());
-				    	ImageView iv = new ImageView();
-				    	Image im = new Image(getClass().getResourceAsStream("/img/hen.png"));
-				    	iv.setImage(im);
-				    	iv.setPreserveRatio(true);
-				    	iv.setFitHeight(100);
-				    	//iv.setOnMouseDragged(im.getHandlerForDrag());
-				    	//iv.setOnMousePressed(im.getHandlerForClick());
-				    	//iv.setOnMouseReleased(imc.getHandlerForRelease());
-				    	iv.setTranslateX(iv.getX());
-				    	iv.setTranslateY(iv.getY());
-				    	flow.getChildren().add(iv);
-						
-						
-						
-						
-					}
-					else if(n.getTranslateX()<150){
-						n.setVisible(false);
-					}
+					Node n = (Node) event.getSource();
 
+					if (n.getTranslateX() >= 150) {
+
+						n.setTranslateX(imageView.getX());
+						n.setTranslateY(imageView.getY());
+						ImageView iv = new ImageView();
+						Image im = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true,
+								true);
+						iv.setImage(im);
+						iv.setPreserveRatio(true);
+						iv.setFitHeight(100);
+						iv.setTranslateX(iv.getX());
+						iv.setTranslateY(iv.getY());
+						flow.getChildren().add(iv);
+
+					} else if (n.getTranslateX() < 150) {
+						n.setVisible(false);
+					}
 				}
 			});
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 		}
-		
+
 		scroll = new ScrollPane();
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -313,8 +285,6 @@ public class PlotDesign extends Window {
 		editPlotButton = new Button("Edit Plot");
 		editPlotButton.setPadding(new Insets(10, 5, 10, 5));
 		editPlotButton.setStyle("-fx-font-size: 20px;");
-		
-		
 
 		editPlotButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -326,7 +296,6 @@ public class PlotDesign extends Window {
 				group.getChildren().add(poly.getPolygon());
 				group.getChildren().addAll(poly.getAnchors());
 				autoRateVBox.getChildren().addAll(poly.genButton(400, 100));
-				
 
 			}
 		});
@@ -346,7 +315,8 @@ public class PlotDesign extends Window {
 		plantDataButton.setStyle("-fx-font-size: 20px;");
 
 		autoRateVBox.getChildren().addAll(animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
-				transitionTxt, transitionBar, editPlotText, editPlotButton, /* poly.genButton(400, 100),    */   goToPlantData, plantDataButton);
+				transitionTxt, transitionBar, editPlotText, editPlotButton,
+				/* poly.genButton(400, 100), */ goToPlantData, plantDataButton);
 
 		leftDropdownVBox.setPrefWidth(255);
 		leftDropdownVBox.setPrefHeight(550);
@@ -417,8 +387,6 @@ public class PlotDesign extends Window {
 			}
 		});
 	}
-	
-	
 
 	@Override
 	public Scene getScene() {
@@ -426,7 +394,6 @@ public class PlotDesign extends Window {
 		return this.scene;
 	}
 
-	
 	public void getObstacle() {
 
 	}
