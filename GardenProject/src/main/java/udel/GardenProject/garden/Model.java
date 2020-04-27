@@ -8,10 +8,12 @@ import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plants.PlantLatinNameComparator;
 import udel.GardenProject.plants.PlantLoader;
 import udel.GardenProject.windows.*;
 
@@ -86,6 +88,7 @@ public class Model {
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
 			System.exit(1);
 		}
+		Collections.sort(this.plants, new PlantLatinNameComparator());
 		setupWindows();
 	}
 	
