@@ -62,9 +62,13 @@ public class Session implements Serializable {
 	private int lengthOfUserPlot = 0;
 	
 	/**
-	 * Users objects on their plot
+	 * Users objects near their plot
 	 */
 	private ArrayList<PlotObject> objectsNearPlot;
+	
+	/**
+	 * User object in their plot
+	 */
 	private ArrayList<PlotObject> objectsInPlot;
 	
 	/**
