@@ -3,6 +3,7 @@ package udel.GardenProject.windows;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -116,6 +117,7 @@ public class PlotDesign extends Window {
 	private AdjustablePolygon poly;
 	
 	private Group group;//--------------
+	double xbound;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -200,7 +202,7 @@ public class PlotDesign extends Window {
 		flow.setStyle("-fx-background-color: DAE6F3;");
 
 		// This is used for testing purposes
-		
+
 		Image pages[] = new Image[40];
 		for (int i = 0; i < 40; i++) {
 			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
@@ -209,23 +211,9 @@ public class PlotDesign extends Window {
 			
 			
 			
-			imageView.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			imageView.setOnMouseDragged(getHandlerForDrag());
 
-				@Override
-				public void handle(MouseEvent event) {
-					System.out.println("dragging image");
 
-					Node n = (Node)event.getSource();
-					imageView.setLayoutX(imageView.getX() + event.getX()); 
-					imageView.setY(imageView.getY() + event.getY());
-					
-					n.setTranslateX(imageView.getX());
-			    	n.setTranslateY(imageView.getY());
-			    	
-					//imageView.setimg(n);
-
-				}
-			});
 			
 			imageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
@@ -455,5 +443,24 @@ public class PlotDesign extends Window {
 
 	}
 	
-	
+	public void addimage(ImageView img) {
+		group.getChildren().add(img);
+		System.out.println("added");
+	}
+	public void drag(MouseEvent event) {
+		System.out.println("dragging image");
+		ImageView n = (ImageView)event.getSource();
+		ImageView tmp=new ImageView(n.getImage());
+		System.out.println(n.getX());
+		xbound=n.getParent().getLayoutBounds().getMaxX();
+		System.out.println(n.getScene().getWidth());
+		if(!n.getParent().getLayoutBounds().contains(new Point2D(n.getX()+event.getX(),n.getY()+event.getY()))) {
+			addimage(tmp);
+		}
+		
+	}
+
+	public EventHandler getHandlerForDrag() {
+		return event -> drag((MouseEvent) event);
+	}
 }
