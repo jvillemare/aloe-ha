@@ -356,7 +356,47 @@ public class Questionnaire extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("Save: saving questionnaire responses");
-				saveResponses();
+
+				getSession().setPlotName(textField.getText());
+				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
+				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+
+				nearPlot.add(q2checkBox1);
+				nearPlot.add(q2checkBox2);
+				getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+
+				inPlot.add(q3checkBox1);
+				inPlot.add(q3checkBox2);
+				inPlot.add(q3checkBox3);
+				inPlot.add(q3checkBox4);
+				inPlot.add(q3checkBox5);
+				inPlot.add(q3checkBox6);
+				inPlot.add(q3checkBox7);
+				inPlot.add(q3checkBox8);
+				inPlot.add(q3checkBox9);
+				inPlot.add(q3checkBox10);
+				getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+
+				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
+				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
+				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
+
+				seasonWant.add(q7checkBox1);
+				seasonWant.add(q7checkBox2);
+				seasonWant.add(q7checkBox3);
+				seasonWant.add(q7checkBox4);
+				seasonWant.add(q7checkBox5);
+				getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
+
+				colorWant.add(q8checkBox1);
+				colorWant.add(q8checkBox2);
+				colorWant.add(q8checkBox3);
+				colorWant.add(q8checkBox4);
+				colorWant.add(q8checkBox5);
+				colorWant.add(q8checkBox6);
+				colorWant.add(q8checkBox7);
+				colorWant.add(q8checkBox8);
+				getSession().setColorsUserWants(checkSelectedColor(colorWant));
 
 			}
 		});
@@ -378,52 +418,9 @@ public class Questionnaire extends Window {
 
 	}
 
-	/**
-	 * Saves and sends responses to model
-	 */
-	private void saveResponses() {
-
-		getSession().setPlotName(textField.getText());
-		getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
-		getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
-
-		nearPlot.add(q2checkBox1);
-		nearPlot.add(q2checkBox2);
-		getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-
-		inPlot.add(q3checkBox1);
-		inPlot.add(q3checkBox2);
-		inPlot.add(q3checkBox3);
-		inPlot.add(q3checkBox4);
-		inPlot.add(q3checkBox5);
-		inPlot.add(q3checkBox6);
-		inPlot.add(q3checkBox7);
-		inPlot.add(q3checkBox8);
-		inPlot.add(q3checkBox9);
-		inPlot.add(q3checkBox10);
-		getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
-
-		getSession().setMoistureOfPlot(q4ChoiceBox.getValue());
-		getSession().setSoilTypeOfPlot(q5ChoiceBox.getValue());
-		getSession().setSunlightOfPlot(q6ChoiceBox.getValue());
-
-		seasonWant.add(q7checkBox1);
-		seasonWant.add(q7checkBox2);
-		seasonWant.add(q7checkBox3);
-		seasonWant.add(q7checkBox4);
-		seasonWant.add(q7checkBox5);
-		getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
-
-		colorWant.add(q8checkBox1);
-		colorWant.add(q8checkBox2);
-		colorWant.add(q8checkBox3);
-		colorWant.add(q8checkBox4);
-		colorWant.add(q8checkBox5);
-		colorWant.add(q8checkBox6);
-		colorWant.add(q8checkBox7);
-		colorWant.add(q8checkBox8);
-		getSession().setColorsUserWants(checkSelectedColor(colorWant));
-
+	public String getChoice(ChoiceBox<String> q4ChoiceBox2) {
+		String x = q4ChoiceBox2.getValue().toString();
+		return x;
 	}
 
 	/**
@@ -438,7 +435,6 @@ public class Questionnaire extends Window {
 
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-
 				if (cb.get(counter).getText().equals("Road")) {
 					plotNearArr.add(new PlotRoad());
 				} else if (cb.get(counter).getText().equals("Forest")) {
