@@ -79,7 +79,6 @@ public class Model {
 		this.session = new Session();
 		
 		determineAppDataDirectory();
-		
 		try {
 			this.plants = PlantLoader.getPlants();
 		} catch (IOException | ParseException e) {
