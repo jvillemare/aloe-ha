@@ -247,7 +247,6 @@ public class ExistingPlants extends Window {
 		close.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("X: removing typing");
 				text.setText("");
 
 			}

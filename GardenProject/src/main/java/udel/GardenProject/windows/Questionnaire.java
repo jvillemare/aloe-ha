@@ -1,9 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,15 +17,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.plotObjects.PlotBirdBath;
 import udel.GardenProject.plants.plotObjects.PlotFence;
 import udel.GardenProject.plants.plotObjects.PlotForest;
@@ -54,14 +55,24 @@ public class Questionnaire extends Window {
 	private Scene scene;
 
 	/**
+	 * Used for holding the leaves on either side of the questionnaire
+	 */
+	private VBox leftLeaves, rightLeaves;
+
+	/**
 	 * Background layout
 	 */
 	private BorderPane borderPane;
 
 	/**
-	 * VBox creating for text for title and questions
+	 * VBox creating for text for questions
 	 */
 	private VBox vbox;
+
+	/**
+	 * Vbox for holding the title
+	 */
+	private VBox topBox;
 
 	/**
 	 * TilePane created for buttons at the bottom
@@ -136,40 +147,82 @@ public class Questionnaire extends Window {
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
 
+		leftLeaves = new VBox();
+		leftLeaves.setPadding(new Insets(10, 0, 10, 30));
+
+		rightLeaves = new VBox();
+		rightLeaves.setPadding(new Insets(10, 30, 10, 0));
+
+		createLeaves(leftLeaves);
+		createLeaves(rightLeaves);
+
 		borderPane = new BorderPane();
+		topBox = new VBox();
 		vbox = new VBox();
 		tilePane = new TilePane();
 
 		text = new Text(
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setWrappingWidth(800);
+		text.setWrappingWidth(View.getCanvasWidth() - 20);
 		text.setStyle("-fx-font-size: 20px;");
-		vbox.setStyle("-fx-background-color: DAE6F3;");
-		vbox.setPadding(new Insets(10, 10, 10, 10));
-		vbox.getChildren().add(text);
+		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
 
+		topBox.getChildren().add(text);
+		topBox.setStyle("-fx-background-color: #F6E8E8;");
+		topBox.setPadding(new Insets(10, 10, 0, 10));
+
+		vbox.setStyle("-fx-background-color: #F6DCDA;");
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setMaxWidth(View.getCanvasWidth() - 30);
+		vbox.setPrefSize((View.getCanvasWidth() / 2), View.getCanvasHeight() * (40 / 16));
+		vbox.setPadding(new Insets(10, 10, 10, 10));
 		populateQuestionnaire();
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
+		tilePane.setPadding(new Insets(5, 5, 5, 5));
 		tilePane.setHgap(100);
 		tilePane.getChildren().addAll(backToExistingPlants, save, toPlotDesign);
 
 		scroll = new ScrollPane();
-		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setVmax(440);
-		scroll.setPrefSize(830, 600);
+		scroll.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
+				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setMaxWidth((View.getCanvasWidth() - 450));
+		scroll.setPrefSize((View.getCanvasWidth() - 600),
+				View.getCanvasHeight() - tilePane.getHeight() - topBox.getHeight() - 115);
 		scroll.setContent(vbox);
 
-		borderPane.setStyle("-fx-background-color: DAE6F3;");
-		borderPane.setRight(scroll);
-		borderPane.setTop(vbox);
+		borderPane.setStyle("-fx-background-color: #F6E8E8;");
+		borderPane.setLeft(leftLeaves);
+		borderPane.setRight(rightLeaves);
+		borderPane.setTop(topBox);
+		borderPane.setCenter(scroll);
 		borderPane.setBottom(tilePane);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 830, 635);
+		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+
+	/**
+	 * Creates a vertical column of the logo multiple times. This shows up twice, on
+	 * either side of the questionnaire
+	 * 
+	 * @param box
+	 */
+	public void createLeaves(VBox box) {
+		box.setSpacing(10);
+		box.setAlignment(Pos.CENTER);
+
+		for (int i = 0; i < 5; i++) {
+			Image logo = new Image(getClass().getResourceAsStream("/buttonImages/fiveLeaf.png"));
+			ImageView logoShow = new ImageView(logo);
+			logoShow.setFitHeight(logoShow.getFitWidth() / 2);
+			logoShow.setFitWidth(logoShow.getFitWidth() / 2);
+			box.getChildren().add(logoShow);
+		}
 	}
 
 	/**
