@@ -3,6 +3,8 @@ package udel.GardenProject.plants;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,7 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.enums.Sunlight;
+import udel.GardenProject.garden.Main;
 
 /**
  * Load all the plants from local file databases.
@@ -28,10 +31,10 @@ import udel.GardenProject.enums.Sunlight;
  */
 public class PlantLoader {
 
-	public static final String floraPath = "src/main/resources/plantData/udel-flora.json";
-	public static final String sunnyPath = "src/main/resources/plantData/sunny-edge-plants-data.json";
-	public static final String nativePath = "src/main/resources/plantData/native-plant-center.json";
-	public static final String nrcsPath = "src/main/resources/plantData/nrcs-data.json";
+	public final InputStream floraPath = this.getClass().getResourceAsStream("/plantData/udel-flora.json");
+	public final InputStream sunnyPath = this.getClass().getResourceAsStream("/plantData/sunny-edge-plants-data.json");
+	public final InputStream nativePath = this.getClass().getResourceAsStream("/plantData/native-plant-center.json");
+	public final InputStream nrcsPath = this.getClass().getResourceAsStream("/plantData/nrcs-data.json");
 
 	private static final String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
@@ -56,10 +59,9 @@ public class PlantLoader {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	public static ArrayList<Plant> loadFlora() throws FileNotFoundException, IOException, ParseException {
+	public ArrayList<Plant> loadFlora() throws FileNotFoundException, IOException, ParseException {
 		ArrayList<Plant> result = new ArrayList<>();
-		File myObj = new File(floraPath);
-		Scanner myReader = new Scanner(myObj);
+		Scanner myReader = new Scanner(floraPath);
 		String data = myReader.nextLine();
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
@@ -133,10 +135,9 @@ public class PlantLoader {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static ArrayList<Plant> loadNative() throws FileNotFoundException, IOException, ParseException {
+	public ArrayList<Plant> loadNative() throws FileNotFoundException, IOException, ParseException {
 		ArrayList<Plant> result = new ArrayList<>();
-		File myObj = new File(nativePath);
-		Scanner myReader = new Scanner(myObj);
+		Scanner myReader = new Scanner(nativePath);
 		int count = 0;
 		String data = myReader.nextLine();
 		myReader.close();
@@ -314,10 +315,9 @@ public class PlantLoader {
 	 * @return an ArrayList<Plant> with the plants from sunny-edge-plants-data.json
 	 * @throws FileNotFoundException
 	 */
-	public static ArrayList<Plant> loadSunny() throws FileNotFoundException {
+	public ArrayList<Plant> loadSunny() throws FileNotFoundException {
 		ArrayList<Plant> result = new ArrayList<>();
-		File myObj = new File(sunnyPath);
-		Scanner myReader = new Scanner(myObj);
+		Scanner myReader = new Scanner(sunnyPath);
 		String data = myReader.nextLine();
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
@@ -441,10 +441,9 @@ public class PlantLoader {
 	 * @return an ArrayList<Plant> with the plants from nrcs-data.json
 	 * @throws FileNotFoundException
 	 */
-	public static ArrayList<Plant> loadNRCS() throws FileNotFoundException {
+	public ArrayList<Plant> loadNRCS() throws FileNotFoundException {
 		ArrayList<Plant> result = new ArrayList<>();
-		File myObj = new File(nrcsPath);
-		Scanner myReader = new Scanner(myObj);
+		Scanner myReader = new Scanner(nrcsPath);
 		String data = myReader.nextLine();
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
@@ -889,7 +888,7 @@ public class PlantLoader {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static void merge() throws FileNotFoundException, IOException, ParseException {
+	public void merge() throws FileNotFoundException, IOException, ParseException {
 		HashMap<String, Plant> merge = new HashMap<>();
 		for (Plant p : loadFlora()) {
 			merge.put(p.getLatinName(), p);
@@ -1331,8 +1330,9 @@ public class PlantLoader {
 	 * @throws FileNotFoundException
 	 */
 	public static ArrayList<Plant> getPlants() throws FileNotFoundException, IOException, ParseException {
-		merge();
+		new PlantLoader().merge();
 		ArrayList<Plant> list = new ArrayList<>(Arrays.asList(plants));
 		return list;
 	}
+
 }
