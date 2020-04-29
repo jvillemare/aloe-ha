@@ -26,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 
 /**
  * Welcome screen that first appears when the user starts the program.
@@ -58,8 +59,6 @@ public class Welcome extends Window {
 	 */
 	private FlowPane buttonFlow;
 
-	private Text welcome;
-
 	/**
 	 * The image that is being used at the logo for the welcome screen
 	 */
@@ -86,10 +85,6 @@ public class Welcome extends Window {
 		logoShow.setFitHeight(logoShow.getFitWidth() * 6);
 		logoShow.setFitWidth(logoShow.getFitWidth() * 5);
 
-		welcome = new Text("Aloe-Ha to your Garden!");
-		welcome.setStyle("-fx-font-size: 50px;");
-		welcome.setFill(Color.DARKGREEN);
-
 		createButtons();
 
 		buttonFlow = new FlowPane(Orientation.HORIZONTAL);
@@ -97,12 +92,12 @@ public class Welcome extends Window {
 		buttonFlow.setPadding(new Insets(50, 10, 30, 10));
 		buttonFlow.setVgap(50);
 		buttonFlow.setHgap(50);
-		buttonFlow.setPrefWrapLength(getWindowWidth());
+		buttonFlow.setPrefWrapLength(View.getCanvasWidth());
 		buttonFlow.getChildren().addAll(startNewPlot, loadSavedPlot, tutorialButton);
 
 		centerVBox = new VBox();
 		centerVBox.setAlignment(Pos.CENTER);
-		centerVBox.setPadding(new Insets(getWindowHeight() / 8, 0, getWindowHeight() / 5, 0));
+		centerVBox.setPadding(new Insets(View.getCanvasHeight() / 8, 0, View.getCanvasHeight() / 5, 0));
 		centerVBox.getChildren().addAll(logoShow, buttonFlow);
 
 		welcomeScreen.setStyle("-fx-background-color: #F6E8E8;");
@@ -110,7 +105,7 @@ public class Welcome extends Window {
 
 		this.root = new Group();
 		root.getChildren().add(welcomeScreen);
-		this.scene = new Scene(this.root, getWindowWidth(), getWindowHeight());
+		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
 
 	@Override
@@ -150,7 +145,7 @@ public class Welcome extends Window {
 			}
 		});
 
-		List<Button> buttonArr = new ArrayList();
+		List<Button> buttonArr = new ArrayList<Button>();
 		buttonArr.add(startNewPlot);
 		buttonArr.add(loadSavedPlot);
 		buttonArr.add(tutorialButton);
@@ -179,8 +174,6 @@ public class Welcome extends Window {
 					b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
 				}
 			});
-			
-			
 
 		}
 	}

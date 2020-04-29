@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 
 /**
  * Presently: Basic text description run down of all the features of the program
@@ -58,7 +59,7 @@ public class Tutorial extends Window {
 	/**
 	 * text in vbox at the top of the screen
 	 */
-	private Text welcometxt;
+	private Text welcomeTxt;
 
 	/**
 	 * Holds the back button at the bottom
@@ -74,11 +75,7 @@ public class Tutorial extends Window {
 	 * Create a Tutorial window instance.
 	 *
 	 * @param m Model
-	 * 
-	 *          TODO: Get the screen to be a fixed size so you can actually scroll
-	 *          instead of the screen just getting bigger
 	 */
-
 	public Tutorial(Model m) {
 		super(m, "Tutorial Window");
 
@@ -89,13 +86,13 @@ public class Tutorial extends Window {
 		vbox = new VBox();
 		vbox.setPadding(new Insets(0, 0, 10, 0));
 
-		welcometxt = new Text(
+		welcomeTxt = new Text(
 				"Welcome to the Tutorial! Click on the drop down options below to help you get started on your plot. Happy planting!");
-		welcometxt.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
-		welcometxt.setWrappingWidth(getWindowWidth());
+		welcomeTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
+		welcomeTxt.setWrappingWidth(View.getCanvasWidth());
 
 		VBox welcomePane = new VBox();
-		welcomePane.getChildren().add(welcometxt);
+		welcomePane.getChildren().add(welcomeTxt);
 
 		back = new Button("Back to Main");
 		back.setOnAction(new EventHandler<ActionEvent>() {
@@ -112,11 +109,11 @@ public class Tutorial extends Window {
 		createAccordion();
 
 		centerBox.getChildren().add(accordion);
-		
+
 		scroll = new ScrollPane();
 		scroll.setContent(centerBox);
-		scroll.setMaxWidth(getWindowWidth() - 90);
-		scroll.setMaxHeight(getWindowHeight() - vbox.getHeight() - backPane.getHeight() - 130);
+		scroll.setMaxWidth(View.getCanvasWidth() - 90);
+		scroll.setMaxHeight(View.getCanvasHeight() - vbox.getHeight() - backPane.getHeight() - 130);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
@@ -130,7 +127,7 @@ public class Tutorial extends Window {
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, getWindowWidth(), getWindowHeight());
+		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 
 	}
 

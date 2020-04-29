@@ -22,23 +22,15 @@ public abstract class Window {
 	/**
 	 * Used for all the screens to set a standard width and height
 	 */
-	private double windowWidth = 1300;
-	private double windowHeight = 700;
+	private double windowWidth;
+	private double windowHeight;
 
 	public double getWindowWidth() {
 		return windowWidth;
 	}
 
-	public void setWindowWidth(double d) {
-		this.windowWidth = d;
-	}
-
 	public double getWindowHeight() {
 		return windowHeight;
-	}
-
-	public void setWindowHeight(double d) {
-		this.windowHeight = d;
 	}
 
 	/**
