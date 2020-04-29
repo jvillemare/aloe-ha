@@ -6,12 +6,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -99,7 +96,7 @@ public class Download extends Window {
 		saveOptions.setPadding(new Insets(10, 10, 10, 10));
 
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
-		text.setWrappingWidth(View.getCanvasWidth() -20);
+		text.setWrappingWidth(View.getCanvasWidth() - 20);
 		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
 		vbox.getChildren().addAll(text);
 		vbox.setAlignment(Pos.CENTER);
@@ -113,8 +110,9 @@ public class Download extends Window {
 		createAndHandleButtons();
 
 		square = new Rectangle();
-		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight() -130);
-		square.setWidth(View.getCanvasWidth() -20);
+		square.setHeight(
+				View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight() - 130);
+		square.setWidth(View.getCanvasWidth() - 20);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
@@ -136,12 +134,13 @@ public class Download extends Window {
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
-	
+
 	/**
-	 * Creates and handles the downloading options and the buttons at the bottom of the screen
+	 * Creates and handles the downloading options and the buttons at the bottom of
+	 * the screen
 	 */
 	public void createAndHandleButtons() {
-		
+
 		pngSave.setOnAction((ActionEvent e) -> {
 			saveOption = "PNG";
 
