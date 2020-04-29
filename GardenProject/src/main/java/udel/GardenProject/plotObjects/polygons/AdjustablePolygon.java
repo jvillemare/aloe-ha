@@ -1,4 +1,4 @@
-package udel.GardenProject.plotObjects.shapes;
+package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
@@ -26,6 +26,7 @@ import javafx.scene.shape.StrokeType;
  */
 public class AdjustablePolygon implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Polygon polygon;
 	private ObservableList<Anchor> anchors;
 	private boolean visible=true;

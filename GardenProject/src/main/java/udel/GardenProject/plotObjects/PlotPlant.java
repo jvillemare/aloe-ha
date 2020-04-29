@@ -5,23 +5,21 @@ import java.io.Serializable;
 import udel.GardenProject.plants.Plant;
 
 /**
- * Plant that can appear on the plot in PlotDesign.
+ * Plant that can appear on the plot in PlotDesign.<br><br>
+ * 
+ * Special object that stays in the root of the 
+ * <code>udel.GardenProject.plotObjects</code> package.
  * 
  * @author Team 0
  */
-public class PlotPlant implements PlotObject, Serializable {
+public class PlotPlant extends PlotObject implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * The plant this PlotPlant is representing.
+	 */
 	private Plant p;
-	
-	/**
-	 * Horizontal.
-	 */
-	private double x;
-	
-	/**
-	 * Vertical.
-	 */
-	private double y;
 	
 	/**
 	 * Plant that can appear on in the PlotDesign.
@@ -31,19 +29,16 @@ public class PlotPlant implements PlotObject, Serializable {
 	 * @param y Vertical position in PlotDesign.
 	 */
 	public PlotPlant(Plant p, double x, double y) {
+		super(x, y, p.getCanopy().getAverageCanopyHeight());
 		this.p = p;
-		this.x = x;
-		this.y = y;
 	}
-
-	@Override
-	public double getPlotX() {
-		return this.x;
-	}
-
-	@Override
-	public double getPlotY() {
-		return this.y;
+	
+	/**
+	 * Getter.
+	 * @return	Plant object.
+	 */
+	public Plant getPlant() {
+		return this.p;
 	}
 
 }

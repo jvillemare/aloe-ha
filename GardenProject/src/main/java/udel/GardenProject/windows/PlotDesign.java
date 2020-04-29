@@ -30,8 +30,8 @@ import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
-import udel.GardenProject.plotObjects.shapes.AdjustablePolygon;
 import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
 /**
  * Heart of the application: Where the user can drag plants, obstacles, shade,

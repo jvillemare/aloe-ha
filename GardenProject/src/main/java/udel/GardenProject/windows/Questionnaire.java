@@ -29,19 +29,19 @@ import javafx.scene.text.Text;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.plotObjects.PlotBirdBath;
-import udel.GardenProject.plotObjects.PlotFence;
-import udel.GardenProject.plotObjects.PlotForest;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.PlotOther;
-import udel.GardenProject.plotObjects.PlotPath;
-import udel.GardenProject.plotObjects.PlotPatio;
-import udel.GardenProject.plotObjects.PlotPlayground;
-import udel.GardenProject.plotObjects.PlotPool;
-import udel.GardenProject.plotObjects.PlotRoad;
-import udel.GardenProject.plotObjects.PlotRock;
-import udel.GardenProject.plotObjects.PlotShed;
 import udel.GardenProject.plotObjects.PlotTrees;
+import udel.GardenProject.plotObjects.lines.PlotFence;
+import udel.GardenProject.plotObjects.lines.PlotPath;
+import udel.GardenProject.plotObjects.polygons.PlotForest;
+import udel.GardenProject.plotObjects.polygons.PlotPatio;
+import udel.GardenProject.plotObjects.polygons.PlotPlayground;
+import udel.GardenProject.plotObjects.polygons.PlotPool;
+import udel.GardenProject.plotObjects.polygons.PlotRoad;
+import udel.GardenProject.plotObjects.polygons.PlotRock;
+import udel.GardenProject.plotObjects.polygons.PlotShed;
+import udel.GardenProject.plotObjects.special.PlotBirdBath;
+import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -453,10 +453,10 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Checks which options are selected by the user and returns an arraylist of
+	 * Checks which options are selected by the user and returns an ArrayList of
 	 * PlotObjects
 	 * 
-	 * @param cb
+	 * @param cb	Checkbox.
 	 */
 	public ArrayList<PlotObject> checkSelectedInPlot(ArrayList<CheckBox> cb) {
 
@@ -474,7 +474,10 @@ public class Questionnaire extends Window {
 				} else if (cb.get(counter).getText().equals("Path")) {
 					plotInArr.add(new PlotPath());
 				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
-					plotInArr.add(new PlotTrees());
+					// TODO: Remove checkbox 5. PlotTrees were deleted because we
+					// 			have PlotPlant, and trees are plants and we shouldn't
+					//			duplicate that
+					//plotInArr.add(new PlotTrees());
 				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
 					plotInArr.add(new PlotPatio());
 				} else if (cb.get(counter).getText().equals("Bird Bath/Feeder")) {
