@@ -1,15 +1,12 @@
 package udel.GardenProject.plants;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -21,8 +18,6 @@ import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
-import udel.GardenProject.enums.Sunlight;
-import udel.GardenProject.garden.Main;
 
 /**
  * Load all the plants from local file databases.
@@ -138,7 +133,6 @@ public class PlantLoader {
 	public ArrayList<Plant> loadNative() throws FileNotFoundException, IOException, ParseException {
 		ArrayList<Plant> result = new ArrayList<>();
 		Scanner myReader = new Scanner(nativePath);
-		int count = 0;
 		String data = myReader.nextLine();
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
@@ -893,431 +887,165 @@ public class PlantLoader {
 		for (Plant p : loadFlora()) {
 			merge.put(p.getLatinName(), p);
 		}
-		for (Plant p : loadNative()) {
-			if (merge.get(p.getLatinName()) != null) {
-				Plant in = merge.get(p.getLatinName());
-				String latin = p.getLatinName();
-				String[] pCommon = p.getCommonNames();
-				String pDescription = p.getDescription();
-				boolean[] pBloom = p.getBloomTime();
-				double pLight = p.getLight();
-				Moisture pMoisture = p.getMoisture();
-				SoilTypes pSoilType = p.getSoilType();
-				boolean pNativ = p.getDelawareNative();
-				boolean pInvade = p.getInvasive();
-				Canopy pCanopy = p.getCanopy();
-				PlantDataSource[] pSource = p.getSource();
-				String[] pImages = p.getImages();
-				int pLen;
-				if (pImages == null) {
-					pLen = 0;
-				} else {
-					pLen = pImages.length;
-				}
-				String[] iCommon = in.getCommonNames();
-				String iDescription = in.getDescription();
-				boolean[] iBloom = in.getBloomTime();
-				double iLight = in.getLight();
-				Moisture iMoisture = in.getMoisture();
-				SoilTypes iSoilType = in.getSoilType();
-				boolean iNativ = in.getDelawareNative();
-				boolean iInvade = in.getInvasive();
-				Canopy iCanopy = in.getCanopy();
-				PlantDataSource[] iSource = in.getSource();
-				String[] iImages = in.getImages();
-				int iLen;
-				if (iImages == null) {
-					iLen = 0;
-				} else {
-					iLen = iImages.length;
-				}
-				String[] images = new String[pLen + iLen];
-				if (pCommon == null) {
-					if (iCommon != null) {
-						pCommon = iCommon;
-					}
-				} else {
-					if (iCommon != null) {
-						String[] all = new String[pCommon.length + iCommon.length];
-						int count = 0;
-						for (String c : pCommon) {
-							all[count] = c;
-							count++;
-						}
-						for (String c : iCommon) {
-							all[count] = c;
-							count++;
-						}
-						pCommon = all;
-					}
-				}
-				if (pCommon != null) {
-					Arrays.sort(pCommon);
-				}
-				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
-				if (pBloom == null) {
-					pBloom = iBloom;
-				} else if (iBloom != null) {
-					for (int i = 0; i < iBloom.length; i++) {
-						if (iBloom[i]) {
-							pBloom[i] = true;
-						}
-					}
-				}
-				if (pLight == -1) {
-					if (iLight == -1) {
-						pLight = -1;
-					} else {
-						pLight = iLight;
-					}
-				} else {
-					if (iLight != -1) {
-						pLight = (iLight + pLight) / 2;
-					}
-				}
-				if (pMoisture == null) {
-					if (iMoisture != null) {
-						pMoisture = iMoisture;
-					}
-				} else {
-					if (iMoisture != null) {
-						pMoisture = Moisture.values()[((pMoisture.ordinal() + iMoisture.ordinal()) / 2)];
-					}
-				}
-				if (pSoilType == null) {
-					if (iSoilType != null) {
-						pSoilType = iSoilType;
-					}
-				} else {
-					if (iSoilType != null) {
-						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
-					}
-				}
-				if (pCanopy == null) {
-					if (iCanopy != null) {
-						pCanopy = iCanopy;
-					}
-				} else {
-					if (iCanopy != null) {
-						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
-					}
-				}
-				if (iNativ || pNativ) {
-					pNativ = true;
-				} else {
-					pNativ = false;
-				}
-				if (iInvade || pInvade) {
-					pInvade = true;
-				} else {
-					pInvade = false;
-				}
-				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
-				for (int i = 0; i < in.getSource().length; i++) {
-					newarr[i] = in.getSource()[i];
-				}
-				newarr[in.getSource().length] = pSource[0];
-				int index = 0;
-				for (int i = 0; i < pLen; i++) {
-					images[index] = pImages[i];
-					index++;
-				}
-				for (int i = 0; i < iLen; i++) {
-					images[index] = iImages[i];
-					index++;
-				}
-				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, newarr, images));
-				continue;
-			}
-			merge.put(p.getLatinName(), p);
-		}
-
-		for (Plant p : loadNRCS()) {
-			if (merge.get(p.getLatinName()) != null) {
-				Plant in = merge.get(p.getLatinName());
-				String latin = p.getLatinName();
-				String[] pCommon = p.getCommonNames();
-				String pDescription = p.getDescription();
-				boolean[] pBloom = p.getBloomTime();
-				double pLight = p.getLight();
-				Moisture pMoisture = p.getMoisture();
-				SoilTypes pSoilType = p.getSoilType();
-				boolean pNativ = p.getDelawareNative();
-				boolean pInvade = p.getInvasive();
-				Canopy pCanopy = p.getCanopy();
-				PlantDataSource[] pSource = p.getSource();
-				String[] pImages = p.getImages();
-				int pLen;
-				if (pImages == null) {
-					pLen = 0;
-				} else {
-					pLen = pImages.length;
-				}
-				String[] iCommon = in.getCommonNames();
-				String iDescription = in.getDescription();
-				boolean[] iBloom = in.getBloomTime();
-				double iLight = in.getLight();
-				Moisture iMoisture = in.getMoisture();
-				SoilTypes iSoilType = in.getSoilType();
-				boolean iNativ = in.getDelawareNative();
-				boolean iInvade = in.getInvasive();
-				Canopy iCanopy = in.getCanopy();
-				PlantDataSource[] iSource = in.getSource();
-				String[] iImages = in.getImages();
-				int iLen;
-				if (iImages == null) {
-					iLen = 0;
-				} else {
-					iLen = iImages.length;
-				}
-				String[] images = new String[pLen + iLen];
-				if (pCommon == null) {
-					if (iCommon != null) {
-						pCommon = iCommon;
-					}
-				} else {
-					if (iCommon != null) {
-						String[] all = new String[pCommon.length + iCommon.length];
-						int count = 0;
-						for (String c : pCommon) {
-							all[count] = c;
-							count++;
-						}
-						for (String c : iCommon) {
-							all[count] = c;
-							count++;
-						}
-						pCommon = all;
-					}
-				}
-				if (pCommon != null) {
-					Arrays.sort(pCommon);
-				}
-				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
-				if (pBloom == null) {
-					pBloom = iBloom;
-				} else if (iBloom != null) {
-					for (int i = 0; i < iBloom.length; i++) {
-						if (iBloom[i]) {
-							pBloom[i] = true;
-						}
-					}
-				}
-				if (pLight == -1) {
-					if (iLight == -1) {
-						pLight = -1;
-					} else {
-						pLight = iLight;
-					}
-				} else {
-					if (iLight != -1) {
-						pLight = (iLight + pLight) / 2;
-					}
-				}
-				if (pMoisture == null) {
-					if (iMoisture != null) {
-						pMoisture = iMoisture;
-					}
-				} else {
-					if (iMoisture != null) {
-						pMoisture = Moisture.values()[((pMoisture.ordinal() + iMoisture.ordinal()) / 2)];
-					}
-				}
-				if (pSoilType == null) {
-					if (iSoilType != null) {
-						pSoilType = iSoilType;
-					}
-				} else {
-					if (iSoilType != null) {
-						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
-					}
-				}
-				if (pCanopy == null) {
-					if (iCanopy != null) {
-						pCanopy = iCanopy;
-					}
-				} else {
-					if (iCanopy != null) {
-						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
-					}
-				}
-				if (iNativ || pNativ) {
-					pNativ = true;
-				} else {
-					pNativ = false;
-				}
-				if (iInvade || pInvade) {
-					pInvade = true;
-				} else {
-					pInvade = false;
-				}
-				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
-				for (int i = 0; i < in.getSource().length; i++) {
-					newarr[i] = in.getSource()[i];
-				}
-				newarr[in.getSource().length] = pSource[0];
-				int index = 0;
-				for (int i = 0; i < pLen; i++) {
-					images[index] = pImages[i];
-					index++;
-				}
-				for (int i = 0; i < iLen; i++) {
-					images[index] = iImages[i];
-					index++;
-				}
-				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, newarr, images));
-				continue;
-			}
-			merge.put(p.getLatinName(), p);
-		}
-
-		for (Plant p : loadSunny()) {
-			if (merge.get(p.getLatinName()) != null) {
-				Plant in = merge.get(p.getLatinName());
-				String latin = p.getLatinName();
-				String[] pCommon = p.getCommonNames();
-				String pDescription = p.getDescription();
-				boolean[] pBloom = p.getBloomTime();
-				double pLight = p.getLight();
-				Moisture pMoisture = p.getMoisture();
-				SoilTypes pSoilType = p.getSoilType();
-				boolean pNativ = p.getDelawareNative();
-				boolean pInvade = p.getInvasive();
-				Canopy pCanopy = p.getCanopy();
-				PlantDataSource[] pSource = p.getSource();
-				String[] pImages = p.getImages();
-				int pLen;
-				if (pImages == null) {
-					pLen = 0;
-				} else {
-					pLen = pImages.length;
-				}
-				String[] iCommon = in.getCommonNames();
-				String iDescription = in.getDescription();
-				boolean[] iBloom = in.getBloomTime();
-				double iLight = in.getLight();
-				Moisture iMoisture = in.getMoisture();
-				SoilTypes iSoilType = in.getSoilType();
-				boolean iNativ = in.getDelawareNative();
-				boolean iInvade = in.getInvasive();
-				Canopy iCanopy = in.getCanopy();
-				PlantDataSource[] iSource = in.getSource();
-				String[] iImages = in.getImages();
-				int iLen;
-				if (iImages == null) {
-					iLen = 0;
-				} else {
-					iLen = iImages.length;
-				}
-				String[] images = new String[pLen + iLen];
-				if (pCommon == null) {
-					if (iCommon != null) {
-						pCommon = iCommon;
-					}
-				} else {
-					if (iCommon != null) {
-						String[] all = new String[pCommon.length + iCommon.length];
-						int count = 0;
-						for (String c : pCommon) {
-							all[count] = c;
-							count++;
-						}
-						for (String c : iCommon) {
-							all[count] = c;
-							count++;
-						}
-						pCommon = all;
-					}
-				}
-				if (pCommon != null) {
-					Arrays.sort(pCommon);
-				}
-				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
-				if (pBloom == null) {
-					pBloom = iBloom;
-				} else if (iBloom != null) {
-					for (int i = 0; i < iBloom.length; i++) {
-						if (iBloom[i]) {
-							pBloom[i] = true;
-						}
-					}
-				}
-				if (pLight == -1) {
-					if (iLight == -1) {
-						pLight = -1;
-					} else {
-						pLight = iLight;
-					}
-				} else {
-					if (iLight != -1) {
-						pLight = (iLight + pLight) / 2;
-					}
-				}
-				if (pMoisture == null) {
-					if (iMoisture != null) {
-						pMoisture = iMoisture;
-					}
-				} else {
-					if (iMoisture != null) {
-						pMoisture = Moisture.values()[((pMoisture.ordinal() + iMoisture.ordinal()) / 2)];
-					}
-				}
-				if (pSoilType == null) {
-					if (iSoilType != null) {
-						pSoilType = iSoilType;
-					}
-				} else {
-					if (iSoilType != null) {
-						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
-					}
-				}
-				if (pCanopy == null) {
-					if (iCanopy != null) {
-						pCanopy = iCanopy;
-					}
-				} else {
-					if (iCanopy != null) {
-						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
-					}
-				}
-				if (iNativ || pNativ) {
-					pNativ = true;
-				} else {
-					pNativ = false;
-				}
-				if (iInvade || pInvade) {
-					pInvade = true;
-				} else {
-					pInvade = false;
-				}
-				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
-				for (int i = 0; i < in.getSource().length; i++) {
-					newarr[i] = in.getSource()[i];
-				}
-				newarr[in.getSource().length] = pSource[0];
-				int index = 0;
-				for (int i = 0; i < pLen; i++) {
-					images[index] = pImages[i];
-					index++;
-				}
-				for (int i = 0; i < iLen; i++) {
-					images[index] = iImages[i];
-					index++;
-				}
-				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
-						pNativ, pInvade, newarr, images));
-				continue;
-			}
-			merge.put(p.getLatinName(), p);
-		}
+		
+		merge = addSource(merge, loadNative());
+		merge = addSource(merge, loadNRCS());
+		merge = addSource(merge, loadSunny());
 		int count = 0;
 		plants = new Plant[merge.keySet().size()];
 		for (String key : merge.keySet()) {
 			plants[count] = merge.get(key);
 			count++;
 		}
+	}
+	
+	/**
+	 * Merges Plants from ArrayList source with plants already in HashMap merge.
+	 * 
+	 * @param merge HashMap to add plants from source and is returned.
+	 * @param source ArrayList of plants to add to merge
+	 * @return HashMap merge with added plants
+	 */
+	public static HashMap<String, Plant> addSource(HashMap<String, Plant> merge, ArrayList<Plant> source) {
+		for (Plant p : source) {
+			if (merge.get(p.getLatinName()) != null) {
+				Plant in = merge.get(p.getLatinName());
+				String latin = p.getLatinName();
+				String[] pCommon = p.getCommonNames();
+				String pDescription = p.getDescription();
+				boolean[] pBloom = p.getBloomTime();
+				double pLight = p.getLight();
+				Moisture pMoisture = p.getMoisture();
+				SoilTypes pSoilType = p.getSoilType();
+				boolean pNativ = p.getDelawareNative();
+				boolean pInvade = p.getInvasive();
+				Canopy pCanopy = p.getCanopy();
+				PlantDataSource[] pSource = p.getSource();
+				String[] pImages = p.getImages();
+				int pLen;
+				if (pImages == null) {
+					pLen = 0;
+				} else {
+					pLen = pImages.length;
+				}
+				String[] iCommon = in.getCommonNames();
+				String iDescription = in.getDescription();
+				boolean[] iBloom = in.getBloomTime();
+				double iLight = in.getLight();
+				Moisture iMoisture = in.getMoisture();
+				SoilTypes iSoilType = in.getSoilType();
+				boolean iNativ = in.getDelawareNative();
+				boolean iInvade = in.getInvasive();
+				Canopy iCanopy = in.getCanopy();
+				String[] iImages = in.getImages();
+				int iLen;
+				if (iImages == null) {
+					iLen = 0;
+				} else {
+					iLen = iImages.length;
+				}
+				String[] images = new String[pLen + iLen];
+				if (pCommon == null) {
+					if (iCommon != null) {
+						pCommon = iCommon;
+					}
+				} else {
+					if (iCommon != null) {
+						String[] all = new String[pCommon.length + iCommon.length];
+						int count = 0;
+						for (String c : pCommon) {
+							all[count] = c;
+							count++;
+						}
+						for (String c : iCommon) {
+							all[count] = c;
+							count++;
+						}
+						pCommon = all;
+					}
+				}
+				if (pCommon != null) {
+					Arrays.sort(pCommon);
+				}
+				pDescription = pDescription + iDescription.substring(iDescription.indexOf(":") + 3);
+				if (pBloom == null) {
+					pBloom = iBloom;
+				} else if (iBloom != null) {
+					for (int i = 0; i < iBloom.length; i++) {
+						if (iBloom[i]) {
+							pBloom[i] = true;
+						}
+					}
+				}
+				if (pLight == -1) {
+					if (iLight == -1) {
+						pLight = -1;
+					} else {
+						pLight = iLight;
+					}
+				} else {
+					if (iLight != -1) {
+						pLight = (iLight + pLight) / 2;
+					}
+				}
+				if (pMoisture == null) {
+					if (iMoisture != null) {
+						pMoisture = iMoisture;
+					}
+				} else {
+					if (iMoisture != null) {
+						pMoisture = Moisture.values()[((pMoisture.ordinal() + iMoisture.ordinal()) / 2)];
+					}
+				}
+				if (pSoilType == null) {
+					if (iSoilType != null) {
+						pSoilType = iSoilType;
+					}
+				} else {
+					if (iSoilType != null) {
+						pSoilType = SoilTypes.values()[((pSoilType.ordinal() + iSoilType.ordinal()) / 2)];
+					}
+				}
+				if (pCanopy == null) {
+					if (iCanopy != null) {
+						pCanopy = iCanopy;
+					}
+				} else {
+					if (iCanopy != null) {
+						pCanopy = Canopy.values()[((pCanopy.ordinal() + iCanopy.ordinal()) / 2)];
+					}
+				}
+				if (iNativ || pNativ) {
+					pNativ = true;
+				} else {
+					pNativ = false;
+				}
+				if (iInvade || pInvade) {
+					pInvade = true;
+				} else {
+					pInvade = false;
+				}
+				PlantDataSource newarr[] = new PlantDataSource[in.getSource().length + 1];
+				for (int i = 0; i < in.getSource().length; i++) {
+					newarr[i] = in.getSource()[i];
+				}
+				newarr[in.getSource().length] = pSource[0];
+				int index = 0;
+				for (int i = 0; i < pLen; i++) {
+					images[index] = pImages[i];
+					index++;
+				}
+				for (int i = 0; i < iLen; i++) {
+					images[index] = iImages[i];
+					index++;
+				}
+				merge.put(latin, new Plant(pCommon, latin, pDescription, pBloom, pLight, pMoisture, pSoilType, pCanopy,
+						pNativ, pInvade, newarr, images));
+				continue;
+			}
+			merge.put(p.getLatinName(), p);
+		}
+		return merge;
 	}
 
 	/**
