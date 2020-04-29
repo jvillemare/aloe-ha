@@ -2,19 +2,23 @@ package udel.GardenProject.garden;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 import udel.GardenProject.enums.Seasons;
+import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Holds all the critical user-state information so that a
  * <code>.gardenproject</code> file can be easily loaded in and out without much
- * delay.
+ * delay.<br><br>
  * 
- * Isolated so that it can be saved and loaded easily.
+ * Isolated so that it can be saved and loaded easily.<br><br>
  * 
- * All attributes should be adequately javadoc'd for future reference.
+ * All attributes should be adequately javadoc'd for future reference.<br><br>
+ * 
+ * NOTE: All attributes should be initialized to a default value.
  * 
  * @author Team 0
  */
@@ -64,12 +68,12 @@ public class Session implements Serializable {
 	/**
 	 * Users objects near their plot
 	 */
-	private ArrayList<PlotObject> objectsNearPlot;
+	private ArrayList<PlotObject> objectsNearPlot = new ArrayList<PlotObject>();
 
 	/**
 	 * User object in their plot
 	 */
-	private ArrayList<PlotObject> objectsInPlot;
+	private ArrayList<PlotObject> objectsInPlot = new ArrayList<PlotObject>();
 
 	/**
 	 * User's moisture level of their plot
@@ -85,7 +89,12 @@ public class Session implements Serializable {
 	 * Users sunlight of their plot
 	 */
 	private String sunlightOfPlot = "";
-
+	
+	/**
+	 * Existing plants already in users plot.
+	 */
+	private HashMap<String, Plant> existingPlants;
+	
 	/**
 	 * User's selected seasons for blooms
 	 */
@@ -100,21 +109,24 @@ public class Session implements Serializable {
 	 * Objects to be displayed on PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
+	// TODO: Maybe leave uninitialized until needed
 
 	/**
 	 * Season selected by user from SeasonView
 	 */
-	private String seasonInput;
+	private String seasonInput = "";
+	// TODO: Replace with enum
 
 	/**
 	 * Year selected by user from SeasonView
 	 */
-	private int yearInput;
+	private int yearInput = 0;
 
 	/**
 	 * Type of view selected by user from SeasonView
 	 */
-	private String viewInput;
+	private String viewInput = "";
+	// TODO: Replace with enum
 
 	/**
 	 * The user's selection to how they want to save on the download screen
@@ -258,6 +270,14 @@ public class Session implements Serializable {
 
 	public void setSaveOption(String so) {
 		this.saveOption = so;
+	}
+
+	public HashMap<String, Plant> getExistingPlants() {
+		return existingPlants;
+	}
+
+	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
+		this.existingPlants = existingPlants;
 	}
 
 }

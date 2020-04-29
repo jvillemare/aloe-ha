@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javafx.scene.image.Image;
@@ -201,8 +202,8 @@ public class Model {
 	 * @return	null if no matching results, a Plant array of all matching 
 	 * 			results.
 	 */
-	public ArrayList<Plant> searchPlants(String query) {
-		ArrayList<Plant> results = new ArrayList<Plant>();
+	public HashMap<String, Plant> searchPlants(String query) {
+		HashMap<String, Plant> results = new HashMap<String, Plant>();
 		
 		Iterator<Plant> pIterator = plants.iterator();
 		while(pIterator.hasNext()) {
@@ -217,7 +218,7 @@ public class Model {
 					addToResults = true;
 			
 			if(addToResults)
-				results.add(p);
+				results.put(p.getLatinName(), p);
 		}
 		
 		return results;

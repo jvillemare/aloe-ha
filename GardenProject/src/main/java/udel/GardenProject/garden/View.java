@@ -4,7 +4,11 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import udel.GardenProject.windows.SplashScreen;
 import udel.GardenProject.windows.Window;
 
 /**
@@ -22,7 +26,7 @@ public class View {
 	/**
 	 * Default Scene width, can be overridden by Window objects.
 	 */
-	private final static int canvasWidth = 500;
+	private final int canvasWidth = 500;
 	
 	/**
 	 * DefaDefaultutl Scene height, can be overridden by Window objects.
@@ -40,9 +44,9 @@ public class View {
 	 * @param theStage JavaFX Stage instance.
 	 * @param w The first window to be displayed.
 	 */
-	public View(Stage theStage, Window w) {
-		this.theStage = theStage;	
-		update(w);
+	public View(Stage theStage) {
+		this.theStage = theStage;
+		showSplashScreen();
         this.theStage.show();
 	}
 
@@ -69,7 +73,7 @@ public class View {
 	 * 
 	 * @return canvas width in pixels.
 	 */
-	public static int getCanvasWidth() {
+	public int getCanvasWidth() {
 		return canvasWidth;
 	}
 	
@@ -78,8 +82,25 @@ public class View {
 	 * 
 	 * @return canvas height in pixels.
 	 */
-	public static int getCanvasHeight() {
+	public int getCanvasHeight() {
 		return canvasHeight;
+	}
+	
+	private void showSplashScreen() {
+		Image image = new Image(getClass().getResourceAsStream("/splashscreen.png"));
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(300);
+
+        BorderPane pane = new BorderPane();
+        pane.setPrefSize(400, 300);
+        pane.setCenter(imageView);
+		
+		Group root = new Group();
+		root.getChildren().add(pane);
+		this.theStage.setScene(new Scene(root, 620, 300));
 	}
 
 }

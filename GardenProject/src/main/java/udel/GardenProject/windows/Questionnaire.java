@@ -30,7 +30,6 @@ import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.PlotTrees;
 import udel.GardenProject.plotObjects.lines.PlotFence;
 import udel.GardenProject.plotObjects.lines.PlotPath;
 import udel.GardenProject.plotObjects.polygons.PlotForest;
@@ -441,11 +440,14 @@ public class Questionnaire extends Window {
 
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
+				// TODO: Shouldn't be creating new object instances, use the 
+				//			newly created PlotObjects enum
+				/*
 				if (cb.get(counter).getText().equals("Road")) {
 					plotNearArr.add(new PlotRoad());
 				} else if (cb.get(counter).getText().equals("Forest")) {
 					plotNearArr.add(new PlotForest());
-				}
+				}*/
 
 			}
 		}
@@ -465,6 +467,9 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
+				// TODO: Shouldn't be creating new object instances, use the 
+				//			newly created PlotObjects enum
+				/*
 				if (cb.get(counter).getText().equals("Fence")) {
 					plotInArr.add(new PlotFence());
 				} else if (cb.get(counter).getText().equals("Pool")) {
@@ -488,7 +493,7 @@ public class Questionnaire extends Window {
 					plotInArr.add(new PlotRock());
 				} else if (cb.get(counter).getText().equals("Other")) {
 					plotInArr.add(new PlotOther());
-				}
+				}*/
 
 			}
 		}
