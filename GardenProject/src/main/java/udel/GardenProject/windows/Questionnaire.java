@@ -399,7 +399,6 @@ public class Questionnaire extends Window {
 		backToExistingPlants.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Go Back: moving to ExistingPlants window");
 				switchToWindow(Windows.ExistingPlants);
 			}
 		});
@@ -408,7 +407,6 @@ public class Questionnaire extends Window {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Save: saving questionnaire responses");
 
 				getSession().setPlotName(textField.getText());
 				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
@@ -458,7 +456,6 @@ public class Questionnaire extends Window {
 		toPlotDesign.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Next: moving to PlantSelection window");
 				switchToWindow(Windows.PlantSelection);
 			}
 		});
