@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
 import udel.GardenProject.enums.Seasons;
-import udel.GardenProject.plants.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Holds all the critical user-state information so that a

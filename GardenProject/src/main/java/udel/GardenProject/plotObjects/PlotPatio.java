@@ -1,6 +1,6 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
-public class PlotFence implements PlotObject{
+public class PlotPatio implements PlotObject {
 
 	@Override
 	public double getPlotX() {

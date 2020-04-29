@@ -1,4 +1,4 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
 public class PlotPath implements PlotObject{
 

@@ -1,6 +1,8 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
-public class PlotOther implements PlotObject {
+import udel.GardenProject.plotObjects.shapes.AdjustablePolygon;
+
+public class PlotFence implements PlotObject {
 
 	@Override
 	public double getPlotX() {

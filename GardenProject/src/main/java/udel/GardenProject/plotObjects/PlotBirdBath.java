@@ -1,6 +1,6 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
-public class PlotShed implements PlotObject {
+public class PlotBirdBath implements PlotObject {
 
 	@Override
 	public double getPlotX() {

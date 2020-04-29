@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javafx.scene.image.Image;
+import udel.GardenProject.enums.AppImages;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plants.PlantLoader;
@@ -34,6 +36,11 @@ public class Model {
 	 * Suggested height of stage for Window objects.
 	 */
 	private int height;
+	
+	/**
+	 * All the images used by the application.
+	 */
+	private Image[] appImages;
 	
 	/**
 	 * Where on the user's OS can we save Application 
@@ -81,7 +88,9 @@ public class Model {
 		this.height = height;
 		this.session = new Session();
 		
+		loadAllAppImages();
 		determineAppDataDirectory();
+		
 		try {
 			this.plants = PlantLoader.getPlants();
 		} catch (IOException | ParseException e) {
@@ -90,6 +99,7 @@ public class Model {
 			System.exit(1);
 		}
 		Collections.sort(this.plants, new PlantNameComparator(true, false));
+		
 		setupWindows();
 	}
 	
@@ -412,6 +422,23 @@ public class Model {
 			appDataDirectory = System.getProperty("user.home");
 			appDataDirectory += "/Library/Application Support";
 		}
+	}
+	
+	/**
+	 * Load all of the application images (buttons, etc) so that they are only 
+	 * loaded once and not multiple times.
+	 */
+	private void loadAllAppImages() {
+		int numOfImages = AppImages.values().length;
+		appImages = new Image[numOfImages];
+		
+		for(int i = 0; i < numOfImages; i++)
+			appImages[i] = new Image(
+					getClass().getResourceAsStream(
+								AppImages.values()[i].getPrefix() + 
+								AppImages.values()[i].name()
+							)
+					);
 	}
 	
 	/**

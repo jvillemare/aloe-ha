@@ -12,4 +12,4 @@
  * 
  * @author Team 0
  */
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;

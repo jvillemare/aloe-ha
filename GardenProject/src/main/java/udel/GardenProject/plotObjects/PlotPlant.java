@@ -1,4 +1,4 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
 import java.io.Serializable;
 

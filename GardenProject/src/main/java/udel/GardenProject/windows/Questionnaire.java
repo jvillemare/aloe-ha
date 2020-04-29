@@ -29,19 +29,19 @@ import javafx.scene.text.Text;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.plants.plotObjects.PlotBirdBath;
-import udel.GardenProject.plants.plotObjects.PlotFence;
-import udel.GardenProject.plants.plotObjects.PlotForest;
-import udel.GardenProject.plants.plotObjects.PlotObject;
-import udel.GardenProject.plants.plotObjects.PlotOther;
-import udel.GardenProject.plants.plotObjects.PlotPath;
-import udel.GardenProject.plants.plotObjects.PlotPatio;
-import udel.GardenProject.plants.plotObjects.PlotPlayground;
-import udel.GardenProject.plants.plotObjects.PlotPool;
-import udel.GardenProject.plants.plotObjects.PlotRoad;
-import udel.GardenProject.plants.plotObjects.PlotRock;
-import udel.GardenProject.plants.plotObjects.PlotShed;
-import udel.GardenProject.plants.plotObjects.PlotTrees;
+import udel.GardenProject.plotObjects.PlotBirdBath;
+import udel.GardenProject.plotObjects.PlotFence;
+import udel.GardenProject.plotObjects.PlotForest;
+import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotOther;
+import udel.GardenProject.plotObjects.PlotPath;
+import udel.GardenProject.plotObjects.PlotPatio;
+import udel.GardenProject.plotObjects.PlotPlayground;
+import udel.GardenProject.plotObjects.PlotPool;
+import udel.GardenProject.plotObjects.PlotRoad;
+import udel.GardenProject.plotObjects.PlotRock;
+import udel.GardenProject.plotObjects.PlotShed;
+import udel.GardenProject.plotObjects.PlotTrees;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.

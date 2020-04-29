@@ -1,6 +1,11 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
-public class PlotRock implements PlotObject {
+/**
+ * TODO: What is this?...
+ * 
+ * @author Team 0 
+ */
+public class PlotOther implements PlotObject {
 
 	@Override
 	public double getPlotX() {

@@ -1,7 +1,6 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
-public class PlotPool implements PlotObject{
-
+public class PlotForest implements PlotObject {
 	@Override
 	public double getPlotX() {
 		// TODO Auto-generated method stub
@@ -13,5 +12,4 @@ public class PlotPool implements PlotObject{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 }

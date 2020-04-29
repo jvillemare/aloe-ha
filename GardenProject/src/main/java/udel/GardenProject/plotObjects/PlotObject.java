@@ -1,4 +1,4 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects;
 
 /**
  * An object that can appear in PlotDesign must implement this interface.
