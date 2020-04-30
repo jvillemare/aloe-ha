@@ -438,8 +438,9 @@ public class Questionnaire extends Window {
 				getSession().setPlotName(textField.getText());
 				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
-				getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-				getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+				// TODO: Changed when PlotObject enum comes from #111
+				//getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+				//getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));

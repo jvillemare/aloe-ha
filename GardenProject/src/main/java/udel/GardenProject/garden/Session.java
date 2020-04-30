@@ -66,16 +66,6 @@ public class Session implements Serializable {
 	private int lengthOfUserPlot = 0;
 
 	/**
-	 * Users objects near their plot
-	 */
-	private ArrayList<PlotObject> objectsNearPlot = new ArrayList<PlotObject>();
-
-	/**
-	 * User object in their plot
-	 */
-	private ArrayList<PlotObject> objectsInPlot = new ArrayList<PlotObject>();
-
-	/**
 	 * User's moisture level of their plot
 	 */
 	private String moistureOfPlot = "";
@@ -108,10 +98,9 @@ public class Session implements Serializable {
 	private ArrayList<Color> colorsUserSelected = new ArrayList<Color>();
 
 	/**
-	 * Objects to be displayed on PlotDesign.
+	 * Objects actually in the plot, to be displayed in PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
-	// TODO: Maybe leave uninitialized until needed
 
 	/**
 	 * Season selected by user from SeasonView
@@ -184,22 +173,6 @@ public class Session implements Serializable {
 
 	public int getLengthOfUserPlot() {
 		return lengthOfUserPlot;
-	}
-
-	public void setObjectsNearPlot(ArrayList<PlotObject> near) {
-		this.objectsNearPlot = near;
-	}
-
-	public ArrayList<PlotObject> getObjectsNearPlot() {
-		return objectsNearPlot;
-	}
-
-	public void setObjectsInPlot(ArrayList<PlotObject> in) {
-		this.objectsInPlot = in;
-	}
-
-	public ArrayList<PlotObject> getObjectsInPlot() {
-		return objectsInPlot;
 	}
 
 	public String getMoistureOfPlot() {
