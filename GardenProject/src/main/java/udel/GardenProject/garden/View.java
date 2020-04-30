@@ -70,7 +70,7 @@ public class View {
 	 * 
 	 * @return canvas width in pixels.
 	 */
-	public int getCanvasWidth() {
+	public static int getCanvasWidth() {
 		return canvasWidth;
 	}
 
@@ -79,7 +79,7 @@ public class View {
 	 * 
 	 * @return canvas height in pixels.
 	 */
-	public int getCanvasHeight() {
+	public static int getCanvasHeight() {
 		return canvasHeight;
 	}
 	

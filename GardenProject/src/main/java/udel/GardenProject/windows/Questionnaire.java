@@ -34,6 +34,7 @@ import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.lines.PlotFence;
 import udel.GardenProject.plotObjects.lines.PlotPath;
