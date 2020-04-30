@@ -2,13 +2,9 @@ package udel.GardenProject.garden;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import udel.GardenProject.windows.SplashScreen;
 import udel.GardenProject.windows.Window;
 
 /**
@@ -31,7 +27,7 @@ public class View {
 	/**
 	 * DefaDefaultutl Scene height, can be overridden by Window objects.
 	 */
-	private final static int canvasHeight = 300;
+	private final int canvasHeight = 300;
 	
 	/**
 	 * Reference to the current window object being displayed.
@@ -86,20 +82,22 @@ public class View {
 		return canvasHeight;
 	}
 	
+	/**
+	 * Splash screen that appears to the user right as the application is
+	 * started. Only displays until the Model finishes loading in its 
+	 * constructor.
+	 */
 	private void showSplashScreen() {
-		Image image = new Image(getClass().getResourceAsStream("/splashscreen.png"));
-        ImageView imageView = new ImageView();
-        imageView.setImage(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(400);
-        imageView.setFitHeight(300);
+		// TODO: Doesn't display, fix
+		Label loadingMessage = new Label("Starting application..");
 
         BorderPane pane = new BorderPane();
-        pane.setPrefSize(400, 300);
-        pane.setCenter(imageView);
+        pane.setPrefSize(620, 300);
+        pane.setCenter(loadingMessage);
 		
 		Group root = new Group();
 		root.getChildren().add(pane);
+		this.theStage.setTitle("Aloe-ha ALPHA");
 		this.theStage.setScene(new Scene(root, 620, 300));
 	}
 

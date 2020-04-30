@@ -8,13 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javafx.scene.image.Image;
-import udel.GardenProject.enums.AppImages;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plants.PlantLoader;
@@ -37,11 +34,6 @@ public class Model {
 	 * Suggested height of stage for Window objects.
 	 */
 	private int height;
-	
-	/**
-	 * All the images used by the application.
-	 */
-	private Image[] appImages;
 	
 	/**
 	 * Where on the user's OS can we save Application 
@@ -89,7 +81,6 @@ public class Model {
 		this.height = height;
 		this.session = new Session();
 		
-		loadAllAppImages();
 		determineAppDataDirectory();
 		
 		try {
@@ -203,6 +194,11 @@ public class Model {
 	 * 			results.
 	 */
 	public HashMap<String, Plant> searchPlants(String query) {
+		// preconditions for queries
+		if(query.length() < 3)
+			return null;
+		
+		// regular
 		HashMap<String, Plant> results = new HashMap<String, Plant>();
 		
 		Iterator<Plant> pIterator = plants.iterator();
@@ -213,9 +209,10 @@ public class Model {
 			if(p.getLatinName().contains(query))
 				addToResults = true;
 			
-			for(String commonName : p.getCommonNames())
-				if(commonName.contains(query))
-					addToResults = true;
+			if(p.getCommonNames() != null)
+				for(String commonName : p.getCommonNames())
+					if(commonName.contains(query))
+						addToResults = true;
 			
 			if(addToResults)
 				results.put(p.getLatinName(), p);
@@ -423,23 +420,6 @@ public class Model {
 			appDataDirectory = System.getProperty("user.home");
 			appDataDirectory += "/Library/Application Support";
 		}
-	}
-	
-	/**
-	 * Load all of the application images (buttons, etc) so that they are only 
-	 * loaded once and not multiple times.
-	 */
-	private void loadAllAppImages() {
-		int numOfImages = AppImages.values().length;
-		appImages = new Image[numOfImages];
-		
-		for(int i = 0; i < numOfImages; i++)
-			appImages[i] = new Image(
-					getClass().getResourceAsStream(
-								AppImages.values()[i].getPrefix() + 
-								AppImages.values()[i].name()
-							)
-					);
 	}
 	
 	/**

@@ -3,7 +3,6 @@ package udel.GardenProject.plotObjects.lines;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
-import javafx.scene.shape.Polygon;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 

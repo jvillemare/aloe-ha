@@ -230,11 +230,10 @@ public class ExistingPlants extends Window {
 		dropDownMenu.setAlignment(Pos.CENTER);
 		
 		HashMap<String, Plant> dropDownPlants = getModel().searchPlants(query);
-
-		for (String option : dropDownPlants.keySet()) {
-			// TODO: Maybe remove?...
-			if (!query.replace(" ", "").isEmpty() && option.toUpperCase().contains(query.toUpperCase())) {
-				Label label = new Label(option);
+		
+		if (dropDownPlants != null) {
+			for (Plant p : dropDownPlants.values()) {
+				Label label = new Label(p.getFriendlyName());
 
 				label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
@@ -242,12 +241,12 @@ public class ExistingPlants extends Window {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle("-fx-font-weight: bold");
-								if (getModel().getSession().getExistingPlants().contains(label.getText())
+								String latinName = Plant.trimToLatinName(label.getText());
+								if (getModel().getSession().getExistingPlants().containsKey(latinName))
 									return;
-								
-								if (getModel().getSession().getExistingPlants().add(
-										dropDownPlants.get(label.getText()))
-										) {
+
+								if (getModel().getSession().getExistingPlants().put(latinName,
+										dropDownPlants.get(latinName)) == null) {
 
 									Text textarea = new Text(label.getText());
 									textarea.setStyle("-fx-font-size: 20px;");
@@ -262,12 +261,13 @@ public class ExistingPlants extends Window {
 										@Override
 										public void handle(ActionEvent event) {
 											System.out.println("X: removing selection");
-											existingPlants.remove(label.getText());
+											getModel().getSession().getExistingPlants().remove(latinName);
 											selectedPlant.getChildren().removeAll(deleteButton, textarea);
 										}
 									});
 								} else {
-									System.out.println(label.getText() + " is already selected.");
+									System.out.println("ExistingPlants: '" + label.getText() + "' is already selected, "
+											+ "or failed to be added.");
 								}
 							}
 						}

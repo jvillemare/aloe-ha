@@ -104,7 +104,7 @@ public class Welcome extends Window {
 			}
 		});
 
-		imagePlant = new Image(getClass().getResourceAsStream("/buttonImages/images.png"), 300, 100, true, true);
+		imagePlant = new Image(getClass().getResourceAsStream("/buttonImages/ground_plant.png"), 300, 100, true, true);
 		loadSavedPlot = new Button("Load Saved Plot", new ImageView(imagePlant));
 		loadSavedPlot.setMaxSize(300, 100);
 		loadSavedPlot.setOnAction(new EventHandler<ActionEvent>() {

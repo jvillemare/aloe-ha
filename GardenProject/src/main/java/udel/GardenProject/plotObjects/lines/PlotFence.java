@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
-import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
-
 /**
  * TODO: What is?...
  * 

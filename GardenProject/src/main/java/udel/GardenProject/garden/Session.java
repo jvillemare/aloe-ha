@@ -91,19 +91,21 @@ public class Session implements Serializable {
 	private String sunlightOfPlot = "";
 	
 	/**
-	 * Existing plants already in users plot.
+	 * Existing plants already in users plot.<br><br>
+	 * 
+	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
 	 */
-	private HashMap<String, Plant> existingPlants;
+	private HashMap<String, Plant> existingPlants = new HashMap<String, Plant>();
 	
 	/**
 	 * User's selected seasons for blooms
 	 */
-	private ArrayList<Seasons> seasonsUserSelected;
+	private ArrayList<Seasons> seasonsUserSelected = new ArrayList<Seasons>();
 
 	/**
 	 * User's selected colors for flowers
 	 */
-	private ArrayList<Color> colorsUserSelected;
+	private ArrayList<Color> colorsUserSelected = new ArrayList<Color>();
 
 	/**
 	 * Objects to be displayed on PlotDesign.
@@ -276,6 +278,11 @@ public class Session implements Serializable {
 		return existingPlants;
 	}
 
+	/**
+	 * Setter.<br><br>
+	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
+	 * @param existingPlants	...
+	 */
 	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
 		this.existingPlants = existingPlants;
 	}

@@ -18,13 +18,16 @@ public class ExistingPlantsTest {
 		assertTrue(w.getTitle().equals("ExistingPlants"));
 	}
 	
+	// TODO: May have to strike this. ExistingPlants shouldn't have this
+	//			attribute, as it should be stored in Session.
+	/*
 	@Test
 	public void getExistingPlantTest() {
 		Model m = new Model(0, 1);
 		ExistingPlants w = new ExistingPlants(m);
 		w.getExistingPlants();
 		assertTrue(w.getExistingPlants() instanceof Plant[]);
-	}
+	}*/
 	
 	@Test
 	public void setExistingPlantsTest() {

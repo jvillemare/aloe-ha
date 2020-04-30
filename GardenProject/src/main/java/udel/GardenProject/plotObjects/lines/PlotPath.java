@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
-import udel.GardenProject.plotObjects.PlotObject;
-
 /**
  * TODO: What is this? If polygon, move to polygons package and make it match
  * the other polygons.

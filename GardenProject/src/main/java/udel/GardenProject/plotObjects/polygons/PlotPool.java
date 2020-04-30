@@ -2,10 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.collections.ObservableList;
-import javafx.scene.shape.Polygon;
-import udel.GardenProject.plotObjects.PlotObject;
-
 /**
  * Chlorine-and-water filled of water.
  * 

@@ -1,15 +1,12 @@
 package udel.GardenProject.plants;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -21,8 +18,6 @@ import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
-import udel.GardenProject.enums.Sunlight;
-import udel.GardenProject.garden.Main;
 
 /**
  * Load all the plants from local file databases.
