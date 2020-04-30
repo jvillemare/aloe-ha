@@ -6,21 +6,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 
 /**
  * Where the user can export their plot as a PNG/JPEG, save it as a
@@ -97,9 +96,10 @@ public class Download extends Window {
 		saveOptions.setPadding(new Insets(10, 10, 10, 10));
 
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
-		text.setWrappingWidth(800);
-		text.setStyle("-fx-font-size: 20px;");
+		text.setWrappingWidth(View.getCanvasWidth() - 20);
+		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
 		vbox.getChildren().addAll(text);
+		vbox.setAlignment(Pos.CENTER);
 
 		saveGroup = new ToggleGroup();
 		pngSave = new ToggleButton("PNG");
@@ -107,47 +107,12 @@ public class Download extends Window {
 		saveOptions.setAlignment(Pos.CENTER);
 		saveOptions.getChildren().add(pngSave);
 
-		pngSave.setOnAction((ActionEvent e) -> {
-			System.out.println("png selected");
-			saveOption = "PNG";
-
-		});
-
-		back = new Button("Go Back");
-		back.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Back: Going back to seasonView");
-				switchToWindow(Windows.SeasonView);
-			}
-		});
-
-		load = new Button("Load");
-		load.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Load: Loading garden to load menu");
-				System.out.println("Load: .gardenProject");
-				saveOption = "gardenProject";
-			}
-		});
-
-		downloadButton = new Button("Download");
-		downloadButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				System.out.println("Download: " + saveOption);
-				getInput();
-
-			}
-		});
+		createAndHandleButtons();
 
 		square = new Rectangle();
-		square.setHeight(530);
-		square.setWidth(830);
+		square.setHeight(
+				View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight() - 130);
+		square.setWidth(View.getCanvasWidth() - 20);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
@@ -159,7 +124,7 @@ public class Download extends Window {
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
 
-		borderPane.setBackground(new Background(new BackgroundFill(Color.SEASHELL, null, null)));
+		borderPane.setStyle("-fx-background-color: #F6E8E8;"); // pink
 		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
@@ -167,7 +132,48 @@ public class Download extends Window {
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 850, 650);
+		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+
+	/**
+	 * Creates and handles the downloading options and the buttons at the bottom of
+	 * the screen
+	 */
+	public void createAndHandleButtons() {
+
+		pngSave.setOnAction((ActionEvent e) -> {
+			saveOption = "PNG";
+
+		});
+
+		back = new Button("Go Back");
+		back.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.SeasonView);
+			}
+		});
+
+		load = new Button("Load");
+		load.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("Load: .gardenProject");
+				saveOption = "gardenProject";
+			}
+		});
+
+		downloadButton = new Button("Download");
+		downloadButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				getInput();
+
+			}
+		});
 	}
 
 	/**

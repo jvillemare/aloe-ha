@@ -1,9 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,15 +18,23 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Moisture;
+import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
+import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.plotObjects.PlotBirdBath;
 import udel.GardenProject.plants.plotObjects.PlotFence;
 import udel.GardenProject.plants.plotObjects.PlotForest;
@@ -54,14 +60,24 @@ public class Questionnaire extends Window {
 	private Scene scene;
 
 	/**
+	 * Used for holding the leaves on either side of the questionnaire
+	 */
+	private VBox leftLeaves, rightLeaves;
+
+	/**
 	 * Background layout
 	 */
 	private BorderPane borderPane;
 
 	/**
-	 * VBox creating for text for title and questions
+	 * VBox creating for text for questions
 	 */
 	private VBox vbox;
+
+	/**
+	 * Vbox for holding the title
+	 */
+	private VBox topBox;
 
 	/**
 	 * TilePane created for buttons at the bottom
@@ -136,40 +152,83 @@ public class Questionnaire extends Window {
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
 
+		leftLeaves = new VBox();
+		leftLeaves.setPadding(new Insets(10, 0, 10, 30));
+
+		rightLeaves = new VBox();
+		rightLeaves.setPadding(new Insets(10, 30, 10, 0));
+
+		createLeaves(leftLeaves);
+		createLeaves(rightLeaves);
+
 		borderPane = new BorderPane();
+		topBox = new VBox();
 		vbox = new VBox();
 		tilePane = new TilePane();
 
 		text = new Text(
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setWrappingWidth(800);
+		text.setWrappingWidth(View.getCanvasWidth() - 20);
 		text.setStyle("-fx-font-size: 20px;");
-		vbox.setStyle("-fx-background-color: DAE6F3;");
+		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
+
+		topBox.getChildren().add(text);
+		topBox.setStyle("-fx-background-color: #F6E8E8;");
+		topBox.setPadding(new Insets(10, 10, 0, 10));
+
+		vbox.setStyle("-fx-background-color: #F6DCDA;");
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setMaxWidth(View.getCanvasWidth() - 30);
+		vbox.setPrefSize((View.getCanvasWidth() / 2), View.getCanvasHeight() * (40 / 16));
 		vbox.setPadding(new Insets(10, 10, 10, 10));
-		vbox.getChildren().add(text);
 
 		populateQuestionnaire();
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
+		tilePane.setPadding(new Insets(5, 5, 5, 5));
 		tilePane.setHgap(100);
 		tilePane.getChildren().addAll(backToExistingPlants, save, toPlotDesign);
 
 		scroll = new ScrollPane();
-		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setVmax(440);
-		scroll.setPrefSize(830, 600);
+		scroll.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
+				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		scroll.setMaxWidth((View.getCanvasWidth() - 450));
+		scroll.setPrefSize((View.getCanvasWidth() - 600),
+				View.getCanvasHeight() - tilePane.getHeight() - topBox.getHeight() - 115);
 		scroll.setContent(vbox);
 
-		borderPane.setStyle("-fx-background-color: DAE6F3;");
-		borderPane.setRight(scroll);
-		borderPane.setTop(vbox);
+		borderPane.setStyle("-fx-background-color: #F6E8E8;");
+		borderPane.setLeft(leftLeaves);
+		borderPane.setRight(rightLeaves);
+		borderPane.setTop(topBox);
+		borderPane.setCenter(scroll);
 		borderPane.setBottom(tilePane);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
-		this.scene = new Scene(this.root, 830, 635);
+		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+
+	/**
+	 * Creates a vertical column of the logo multiple times. This shows up twice, on
+	 * either side of the questionnaire
+	 * 
+	 * @param box
+	 */
+	public void createLeaves(VBox box) {
+		box.setSpacing(10);
+		box.setAlignment(Pos.CENTER);
+
+		for (int i = 0; i < 5; i++) {
+			Image logo = new Image(getClass().getResourceAsStream("/buttonImages/fiveLeaf.png"));
+			ImageView logoShow = new ImageView(logo);
+			logoShow.setFitHeight(logoShow.getFitWidth() / 2);
+			logoShow.setFitWidth(logoShow.getFitWidth() / 2);
+			box.getChildren().add(logoShow);
+		}
 	}
 
 	/**
@@ -198,155 +257,175 @@ public class Questionnaire extends Window {
 		Text t = new Text(question);
 		t.setWrappingWidth(800);
 		t.setStyle("-fx-font-size: 20px;");
+		vbox.getChildren().add(t);
 		return t;
 	}
 
+	/**
+	 * Question that allows user to type in the name of their garden
+	 */
 	public void createQ1() {
-		q0 = createText("1) What would you like to name your Garden?");
-
+		createText("1) What would you like to name your Garden?");
 		gardenLabel = new Label("Garden Name:");
 		textField = new TextField();
 		hbname = new HBox();
 		hbname.getChildren().addAll(gardenLabel, textField);
 		hbname.setSpacing(10);
-
-		vbox.getChildren().addAll(q0, hbname);
+		vbox.getChildren().addAll(hbname);
 	}
 
+	/**
+	 * Question that allows the user to type the width and length of their plot
+	 */
 	public void createQ2() {
-		q1 = createText("2) How big is the plot you wish to plant your garden (in ft). (NO LETTERS ALLOWED)");
+		createText("2) How big is the plot you wish to plant your garden (in ft). (NO LETTERS ALLOWED)");
 
 		gardenWidth = new Label("Width:");
 		q1textField1 = new TextField();
 		hbwidth = new HBox();
 		hbwidth.getChildren().addAll(gardenWidth, q1textField1);
-		hbwidth.setSpacing(10);
 
 		gardenHeight = new Label("Height:");
 		q1textField2 = new TextField();
 		hbheight = new HBox();
 		hbheight.getChildren().addAll(gardenHeight, q1textField2);
-		hbheight.setSpacing(10);
 
-		vbox.getChildren().addAll(q1, hbwidth, hbheight);
+		ArrayList<HBox> setHBoxAttributes = new ArrayList<HBox>();
+		setHBoxAttributes.add(hbwidth);
+		setHBoxAttributes.add(hbheight);
+
+		for (HBox hb : setHBoxAttributes) {
+			hb.setSpacing(10);
+		}
+		vbox.getChildren().addAll(hbwidth, hbheight);
 	}
 
+	/**
+	 * Question asking user if their garden is near a road or forest
+	 */
 	public void createQ3() {
-		q2 = createText("3) Is your plot near any of the following? (Please select all that apply)");
 
-		q2checkBox1 = new CheckBox("Road");
-		q2checkBox2 = new CheckBox("Forest");
-
+		createText("3) Is your plot near any of the following? (Please select all that apply)");
+		List<String> objectsNearPlot = List.of(PlotObjects.ROAD.toString(), PlotObjects.FOREST.toString()); 
+		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(); // add checkboxes to this list
+		for (String object : objectsNearPlot) {
+			CheckBox c = new CheckBox(object);
+			q2items.add(c); // added to this list to view
+			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
 		q2ListView = new ListView<>();
-		ObservableList<CheckBox> q1items = FXCollections.observableArrayList(q2checkBox1, q2checkBox2);
-		q2ListView.setItems(q1items);
+		q2ListView.setItems(q2items); // add the items in the observable array to the listView
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		vbox.getChildren().addAll(q2ListView);
 
-		vbox.getChildren().addAll(q2, q2ListView);
 	}
 
+	/**
+	 * Question asking the user if they have any of the items (plot objects) in
+	 * their plot
+	 */
 	public void createQ4() {
 
-		q3 = createText("4) Do you have any of the following items in your garden? (Please select all that apply)");
-
-		q3checkBox1 = new CheckBox("Fence");
-		q3checkBox2 = new CheckBox("Pool");
-		q3checkBox3 = new CheckBox("Playground");
-		q3checkBox4 = new CheckBox("Path");
-		q3checkBox5 = new CheckBox("Non-Removeable trees");
-		q3checkBox6 = new CheckBox("Patio/other lounging area");
-		q3checkBox7 = new CheckBox("Bird Bath/Feeder");
-		q3checkBox8 = new CheckBox("Shed");
-		q3checkBox9 = new CheckBox("Rocks");
-		q3checkBox10 = new CheckBox("Other");
-
+		createText("4) Do you have any of the following items in your garden? (Please select all that apply)");
+		List<String> objectsInPlot = List.of("FENCE", "POOL", "PLAYGROUND", "PATH", "NONREMOVEABLE TREES", "PATIO",
+				"BIRDBATH", "SHED", "ROCKS", "OTHER"); // list of items for near plot
+		ObservableList<CheckBox> q3items = FXCollections.observableArrayList(); // add checkboxes to this list
+		for (String object : objectsInPlot) {
+			CheckBox c = new CheckBox(object);
+			q3items.add(c); // added to this list to view
+			inPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
 		q3ListView = new ListView<>();
-		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(q3checkBox1, q3checkBox2, q3checkBox3,
-				q3checkBox4, q3checkBox5, q3checkBox6, q3checkBox7, q3checkBox8, q3checkBox9, q3checkBox10);
-		q3ListView.setItems(q2items);
+		q3ListView.setItems(q3items); // add the items in the observable array to the listView
 		q3ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		vbox.getChildren().addAll(q3ListView);
 
-		vbox.getChildren().addAll(q3, q3ListView);
 	}
 
+	/**
+	 * Question asking about the moisture of the user's plot
+	 */
 	public void createQ5() {
-		q4 = createText(
+		createText(
 				"5) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
-
 		q4ChoiceBox = new ChoiceBox<>();
-		q4ChoiceBox.getItems().addAll("Dry", "Dry-moist", "Moist", "Moist-damp", "Damp",
-				"My plot has different moisture");
-
-		vbox.getChildren().addAll(q4, q4ChoiceBox);
+		q4ChoiceBox.getItems().addAll(Moisture.DRY.toString(), Moisture.DRY_MOIST.toString(), Moisture.MOIST.toString(),
+				Moisture.MOIST_DAMP.toString(), Moisture.DAMP.toString(), "My plot has different moisture");
+		vbox.getChildren().addAll(q4ChoiceBox);
 	}
 
+	/**
+	 * Question asking about the soil type of the user's plot
+	 */
 	public void createQ6() {
-		q5 = createText(
+		createText(
 				"6) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
-
 		q5ChoiceBox = new ChoiceBox<>();
-		q5ChoiceBox.getItems().addAll("Clay", "Sandy", "Loamy", "My plot has different soil types");
-
-		vbox.getChildren().addAll(q5, q5ChoiceBox);
+		q5ChoiceBox.getItems().addAll(SoilTypes.CLAY.toString(), SoilTypes.SANDY.toString(), SoilTypes.LOAMY.toString(),
+				"My plot has different soil types");
+		vbox.getChildren().addAll(q5ChoiceBox);
 	}
 
+	/**
+	 * Question asking about the sunlight of the user's plot
+	 */
 	public void createQ7() {
-		q6 = createText(
+		createText(
 				"7) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
-
 		q6ChoiceBox = new ChoiceBox<>();
-		q6ChoiceBox.getItems().addAll("Full-sun", "Partial-shade", "Partial-sun", "Full-shade",
+		q6ChoiceBox.getItems().addAll(Sunlight.FULLSUN.toString(), Sunlight.PARTIALSHADE.toString(),
+				Sunlight.PARTIALSUN.toString(), Sunlight.FULLSHADE.toString(),
 				"My plot receives different levels of sunlight");
-
-		vbox.getChildren().addAll(q6, q6ChoiceBox);
+		vbox.getChildren().addAll(q6ChoiceBox);
 	}
 
+	/**
+	 * Question asking about when the user wants their flowers to bloom
+	 */
 	public void createQ8() {
 
-		q7 = createText("8) When would you like to see your garden bloom? (Please select all that apply?");
-
-		q7checkBox1 = new CheckBox("Spring");
-		q7checkBox2 = new CheckBox("Summer");
-		q7checkBox3 = new CheckBox("Winter");
-		q7checkBox4 = new CheckBox("Fall");
-		q7checkBox5 = new CheckBox("Yearround");
-
+		createText("8) When would you like to see your garden bloom? (Please select all that apply?");
+		List<String> seasonsWanted = List.of(Seasons.SPRING.toString(), Seasons.SUMMER.toString(),
+				Seasons.WINTER.toString(), Seasons.FALL.toString(), Seasons.YEARROUND.toString()); 
+		ObservableList<CheckBox> q7items = FXCollections.observableArrayList(); // add checkboxes to this list
+		for (String object : seasonsWanted) {
+			CheckBox c = new CheckBox(object);
+			q7items.add(c); // added to this list to view
+			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
 		q7ListView = new ListView<>();
-		ObservableList<CheckBox> q7items = FXCollections.observableArrayList(q7checkBox1, q7checkBox2, q7checkBox3,
-				q7checkBox4, q7checkBox5);
 		q7ListView.setItems(q7items);
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-		vbox.getChildren().addAll(q7, q7ListView);
+		vbox.getChildren().addAll(q7ListView);
 	}
 
+	/**
+	 * Question asking about what colors they would like to see in their garden
+	 */
 	public void createQ9() {
 
-		q8 = createText("9) What color blooms would you like to see in your garden? (Please select all that apply)");
-
-		q8checkBox1 = new CheckBox("White");
-		q8checkBox2 = new CheckBox("Yellow");
-		q8checkBox3 = new CheckBox("Orange");
-		q8checkBox4 = new CheckBox("Red");
-		q8checkBox5 = new CheckBox("Purple/Violet");
-		q8checkBox6 = new CheckBox("Blue");
-		q8checkBox7 = new CheckBox("Green");
-		q8checkBox8 = new CheckBox("Brown");
-
+		createText("9) What color blooms would you like to see in your garden? (Please select all that apply)");
+		List<String> colorsWanted = List.of("WHITE", "YELLOW", "ORANGE", "RED", "PURPLE", "BLUE", "GREEN", "BROWN"); 
+		ObservableList<CheckBox> q8items = FXCollections.observableArrayList();
+		for (String object : colorsWanted) {
+			CheckBox c = new CheckBox(object);
+			q8items.add(c); // added to this list to view
+			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
 		q8ListView = new ListView<>();
-		ObservableList<CheckBox> q8items = FXCollections.observableArrayList(q8checkBox1, q8checkBox2, q8checkBox3,
-				q8checkBox4, q8checkBox5, q8checkBox6, q8checkBox7, q8checkBox8);
 		q8ListView.setItems(q8items);
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		vbox.getChildren().addAll(q8, q8ListView);
+		vbox.getChildren().addAll(q8ListView);
 	}
 
+	/**
+	 * Creates the handling for the buttons at the bottom of the screen 
+	 */
 	public void createButtons() {
 		backToExistingPlants = new Button("Go Back");
 		backToExistingPlants.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Go Back: moving to ExistingPlants window");
 				switchToWindow(Windows.ExistingPlants);
 			}
 		});
@@ -355,47 +434,17 @@ public class Questionnaire extends Window {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Save: saving questionnaire responses");
 
+				//sends information from questionnaire to Session for later use
 				getSession().setPlotName(textField.getText());
 				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
-
-				nearPlot.add(q2checkBox1);
-				nearPlot.add(q2checkBox2);
 				getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-
-				inPlot.add(q3checkBox1);
-				inPlot.add(q3checkBox2);
-				inPlot.add(q3checkBox3);
-				inPlot.add(q3checkBox4);
-				inPlot.add(q3checkBox5);
-				inPlot.add(q3checkBox6);
-				inPlot.add(q3checkBox7);
-				inPlot.add(q3checkBox8);
-				inPlot.add(q3checkBox9);
-				inPlot.add(q3checkBox10);
 				getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
-
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
-
-				seasonWant.add(q7checkBox1);
-				seasonWant.add(q7checkBox2);
-				seasonWant.add(q7checkBox3);
-				seasonWant.add(q7checkBox4);
-				seasonWant.add(q7checkBox5);
 				getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
-
-				colorWant.add(q8checkBox1);
-				colorWant.add(q8checkBox2);
-				colorWant.add(q8checkBox3);
-				colorWant.add(q8checkBox4);
-				colorWant.add(q8checkBox5);
-				colorWant.add(q8checkBox6);
-				colorWant.add(q8checkBox7);
-				colorWant.add(q8checkBox8);
 				getSession().setColorsUserWants(checkSelectedColor(colorWant));
 
 			}
@@ -405,7 +454,6 @@ public class Questionnaire extends Window {
 		toPlotDesign.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Next: moving to PlantSelection window");
 				switchToWindow(Windows.PlantSelection);
 			}
 		});
@@ -433,7 +481,7 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * PlotObjects
 	 * 
-	 * @param cb
+	 * @param cb --> checkboxes selected for objects outside (near) of plot
 	 */
 	public ArrayList<PlotObject> checkSelectedNearPlot(ArrayList<CheckBox> cb) {
 
@@ -441,9 +489,9 @@ public class Questionnaire extends Window {
 
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				if (cb.get(counter).getText().equals("Road")) {
+				if (cb.get(counter).getText().equals(PlotObjects.ROAD.toString())) {
 					plotNearArr.add(new PlotRoad());
-				} else if (cb.get(counter).getText().equals("Forest")) {
+				} else if (cb.get(counter).getText().equals(PlotObjects.FOREST.toString())) {
 					plotNearArr.add(new PlotForest());
 				}
 
@@ -456,7 +504,7 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * PlotObjects
 	 * 
-	 * @param cb
+	 * @param cb --> checkboxes that are in each listview for objects IN the user's plot
 	 */
 	public ArrayList<PlotObject> checkSelectedInPlot(ArrayList<CheckBox> cb) {
 
@@ -465,25 +513,25 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
-				if (cb.get(counter).getText().equals("Fence")) {
+				if (cb.get(counter).getText().equals("FENCE")) {
 					plotInArr.add(new PlotFence());
-				} else if (cb.get(counter).getText().equals("Pool")) {
+				} else if (cb.get(counter).getText().equals("POOL")) {
 					plotInArr.add(new PlotPool());
-				} else if (cb.get(counter).getText().equals("Playground")) {
+				} else if (cb.get(counter).getText().equals("PLAYGROUND")) {
 					plotInArr.add(new PlotPlayground());
 				} else if (cb.get(counter).getText().equals("Path")) {
 					plotInArr.add(new PlotPath());
-				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
+				} else if (cb.get(counter).getText().equals("NONREMOVEABLE TREES")) {
 					plotInArr.add(new PlotTrees());
-				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
+				} else if (cb.get(counter).getText().equals("PATIO")) {
 					plotInArr.add(new PlotPatio());
-				} else if (cb.get(counter).getText().equals("Bird Bath/Feeder")) {
+				} else if (cb.get(counter).getText().equals("BIRDBATH")) {
 					plotInArr.add(new PlotBirdBath());
-				} else if (cb.get(counter).getText().equals("Shed")) {
+				} else if (cb.get(counter).getText().equals("SHED")) {
 					plotInArr.add(new PlotShed());
-				} else if (cb.get(counter).getText().equals("Rocks")) {
+				} else if (cb.get(counter).getText().equals("ROCKS")) {
 					plotInArr.add(new PlotRock());
-				} else if (cb.get(counter).getText().equals("Other")) {
+				} else if (cb.get(counter).getText().equals("OTHER")) {
 					plotInArr.add(new PlotOther());
 				}
 
@@ -496,7 +544,7 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * seasons
 	 * 
-	 * @param cb
+	 * @param cb --> checkboxes selected for seasons 
 	 */
 	public ArrayList<Seasons> checkSelectedSeasons(ArrayList<CheckBox> cb) {
 
@@ -505,15 +553,15 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
-				if (cb.get(counter).getText().equals("Winter")) {
+				if (cb.get(counter).getText().equals("WINTER")) {
 					seasonArr.add(Seasons.WINTER);
-				} else if (cb.get(counter).getText().equals("Summer")) {
+				} else if (cb.get(counter).getText().equals("SUMMER")) {
 					seasonArr.add(Seasons.SUMMER);
-				} else if (cb.get(counter).getText().equals("Spring")) {
+				} else if (cb.get(counter).getText().equals("SPRING")) {
 					seasonArr.add(Seasons.SPRING);
-				} else if (cb.get(counter).getText().equals("Fall")) {
+				} else if (cb.get(counter).getText().equals("FALL")) {
 					seasonArr.add(Seasons.FALL);
-				} else if (cb.get(counter).getText().equals("Yearround")) {
+				} else if (cb.get(counter).getText().equals("YEARROUND")) {
 					seasonArr.add(Seasons.YEARROUND);
 				}
 			}
@@ -525,7 +573,7 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * colors
 	 * 
-	 * @param cb
+	 * @param cb --> checkboxes checked for the colors
 	 */
 	public ArrayList<Color> checkSelectedColor(ArrayList<CheckBox> cb) {
 
@@ -533,23 +581,22 @@ public class Questionnaire extends Window {
 
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-
-				if (cb.get(counter).getText().equals("White")) {
+				if (cb.get(counter).getText().equals("WHITE")) {
 					colorArr.add(Color.WHITE);
-				} else if (cb.get(counter).getText().equals("Yellow")) {
+				} else if (cb.get(counter).getText().equals("YELLOW")) {
 					colorArr.add(Color.YELLOW);
-				} else if (cb.get(counter).getText().equals("Orange")) {
+				} else if (cb.get(counter).getText().equals("ORANGE")) {
 					colorArr.add(Color.ORANGE);
-				} else if (cb.get(counter).getText().equals("Red")) {
+				} else if (cb.get(counter).getText().equals("RED")) {
 					colorArr.add(Color.RED);
-				} else if (cb.get(counter).getText().equals("Purple/Violet")) {
+				} else if (cb.get(counter).getText().equals("PURPLE")) {
 					colorArr.add(Color.PURPLE);
 					colorArr.add(Color.VIOLET);
-				} else if (cb.get(counter).getText().equals("Blue")) {
+				} else if (cb.get(counter).getText().equals("BLUE")) {
 					colorArr.add(Color.BLUE);
-				} else if (cb.get(counter).getText().equals("Green")) {
+				} else if (cb.get(counter).getText().equals("GREEN")) {
 					colorArr.add(Color.GREEN);
-				} else if (cb.get(counter).getText().equals("Brown")) {
+				} else if (cb.get(counter).getText().equals("BROWN")) {
 					colorArr.add(Color.BROWN);
 				}
 			}
