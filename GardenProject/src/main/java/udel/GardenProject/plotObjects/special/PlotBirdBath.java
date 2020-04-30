@@ -21,7 +21,7 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	 * @param height	...
 	 */
 	public PlotBirdBath(double x, double y, double height) {
-		super(x, y, 4.0); // a bird bath is about 4 feet tall right? 
+		super(x, y, 2.0); // a bird bath is about 4 feet tall right? 
 	}
 
 }

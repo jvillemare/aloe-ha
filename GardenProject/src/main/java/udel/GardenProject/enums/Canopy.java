@@ -73,7 +73,7 @@ public enum Canopy {
 		
 		Canopy[] c = Canopy.values();
 		
-		if(height > c[c.length].maximumHeight)
+		if(height > c[c.length - 1].maximumHeight)
 			return null;
 		
 		for(int i = 0; i < c.length; i++)

@@ -43,7 +43,7 @@ public class View {
 
 	public View(Stage theStage) {
 		this.theStage = theStage;
-		showSplashScreen();
+		//showSplashScreen();
         this.theStage.show();
 	}
 
