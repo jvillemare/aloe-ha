@@ -105,28 +105,23 @@ public abstract class Window {
 
 	/**
 	 * Trigger a Window to update any of it's attributes or call any of its methods
-	 * to refresh.<br>
-	 * <br>
+	 * to refresh.<br><br>
 	 * 
 	 * Invoked by the Model whenever a Window is being switched to.
 	 */
-	public void refresh() {
-	}
+	public void refresh() { }
 
 	/**
 	 * Code executed when the application is being stopped. Invoked by
-	 * Controller.<br>
-	 * <br>
+	 * Controller.<br><br>
 	 * 
 	 * Default implementation is to do nothing. This may need to be implemented for
-	 * each Window, depending.<br>
-	 * <br>
+	 * each Window, depending.<br><br>
 	 * 
 	 * Call any save methods or tear down.
 	 * 
 	 * @see udel.GardenProject.garden.Controller
 	 */
-	public void stop() {
-	}
+	public void stop() { }
 
 }

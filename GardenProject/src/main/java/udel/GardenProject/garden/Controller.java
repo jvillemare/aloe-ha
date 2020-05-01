@@ -16,8 +16,10 @@ public class Controller extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		view = new View(primaryStage);
+		// load model then view, because view will show the stage when there's
+		// nothing there because the model is still loading.
 		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
+		view = new View(primaryStage);
 		
 		new AnimationTimer() {
             public void handle(long currentNanoTime) {

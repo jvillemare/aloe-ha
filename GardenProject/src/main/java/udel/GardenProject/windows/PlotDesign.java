@@ -1,5 +1,7 @@
 package udel.GardenProject.windows;
 
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -45,51 +47,51 @@ public class PlotDesign extends Window {
 	private Scene scene;
 
 	/**
-	 * Used for the overall layout
+	 * Used for the overall layout.
 	 */
 	private BorderPane borderPane;
 
 	/**
-	 * Used to hold text, left and right panels
+	 * Used to hold text, left and right panels.
 	 */
 	private VBox vbox, leftDropdownVBox, autoRateVBox;
 
 	private Text text;
 
 	/**
-	 * Used for labeling autorate bars
+	 * Used for labeling autorate bars.
 	 */
 	private Text animalsFedTxt, contBloomTxt, matchTxt, transitionTxt;
 
 	/**
-	 * Text above editPlotButton
+	 * Text above editPlotButton.
 	 */
 	private Text editPlotText;
 
 	/**
-	 * Used inside of leftDropdownVBox for the plants we will put in the plot
+	 * Used inside of leftDropdownVBox for the plants we will put in the plot.
 	 */
 	private TilePane tilePane;
 
 	private int statistics[];
 
 	/**
-	 * Buttons in tilePane at the bottom of the screen
+	 * Buttons in tilePane at the bottom of the screen.
 	 */
 	private Button backButton, saveButton, loadButton, nextButton;
 
 	/**
-	 * Used for when the user wants to edit the points of their plot
+	 * Used for when the user wants to edit the points of their plot.
 	 */
 	private Button editPlotButton;
 
 	/**
-	 * Holds the options for what the user wants to put in their plot
+	 * Holds the options for what the user wants to put in their plot.
 	 */
 	private HBox optionHBox;
 
 	/**
-	 * Used for toggling options to display
+	 * Used for toggling options to display.
 	 */
 	private ToggleGroup itemGroup;
 	private ToggleButton existingPlants, selectedPlants, obstacles;
@@ -98,12 +100,12 @@ public class PlotDesign extends Window {
 
 	/**
 	 * Used for scrolling in the flowPane for all the options the user can all to
-	 * their plot
+	 * their plot.
 	 */
 	private ScrollPane scroll;
 
 	/**
-	 * Bars showing status of each autorate
+	 * Bars showing status of each autorate.
 	 */
 	private Rectangle animalsFedBar, contBloomBar, matchBar, transitionBar;
 
@@ -118,7 +120,7 @@ public class PlotDesign extends Window {
 	private AdjustablePolygon poly;
 
 	/**
-	 * Used for placement of adjustable polygon and plants/obstacles etc
+	 * Used for placement of adjustable polygon and plants/obstacles etc.
 	 */
 	private Group group;
 	double xbound;
@@ -162,7 +164,6 @@ public class PlotDesign extends Window {
 		optionHBox = new HBox(existingPlants, selectedPlants, obstacles);
 
 		existingPlants.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("ExistingPlants: selected");
@@ -173,10 +174,8 @@ public class PlotDesign extends Window {
 		});
 
 		selectedPlants.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-
 				System.out.println("SelectedPlants: selected");
 				/**
 				 * TODO: add a function here to add the correct tiles
@@ -185,10 +184,8 @@ public class PlotDesign extends Window {
 		});
 
 		obstacles.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-
 				System.out.println("Obstacles: selected");
 				/**
 				 * TODO: add a function here to add the correct tiles
@@ -387,33 +384,108 @@ public class PlotDesign extends Window {
 			}
 		});
 	}
+	
+	/**
+	 * Determine what percentage of plants have food sources for any animal. 
+	 * Looks at the plant descriptions to see if the plant has seeds, nuts, or
+	 * fruits that animals could feed on.
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * 			0.0 means no plants feed animals, and 1.0 means all plants in
+	 * 			the plot feeds animals.
+	 */
+	private double evaluateAnimalsFed() {
+		return 0.0;
+	}
+	
+	/**
+	 * Determine what percentage of the year has plants in bloom. Plants have 
+	 * bloom time stored as a 12 element boolean array, where every month
+	 * corresponds to a month of the year.<br><br>
+	 * 
+	 * This method ORs all the booleans in the Plant's bloom time into a master
+	 * boolean array, and this method determines what percentage of that boolean
+	 * array is true.
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * 			0.0 means there's no bloom in the plot, and 1.0 every month of
+	 * 			the year has a plant in bloom.
+	 */
+	private double evaluateContinousBloom() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		
+		
+		
+		return 0.0;
+	}
+	
+	/**
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 */
+	private double evaluateMatchesGarden() {
+		return 0.0;
+	}
+	
+	/**
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 */
+	private double evaluateTransition() {
+		return 0.0;
+	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
 	}
 
+	/**
+	 * TODO: What does this do?...
+	 */
 	public void getObstacle() {
 
 	}
 
+	/**
+	 * TODO: What does this do?...
+	 * 
+	 * @param obstacle	...
+	 * @return	...
+	 */
 	public Object setObstacle(Object obstacle) {
 		return null;
 	}
 
+	/**
+	 * What does this do?...
+	 * 
+	 * @param p	...
+	 * @return	...
+	 */
 	public Plant setPlant(Plant p) {
 		return p;
 	}
 
+	/**
+	 * TODO: What does this do?...
+	 */
 	public void getPlant() {
 
 	}
 	
+	/**
+	 * TODO: What does this do?....
+	 * @param img	...
+	 */
 	public void addimage(ImageView img) {
 		group.getChildren().add(img);
 		System.out.println("added");
 	}
+	
+	/**
+	 * TODO: What does this do? ...
+	 * @param event	...
+	 */
 	public void drag(MouseEvent event) {
 		System.out.println("dragging image");
 		ImageView n = (ImageView)event.getSource();
@@ -427,7 +499,12 @@ public class PlotDesign extends Window {
 		
 	}
 
+	/**
+	 * TODO: What does this do? ...
+	 * @return	...
+	 */
 	public EventHandler getHandlerForDrag() {
 		return event -> drag((MouseEvent) event);
 	}
+	
 }
