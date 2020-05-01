@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
+import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.plants.plotObjects.PlotObject;
 
@@ -104,7 +105,7 @@ public class Session implements Serializable {
 	/**
 	 * Season selected by user from SeasonView
 	 */
-	private String seasonInput;
+	private Seasons seasonInput;
 
 	/**
 	 * Year selected by user from SeasonView
@@ -228,12 +229,12 @@ public class Session implements Serializable {
 		return colorsUserSelected;
 	}
 
-	public String getSeasonInput() {
+	public Seasons getSeasonInput() {
 		return seasonInput;
 	}
 
-	public void setSeasonInput(String s) {
-		this.seasonInput = s;
+	public void setSeasonInput(Seasons chooseSeason) {
+		this.seasonInput = chooseSeason;
 	}
 
 	public int getYearInput() {
@@ -259,5 +260,16 @@ public class Session implements Serializable {
 	public void setSaveOption(String so) {
 		this.saveOption = so;
 	}
+
+	/**
+	 * TODO: For questionnaire
+	 */
+	/*
+	 * private ArrayList<PlotObjects> selectedPlotObjects = new
+	 * ArrayList<PlotObjects>();
+	 * 
+	 * private ArrayList<PlotObjects> getSelectedPlotObjects() { return
+	 * selectedPlotObjects; }
+	 */
 
 }

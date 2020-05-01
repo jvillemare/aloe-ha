@@ -3,31 +3,25 @@ package udel.GardenProject.windows;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -101,7 +95,16 @@ public class ExistingPlants extends Window {
 	 */
 	private static VBox selection;
 
+	/**
+	 * Used for the user to type in the search box
+	 */
 	private TextField text;
+
+	private int scrollWidthAdjustment = 208;
+	private int scrollHeightAdjustment = 35;
+	private int wrapTextAdjustment = 170;
+	private int backgroundScreenWidth = 100;
+	private int backgroundScreenHeight = 100;
 
 	/**
 	 * Create an ExistingPlants window instance.
@@ -118,18 +121,17 @@ public class ExistingPlants extends Window {
 		tilePane = new TilePane();
 
 		selection = new VBox();
-		selection.setPadding(new Insets(5, 5, 5, 5));
-		selection.setMaxWidth(700);
-		selection.setStyle("-fx-background-color: #F6E8E8;"); // pink behind the selected plants
+		selection.setPadding(new Insets(5));
+		selection.setStyle(View.getPinkBackgroundStyle());
 
 		text1 = new Text("Which plants are already in your Garden?");
 
-		text1.setWrappingWidth(View.getCanvasWidth() - selection.getWidth() - 170);
-		text1.setStyle("-fx-font-size: 20px;");
-		text1.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
-		vbox.setStyle("-fx-background-color: #F6E8E8;");
+		text1.setWrappingWidth(View.getCanvasWidth() - selection.getWidth() - wrapTextAdjustment);
+		text1.setFont(
+				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+		vbox.setStyle(View.getPinkBackgroundStyle());
 		vbox.getChildren().addAll(text1);
-		vbox.setPadding(new Insets(10, 10, 10, 10));
+		vbox.setPadding(new Insets(10));
 
 		createSearch();
 		createButtons();
@@ -144,14 +146,17 @@ public class ExistingPlants extends Window {
 		scroll = new ScrollPane();
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scroll.setPrefSize(View.getCanvasWidth() - selection.getWidth() - 208,
-				View.getCanvasHeight() - vbox.getHeight() - tilePane.getHeight() - 35);
+		scroll.setPrefSize(View.getCanvasWidth() - selection.getWidth() - scrollWidthAdjustment,
+				View.getCanvasHeight() - vbox.getHeight() - tilePane.getHeight() - scrollHeightAdjustment);
 		scroll.setContent(vbox);
 
-		borderPane.setStyle("-fx-background-color: #F6E8E8;"); // pink
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundScreenWidth, backgroundScreenHeight);
+
+		borderPane.setBackground(View.getBackgroundScreen());
 		borderPane.setRight(scroll);
 		borderPane.setLeft(container);
-		borderPane.setTop(vbox);
+		borderPane.setCenter(vbox);
 		borderPane.setBottom(tilePane);
 
 		this.root = new Group();
@@ -191,7 +196,7 @@ public class ExistingPlants extends Window {
 	 */
 	public void createButtons() {
 
-		backToMain = new Button("Back to Main");
+		backToMain = new Button("Go Back");
 		backToMain.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -216,6 +221,35 @@ public class ExistingPlants extends Window {
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
+
+		List<Button> buttons = new ArrayList<Button>();
+		buttons.add(backToMain);
+		buttons.add(save);
+		buttons.add(nextButton);
+
+		for (Button b : buttons) {
+			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
+
+			DropShadow shadow = new DropShadow();
+			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(shadow);
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
+				}
+			});
+
+			b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(null);
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+				}
+			});
+
+		}
 	}
 
 	/**
@@ -242,8 +276,8 @@ public class ExistingPlants extends Window {
 		});
 
 		close = new Button("Clear");
-		close.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 13));
-		close.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+		close.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+		close.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-width: 1;" + "-fx-border-color: #000000;");
 		close.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -255,7 +289,7 @@ public class ExistingPlants extends Window {
 		searchBox.getChildren().addAll(text, close);
 
 		container.add(searchBox, 0, 0);
-		container.setStyle("-fx-background-color: #76C327;"); // green
+		container.setStyle(View.getLightGreenBackgroundStyle());
 	}
 
 	public static VBox populateDropDownMenu(String text, String[] options) {
@@ -280,7 +314,7 @@ public class ExistingPlants extends Window {
 											.loadFont(getClass().getResourceAsStream("/fonts/Hack-Regular.ttf"), 15));
 
 									Button deleteButton = new Button("X");
-									deleteButton.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #BC0504;"
+									deleteButton.setStyle(View.getWhiteBackgroundStyle() + "-fx-text-fill: #BC0504;"
 											+ "-fx-border-width: 1;" + "-fx-border-color: #000000;"); // creates the red
 																										// X inside the
 																										// button
@@ -303,7 +337,7 @@ public class ExistingPlants extends Window {
 												@Override
 												public void handle(MouseEvent e) {
 													deleteButton.setEffect(null);
-													deleteButton.setStyle("-fx-background-color: #FFFFFF;"
+													deleteButton.setStyle(View.getWhiteBackgroundStyle()
 															+ "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
 															+ "-fx-border-color: #000000;");
 												}

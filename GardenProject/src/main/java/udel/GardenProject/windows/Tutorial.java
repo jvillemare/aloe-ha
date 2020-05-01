@@ -12,6 +12,12 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -71,6 +77,10 @@ public class Tutorial extends Window {
 	 */
 	private Accordion accordion;
 
+	int inset10 = 10;
+	int backgroundWidthAndHeight = 100;
+	int topTextSize = 20;
+	
 	/**
 	 * Create a Tutorial window instance.
 	 *
@@ -80,15 +90,14 @@ public class Tutorial extends Window {
 		super(m, "Tutorial Window");
 
 		borderPane = new BorderPane();
-		borderPane.setStyle("-fx-background-color: #F6E8E8;"); // pink
-		borderPane.setPadding(new Insets(10, 10, 10, 10));
+		borderPane.setPadding(new Insets(inset10, inset10, inset10, inset10));
 		backPane = new TilePane();
 		vbox = new VBox();
-		vbox.setPadding(new Insets(0, 0, 10, 0));
+		vbox.setPadding(new Insets(0, 0, inset10, 0));
 
 		welcomeTxt = new Text(
 				"Welcome to the Tutorial! Click on the drop down options below to help you get started on your plot. Happy planting!");
-		welcomeTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
+		welcomeTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
 		welcomeTxt.setWrappingWidth(View.getCanvasWidth());
 
 		VBox welcomePane = new VBox();
@@ -121,6 +130,15 @@ public class Tutorial extends Window {
 		backPane.setPadding(new Insets(10, 10, 10, 10));
 		backPane.getChildren().add(back);
 
+		
+		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
+		BackgroundSize backgroundSize = new BackgroundSize(backgroundWidthAndHeight, backgroundWidthAndHeight, true,
+				true, true, false);
+		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+		Background background = new Background(backgroundImage);
+
+		borderPane.setBackground(background);
 		borderPane.setTop(welcomePane);
 		borderPane.setCenter(scroll);
 		borderPane.setBottom(backPane);
@@ -139,6 +157,13 @@ public class Tutorial extends Window {
 
 	public void createAccordion() {
 		accordion = new Accordion();
+		
+		
+		/**
+		 * TODO: Abstract this. Find a better way to display information. 
+		 * TitledPane does not allow changed made to the new Text!!!!!!!!!!!
+		 * 
+		 */
 		TitledPane pane1 = new TitledPane("How to Get Started",
 				new Text("Click on the 'Start New Plot' Button to begin your plot."));
 		TitledPane pane2 = new TitledPane("How to Navigate to Different Screens",

@@ -21,11 +21,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -136,9 +131,9 @@ public class Questionnaire extends Window {
 	/**
 	 * Used for user input
 	 */
-	private Label gardenLabel, gardenWidth, gardenHeight;
+	private Label gardenLabel, gardenWidth, gardenLength;
 	private TextField textField, q1textField1, q1textField2;
-	private HBox hbname, hbwidth, hbheight;
+	private HBox hbname, hbWidth, hbLength;
 
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane
@@ -169,7 +164,7 @@ public class Questionnaire extends Window {
 		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), infoFontSize));
 
 		topBox.getChildren().add(text);
-		topBox.setStyle("-fx-background-color: #F6E8E8;");
+		topBox.setStyle(View.getPinkBackgroundStyle());
 		topBox.setPadding(new Insets(inset10, inset10, 0, inset10));
 
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
@@ -186,7 +181,7 @@ public class Questionnaire extends Window {
 
 		scroll = new ScrollPane();
 
-		scroll.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
+		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -200,13 +195,9 @@ public class Questionnaire extends Window {
 		scroll.setContent(vbox);
 
 		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
-		BackgroundSize backgroundSize = new BackgroundSize(backgroundWidthAndHeight, backgroundWidthAndHeight, true,
-				true, true, false);
-		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-		Background background = new Background(backgroundImage);
+		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
 
-		borderPane.setBackground(background);
+		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(scroll,
 				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
 		borderPane.setCenter(scroll);
@@ -254,6 +245,7 @@ public class Questionnaire extends Window {
 		createText("1) What would you like to name your Garden?");
 		gardenLabel = new Label("Garden Name:");
 		textField = new TextField();
+		textField.setPromptText("My Garden");
 		hbname = new HBox();
 		hbname.getChildren().addAll(gardenLabel, textField);
 		hbname.setSpacing(inset10);
@@ -264,26 +256,28 @@ public class Questionnaire extends Window {
 	 * Question that allows the user to type the width and length of their plot
 	 */
 	public void createQ2() {
-		createText("2) How big is the plot you wish to plant your garden (in ft). (NO LETTERS ALLOWED)");
+		createText("2) How big is the plot you wish to plant your garden (in ft).");
 
 		gardenWidth = new Label("Width:");
 		q1textField1 = new TextField();
-		hbwidth = new HBox();
-		hbwidth.getChildren().addAll(gardenWidth, q1textField1);
+		q1textField1.setPromptText("50");
+		hbWidth = new HBox();
+		hbWidth.getChildren().addAll(gardenWidth, q1textField1);
 
-		gardenHeight = new Label("Height:");
+		gardenLength = new Label("Length:");
 		q1textField2 = new TextField();
-		hbheight = new HBox();
-		hbheight.getChildren().addAll(gardenHeight, q1textField2);
+		q1textField2.setPromptText("75");
+		hbLength = new HBox();
+		hbLength.getChildren().addAll(gardenLength, q1textField2);
 
 		ArrayList<HBox> setHBoxAttributes = new ArrayList<HBox>();
-		setHBoxAttributes.add(hbwidth);
-		setHBoxAttributes.add(hbheight);
+		setHBoxAttributes.add(hbWidth);
+		setHBoxAttributes.add(hbLength);
 
 		for (HBox hb : setHBoxAttributes) {
 			hb.setSpacing(inset10);
 		}
-		vbox.getChildren().addAll(hbwidth, hbheight);
+		vbox.getChildren().addAll(hbWidth, hbLength);
 	}
 
 	/**
@@ -292,10 +286,10 @@ public class Questionnaire extends Window {
 	public void createQ3() {
 
 		createText("3) Is your plot near any of the following? (Please select all that apply)");
-		List<String> objectsNearPlot = List.of(PlotObjects.ROAD.toString(), PlotObjects.FOREST.toString());
+		List<PlotObjects> objectsNearPlot = List.of(PlotObjects.ROAD, PlotObjects.FOREST);
 		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(); // add checkboxes to this list
-		for (String object : objectsNearPlot) {
-			CheckBox c = new CheckBox(object);
+		for (PlotObjects plotObjectEnum : objectsNearPlot) {
+			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
 			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
@@ -313,9 +307,8 @@ public class Questionnaire extends Window {
 	public void createQ4() {
 
 		createText("4) Do you have any of the following items in your garden? (Please select all that apply)");
-		List<String> objectsInPlot = List.of(PlotObjects.FENCE.toString(), PlotObjects.POOL.toString(),
-				PlotObjects.PLAYGROUND.toString(), PlotObjects.PATH.toString(),
-				PlotObjects.NONREMOEABLE_TREES.toString(), PlotObjects.PATIO.toString(),
+		List<String> objectsInPlot = List.of("FENCE", "POOL", PlotObjects.PLAYGROUND.toString(),
+				PlotObjects.PATH.toString(), PlotObjects.NONREMOEABLE_TREES.toString(), PlotObjects.PATIO.toString(),
 				PlotObjects.BIRDBATH.toString(), PlotObjects.SHED.toString(), PlotObjects.ROCKS.toString(),
 				PlotObjects.OTHER.toString()); // list of items for near plot
 		ObservableList<CheckBox> q3items = FXCollections.observableArrayList(); // add checkboxes to this list
@@ -429,13 +422,13 @@ public class Questionnaire extends Window {
 				getSession().setPlotName(textField.getText());
 				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
-				getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-				getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+				// getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+				// getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
-				getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
-				getSession().setColorsUserWants(checkSelectedColor(colorWant));
+				// getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
+				// getSession().setColorsUserWants(checkSelectedColor(colorWant));
 
 			}
 		});
@@ -454,8 +447,8 @@ public class Questionnaire extends Window {
 		bottomButtons.add(toPlotDesign);
 
 		for (Button b : bottomButtons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12));
-			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 			b.setPrefWidth(buttonPrefWidth);
 
 			DropShadow shadow = new DropShadow();
@@ -463,7 +456,7 @@ public class Questionnaire extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -471,7 +464,7 @@ public class Questionnaire extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 		}

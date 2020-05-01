@@ -104,6 +104,7 @@ public class Download extends Window {
 	int gapBetweenButtons = 100;
 	int backgroundWidthAndHeight = 100;
 	int buttonPrefWidth = 100;
+	int buttonTextSize = 12;
 
 	/**
 	 * Assume the user has no last save file downloaded.
@@ -217,7 +218,7 @@ public class Download extends Window {
 		bottomButtons.add(downloadButton);
 
 		for (Button b : bottomButtons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12));
+			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
 			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
 			b.setPrefWidth(buttonPrefWidth);
 
@@ -248,24 +249,24 @@ public class Download extends Window {
 	 */
 	public void formatToggleButton(ToggleButton b) {
 
-		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12));
+		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
 		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
 		b.setPrefWidth(buttonPrefWidth);
 
 		DropShadow shadow = new DropShadow();
-		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				b.setEffect(shadow);
-				b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
-			}
-		});
 
-		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
+		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+		b.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				b.setEffect(null);
-				b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+				if (b.isSelected()) {
+					b.setEffect(shadow);
+					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+				} else {
+					b.setEffect(null);
+					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+				}
 			}
 		});
 
