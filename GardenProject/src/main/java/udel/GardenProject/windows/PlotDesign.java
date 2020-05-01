@@ -2,49 +2,34 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plants.plotObjects.AdjustablePolygon;
-import udel.GardenProject.plants.plotObjects.PlotObject;
 
 /**
  * Heart of the application: Where the user can drag plants, obstacles, shade,
@@ -65,7 +50,7 @@ public class PlotDesign extends Window {
 	/**
 	 * Used to hold text, left and right panels
 	 */
-	private VBox vbox, leftDropdownVBox, autoRateVBox;
+	private VBox vbox, autoRateVBox;
 
 	private Text text;
 
@@ -96,19 +81,6 @@ public class PlotDesign extends Window {
 	 */
 	private Button editPlotButton;
 
-	//private FlowPane flow;
-
-	/**
-	 * Used for scrolling in the flowPane for all the options the user can all to
-	 * their plot
-	 */
-	//private ScrollPane scroll;
-
-	/**
-	 * Bars showing status of each autorate
-	 */
-	private Rectangle animalsFedBar, contBloomBar, matchBar, transitionBar;
-
 	/**
 	 * Used to outline the center area
 	 */
@@ -123,11 +95,30 @@ public class PlotDesign extends Window {
 	 * Used for placement of adjustable polygon and plants/obstacles etc
 	 */
 	private Group group;
-	double xbound;
 
+	/**
+	 * Used in drag
+	 */
+	private double xbound;
+
+	/**
+	 * ScrollPane created for the canopy drop down choices
+	 */
 	private ScrollPane scrollSelections;
-	int topTextSize = 20;
-	
+
+	private int rectWidth = View.getCanvasWidth() / 5 * 3;
+	private int rectHeight = View.getCanvasHeight() / 7 * 6;
+	private int scrollPrefWidth = View.getCanvasWidth() / 3 + 30;
+	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
+	private int autoRateBoxWidth = 255;
+	private int autoRateBoxHeight = 550;
+	private int gapBetweenButtons = 100;
+	private int backgroundWidthAndHeight = 100;
+	private int borderTopAndBottonMargin = 90;
+	private int borderSideMargins = 200;
+	private int autoRateBarWidth = 200;
+	private int autoRateBarHeight = 10;
+
 	/**
 	 * Create a new PlotDesign window instance.
 	 *
@@ -138,12 +129,10 @@ public class PlotDesign extends Window {
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
-		leftDropdownVBox = new VBox();
 		tilePane = new TilePane();
 		group = new Group();
 
-		box = new Rectangle(View.getCanvasWidth()/5*3, View.getCanvasHeight()/7*6);
-		//box.setPadding(new Insets(10));
+		box = new Rectangle(rectWidth, rectHeight);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
 		group.getChildren().add(box);
@@ -151,14 +140,12 @@ public class PlotDesign extends Window {
 		text = new Text(
 				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
 		text.setWrappingWidth(View.getCanvasWidth());
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
-		
+		text.setFont(
+				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+
 		vbox.setPadding(new Insets(0, 0, 20, 5));
 		vbox.getChildren().addAll(text);
 
-		
-		
-		
 		editPlotText = new Text("\nAddPlot");
 		editPlotText.setStyle("-fx-font-size: 20px;");
 		editPlotButton = new Button("Edit Plot");
@@ -178,58 +165,56 @@ public class PlotDesign extends Window {
 			}
 		});
 
-		
-		
-		
-		
 		Accordion choices = new Accordion();
-		
-		TitledPane existing = new TitledPane("Existing Plants", new Text("Existing Plants")); //createFlowPane(/*Model.existingPlantsArray*/));
-		TitledPane selected = new TitledPane("Selected Plants", new Text("SelectedPlants")); //createFlowPane(/*Model.selectedPlantsArray*/));
-		TitledPane obstacles = new TitledPane("Obstacles", editPlotButton); //createFlowPane(/*Model.obstaclesArray*/));
+
+		/**
+		 * TODO: get the corresponding plants to be able to use the functions
+		 * createFlowPane for the plants and obstacles May need another method for the
+		 * obstacles
+		 */
+		TitledPane existing = new TitledPane("Existing Plants", new Text("Existing Plants")); // createFlowPane(/*Model.existingPlantsArray*/));
+		TitledPane selected = new TitledPane("Selected Plants", new Text("SelectedPlants")); // createFlowPane(/*Model.selectedPlantsArray*/));
+		TitledPane obstacles = new TitledPane("Obstacles", editPlotButton); // createFlowPane(/*Model.obstaclesArray*/));
 		List<TitledPane> accArr = new ArrayList<TitledPane>();
 		accArr.add(existing);
 		accArr.add(selected);
 		accArr.add(obstacles);
 
 		for (TitledPane t : accArr) {
-			t.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
+			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+					View.getTextSizeForButtonsAndText()));
 			choices.getPanes().add(t);
 		}
 
 		scrollSelections = new ScrollPane();
 		scrollPaneFormat(scrollSelections);
-		scrollSelections.setPrefSize(View.getCanvasWidth() / 3 + 30, View.getCanvasHeight() / 5 * 4);
+		scrollSelections.setPrefSize(scrollPrefWidth, scrollPrefHeight);
 		scrollSelections.setContent(choices);
-		
-		
-		
+
 		animalsFedTxt = new Text("Animals Fed");
 		contBloomTxt = new Text("Continuous Bloom");
 		matchTxt = new Text("Matches Garden");
 		transitionTxt = new Text("Transition");
-		
+
 		ArrayList<Text> autoRatings = new ArrayList<Text>();
 		autoRatings.add(animalsFedTxt);
 		autoRatings.add(contBloomTxt);
 		autoRatings.add(matchTxt);
 		autoRatings.add(transitionTxt);
-		
-		autoRateVBox = new VBox();
-		autoRateVBox.setPrefWidth(255);
-		autoRateVBox.setPrefHeight(550);
-		autoRateVBox.setPadding(new Insets(5, 5, 5, 5));
 
-		
-		for (Text t: autoRatings) {
+		autoRateVBox = new VBox();
+		autoRateVBox.setPrefWidth(autoRateBoxWidth);
+		autoRateVBox.setPrefHeight(autoRateBoxHeight);
+		autoRateVBox.setPadding(new Insets(5));
+
+		for (Text t : autoRatings) {
 			t.setStyle("-fx-font-size: 20px;");
-			Rectangle r = new Rectangle(200, 10);
+			Rectangle r = new Rectangle(autoRateBarWidth, autoRateBarHeight);
 			r.setStroke(Color.BLACK);
 			r.setFill(Color.WHITE);
-			autoRateVBox.getChildren().addAll(t,r);
+			autoRateVBox.getChildren().addAll(t, r);
 		}
-		
-		
+
 		Text goToPlantData = new Text("\nGet More Plants");
 		goToPlantData.setStyle("-fx-font-size: 20px;");
 		Button plantDataButton = new Button("Plant Database");
@@ -244,32 +229,22 @@ public class PlotDesign extends Window {
 		plantDataButton.setPadding(new Insets(10, 5, 10, 5));
 		plantDataButton.setStyle("-fx-font-size: 20px;");
 
-		autoRateVBox.getChildren().addAll(/*animalsFedTxt, animalsFedBar, contBloomTxt, contBloomBar, matchTxt, matchBar,
-				transitionTxt, transitionBar, */ /*editPlotText, editPlotButton,*/ goToPlantData, plantDataButton);
-
+		autoRateVBox.getChildren().addAll(goToPlantData, plantDataButton);
 
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(100);
+		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(backButton, saveButton, loadButton, nextButton);
-		
-		int backgroundWidthAndHeight = 100;
-		
-		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
-		BackgroundSize backgroundSize = new BackgroundSize(backgroundWidthAndHeight, backgroundWidthAndHeight, true,
-				true, true, false);
-		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-		Background background = new Background(backgroundImage);
 
-		int borderTopAndBottonMargin = 90;
-		int borderSideMargins = 200;
-		borderPane.setBackground(background);
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
+
+		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(box,
 				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
-		borderPane.setPadding(new Insets(10, 10, 10, 10));
+		borderPane.setPadding(new Insets(10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
 		borderPane.setLeft(choices);
@@ -280,20 +255,25 @@ public class PlotDesign extends Window {
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
-	
+
+	/**
+	 * Formats the scroll Pane with the necessary attributes to be consistent
+	 * 
+	 * @param scroll --> a scroll pane
+	 */
 	public void scrollPaneFormat(ScrollPane scroll) {
 		scroll.setPadding(new Insets(10, 0, 10, 30));
-		scroll.setMaxWidth(View.getCanvasWidth()/3);
-		//scroll.setPrefSize(View.getCanvasWidth()/3 , View.getCanvasHeight()/5*4);
+		scroll.setMaxWidth(View.getCanvasWidth() / 3);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scroll.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
+		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 
 	}
 
 	/**
-	 * Function creates a flow pane (with Scroll) for the accordion bar selected. (Only for existing and selected plants). 
+	 * Function creates a flow pane (with Scroll) for the accordion bar selected.
+	 * (Only for existing and selected plants).
 	 * 
 	 * @param canopy --> Takes in a canopy
 	 */
@@ -308,19 +288,19 @@ public class PlotDesign extends Window {
 		 * This is a temporary addition to test if function works
 		 */
 		for (int i = 0; i < list.length; i++) {
-			
+
 			/**
 			 * TODO: Get the images of the plants and add them here
 			 */
-			
+
 			/**
 			 * TODO: Add a mouse hover handler here to give info for each image
 			 */
-			
+
 			/**
 			 * TODO: Add dragging feature here...?
 			 */
-			
+
 		}
 
 		return plantFlow;
@@ -367,26 +347,24 @@ public class PlotDesign extends Window {
 				switchToWindow(Windows.SeasonView);
 			}
 		});
-		
+
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(backButton);
 		buttons.add(saveButton);
 		buttons.add(loadButton);
 		buttons.add(nextButton);
 
-		int buttonPrefWidth = 100;
-		int buttonTextSize = 12;
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-			b.setPrefWidth(buttonPrefWidth);
+			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
 
 			DropShadow shadow = new DropShadow();
 			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -394,13 +372,12 @@ public class PlotDesign extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
 		}
-		
-		
+
 	}
 
 	@Override
@@ -424,22 +401,26 @@ public class PlotDesign extends Window {
 	public void getPlant() {
 
 	}
-	
+
+	/**
+	 * TODO: FIX DRAGGING
+	 * 
+	 * @param img
+	 */
 	public void addimage(ImageView img) {
 		group.getChildren().add(img);
-		System.out.println("added");
 	}
+
 	public void drag(MouseEvent event) {
-		System.out.println("dragging image");
-		ImageView n = (ImageView)event.getSource();
-		ImageView tmp=new ImageView(n.getImage());
+		ImageView n = (ImageView) event.getSource();
+		ImageView tmp = new ImageView(n.getImage());
 		System.out.println(n.getX());
-		xbound=n.getParent().getLayoutBounds().getMaxX();
+		xbound = n.getParent().getLayoutBounds().getMaxX();
 		System.out.println(n.getScene().getWidth());
-		if(!n.getParent().getLayoutBounds().contains(new Point2D(n.getX()+event.getX(),n.getY()+event.getY()))) {
+		if (!n.getParent().getLayoutBounds().contains(new Point2D(n.getX() + event.getX(), n.getY() + event.getY()))) {
 			addimage(tmp);
 		}
-		
+
 	}
 
 	public EventHandler getHandlerForDrag() {
