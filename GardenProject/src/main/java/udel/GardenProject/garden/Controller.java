@@ -2,8 +2,6 @@ package udel.GardenProject.garden;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -18,8 +16,8 @@ public class Controller extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		view = new View(primaryStage);
 		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
-		view = new View(primaryStage, model.getWindow());
 		
 		new AnimationTimer() {
             public void handle(long currentNanoTime) {

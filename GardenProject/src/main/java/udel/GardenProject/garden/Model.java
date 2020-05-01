@@ -8,9 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
 
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
@@ -82,6 +84,7 @@ public class Model {
 		this.session = new Session();
 		
 		determineAppDataDirectory();
+		
 		try {
 			this.plants = PlantLoader.getPlants();
 		} catch (IOException | ParseException e) {
@@ -90,7 +93,9 @@ public class Model {
 			System.exit(1);
 		}
 		Collections.sort(this.plants, new PlantNameComparator(true, false));
+		
 		setupWindows();
+		printMemoryInfo();
 	}
 	
 	/**
@@ -99,6 +104,20 @@ public class Model {
 	 */
 	public void update() {
 		// TODO: Implement for PlotDesign...
+	}
+	
+	/**
+	 * Get information about the current memory usage of this application in
+	 * bytes from Runtime.
+	 */
+	public void printMemoryInfo() {
+		System.out.println(
+				"\n" +
+				"MaxMemory:   " + Runtime.getRuntime().maxMemory() + "\n" +
+				"FreeMemory:  " + Runtime.getRuntime().freeMemory() + "\n" +
+				"TotalMemory: " + Runtime.getRuntime().totalMemory() + "\n" +
+				"UsedMemory:  " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + "\n"
+				);
 	}
 	
 	/**
@@ -122,6 +141,7 @@ public class Model {
 	 * @param w A Window specified by the Windows enum.
 	 */
 	public void setWindow(Windows w) {
+		System.gc();
 		lastWindow = currentWindow;
 		currentWindow = windows[w.ordinal()];
 		currentWindow.refresh();
@@ -191,8 +211,13 @@ public class Model {
 	 * @return	null if no matching results, a Plant array of all matching 
 	 * 			results.
 	 */
-	public ArrayList<Plant> searchPlants(String query) {
-		ArrayList<Plant> results = new ArrayList<Plant>();
+	public HashMap<String, Plant> searchPlants(String query) {
+		// preconditions for queries
+		if(query.length() < 3)
+			return null;
+		
+		// regular
+		HashMap<String, Plant> results = new HashMap<String, Plant>();
 		
 		Iterator<Plant> pIterator = plants.iterator();
 		while(pIterator.hasNext()) {
@@ -202,12 +227,13 @@ public class Model {
 			if(p.getLatinName().contains(query))
 				addToResults = true;
 			
-			for(String commonName : p.getCommonNames())
-				if(commonName.contains(query))
-					addToResults = true;
+			if(p.getCommonNames() != null)
+				for(String commonName : p.getCommonNames())
+					if(commonName.contains(query))
+						addToResults = true;
 			
 			if(addToResults)
-				results.add(p);
+				results.put(p.getLatinName(), p);
 		}
 		
 		return results;
@@ -440,9 +466,10 @@ public class Model {
 	 * @see udel.GardenProject.garden.Controller
 	 */
 	public void stop() {
-		for(Window w : windows) {
-			w.stop();
-		}
+		if(windows.length > 0)
+			for(Window w : windows) {
+				w.stop();
+			}
 		
 		if(session.isUnsaved()) {
 			if(session.getLastSavedFilepath().isEmpty() == false) {
