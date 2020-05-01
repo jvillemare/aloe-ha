@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import javafx.event.ActionEvent;
@@ -41,19 +42,6 @@ public class ExistingPlants extends Window {
 	private Scene scene;
 	private BorderPane borderPane;
 	private VBox vbox;
-
-	// TODO: Change to ArrayList?
-	private Plant existingPlant[];
-
-	/**
-	 * For getting rid of duplicates the user has entered
-	 */
-	private static HashSet<String> existingPlants = new HashSet();
-
-	/**
-	 * Used to convert HashSet existingPlants into an ArrayList
-	 */
-	private List<String> existingPlantsList;
 
 	/**
 	 * Used for the buttons at the top of the screen
@@ -174,15 +162,6 @@ public class ExistingPlants extends Window {
 	}
 
 	/**
-	 * Return a list of all existing plants.
-	 *
-	 * @return array of all plants available in GardenProject.
-	 */
-	public Plant[] getExistingPlants() {
-		return this.existingPlant;
-	}
-
-	/**
 	 * Set all the existing plants.
 	 *
 	 * @param p list of plants to use in project.
@@ -216,8 +195,7 @@ public class ExistingPlants extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				existingPlantsList = new ArrayList<String>(existingPlants);
-				System.out.println(existingPlantsList);
+				System.out.println("Next: going to questionnaire");
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -257,22 +235,14 @@ public class ExistingPlants extends Window {
 	 */
 	public void createSearch() {
 
-		int len = this.getModel().getPlants().size();
-		String[] options = new String[len];
-		for (int i = 0; i < len; i++) {
-			options[i] = this.getModel().getPlants().get(i).getLatinName();
-			if (this.getModel().getPlants().get(i).getCommonNames() != null) {
-				String common1 = this.getModel().getPlants().get(i).getCommonNames()[0];
-				options[i] = options[i] + " (" + common1 + ")";
-			}
-		}
-
 		text = new TextField();
 		text.textProperty().addListener((observable, oldValue, newValue) -> {
+			// getting whatever the user type inside the container if they've
+			// typed anything.
 			if (container.getChildren().size() > 1) {
 				container.getChildren().remove(1);
 			}
-			container.add(populateDropDownMenu(newValue, options), 0, 1);
+			container.add(populateDropDownMenu(newValue), 0, 1);
 		});
 
 		close = new Button("Clear");
@@ -292,13 +262,20 @@ public class ExistingPlants extends Window {
 		container.setStyle(View.getLightGreenBackgroundStyle());
 	}
 
-	public static VBox populateDropDownMenu(String text, String[] options) {
+	/**
+	 * TODO: ?...
+	 * @param query		what the user typed
+	 * @return ...
+	 */
+	public VBox populateDropDownMenu(String query) {
 		VBox dropDownMenu = new VBox();
 		dropDownMenu.setAlignment(Pos.CENTER);
-
-		for (String option : options) {
-			if (!text.replace(" ", "").isEmpty() && option.toUpperCase().contains(text.toUpperCase())) {
-				Label label = new Label(option);
+		
+		HashMap<String, Plant> dropDownPlants = getModel().searchPlants(query);
+		
+		if (dropDownPlants != null) {
+			for (Plant p : dropDownPlants.values()) {
+				Label label = new Label(p.getFriendlyName());
 
 				label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
@@ -306,7 +283,12 @@ public class ExistingPlants extends Window {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle("-fx-font-weight: bold");
-								if (existingPlants.add(label.getText())) {
+								String latinName = Plant.trimToLatinName(label.getText());
+								if (getModel().getSession().getExistingPlants().containsKey(latinName))
+									return;
+
+								if (getModel().getSession().getExistingPlants().put(latinName,
+										dropDownPlants.get(latinName)) == null) {
 
 									Text textarea = new Text(label.getText());
 									textarea.setStyle("-fx-font-size: 20px;");
@@ -350,10 +332,14 @@ public class ExistingPlants extends Window {
 									deleteButton.setOnAction(new EventHandler<ActionEvent>() {
 										@Override
 										public void handle(ActionEvent event) {
-											existingPlants.remove(label.getText());
+											System.out.println("X: removing selection");
+											getModel().getSession().getExistingPlants().remove(latinName);
 											selectedPlant.getChildren().removeAll(deleteButton, textarea);
 										}
 									});
+								} else {
+									System.out.println("ExistingPlants: '" + label.getText() + "' is already selected, "
+											+ "or failed to be added.");
 								}
 							}
 						}

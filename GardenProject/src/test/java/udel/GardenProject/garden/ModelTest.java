@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -55,10 +56,10 @@ public class ModelTest {
 	@Test
 	public void testSearchPlantsEmpty() {
 		Model m = new Model(0, 1);
-		ArrayList<Plant> p1 = m.searchPlants("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		ArrayList<Plant> p2 = m.searchPlants("bingo bongo nonsense hippity hoppity");
-		ArrayList<Plant> p3 = m.searchPlants("null****************");
-		ArrayList<Plant> p4 = m.searchPlants("n/a");
+		HashMap<String, Plant> p1 = m.searchPlants("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		HashMap<String, Plant> p2 = m.searchPlants("bingo bongo nonsense hippity hoppity");
+		HashMap<String, Plant> p3 = m.searchPlants("null****************");
+		HashMap<String, Plant> p4 = m.searchPlants("n/a");
 		
 		assertTrue(p1.size() == 0);
 		assertTrue(p2.size() == 0);
@@ -69,10 +70,10 @@ public class ModelTest {
 	@Test
 	public void testSearchPlantsHasResults() {
 		Model m = new Model(0, 1);
-		ArrayList<Plant> p1 = m.searchPlants("pine");
-		ArrayList<Plant> p2 = m.searchPlants("");
-		ArrayList<Plant> p3 = m.searchPlants("dogwood");
-		ArrayList<Plant> p4 = m.searchPlants("Acer negundo");
+		HashMap<String, Plant> p1 = m.searchPlants("pine");
+		HashMap<String, Plant> p2 = m.searchPlants("");
+		HashMap<String, Plant> p3 = m.searchPlants("dogwood");
+		HashMap<String, Plant> p4 = m.searchPlants("Acer negundo");
 		
 		// could be multiples of these plants
 		assertTrue(p1.size() > 0);

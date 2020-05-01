@@ -36,19 +36,18 @@ import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
-import udel.GardenProject.plants.plotObjects.PlotBirdBath;
-import udel.GardenProject.plants.plotObjects.PlotFence;
-import udel.GardenProject.plants.plotObjects.PlotForest;
-import udel.GardenProject.plants.plotObjects.PlotObject;
-import udel.GardenProject.plants.plotObjects.PlotOther;
-import udel.GardenProject.plants.plotObjects.PlotPath;
-import udel.GardenProject.plants.plotObjects.PlotPatio;
-import udel.GardenProject.plants.plotObjects.PlotPlayground;
-import udel.GardenProject.plants.plotObjects.PlotPool;
-import udel.GardenProject.plants.plotObjects.PlotRoad;
-import udel.GardenProject.plants.plotObjects.PlotRock;
-import udel.GardenProject.plants.plotObjects.PlotShed;
-import udel.GardenProject.plants.plotObjects.PlotTrees;
+import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.lines.PlotFence;
+import udel.GardenProject.plotObjects.lines.PlotPath;
+import udel.GardenProject.plotObjects.polygons.PlotForest;
+import udel.GardenProject.plotObjects.polygons.PlotPatio;
+import udel.GardenProject.plotObjects.polygons.PlotPlayground;
+import udel.GardenProject.plotObjects.polygons.PlotPool;
+import udel.GardenProject.plotObjects.polygons.PlotRoad;
+import udel.GardenProject.plotObjects.polygons.PlotRock;
+import udel.GardenProject.plotObjects.polygons.PlotShed;
+import udel.GardenProject.plotObjects.special.PlotBirdBath;
+import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -424,6 +423,9 @@ public class Questionnaire extends Window {
 				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
 				// getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
 				// getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+				// TODO: Changed when PlotObject enum comes from #111
+				//getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
+				//getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
@@ -501,11 +503,15 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 
 			if (cb.get(counter).isSelected()) {
-				if (cb.get(counter).getText().equals(PlotObjects.ROAD.toString())) {
+
+				// TODO: Shouldn't be creating new object instances, use the 
+				//			newly created PlotObjects enum
+				/*
+				if (cb.get(counter).getText().equals("Road")) {
 					plotNearArr.add(new PlotRoad());
 				} else if (cb.get(counter).getText().equals(PlotObjects.FOREST.toString())) {
 					plotNearArr.add(new PlotForest());
-				}
+				}*/
 
 			}
 		}
@@ -513,7 +519,7 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Checks which options are selected by the user and returns an arraylist of
+	 * Checks which options are selected by the user and returns an ArrayList of
 	 * PlotObjects
 	 * 
 	 * @param cb --> checkboxes that are in each listview for objects IN the user's
@@ -528,6 +534,8 @@ public class Questionnaire extends Window {
 
 				switch (cb.get(counter).getText()) {
 				case ("FENCE"):
+        /*
+				if (cb.get(counter).getText().equals("FENCE")) {
 					plotInArr.add(new PlotFence());
 					break;
 				case ("POOL"):
@@ -538,8 +546,19 @@ public class Questionnaire extends Window {
 					break;
 				case ("PATH"):
 					plotInArr.add(new PlotPath());
+
 					break;
 				case ("NONREMOVEABLE_TREES"):
+
+				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
+					// TODO: Remove checkbox 5. PlotTrees were deleted because we
+					// 			have PlotPlant, and trees are plants and we shouldn't
+					//			duplicate that
+					//plotInArr.add(new PlotTrees());
+				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
+
+				} else if (cb.get(counter).getText().equals("NONREMOVEABLE TREES")) {
+        
 					plotInArr.add(new PlotTrees());
 					break;
 				case ("PATIO"):
@@ -559,7 +578,7 @@ public class Questionnaire extends Window {
 					break;
 				default:
 					break;
-				}
+				}*/
 
 			}
 		}

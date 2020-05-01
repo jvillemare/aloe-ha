@@ -6,6 +6,10 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import udel.GardenProject.windows.Window;
 
@@ -226,10 +230,11 @@ public class View {
 	 * @param theStage JavaFX Stage instance.
 	 * @param w        The first window to be displayed.
 	 */
-	public View(Stage theStage, Window w) {
+
+	public View(Stage theStage) {
 		this.theStage = theStage;
-		update(w);
-		this.theStage.show();
+		//showSplashScreen();
+        this.theStage.show();
 	}
 
 	/**
@@ -267,7 +272,24 @@ public class View {
 	public static int getCanvasHeight() {
 		return canvasHeight;
 	}
-	
-	
+
+	/**
+	 * Splash screen that appears to the user right as the application is
+	 * started. Only displays until the Model finishes loading in its 
+	 * constructor.
+	 */
+	private void showSplashScreen() {
+		// TODO: Doesn't display, fix
+		Label loadingMessage = new Label("Starting application..");
+
+        BorderPane pane = new BorderPane();
+        pane.setPrefSize(620, 300);
+        pane.setCenter(loadingMessage);
+		
+		Group root = new Group();
+		root.getChildren().add(pane);
+		this.theStage.setTitle("Aloe-ha ALPHA");
+		this.theStage.setScene(new Scene(root, 620, 300));
+	}
 
 }

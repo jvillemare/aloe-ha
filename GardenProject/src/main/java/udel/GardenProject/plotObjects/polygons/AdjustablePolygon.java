@@ -1,4 +1,4 @@
-package udel.GardenProject.plants.plotObjects;
+package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
@@ -25,10 +25,22 @@ import javafx.scene.shape.StrokeType;
  * @author Team 0
  */
 public class AdjustablePolygon implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private Polygon polygon;
 	private ObservableList<Anchor> anchors;
 	private boolean visible=true;
 	private Button b;
+	
+	/**
+	 * Constructor. Represent an object on a plot in PlotDesign with an 
+	 * arbitrary amount of points, each editable.
+	 * 
+	 * @param color			Background color of the polygon.
+	 * @param anchorColor	Color of the anchors.
+	 * @param startx		Starting horizontal position.
+	 * @param starty		Starting vertical position.
+	 */
 	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty) {
 		polygon=new Polygon();
 		//set stroke color to black
@@ -69,19 +81,34 @@ public class AdjustablePolygon implements Serializable {
 				polygon.setLayoutY(polygon.getLayoutY() + y);
 			}
 		});
+        
         //get the anchors list and set the color to given anchorColor
 		anchors=createAnchors(polygon, polygon.getPoints(),anchorColor);
-		
 	}
-	//return the polygon
+	
+	/**
+	 * Getter.
+	 * @return The polygon.
+	 */
 	public Polygon getPolygon() {
 		return polygon;
 	}
-	//return the anchors list
+	
+	/**
+	 * Getter.
+	 * @return List of anchors.
+	 */
 	public ObservableList<Anchor> getAnchors() {
 		return anchors;
 	}
-	//Generate edit button
+	
+	/**
+	 * Generate edit button that toggles the editing of the polygon.
+	 * 
+	 * @param x	Horizontal position.
+	 * @param y Vertical position.
+	 * @return Button object.
+	 */
 	public Button genButton(double x, double y) {
 		b=new Button();
 		b.setText("Stop Editing");
@@ -102,7 +129,14 @@ public class AdjustablePolygon implements Serializable {
         });
 		return b;
 	}
-	//generate the list of anchors for drawings
+	
+	/**
+	 * Generate the list of anchors for drawings.
+	 * @param polygon	TODO: ...?
+	 * @param points	TODO: ...?
+	 * @param color		TODO: ...?
+	 * @return TODO: ...?
+	 */
     private ObservableList<Anchor> createAnchors(Polygon polygon, ObservableList<Double> points, Color color) {
     	ObservableList<Anchor> anchors = FXCollections.observableArrayList();
     	for (int i = 0; i < points.size(); i += 2) {
@@ -127,8 +161,13 @@ public class AdjustablePolygon implements Serializable {
         }
     	return anchors;
     }
-    //Extend anchor from circle class and set the color
-	class Anchor extends Circle{
+
+    /**
+     * Extend anchor from circle class and set the color
+     * 
+     * @author Team 0
+     */
+	public class Anchor extends Circle {
     	private final DoubleProperty x, y;
 
         Anchor(Color color, DoubleProperty x, DoubleProperty y) {
@@ -196,8 +235,12 @@ public class AdjustablePolygon implements Serializable {
             });
         }
 	}
-	//helper class
-    private class Delta{
+	
+	/**
+	 * Helper class.
+	 * @author Team 0
+	 */
+    private class Delta {
     	double x, y;
     }
 }

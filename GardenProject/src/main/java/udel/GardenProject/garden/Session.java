@@ -2,20 +2,24 @@ package udel.GardenProject.garden;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
-import udel.GardenProject.plants.plotObjects.PlotObject;
+import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Holds all the critical user-state information so that a
  * <code>.gardenproject</code> file can be easily loaded in and out without much
- * delay.
+ * delay.<br><br>
  * 
- * Isolated so that it can be saved and loaded easily.
+ * Isolated so that it can be saved and loaded easily.<br><br>
  * 
- * All attributes should be adequately javadoc'd for future reference.
+ * All attributes should be adequately javadoc'd for future reference.<br><br>
+ * 
+ * NOTE: All attributes should be initialized to a default value.
  * 
  * @author Team 0
  */
@@ -63,16 +67,6 @@ public class Session implements Serializable {
 	private int lengthOfUserPlot = 0;
 
 	/**
-	 * Users objects near their plot
-	 */
-	private ArrayList<PlotObject> objectsNearPlot;
-
-	/**
-	 * User object in their plot
-	 */
-	private ArrayList<PlotObject> objectsInPlot;
-
-	/**
 	 * User's moisture level of their plot
 	 */
 	private String moistureOfPlot = "";
@@ -86,36 +80,45 @@ public class Session implements Serializable {
 	 * Users sunlight of their plot
 	 */
 	private String sunlightOfPlot = "";
-
+	
+	/**
+	 * Existing plants already in users plot.<br><br>
+	 * 
+	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
+	 */
+	private HashMap<String, Plant> existingPlants = new HashMap<String, Plant>();
+	
 	/**
 	 * User's selected seasons for blooms
 	 */
-	private ArrayList<Seasons> seasonsUserSelected;
+	private ArrayList<Seasons> seasonsUserSelected = new ArrayList<Seasons>();
 
 	/**
 	 * User's selected colors for flowers
 	 */
-	private ArrayList<Color> colorsUserSelected;
+	private ArrayList<Color> colorsUserSelected = new ArrayList<Color>();
 
 	/**
-	 * Objects to be displayed on PlotDesign.
+	 * Objects actually in the plot, to be displayed in PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
 
 	/**
 	 * Season selected by user from SeasonView
 	 */
-	private Seasons seasonInput;
+	private Seasons seasonInput = Seasons.SPRING;
+  // TODO: Does spring make sense as a default?
 
 	/**
 	 * Year selected by user from SeasonView
 	 */
-	private int yearInput;
+	private int yearInput = 0;
 
 	/**
 	 * Type of view selected by user from SeasonView
 	 */
-	private String viewInput;
+	private String viewInput = "";
+	// TODO: Replace with enum
 
 	/**
 	 * The user's selection to how they want to save on the download screen
@@ -171,22 +174,6 @@ public class Session implements Serializable {
 
 	public int getLengthOfUserPlot() {
 		return lengthOfUserPlot;
-	}
-
-	public void setObjectsNearPlot(ArrayList<PlotObject> near) {
-		this.objectsNearPlot = near;
-	}
-
-	public ArrayList<PlotObject> getObjectsNearPlot() {
-		return objectsNearPlot;
-	}
-
-	public void setObjectsInPlot(ArrayList<PlotObject> in) {
-		this.objectsInPlot = in;
-	}
-
-	public ArrayList<PlotObject> getObjectsInPlot() {
-		return objectsInPlot;
 	}
 
 	public String getMoistureOfPlot() {
