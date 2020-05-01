@@ -114,8 +114,16 @@ public class PlantSelection extends Window {
 	 */
 	private HBox centerBox;
 
-	int backgroundWidthAndHeight = 100;
-	int topTextSize = 20;
+	private int backgroundScreenWidthAndHeight = 100;
+	private int borderTopAndBottonMargin = 40;
+	private int borderSideMargins = 80;
+	private int gapBetweenButtons = 100;
+	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
+	private int prefScrollHeight = View.getCanvasHeight() / 5 * 4;
+	private int selectedPlantBoxMinWidth = View.getCanvasWidth() / 2;
+	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
+	private int scrollSelectedWidth = View.getCanvasWidth() / 2 + 30;
+	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
 
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection");
@@ -127,12 +135,12 @@ public class PlantSelection extends Window {
 		text = new Text("Please select the plants you'd like to have in your Garden");
 		text.setWrappingWidth(View.getCanvasWidth());
 
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
+		text.setFont(
+				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 		vbox.getChildren().addAll(text);
 
 		createButtons();
 
-		int inset10 = 10;
 		centerBox = new HBox();
 
 		Accordion canopySelection = new Accordion();
@@ -147,43 +155,39 @@ public class PlantSelection extends Window {
 		accArr.add(emergent);
 
 		for (TitledPane t : accArr) {
-			t.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
+			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+					View.getTextSizeForButtonsAndText()));
 			canopySelection.getPanes().add(t);
 		}
 
 		scrollCanopies = new ScrollPane();
 		scrollPaneFormat(scrollCanopies);
-		scrollCanopies.setPrefSize(View.getCanvasWidth() / 3 + 30, View.getCanvasHeight() / 5 * 4);
+		scrollCanopies.setPrefSize(prefScrollWidth, prefScrollHeight);
 		scrollCanopies.setContent(canopySelection);
 
 		selectedPlantsBox = new FlowPane();
-		selectedPlantsBox.setMinWidth(View.getCanvasWidth() / 2);
-		selectedPlantsBox.setMinHeight(View.getCanvasHeight() / 5 * 4);
+		selectedPlantsBox.setMinWidth(selectedPlantBoxMinWidth);
+		selectedPlantsBox.setMinHeight(selectedPlantBoxMinHeight);
 
 		scrollSelected = new ScrollPane();
 		scrollPaneFormat(scrollSelected);
-		scrollSelected.setPrefSize(View.getCanvasWidth() / 2 + 30, View.getCanvasHeight() / 5 * 4);
+
+		scrollSelected.setPrefSize(scrollSelectedWidth, scrollSelectedHeight);
 		scrollSelected.setContent(selectedPlantsBox);
 
 		centerBox.getChildren().addAll(scrollCanopies, scrollSelected);
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setHgap(100);
+		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(back, next);
 
-		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
-		BackgroundSize backgroundSize = new BackgroundSize(backgroundWidthAndHeight, backgroundWidthAndHeight, true,
-				true, true, false);
-		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-		Background background = new Background(backgroundImage);
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
 
-		int borderTopAndBottonMargin = 40;
-		int borderSideMargins = 80;
-		borderPane.setBackground(background);
+		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(centerBox,
 				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
-		borderPane.setPadding(new Insets(5, 5, 5, 5));
+		borderPane.setPadding(new Insets(5));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(centerBox);
@@ -197,7 +201,7 @@ public class PlantSelection extends Window {
 		scroll.setPadding(new Insets(10));
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scroll.setStyle("-fx-background-color: #FFFFFF;" + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
+		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 
 	}
@@ -254,6 +258,9 @@ public class PlantSelection extends Window {
 
 	}
 
+	/**
+	 * Function that creates button at the bottom of the screen with handlers
+	 */
 	public void createButtons() {
 		back = new Button("Go Back");
 		back.setOnAction(new EventHandler<ActionEvent>() {
@@ -277,20 +284,17 @@ public class PlantSelection extends Window {
 		buttons.add(back);
 		buttons.add(next);
 
-		int buttonPrefWidth = 100;
-		int buttonTextSize = 12;
-
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-			b.setPrefWidth(buttonPrefWidth);
+			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
 
 			DropShadow shadow = new DropShadow();
 			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -298,7 +302,7 @@ public class PlantSelection extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 		}
