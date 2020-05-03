@@ -162,15 +162,6 @@ public class ExistingPlants extends Window {
 	}
 
 	/**
-	 * Set all the existing plants.
-	 *
-	 * @param p list of plants to use in project.
-	 */
-	public void setExistingPlants(Plant p) {
-
-	}
-
-	/**
 	 * Creating buttons at the bottom of the screen
 	 */
 	public void createButtons() {

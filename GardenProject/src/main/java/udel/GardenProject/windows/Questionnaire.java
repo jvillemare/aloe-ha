@@ -285,7 +285,13 @@ public class Questionnaire extends Window {
 	public void createQ3() {
 
 		createText("3) Is your plot near any of the following? (Please select all that apply)");
-		List<PlotObjects> objectsNearPlot = List.of(PlotObjects.ROAD, PlotObjects.FOREST);
+		
+		// list of items that appear NEAR a plot
+		List<PlotObjects> objectsNearPlot = new ArrayList<PlotObjects>();
+		for(PlotObjects enumPlotObjects : PlotObjects.values())
+			if(enumPlotObjects.isTypicallyInGarden() == false)
+				objectsNearPlot.add(enumPlotObjects);
+		
 		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (PlotObjects plotObjectEnum : objectsNearPlot) {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
@@ -306,10 +312,13 @@ public class Questionnaire extends Window {
 	public void createQ4() {
 
 		createText("4) Do you have any of the following items in your garden? (Please select all that apply)");
-		List<String> objectsInPlot = List.of("FENCE", "POOL", PlotObjects.PLAYGROUND.toString(),
-				PlotObjects.PATH.toString(), PlotObjects.NONREMOEABLE_TREES.toString(), PlotObjects.PATIO.toString(),
-				PlotObjects.BIRDBATH.toString(), PlotObjects.SHED.toString(), PlotObjects.ROCKS.toString(),
-				PlotObjects.OTHER.toString()); // list of items for near plot
+		
+		// list of items that appear IN a plot
+		List<String> objectsInPlot = new ArrayList<String>();
+		for(PlotObjects enumPlotObjects : PlotObjects.values())
+			if(enumPlotObjects.isTypicallyInGarden())
+				objectsInPlot.add(enumPlotObjects.name());
+		
 		ObservableList<CheckBox> q3items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (String object : objectsInPlot) {
 			CheckBox c = new CheckBox(object);
@@ -413,7 +422,6 @@ public class Questionnaire extends Window {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-
 				/*
 				 * sends information from questionnaire to Session for later use. User MUST
 				 * answer all questions
@@ -431,7 +439,6 @@ public class Questionnaire extends Window {
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
 				// getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
 				// getSession().setColorsUserWants(checkSelectedColor(colorWant));
-
 			}
 		});
 
@@ -533,52 +540,53 @@ public class Questionnaire extends Window {
 			if (cb.get(counter).isSelected()) {
 
 				switch (cb.get(counter).getText()) {
-				case ("FENCE"):
-        /*
-				if (cb.get(counter).getText().equals("FENCE")) {
-					plotInArr.add(new PlotFence());
-					break;
-				case ("POOL"):
-					plotInArr.add(new PlotPool());
-					break;
-				case ("PLAYGROUND"):
-					plotInArr.add(new PlotPlayground());
-					break;
-				case ("PATH"):
-					plotInArr.add(new PlotPath());
-
-					break;
-				case ("NONREMOVEABLE_TREES"):
-
-				} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
-					// TODO: Remove checkbox 5. PlotTrees were deleted because we
-					// 			have PlotPlant, and trees are plants and we shouldn't
-					//			duplicate that
-					//plotInArr.add(new PlotTrees());
-				} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
-
-				} else if (cb.get(counter).getText().equals("NONREMOVEABLE TREES")) {
-        
-					plotInArr.add(new PlotTrees());
-					break;
-				case ("PATIO"):
-					plotInArr.add(new PlotPatio());
-					break;
-				case ("BIRDBATH"):
-					plotInArr.add(new PlotBirdBath());
-					break;
-				case ("SHED"):
-					plotInArr.add(new PlotShed());
-					break;
-				case ("ROCKS"):
-					plotInArr.add(new PlotRock());
-					break;
-				case ("OTHER"):
-					plotInArr.add(new PlotOther());
-					break;
-				default:
-					break;
-				}*/
+					case ("FENCE"):
+						/*
+					if (cb.get(counter).getText().equals("FENCE")) {
+						plotInArr.add(new PlotFence());
+						break;
+					case ("POOL"):
+						plotInArr.add(new PlotPool());
+						break;
+					case ("PLAYGROUND"):
+						plotInArr.add(new PlotPlayground());
+						break;
+					case ("PATH"):
+						plotInArr.add(new PlotPath());
+	
+						break;
+					case ("NONREMOVEABLE_TREES"):
+	
+					} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
+						// TODO: Remove checkbox 5. PlotTrees were deleted because we
+						// 			have PlotPlant, and trees are plants and we shouldn't
+						//			duplicate that
+						//plotInArr.add(new PlotTrees());
+					} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
+	
+					} else if (cb.get(counter).getText().equals("NONREMOVEABLE TREES")) {
+	        
+						plotInArr.add(new PlotTrees());
+						break;
+					case ("PATIO"):
+						plotInArr.add(new PlotPatio());
+						break;
+					case ("BIRDBATH"):
+						plotInArr.add(new PlotBirdBath());
+						break;
+					case ("SHED"):
+						plotInArr.add(new PlotShed());
+						break;
+					case ("ROCKS"):
+						plotInArr.add(new PlotRock());
+						break;
+					case ("OTHER"):
+						plotInArr.add(new PlotOther());
+						break;
+					default:
+						break;
+						*/
+				}
 
 			}
 		}
@@ -666,6 +674,11 @@ public class Questionnaire extends Window {
 			}
 		}
 		return colorArr;
+	}
+	
+	public void refresh() {
+		System.out.println("Questionnaire: Refreshing...");
+		System.out.println(getModel().getSession().getExistingPlants());
 	}
 
 }

@@ -107,7 +107,7 @@ public class Session implements Serializable {
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
-  // TODO: Does spring make sense as a default?
+	// TODO: Does spring make sense as a default?
 
 	/**
 	 * Year selected by user from SeasonView
@@ -246,6 +246,14 @@ public class Session implements Serializable {
 
 	public void setSaveOption(String so) {
 		this.saveOption = so;
+	}
+
+	public HashMap<String, Plant> getExistingPlants() {
+		return existingPlants;
+	}
+
+	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
+		this.existingPlants = existingPlants;
 	}
 
 	/**
