@@ -414,6 +414,7 @@ public class PlotDesign extends Window {
 			
 			plantCount++;
 			
+			// TODO: What if it does not even have "Berry...Product" in description?
 			if(p.getPlant().getDescription().contains("Berry/Nut/Seed Product: Yes"))
 				animalsFed++;
 		}
@@ -477,6 +478,8 @@ public class PlotDesign extends Window {
 	}
 	
 	/**
+	 * How much the plot matches the Questionnaire ... TODO ?
+	 * How likely to survive? ...
 	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
@@ -487,10 +490,10 @@ public class PlotDesign extends Window {
 	/**
 	 * <b>NOTE:</b> This method should only be run every so often because of its 
 	 * complexity and cost.<br><br>
-	 * 
+	 *
 	 * Checks every plant in the plot, and determines all the PlotObjects that 
-	 * are vicinity to it (15 feet). Assume that an <i>average</i> plant 
-	 * requires about 4 hours of sun light a day.
+	 * are closest and furthest away to that plant. Assume that an 
+	 * <i>average</i> plant requires about 4 hours of sun light a day.
 	 * 
 	 *  ...Based on the angle of the sun
 	 * and the surrounding plan ... if any PlotObject is greater than the Plants
