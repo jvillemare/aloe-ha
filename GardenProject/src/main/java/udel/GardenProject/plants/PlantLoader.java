@@ -39,15 +39,17 @@ public class PlantLoader {
 	/**
 	 * Loads plants from local file Udel-Flora.json <br>
 	 * Default plant attributes:
-	 * <li>commonNames: null
-	 * <li>latinName: given latinName in file
-	 * <li>description: "Description: "
-	 * <li>bloomTime: null
-	 * <li>light: -1 moisture: null
-	 * <li>soilType: null
-	 * <li>canopy: null
-	 * <li>delawareNative: false
-	 * <li>source: {PlantDataSource.UDEL}
+	 * <ul>
+	 * <li>commonNames: null</li>
+	 * <li>latinName: given latinName in file</li>
+	 * <li>description: "Description: "</li>
+	 * <li>bloomTime: null</li>
+	 * <li>light: -1 moisture: null</li>
+	 * <li>soilType: null</li>
+	 * <li>canopy: null</li>
+	 * <li>delawareNative: false</li>
+	 * <li>source: {PlantDataSource.UDEL}</li>
+	 * </ul>
 	 * 
 	 * @return an ArrayList<Plant> with the plants from Udel-Flora.json
 	 * @throws ParseException
@@ -420,19 +422,22 @@ public class PlantLoader {
 	}
 
 	/**
-	 * Loads plants from local file nrcs-data.json <br>
+	 * Loads plants from local file <code>nrcs-data.json</code> <br>
 	 * Default plant attributes:
-	 * <li>commonNames: null
-	 * <li>latinName: given latinName in file
-	 * <li>description: "Description: "
-	 * <li>bloomTime: null
-	 * <li>light: -1 moisture: null
-	 * <li>soilType: null
-	 * <li>canopy: null
-	 * <li>delawareNative: false
-	 * <li>source: {PlantDataSource.NRCS}
+	 * <ul>
+	 * <li>commonNames: null</li>
+	 * <li>latinName: given latinName in file</li>
+	 * <li>description: "Description: "</li>
+	 * <li>bloomTime: null</li>
+	 * <li>light: -1 moisture: null</li>
+	 * <li>soilType: null</li>
+	 * <li>canopy: null</li>
+	 * <li>delawareNative: false</li>
+	 * <li>source: {PlantDataSource.NRCS}</li>
+	 * </ul>
 	 * 
-	 * @return an ArrayList<Plant> with the plants from nrcs-data.json
+	 * @return 	an <code>ArrayList</code> of Plant objects with the plants from 
+	 * 			<code>nrcs-data.json</code>
 	 * @throws FileNotFoundException
 	 */
 	public ArrayList<Plant> loadNRCS() throws FileNotFoundException {

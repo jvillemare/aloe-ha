@@ -33,6 +33,7 @@ import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
 /**
@@ -389,12 +390,39 @@ public class PlotDesign extends Window {
 	 * Determine what percentage of plants have food sources for any animal. 
 	 * Looks at the plant descriptions to see if the plant has seeds, nuts, or
 	 * fruits that animals could feed on.
+	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 * 			0.0 means no plants feed animals, and 1.0 means all plants in
 	 * 			the plot feeds animals.
 	 */
-	private double evaluateAnimalsFed() {
-		return 0.0;
+	protected double evaluateAnimalsFed() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		PlotPlant p;
+		
+		int plantCount = 0;
+		int animalsFed = 0;
+		
+		for(PlotObject pObject : thePlot) {
+			// This is a little bit hacky, but you tell me what's a better
+			// solution. I thought about it for a few hours but couldn't come up
+			// with anything better.
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			plantCount++;
+			
+			if(p.getPlant().getDescription().contains("Berry/Nut/Seed Product: Yes"))
+				animalsFed++;
+		}
+		
+		// garbage collector cleanup
+		thePlot = null;
+		p = null;
+		
+		return (double)animalsFed / (double)plantCount;
 	}
 	
 	/**
@@ -403,35 +431,105 @@ public class PlotDesign extends Window {
 	 * corresponds to a month of the year.<br><br>
 	 * 
 	 * This method ORs all the booleans in the Plant's bloom time into a master
-	 * boolean array, and this method determines what percentage of that boolean
-	 * array is true.
+	 * boolean array, and this method determines what percentage of the latter
+	 * boolean array is true.
 	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 * 			0.0 means there's no bloom in the plot, and 1.0 every month of
 	 * 			the year has a plant in bloom.
 	 */
-	private double evaluateContinousBloom() {
+	protected double evaluateContinousBloom() {
 		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
 		
+		boolean[] bloom = new boolean[12];
+		PlotPlant p;
+		boolean[] plantsBloom;
 		
+		for(PlotObject pObject : thePlot) {
+			// Hacky solution that works. Check out explanation in
+			//		evaluatedAnimalsFed()
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			plantsBloom = p.getPlant().getBloomTime();
+			
+			for(int i = 0; i < plantsBloom.length; i++) {
+				bloom[i] = bloom[i] || plantsBloom[i];
+			}
+		}
 		
-		return 0.0;
+		double monthsPlantsInBloom = 0.0;
+		
+		for(boolean monthHasPlantInBloom : bloom)
+			if(monthHasPlantInBloom)
+				monthsPlantsInBloom += 1.0;
+		
+		// garbage collector cleanup
+		thePlot = null;
+		bloom = null;
+		p = null;
+		plantsBloom = null;
+		
+		return monthsPlantsInBloom / 12.0;
 	}
 	
 	/**
 	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
-	private double evaluateMatchesGarden() {
+	protected double evaluateMatchesGarden() {
 		return 0.0;
 	}
 	
 	/**
+	 * <b>NOTE:</b> This method should only be run every so often because of its 
+	 * complexity and cost.<br><br>
+	 * 
+	 * Checks every plant in the plot, and determines all the PlotObjects that 
+	 * are vicinity to it (15 feet). Assume that an <i>average</i> plant 
+	 * requires about 4 hours of sun light a day.
+	 * 
+	 *  ...Based on the angle of the sun
+	 * and the surrounding plan ... if any PlotObject is greater than the Plants
+	 * height * 2 then say its transition isn't good.
 	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
-	private double evaluateTransition() {
-		return 0.0;
+	protected double evaluateTransition() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		
+		PlotPlant p;
+		
+		for(PlotObject pObject : thePlot) {
+			// Hacky solution that works. Check out explanation in
+			//		evaluatedAnimalsFed()
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			plantsBloom = p.getPlant().getBloomTime();
+			
+			for(int i = 0; i < plantsBloom.length; i++) {
+				bloom[i] = bloom[i] || plantsBloom[i];
+			}
+		}
+		
+		double monthsPlantsInBloom = 0.0;
+		
+		for(boolean monthHasPlantInBloom : bloom)
+			if(monthHasPlantInBloom)
+				monthsPlantsInBloom += 1.0;
+		
+		// garbage collector cleanup
+		thePlot = null;
+		p = null;
+		
+		return monthsPlantsInBloom / 12.0;
 	}
 
 	@Override
