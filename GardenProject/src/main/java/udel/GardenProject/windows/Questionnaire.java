@@ -373,6 +373,9 @@ public class Questionnaire extends Window {
 	public void createQ8() {
 
 		createText("8) When would you like to see your garden bloom? (Please select all that apply?");
+		// TODO: Don't use List.of, it's easier and dynamic to just use a
+		//			for-each loop and Seasons.values();
+		//			See createQ3() for reference;
 		List<String> seasonsWanted = List.of(Seasons.SPRING.toString(), Seasons.SUMMER.toString(),
 				Seasons.WINTER.toString(), Seasons.FALL.toString(), Seasons.YEARROUND.toString());
 		ObservableList<CheckBox> q7items = FXCollections.observableArrayList(); // add checkboxes to this list
@@ -393,6 +396,9 @@ public class Questionnaire extends Window {
 	public void createQ9() {
 
 		createText("9) What color blooms would you like to see in your garden? (Please select all that apply)");
+		// TODO: Don't use List.of, it's easier and dynamic to just use a
+		//			for-each loop and Colors.values();
+		//			See createQ3() for reference;
 		List<String> colorsWanted = List.of("WHITE", "YELLOW", "ORANGE", "RED", "PURPLE", "BLUE", "GREEN", "BROWN");
 		ObservableList<CheckBox> q8items = FXCollections.observableArrayList();
 		for (String object : colorsWanted) {
@@ -422,23 +428,24 @@ public class Questionnaire extends Window {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				/*
-				 * sends information from questionnaire to Session for later use. User MUST
-				 * answer all questions
-				 */
+				// sends information from questionnaire to Session for later use. User MUST
+				// 		answer all questions.
 				getSession().setPlotName(textField.getText());
-				getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
-				getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
-				// getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-				// getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
-				// TODO: Changed when PlotObject enum comes from #111
-				//getSession().setObjectsNearPlot(checkSelectedNearPlot(nearPlot));
-				//getSession().setObjectsInPlot(checkSelectedInPlot(inPlot));
+				
+				// TODO: A user shouldn't be allowed to save/continue with some
+				//			fields having empty values. add handling for each of 
+				//			these questions
+				if(q1textField1.getText().isEmpty() == false)
+					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
+				if(q1textField2.getText().isEmpty() == false)
+					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+				checkSelectedPlot(nearPlot);
+				checkSelectedPlot(inPlot);
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
-				// getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
-				// getSession().setColorsUserWants(checkSelectedColor(colorWant));
+				getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
+				getSession().setColorsUserWants(checkSelectedColor(colorWant));
 			}
 		});
 
@@ -477,14 +484,11 @@ public class Questionnaire extends Window {
 				}
 			});
 		}
-
 	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
-
 	}
 
 	/**
@@ -499,98 +503,22 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Checks which options are selected by the user and returns an arraylist of
-	 * PlotObjects
+	 * Checks which options are selected by the user and sets the ArrayList of
+	 * <code>selectedPlotObjects</code> in Session.
 	 * 
-	 * @param cb --> checkboxes selected for objects outside (near) of plot
+	 * @param cb	checkboxes that are in each listview for objects IN the 
+	 * 				user's plot.
 	 */
-	public ArrayList<PlotObject> checkSelectedNearPlot(ArrayList<CheckBox> cb) {
-
-		plotNearArr = new ArrayList<PlotObject>();
-		for (int counter = 0; counter < cb.size(); counter++) {
-
-			if (cb.get(counter).isSelected()) {
-
-				// TODO: Shouldn't be creating new object instances, use the 
-				//			newly created PlotObjects enum
-				/*
-				if (cb.get(counter).getText().equals("Road")) {
-					plotNearArr.add(new PlotRoad());
-				} else if (cb.get(counter).getText().equals(PlotObjects.FOREST.toString())) {
-					plotNearArr.add(new PlotForest());
-				}*/
-
-			}
-		}
-		return plotNearArr;
-	}
-
-	/**
-	 * Checks which options are selected by the user and returns an ArrayList of
-	 * PlotObjects
-	 * 
-	 * @param cb --> checkboxes that are in each listview for objects IN the user's
-	 *           plot
-	 */
-	public ArrayList<PlotObject> checkSelectedInPlot(ArrayList<CheckBox> cb) {
-
-		plotInArr = new ArrayList<PlotObject>();
-
+	public void checkSelectedPlot(ArrayList<CheckBox> cb) {
+		// for every selected plot object in the cb list, convert it back to a
+		//		PlotObjects enum, and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-
-				switch (cb.get(counter).getText()) {
-					case ("FENCE"):
-						/*
-					if (cb.get(counter).getText().equals("FENCE")) {
-						plotInArr.add(new PlotFence());
-						break;
-					case ("POOL"):
-						plotInArr.add(new PlotPool());
-						break;
-					case ("PLAYGROUND"):
-						plotInArr.add(new PlotPlayground());
-						break;
-					case ("PATH"):
-						plotInArr.add(new PlotPath());
-	
-						break;
-					case ("NONREMOVEABLE_TREES"):
-	
-					} else if (cb.get(counter).getText().equals("Non-Removeable trees")) {
-						// TODO: Remove checkbox 5. PlotTrees were deleted because we
-						// 			have PlotPlant, and trees are plants and we shouldn't
-						//			duplicate that
-						//plotInArr.add(new PlotTrees());
-					} else if (cb.get(counter).getText().equals("Patio/other lounging area")) {
-	
-					} else if (cb.get(counter).getText().equals("NONREMOVEABLE TREES")) {
-	        
-						plotInArr.add(new PlotTrees());
-						break;
-					case ("PATIO"):
-						plotInArr.add(new PlotPatio());
-						break;
-					case ("BIRDBATH"):
-						plotInArr.add(new PlotBirdBath());
-						break;
-					case ("SHED"):
-						plotInArr.add(new PlotShed());
-						break;
-					case ("ROCKS"):
-						plotInArr.add(new PlotRock());
-						break;
-					case ("OTHER"):
-						plotInArr.add(new PlotOther());
-						break;
-					default:
-						break;
-						*/
-				}
-
+				getSession().getSelectedPlotObjects().add(
+						PlotObjects.valueOf(cb.get(counter).getText())
+						);
 			}
 		}
-		return plotInArr;
 	}
 
 	/**
@@ -606,6 +534,9 @@ public class Questionnaire extends Window {
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
 
+				// TODO: Delete this switch case, it's unneeded when 
+				//			Seasons.valueOf(string s) exists
+				//			See checkSelectedPlot(...) above for reference.
 				switch (cb.get(counter).getText()) {
 				case ("WINTER"):
 					seasonArr.add(Seasons.WINTER);
@@ -643,6 +574,9 @@ public class Questionnaire extends Window {
 
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
+				// TODO: Delete this switch case, it's unneeded when 
+				//			Seasons.valueOf(string s) exists
+				//			See checkSelectedPlot(...) above for reference.
 				switch (cb.get(counter).getText()) {
 				case ("WHITE"):
 					colorArr.add(Color.WHITE);
@@ -677,8 +611,12 @@ public class Questionnaire extends Window {
 	}
 	
 	public void refresh() {
+		// before it goes to the next window, show that it added the plants the
+		// 		user selected
+		// TODO: Remove??
 		System.out.println("Questionnaire: Refreshing...");
-		System.out.println(getModel().getSession().getExistingPlants());
+		System.out.println(getSession().getExistingPlants());
+		System.out.println(getSession().getSelectedPlotObjects());
 	}
 
 }

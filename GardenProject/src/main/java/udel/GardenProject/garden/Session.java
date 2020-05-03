@@ -124,6 +124,16 @@ public class Session implements Serializable {
 	 * The user's selection to how they want to save on the download screen
 	 */
 	private String saveOption;
+	
+	/**
+	 * Plot Objects the user wants to appear in the PlotDesign left column.
+	 */
+	private ArrayList<PlotObjects> selectedPlotObjects = 
+			 new ArrayList<PlotObjects>();
+	
+	public ArrayList<PlotObjects> getSelectedPlotObjects() {
+		return this.selectedPlotObjects;
+	}
 
 	public boolean isUnsaved() {
 		return unsaved;
@@ -255,16 +265,5 @@ public class Session implements Serializable {
 	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
 		this.existingPlants = existingPlants;
 	}
-
-	/**
-	 * TODO: For questionnaire
-	 */
-	/*
-	 * private ArrayList<PlotObjects> selectedPlotObjects = new
-	 * ArrayList<PlotObjects>();
-	 * 
-	 * private ArrayList<PlotObjects> getSelectedPlotObjects() { return
-	 * selectedPlotObjects; }
-	 */
 
 }
