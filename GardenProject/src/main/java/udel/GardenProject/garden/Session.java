@@ -13,11 +13,14 @@ import udel.GardenProject.plotObjects.PlotObject;
 /**
  * Holds all the critical user-state information so that a
  * <code>.gardenproject</code> file can be easily loaded in and out without much
- * delay.<br><br>
+ * delay.<br>
+ * <br>
  * 
- * Isolated so that it can be saved and loaded easily.<br><br>
+ * Isolated so that it can be saved and loaded easily.<br>
+ * <br>
  * 
- * All attributes should be adequately javadoc'd for future reference.<br><br>
+ * All attributes should be adequately javadoc'd for future reference.<br>
+ * <br>
  * 
  * NOTE: All attributes should be initialized to a default value.
  * 
@@ -80,14 +83,15 @@ public class Session implements Serializable {
 	 * Users sunlight of their plot
 	 */
 	private String sunlightOfPlot = "";
-	
+
 	/**
-	 * Existing plants already in users plot.<br><br>
+	 * Existing plants already in users plot.<br>
+	 * <br>
 	 * 
 	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
 	 */
 	private HashMap<String, Plant> existingPlants = new HashMap<String, Plant>();
-	
+
 	/**
 	 * User's selected seasons for blooms
 	 */
@@ -124,13 +128,12 @@ public class Session implements Serializable {
 	 * The user's selection to how they want to save on the download screen
 	 */
 	private String saveOption;
-	
+
 	/**
 	 * Plot Objects the user wants to appear in the PlotDesign left column.
 	 */
-	private ArrayList<PlotObjects> selectedPlotObjects = 
-			 new ArrayList<PlotObjects>();
-	
+	public ArrayList<PlotObjects> selectedPlotObjects = new ArrayList<PlotObjects>();
+
 	public ArrayList<PlotObjects> getSelectedPlotObjects() {
 		return this.selectedPlotObjects;
 	}
