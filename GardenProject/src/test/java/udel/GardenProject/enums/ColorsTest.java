@@ -9,7 +9,7 @@ public class ColorsTest {
 	@Test
 	public void test() {
 		Colors c = Colors.ALICEBLUE;
-		assertTrue(c.name().toLowerCase().equals("dry"));
+		assertTrue(c.name().toLowerCase().equals("aliceblue"));
 	}
 
 }
