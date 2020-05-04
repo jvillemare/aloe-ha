@@ -1,11 +1,7 @@
 package udel.GardenProject.windows;
 
-import java.text.Format.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
@@ -41,17 +38,6 @@ import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.lines.PlotFence;
-import udel.GardenProject.plotObjects.lines.PlotPath;
-import udel.GardenProject.plotObjects.polygons.PlotForest;
-import udel.GardenProject.plotObjects.polygons.PlotPatio;
-import udel.GardenProject.plotObjects.polygons.PlotPlayground;
-import udel.GardenProject.plotObjects.polygons.PlotPool;
-import udel.GardenProject.plotObjects.polygons.PlotRoad;
-import udel.GardenProject.plotObjects.polygons.PlotRock;
-import udel.GardenProject.plotObjects.polygons.PlotShed;
-import udel.GardenProject.plotObjects.special.PlotBirdBath;
-import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -163,7 +149,8 @@ public class Questionnaire extends Window {
 
 		text = new Text(
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+		text.setFont(
+				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
@@ -218,21 +205,12 @@ public class Questionnaire extends Window {
 		createQ1();
 		createQ2();
 		createQ3();
+		createQ4();
 		createQ5();
 		createQ6();
 		createQ7();
 		createQ8();
-		try {
-			createQ9();
-		} catch (ClassNotFoundException e) {
-			System.out.println("class exception");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			System.out.println("class exception");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 
 	/**
@@ -320,7 +298,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Question asking about the moisture of the user's plot
 	 */
-	public void createQ5() {
+	public void createQ4() {
 		createText(
 				"4) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
 		q4ChoiceBox = new ChoiceBox<>();
@@ -333,7 +311,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Question asking about the soil type of the user's plot
 	 */
-	public void createQ6() {
+	public void createQ5() {
 		createText("5) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
 		q5ChoiceBox = new ChoiceBox<>();
 		q5ChoiceBox.getItems().addAll(SoilTypes.CLAY.toString(), SoilTypes.SANDY.toString(), SoilTypes.LOAMY.toString(),
@@ -345,7 +323,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Question asking about the sunlight of the user's plot
 	 */
-	public void createQ7() {
+	public void createQ6() {
 		createText(
 				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
@@ -359,7 +337,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Question asking about when the user wants their flowers to bloom
 	 */
-	public void createQ8() {
+	public void createQ7() {
 
 		createText("7) When would you like to see your garden bloom? (Please select all that apply?");
 
@@ -381,58 +359,20 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Gathers all the default colors that Javafx has to be used for the colors
-	 * questionnaire
-	 * 
-	 * @return Map with the String of the color as the Key and the Color (Hex code)
-	 *         as the value
-	 */
-	private static Map<String, Color> allColorsWithName() {
-		Map<String, Color> map = new HashMap<>();
-		Class clazz = null;
-		try {
-			clazz = Class.forName("javafx.scene.paint.Color");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		if (clazz != null) {
-			java.lang.reflect.Field[] field = clazz.getFields();
-			for (int i = 0; i < field.length; i++) {
-				java.lang.reflect.Field f = field[i];
-				Object obj = null;
-				try {
-					obj = f.get(null);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-				if (obj instanceof Color) {
-					map.put(f.getName(), (Color) obj);
-				}
-
-			}
-		}
-		return map;
-	}
-
-	/**
 	 * Creates the question for what colors does the user want to see in their
 	 * garden
-	 * 
-	 * @throws ClassNotFoundException
-	 * @throws IllegalAccessException
 	 */
-	public void createQ9() throws ClassNotFoundException, IllegalAccessException {
+	public void createQ8() {
 
 		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
 
-		List<Color> colorsWanted = new ArrayList<Color>();
-		colorsWanted.addAll(allColorsWithName().values());
+		List<Colors> colorsWanted = new ArrayList<Colors>();
+		for (Colors enumColor : Colors.values())
+			colorsWanted.add(enumColor);
 
 		ObservableList<CheckBox> q8items = FXCollections.observableArrayList(); // add checkboxes to this list
-		for (String col : allColorsWithName().keySet()) {
-			CheckBox c = new CheckBox(col);// listOfColors.toString());
+		for (Colors colorEnum : colorsWanted) {
+			CheckBox c = new CheckBox(colorEnum.toString());
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
@@ -593,13 +533,11 @@ public class Questionnaire extends Window {
 		for (int i = getSession().getColorsUserSelected().size() - 1; i >= 0; i--) {
 			getSession().getColorsUserSelected().remove(i);
 		}
-
 		// for every selected plot object in the cb list, convert it back to a
-		// Colors from Javafx and add it to the Session ArrayList.
+		// Colors from Colors Enum and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				// hexcode is added to the arraylist of colors the user wants
-				getSession().getColorsUserSelected().add(allColorsWithName().get(cb.get(counter).getText()));
+				getSession().getColorsUserSelected().add(Colors.valueOf(cb.get(counter).getText()));
 			}
 		}
 	}
@@ -608,19 +546,19 @@ public class Questionnaire extends Window {
 		// before it goes to the next window, show that it added the plants the
 		// user selected
 		// used for testing purposes
-		/*
-		 * System.out.println("Questionnaire: Refreshing...");
-		 * System.out.println(getSession().getExistingPlants()); //existing plants
-		 * System.out.println(textField.getText()); //name of plot
-		 * System.out.println(q1textField1.getText()); //width
-		 * System.out.println(q1textField2.getText()); //length
-		 * System.out.println(getSession().getSelectedPlotObjects()); //plot objects
-		 * System.out.println(getChoice(q4ChoiceBox)); //moisture
-		 * System.out.println(getChoice(q5ChoiceBox)); //soil type
-		 * System.out.println(getChoice(q6ChoiceBox)); //sunlight
-		 * System.out.println(getSession().getSeasonsUserSelected()); //seasons
-		 * System.out.println(getSession().getColorsUserSelected()); //colors
-		 */
+
+		System.out.println("Questionnaire: Refreshing...");
+		System.out.println(getSession().getExistingPlants()); // existing plants
+		System.out.println(textField.getText()); // name of plot
+		System.out.println(q1textField1.getText()); // width
+		System.out.println(q1textField2.getText()); // length
+		System.out.println(getSession().getSelectedPlotObjects()); // plot objects
+		System.out.println(getChoice(q4ChoiceBox)); // moisture
+		System.out.println(getChoice(q5ChoiceBox)); // soil type
+		System.out.println(getChoice(q6ChoiceBox)); // sunlight
+		System.out.println(getSession().getSeasonsUserSelected()); // seasons
+		System.out.println(getSession().getColorsUserSelected()); // colors
+
 	}
 
 }

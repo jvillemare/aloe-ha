@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.scene.paint.Color;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.plants.Plant;
@@ -100,7 +101,7 @@ public class Session implements Serializable {
 	/**
 	 * User's selected colors for flowers
 	 */
-	private ArrayList<Color> colorsUserSelected = new ArrayList<Color>();
+	private ArrayList<Colors> colorsUserSelected = new ArrayList<Colors>();
 
 	/**
 	 * Objects actually in the plot, to be displayed in PlotDesign.
@@ -221,11 +222,11 @@ public class Session implements Serializable {
 		return seasonsUserSelected;
 	}
 
-	public void setColorsUserWants(ArrayList<Color> color) {
+	public void setColorsUserWants(ArrayList<Colors> color) {
 		this.colorsUserSelected = color;
 	}
 
-	public ArrayList<Color> getColorsUserSelected() {
+	public ArrayList<Colors> getColorsUserSelected() {
 		return colorsUserSelected;
 	}
 
