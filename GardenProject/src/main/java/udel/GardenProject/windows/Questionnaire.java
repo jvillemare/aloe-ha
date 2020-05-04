@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
@@ -37,17 +38,6 @@ import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.lines.PlotFence;
-import udel.GardenProject.plotObjects.lines.PlotPath;
-import udel.GardenProject.plotObjects.polygons.PlotForest;
-import udel.GardenProject.plotObjects.polygons.PlotPatio;
-import udel.GardenProject.plotObjects.polygons.PlotPlayground;
-import udel.GardenProject.plotObjects.polygons.PlotPool;
-import udel.GardenProject.plotObjects.polygons.PlotRoad;
-import udel.GardenProject.plotObjects.polygons.PlotRock;
-import udel.GardenProject.plotObjects.polygons.PlotShed;
-import udel.GardenProject.plotObjects.special.PlotBirdBath;
-import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
  * Basic questions about a user's plots that informs what plants are selected.
@@ -137,18 +127,17 @@ public class Questionnaire extends Window {
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane
 	 */
-	int infoFontSize = 20;
-	int inset5 = 5;
-	int inset10 = 10;
-	int buttonGap = 100;
-	int scrollWidthAdjustment = 150;
-	int scrollHeightAdjustment = 115;
-	int textWrapWidth = View.getCanvasWidth() / 2;
-	int backgroundWidthAndHeight = 100;
-	int borderSideMargins = 230;
-	int borderTopAndBottonMargin = 40;
-	int questionWrapWidth = 800;
-	int buttonPrefWidth = 100;
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int buttonGap = 100;
+	private int scrollWidthAdjustment = 150;
+	private int scrollHeightAdjustment = 115;
+	private int textWrapWidth = View.getCanvasWidth() / 2;
+	private int backgroundWidthAndHeight = 100;
+	private int borderSideMargins = 230;
+	private int borderTopAndBottonMargin = 40;
+	private int questionWrapWidth = 800;
+	private int buttonPrefWidth = 100;
 
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
@@ -160,15 +149,16 @@ public class Questionnaire extends Window {
 
 		text = new Text(
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), infoFontSize));
+		text.setFont(
+				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
-		topBox.setPadding(new Insets(inset10, inset10, 0, inset10));
+		topBox.setPadding(new Insets(10));
 
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
-		vbox.setPadding(new Insets(inset10, inset10, inset10, inset10));
+		vbox.setPadding(new Insets(10));
 
 		populateQuestionnaire();
 		createButtons();
@@ -220,7 +210,7 @@ public class Questionnaire extends Window {
 		createQ6();
 		createQ7();
 		createQ8();
-		createQ9();
+
 	}
 
 	/**
@@ -284,14 +274,14 @@ public class Questionnaire extends Window {
 	 */
 	public void createQ3() {
 
-		createText("3) Is your plot near any of the following? (Please select all that apply)");
-		
+		createText("3) Are any of the following items near/in your plot? (Please select all that apply)");
+
 		// list of items that appear NEAR a plot
 		List<PlotObjects> objectsNearPlot = new ArrayList<PlotObjects>();
-		for(PlotObjects enumPlotObjects : PlotObjects.values())
-			if(enumPlotObjects.isTypicallyInGarden() == false)
+		for (PlotObjects enumPlotObjects : PlotObjects.values())
+			if (enumPlotObjects.isTypicallyInGarden() == false)
 				objectsNearPlot.add(enumPlotObjects);
-		
+
 		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (PlotObjects plotObjectEnum : objectsNearPlot) {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
@@ -306,110 +296,91 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Question asking the user if they have any of the items (plot objects) in
-	 * their plot
-	 */
-	public void createQ4() {
-
-		createText("4) Do you have any of the following items in your garden? (Please select all that apply)");
-		
-		// list of items that appear IN a plot
-		List<String> objectsInPlot = new ArrayList<String>();
-		for(PlotObjects enumPlotObjects : PlotObjects.values())
-			if(enumPlotObjects.isTypicallyInGarden())
-				objectsInPlot.add(enumPlotObjects.name());
-		
-		ObservableList<CheckBox> q3items = FXCollections.observableArrayList(); // add checkboxes to this list
-		for (String object : objectsInPlot) {
-			CheckBox c = new CheckBox(object);
-			q3items.add(c); // added to this list to view
-			inPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
-		}
-		q3ListView = new ListView<>();
-		q3ListView.setItems(q3items); // add the items in the observable array to the listView
-		q3ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		vbox.getChildren().addAll(q3ListView);
-	}
-
-	/**
 	 * Question asking about the moisture of the user's plot
 	 */
-	public void createQ5() {
+	public void createQ4() {
 		createText(
-				"5) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
+				"4) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
 		q4ChoiceBox = new ChoiceBox<>();
 		q4ChoiceBox.getItems().addAll(Moisture.DRY.toString(), Moisture.DRY_MOIST.toString(), Moisture.MOIST.toString(),
 				Moisture.MOIST_DAMP.toString(), Moisture.DAMP.toString(), "My plot has different moisture");
+		q4ChoiceBox.setValue(Moisture.DRY.toString());
 		vbox.getChildren().addAll(q4ChoiceBox);
 	}
 
 	/**
 	 * Question asking about the soil type of the user's plot
 	 */
-	public void createQ6() {
-		createText("6) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
+	public void createQ5() {
+		createText("5) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
 		q5ChoiceBox = new ChoiceBox<>();
 		q5ChoiceBox.getItems().addAll(SoilTypes.CLAY.toString(), SoilTypes.SANDY.toString(), SoilTypes.LOAMY.toString(),
 				"My plot has different soil types");
+		q5ChoiceBox.setValue(SoilTypes.CLAY.toString());
 		vbox.getChildren().addAll(q5ChoiceBox);
 	}
 
 	/**
 	 * Question asking about the sunlight of the user's plot
 	 */
-	public void createQ7() {
+	public void createQ6() {
 		createText(
-				"7) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
+				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
 		q6ChoiceBox.getItems().addAll(Sunlight.FULLSUN.toString(), Sunlight.PARTIALSHADE.toString(),
 				Sunlight.PARTIALSUN.toString(), Sunlight.FULLSHADE.toString(),
 				"My plot receives different levels of sunlight");
+		q6ChoiceBox.setValue(Sunlight.FULLSUN.toString());
 		vbox.getChildren().addAll(q6ChoiceBox);
 	}
 
 	/**
 	 * Question asking about when the user wants their flowers to bloom
 	 */
-	public void createQ8() {
+	public void createQ7() {
 
-		createText("8) When would you like to see your garden bloom? (Please select all that apply?");
-		// TODO: Don't use List.of, it's easier and dynamic to just use a
-		//			for-each loop and Seasons.values();
-		//			See createQ3() for reference;
-		List<String> seasonsWanted = List.of(Seasons.SPRING.toString(), Seasons.SUMMER.toString(),
-				Seasons.WINTER.toString(), Seasons.FALL.toString(), Seasons.YEARROUND.toString());
+		createText("7) When would you like to see your garden bloom? (Please select all that apply?");
+
+		List<Seasons> seasonsWanted = new ArrayList<Seasons>();
+		for (Seasons enumSeason : Seasons.values())
+			seasonsWanted.add(enumSeason);
+
 		ObservableList<CheckBox> q7items = FXCollections.observableArrayList(); // add checkboxes to this list
-		for (String object : seasonsWanted) {
-			CheckBox c = new CheckBox(object);
+		for (Seasons seasonEnum : seasonsWanted) {
+			CheckBox c = new CheckBox(seasonEnum.toString());
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
 		q7ListView = new ListView<>();
-		q7ListView.setItems(q7items);
+		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		vbox.getChildren().addAll(q7ListView);
+
 	}
 
 	/**
-	 * Question asking about what colors they would like to see in their garden
+	 * Creates the question for what colors does the user want to see in their
+	 * garden
 	 */
-	public void createQ9() {
+	public void createQ8() {
 
-		createText("9) What color blooms would you like to see in your garden? (Please select all that apply)");
-		// TODO: Don't use List.of, it's easier and dynamic to just use a
-		//			for-each loop and Colors.values();
-		//			See createQ3() for reference;
-		List<String> colorsWanted = List.of("WHITE", "YELLOW", "ORANGE", "RED", "PURPLE", "BLUE", "GREEN", "BROWN");
-		ObservableList<CheckBox> q8items = FXCollections.observableArrayList();
-		for (String object : colorsWanted) {
-			CheckBox c = new CheckBox(object);
+		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
+
+		List<Colors> colorsWanted = new ArrayList<Colors>();
+		for (Colors enumColor : Colors.values())
+			colorsWanted.add(enumColor);
+
+		ObservableList<CheckBox> q8items = FXCollections.observableArrayList(); // add checkboxes to this list
+		for (Colors colorEnum : colorsWanted) {
+			CheckBox c = new CheckBox(colorEnum.toString());
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
 		q8ListView = new ListView<>();
-		q8ListView.setItems(q8items);
+		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		vbox.getChildren().addAll(q8ListView);
+
 	}
 
 	/**
@@ -429,23 +400,25 @@ public class Questionnaire extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				// sends information from questionnaire to Session for later use. User MUST
-				// 		answer all questions.
-				getSession().setPlotName(textField.getText());
-				
-				// TODO: A user shouldn't be allowed to save/continue with some
-				//			fields having empty values. add handling for each of 
-				//			these questions
-				if(q1textField1.getText().isEmpty() == false)
+				// answer all questions.
+
+				if (textField.getText().isEmpty()) {
+					getSession().setPlotName("My Garden");
+				} else {
+					getSession().setPlotName(textField.getText());
+				}
+				if (q1textField1.getText().isEmpty() == false)
 					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
-				if(q1textField2.getText().isEmpty() == false)
+
+				if (q1textField2.getText().isEmpty() == false)
 					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+
 				checkSelectedPlot(nearPlot);
-				checkSelectedPlot(inPlot);
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
 				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
-				getSession().setSeasonsUserSelected(checkSelectedSeasons(seasonWant));
-				getSession().setColorsUserWants(checkSelectedColor(colorWant));
+				checkSelectedSeasons(seasonWant);
+				checkSelectedColor(colorWant);
 			}
 		});
 
@@ -506,17 +479,21 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and sets the ArrayList of
 	 * <code>selectedPlotObjects</code> in Session.
 	 * 
-	 * @param cb	checkboxes that are in each listview for objects IN the 
-	 * 				user's plot.
+	 * @param cb checkboxes that are in each listview for objects IN the user's
+	 *           plot.
 	 */
 	public void checkSelectedPlot(ArrayList<CheckBox> cb) {
+
+		// Removes everything in list first so no doubles are added
+		for (int i = getSession().getSelectedPlotObjects().size() - 1; i >= 0; i--) {
+			getSession().getSelectedPlotObjects().remove(i);
+		}
+
 		// for every selected plot object in the cb list, convert it back to a
-		//		PlotObjects enum, and add it to the Session ArrayList.
+		// PlotObjects enum, and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				getSession().getSelectedPlotObjects().add(
-						PlotObjects.valueOf(cb.get(counter).getText())
-						);
+				getSession().getSelectedPlotObjects().add(PlotObjects.valueOf(cb.get(counter).getText()));
 			}
 		}
 	}
@@ -525,98 +502,63 @@ public class Questionnaire extends Window {
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * seasons
 	 * 
-	 * @param cb --> checkboxes selected for seasons
+	 * @param cb Checkboxes selected for seasons
 	 */
-	public ArrayList<Seasons> checkSelectedSeasons(ArrayList<CheckBox> cb) {
+	public void checkSelectedSeasons(ArrayList<CheckBox> cb) {
 
-		seasonArr = new ArrayList<Seasons>();
+		// Removes everything in list first so no doubles are added
+		for (int i = getSession().getSeasonsUserSelected().size() - 1; i >= 0; i--) {
+			getSession().getSeasonsUserSelected().remove(i);
+		}
 
+		// for every selected plot object in the cb list, convert it back to a
+		// Seasons enum, and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-
-				// TODO: Delete this switch case, it's unneeded when 
-				//			Seasons.valueOf(string s) exists
-				//			See checkSelectedPlot(...) above for reference.
-				switch (cb.get(counter).getText()) {
-				case ("WINTER"):
-					seasonArr.add(Seasons.WINTER);
-					break;
-				case ("SUMMER"):
-					seasonArr.add(Seasons.SUMMER);
-					break;
-				case ("SPRING"):
-					seasonArr.add(Seasons.SPRING);
-					break;
-				case ("FALL"):
-					seasonArr.add(Seasons.FALL);
-					break;
-				case ("YEARROUND"):
-					seasonArr.add(Seasons.YEARROUND);
-					break;
-				default:
-					break;
-				}
-
+				getSession().getSeasonsUserSelected().add(Seasons.valueOf(cb.get(counter).getText()));
 			}
 		}
-		return seasonArr;
+
 	}
 
 	/**
 	 * Checks which options are selected by the user and returns an arraylist of
 	 * colors
 	 * 
-	 * @param cb --> checkboxes checked for the colors
+	 * @param cb Checkboxes checked for the colors
 	 */
-	public ArrayList<Color> checkSelectedColor(ArrayList<CheckBox> cb) {
+	public void checkSelectedColor(ArrayList<CheckBox> cb) {
 
-		colorArr = new ArrayList<Color>();
-
+		// Removes everything in list first so no doubles are added
+		for (int i = getSession().getColorsUserSelected().size() - 1; i >= 0; i--) {
+			getSession().getColorsUserSelected().remove(i);
+		}
+		// for every selected plot object in the cb list, convert it back to a
+		// Colors from Colors Enum and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				// TODO: Delete this switch case, it's unneeded when 
-				//			Seasons.valueOf(string s) exists
-				//			See checkSelectedPlot(...) above for reference.
-				switch (cb.get(counter).getText()) {
-				case ("WHITE"):
-					colorArr.add(Color.WHITE);
-					break;
-				case ("YELLOW"):
-					colorArr.add(Color.YELLOW);
-					break;
-				case ("ORANGE"):
-					colorArr.add(Color.ORANGE);
-					break;
-				case ("RED"):
-					colorArr.add(Color.RED);
-					break;
-				case ("PURPLE"):
-					colorArr.add(Color.PURPLE);
-					break;
-				case ("BLUE"):
-					colorArr.add(Color.BLUE);
-					break;
-				case ("GREEN"):
-					colorArr.add(Color.GREEN);
-					break;
-				case ("BROWN"):
-					colorArr.add(Color.BROWN);
-					break;
-				default:
-					break;
-				}
+				getSession().getColorsUserSelected().add(Colors.valueOf(cb.get(counter).getText()));
 			}
 		}
-		return colorArr;
 	}
-	
+
 	public void refresh() {
 		// before it goes to the next window, show that it added the plants the
-		// 		user selected
-		// TODO: Remove??
+		// user selected
+		// used for testing purposes
+
 		System.out.println("Questionnaire: Refreshing...");
-		System.out.println(getSession().getExistingPlants());
-		System.out.println(getSession().getSelectedPlotObjects());
+		System.out.println(getSession().getExistingPlants()); // existing plants
+		System.out.println(textField.getText()); // name of plot
+		System.out.println(q1textField1.getText()); // width
+		System.out.println(q1textField2.getText()); // length
+		System.out.println(getSession().getSelectedPlotObjects()); // plot objects
+		System.out.println(getChoice(q4ChoiceBox)); // moisture
+		System.out.println(getChoice(q5ChoiceBox)); // soil type
+		System.out.println(getChoice(q6ChoiceBox)); // sunlight
+		System.out.println(getSession().getSeasonsUserSelected()); // seasons
+		System.out.println(getSession().getColorsUserSelected()); // colors
+
 	}
 
 }
