@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -11,16 +12,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
@@ -33,11 +33,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import udel.GardenProject.enums.PlotObjects;
+import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotPlant;
+import udel.GardenProject.plotObjects.YDistanceComparator;
+import udel.GardenProject.plotObjects.special.PlotFlamingo;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -91,6 +96,11 @@ public class SeasonView extends Window {
 	 * Prospective area where the image of the garden plot should be
 	 */
 	private Rectangle square;
+	
+	/**
+	 * Canvas to draw plants on for window view
+	 */
+	private Canvas canvas;
 
 	/**
 	 * Final toggle the user chose for season
@@ -118,12 +128,33 @@ public class SeasonView extends Window {
 	 * @param m Model
 	 */
 
+	/**
+	 * Width of garden on the window.
+	 */
+	private double viewWidth;
+	
+	/**
+	 * Depth of garden on the window.
+	 */
+	private double viewDepth;
+	
+	/**
+	 * Maximum depth a plot object may be placed on plot desigh
+	 */
+	private final int MAXDEPTH = 550;
+	
+	/**
+	 * Maximum width a plot object may be placed on plot design
+	 */
+	private final int MAXWIDTH = 620;
+	
 	int inset5 = 5;
 	int buttonTextSize = 12;
 	int buttonPrefWidth = 100;
 	int topTextSize = 20;
 	int textWrapAdjustment = 20;
 	int buttonGap = 100;
+	
 
 	public SeasonView(Model m) {
 		super(m, "Garden Previewer");
@@ -154,6 +185,14 @@ public class SeasonView extends Window {
 		toggleOptionsTilePane.setHgap(20);
 		toggleOptionsTilePane.setVgap(20);
 
+		
+		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
+				- toggleOptionsTilePane.getHeight() - 130;
+		viewWidth = View.getCanvasWidth() - 20;
+		canvas = new Canvas(viewWidth, viewDepth);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		drawCanvas(gc);
+		
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
 				- toggleOptionsTilePane.getHeight() - 130);
@@ -333,9 +372,11 @@ public class SeasonView extends Window {
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				if (v.equals("TOP VIEW")) {
+					imageVBox.getChildren().set(0, square);
 					chosenView = "TOP";
 				}
 				if (v.equals("WINDOW VIEW")) {
+					imageVBox.getChildren().set(0, canvas);
 					chosenView = "WINDOW";
 				}
 			});
@@ -361,6 +402,49 @@ public class SeasonView extends Window {
 				}
 			}
 		});
+	}
+	
+	public void drawCanvas(GraphicsContext gc) {
+		//ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
+		ArrayList<PlotObject> plot = new ArrayList<>();
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 50, 500));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 225, 450));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 100, 180));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 350, 175));
+		plot.add(new PlotFlamingo(225, 100, 3));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 395, 350));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 475, 500));
+		Image floor = new Image(getClass().getResourceAsStream("/buttonImages/flower1.png"), 104, 126, true, false);
+		Image understory = new Image(getClass().getResourceAsStream("/buttonImages/bush1.png"), 175, 231, true, false);
+		Image canopy = new Image(getClass().getResourceAsStream("/buttonImages/tree1.png"), 611, 380, true, false);
+		Image emergent = new Image(getClass().getResourceAsStream("/buttonImages/tree3.png"), 581, 465, true, false);
+		Image obstacle = new Image(getClass().getResourceAsStream("/buttonImages/boulder.png"), 126, 76, true, false);
+		Collections.sort(plot, new YDistanceComparator());
+		for (PlotObject po : plot) {
+			double factor = .25;
+			if (po.getPlotY()/MAXDEPTH > .25) {
+				factor = po.getPlotY()/MAXDEPTH; 
+			}
+			gc.setEffect(new DropShadow());
+			if (po.getClass().equals(PlotPlant.class)) {
+				if (po.getHeight() <= 15) {
+					gc.drawImage(floor, po.getPlotX()/MAXWIDTH*viewWidth - floor.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - floor.getHeight() * factor, floor.getWidth() * factor, floor.getHeight() * factor);
+				}
+				else if(po.getHeight() <= 55) {
+					gc.drawImage(understory, po.getPlotX()/MAXWIDTH*viewWidth - understory.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - understory.getHeight() * factor, understory.getWidth() * factor, understory.getHeight() * factor);
+				}
+				else if(po.getHeight() <= 95) {	
+					gc.drawImage(canopy, po.getPlotX()/MAXWIDTH*viewWidth - canopy.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - canopy.getHeight() * factor, canopy.getWidth() * factor, canopy.getHeight() * factor);
+				}
+				else {
+					gc.drawImage(emergent, po.getPlotX()/MAXWIDTH*viewWidth - emergent.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - emergent.getHeight() * factor, emergent.getWidth() * factor, emergent.getHeight() * factor);
+				}
+			}
+			else {
+				gc.drawImage(obstacle, po.getPlotX()/MAXWIDTH*viewWidth - obstacle.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - obstacle.getHeight() * factor, obstacle.getWidth() * factor, obstacle.getHeight() * factor);
+			}
+		}
+		
 	}
 
 }
