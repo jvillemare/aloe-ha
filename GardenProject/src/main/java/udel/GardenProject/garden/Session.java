@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.scene.paint.Color;
+import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -105,8 +106,8 @@ public class Session implements Serializable {
 	/**
 	 * Season selected by user from SeasonView
 	 */
-	private String seasonInput = "";
-	// TODO: Replace with enum
+	private Seasons seasonInput = Seasons.SPRING;
+	// TODO: Does spring make sense as a default?
 
 	/**
 	 * Year selected by user from SeasonView
@@ -123,6 +124,16 @@ public class Session implements Serializable {
 	 * The user's selection to how they want to save on the download screen
 	 */
 	private String saveOption;
+	
+	/**
+	 * Plot Objects the user wants to appear in the PlotDesign left column.
+	 */
+	private ArrayList<PlotObjects> selectedPlotObjects = 
+			 new ArrayList<PlotObjects>();
+	
+	public ArrayList<PlotObjects> getSelectedPlotObjects() {
+		return this.selectedPlotObjects;
+	}
 
 	public boolean isUnsaved() {
 		return unsaved;
@@ -215,12 +226,12 @@ public class Session implements Serializable {
 		return colorsUserSelected;
 	}
 
-	public String getSeasonInput() {
+	public Seasons getSeasonInput() {
 		return seasonInput;
 	}
 
-	public void setSeasonInput(String s) {
-		this.seasonInput = s;
+	public void setSeasonInput(Seasons chooseSeason) {
+		this.seasonInput = chooseSeason;
 	}
 
 	public int getYearInput() {
@@ -251,11 +262,6 @@ public class Session implements Serializable {
 		return existingPlants;
 	}
 
-	/**
-	 * Setter.<br><br>
-	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
-	 * @param existingPlants	...
-	 */
 	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
 		this.existingPlants = existingPlants;
 	}

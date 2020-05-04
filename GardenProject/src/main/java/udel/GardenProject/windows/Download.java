@@ -1,5 +1,8 @@
 package udel.GardenProject.windows;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,6 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -80,6 +91,22 @@ public class Download extends Window {
 	private String saveOption;
 
 	/**
+	 * Adjustments of size for insets, texts, the center square, buttons, and
+	 * background
+	 */
+	int inset5 = 5;
+	int inset10 = 10;
+	int inset20 = 20;
+	int topTextWidthAdjustment = 20;
+	int topTextSize = 20;
+	int squareHightAdjustment = 130;
+	int squareWidthAdjustment = 20;
+	int gapBetweenButtons = 100;
+	int backgroundWidthAndHeight = 100;
+	int buttonPrefWidth = 100;
+	int buttonTextSize = 12;
+
+	/**
 	 * Assume the user has no last save file downloaded.
 	 *
 	 * @param m Model
@@ -93,11 +120,11 @@ public class Download extends Window {
 		saveOptions = new HBox();
 		tilePane = new TilePane();
 
-		saveOptions.setPadding(new Insets(10, 10, 10, 10));
+		saveOptions.setPadding(new Insets(inset10, inset10, inset10, inset10));
 
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
-		text.setWrappingWidth(View.getCanvasWidth() - 20);
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
+		text.setWrappingWidth(View.getCanvasWidth() - topTextWidthAdjustment);
+		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
 		vbox.getChildren().addAll(text);
 		vbox.setAlignment(Pos.CENTER);
 
@@ -110,22 +137,29 @@ public class Download extends Window {
 		createAndHandleButtons();
 
 		square = new Rectangle();
-		square.setHeight(
-				View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight() - 130);
-		square.setWidth(View.getCanvasWidth() - 20);
+		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight()
+				- squareHightAdjustment);
+		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(100);
+		tilePane.setPadding(new Insets(inset5));
+		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(back, downloadButton);
 
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
 
-		borderPane.setStyle("-fx-background-color: #F6E8E8;"); // pink
-		borderPane.setPadding(new Insets(10, 10, 10, 10));
+		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
+		BackgroundSize backgroundSize = new BackgroundSize(backgroundWidthAndHeight, backgroundWidthAndHeight, true,
+				true, true, false);
+		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+		Background background = new Background(backgroundImage);
+
+		borderPane.setBackground(background);
+		borderPane.setPadding(new Insets(inset10, inset10, inset20, inset10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
 		borderPane.setCenter(square);
@@ -141,6 +175,7 @@ public class Download extends Window {
 	 */
 	public void createAndHandleButtons() {
 
+		formatToggleButton(pngSave);
 		pngSave.setOnAction((ActionEvent e) -> {
 			saveOption = "PNG";
 
@@ -160,7 +195,6 @@ public class Download extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Load: .gardenProject");
 				saveOption = "gardenProject";
 			}
 		});
@@ -174,6 +208,68 @@ public class Download extends Window {
 
 			}
 		});
+
+		/*
+		 * Formatting how the buttons will look at the bottom of the screen
+		 */
+		List<Button> bottomButtons = new ArrayList<Button>();
+		bottomButtons.add(back);
+		bottomButtons.add(load);
+		bottomButtons.add(downloadButton);
+
+		for (Button b : bottomButtons) {
+			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
+			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+			b.setPrefWidth(buttonPrefWidth);
+
+			DropShadow shadow = new DropShadow();
+			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(shadow);
+					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+				}
+			});
+
+			b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(null);
+					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+				}
+			});
+		}
+	}
+
+	/**
+	 * Function that formats each of the toggle buttons for the options on how the
+	 * user wants to save
+	 * 
+	 * @param b --> a toggle button
+	 */
+	public void formatToggleButton(ToggleButton b) {
+
+		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
+		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+		b.setPrefWidth(buttonPrefWidth);
+
+		DropShadow shadow = new DropShadow();
+
+		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
+		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+		b.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if (b.isSelected()) {
+					b.setEffect(shadow);
+					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+				} else {
+					b.setEffect(null);
+					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+				}
+			}
+		});
+
 	}
 
 	/**
