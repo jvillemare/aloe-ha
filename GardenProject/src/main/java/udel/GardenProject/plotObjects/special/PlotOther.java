@@ -20,8 +20,8 @@ public class PlotOther extends PlotObject implements Serializable {
 	 * @param y			...
 	 * @param height	...
 	 */
-	public PlotOther(double x, double y, double height) {
-		super(x, y, height);
+	public PlotOther(double x, double y, double height, double radius) {
+		super(x, y, height, radius);
 		// TODO Auto-generated constructor stub
 	}
 

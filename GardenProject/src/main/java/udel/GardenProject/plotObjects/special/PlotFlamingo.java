@@ -14,8 +14,7 @@ public class PlotFlamingo extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public PlotFlamingo(double x, double y, double height) {
-		super(x, y, height);
-		// TODO Auto-generated constructor stub
+		super(x, y, height, 1.0);
 	}
 
 }

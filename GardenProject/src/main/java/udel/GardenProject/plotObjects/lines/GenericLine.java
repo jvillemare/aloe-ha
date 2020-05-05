@@ -21,8 +21,8 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 * @param p			AdjustableLine that represent a line object.
 	 */
 	public GenericLine(double x, double y, double height, AdjustableLine l) {
-		super(x, y, height);
-		// TODO Auto-generated constructor stub
+		super(x, y, height, 2.0);
+		// TODO radius may be wrong, we'll see
 		this.l = l;
 	}
 	

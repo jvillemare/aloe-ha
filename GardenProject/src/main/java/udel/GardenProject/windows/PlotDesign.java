@@ -478,8 +478,16 @@ public class PlotDesign extends Window {
 	}
 	
 	/**
-	 * How much the plot matches the Questionnaire ... TODO ?
-	 * How likely to survive? ...
+	 * Determine the percentage of plants and the percentage of each plant that
+	 * matches the chosen plot characteristics specified by the user in the
+	 * Questionnaire. Meaning, for every single Plant, what percentage of that
+	 * plant matches what the user is looking for?<br><br>
+	 * 
+	 * If a user wants a yellow plant that blooms all year round, and there is a
+	 * plant matching that description, that plant has a score of 
+	 * <code>1.0</code>. If its a yellow plant that blooms only part of the
+	 * year, it has a score of <code>0.5</code>. The average of these plant
+	 * scores is calculated for every plant.
 	 * 
 	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
@@ -504,6 +512,13 @@ public class PlotDesign extends Window {
 	protected double evaluateTransition() {
 		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
 		
+		double degreesToNorth = 0.0; // where is true north?
+		double sunlightWindow = 15.0; // how much does the sun-rise/set amplitude vary?
+		double windowResolution = 5.0; // increment of vectors to take for window intersection
+		
+		int plantCount = 0;
+		double averageLight = 0.0;
+		
 		PlotPlant p;
 		
 		for(PlotObject pObject : thePlot) {
@@ -515,24 +530,102 @@ public class PlotDesign extends Window {
 				continue;
 			}
 			
-			plantsBloom = p.getPlant().getBloomTime();
+			// how much light do the plot objects block
+			double totalShadeEffect = 0.0;
 			
-			for(int i = 0; i < plantsBloom.length; i++) {
-				bloom[i] = bloom[i] || plantsBloom[i];
+			for(PlotObject obstacle : thePlot) {
+				if(obstacle.equals(p))
+					continue; // don't compare P against itself
+				double obstacleDistance = distanceIn2d(p.getPlotX(), 
+						p.getPlotY(), obstacle.getPlotX(), obstacle.getPlotY());
+				if(obstacleDistance > obstacle.getHeight())
+					continue; // is the obstacle within shadow range?
+				
+				double currentVector = windowResolution;
+				boolean isIntersecting = false;
+				
+				while(currentVector > 0.0) {
+					if(lineIntersectsCircle(p.getPlotX(), p.getPlotY(),
+							// TODO: line below has to change according to currentVector
+							obstacle.getPlotX(), obstacle.getPlotY(), 
+							obstacle.getPlotX(), obstacle.getPlotY(), 
+							obstacle.getRadius())) {
+						isIntersecting = true;
+						break;
+					}
+					currentVector -= windowResolution;
+				}
+				
+				if(isIntersecting) {
+					// as obstacle height increases, so does its shadow
+					double obstacleShadeEffect = 
+							(1 - (p.getHeight() / obstacle.getHeight()));
+					// the closer the obstacle, the more effect its shadow has
+					obstacleShadeEffect *= Math.cos(
+							((obstacleDistance/obstacle.getHeight()) * Math.PI)/2.0
+							);
+					// what percentage of sunlight view does this object block?
+					obstacleShadeEffect *= (180 * obstacle.getRadius()) / 
+							(Math.PI * obstacleDistance);
+					// plot object can only block sunlight from east/west, not both
+					obstacleShadeEffect *= 0.5;
+					totalShadeEffect += obstacleShadeEffect;
+				}
 			}
+			
+			if(1.0 - totalShadeEffect < p.getPlant().getLight()) {
+				// plant is getting less light than it needs
+				// calculate what percentage of light it is getting
+				averageLight += (1.0 - totalShadeEffect) / p.getPlant().getLight();
+			} else {
+				// plant is getting enough light
+				averageLight += 1.0;
+			}
+			plantCount++;
 		}
-		
-		double monthsPlantsInBloom = 0.0;
-		
-		for(boolean monthHasPlantInBloom : bloom)
-			if(monthHasPlantInBloom)
-				monthsPlantsInBloom += 1.0;
 		
 		// garbage collector cleanup
 		thePlot = null;
 		p = null;
 		
-		return monthsPlantsInBloom / 12.0;
+		if(averageLight != 0.0)
+			return averageLight / (double)plantCount;
+		else
+			return 0.0; // no plants to check
+	}
+	
+	/**
+	 * Determine if a line intersects a circle.
+	 * @param x1	X point of the first line.
+	 * @param y1	Y point of the first line.
+	 * @param x2	X point of the second line.
+	 * @param y2	Y point of the second line.
+	 * @param circleX
+	 * @param circleY
+	 * @param circleR
+	 * @return True if the line intersects a circle, False if not.
+	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
+	 */
+	private boolean lineIntersectsCircle(double x1, double y1, double x2, 
+			double y2, double circleX, double circleY, double circleR) {
+		return (Math.abs((x2 - x1)*circleY +  circleX*(y1 -     
+			       y2) + (x1 - x2)*y1 +
+			       (y1 - y2)*x1)/ Math.sqrt(Math.pow((x2 - x1), 2) +
+			       Math.pow((y1 - y2), 2)) <= circleR);
+	}
+	
+	/**
+	 * Determine distance between two points.
+	 * @param x1	X of first point.
+	 * @param y1	Y of first point.
+	 * @param x2	X of second point.
+	 * @param y2	Y of second point.
+	 * @return Distance between two points as a double.
+	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
+	 */
+	public double distanceIn2d(double x1, double y1,
+			double x2, double y2) {       
+		return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 	}
 
 	@Override

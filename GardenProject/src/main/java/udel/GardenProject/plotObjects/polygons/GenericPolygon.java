@@ -30,7 +30,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * 					should look like.
 	 */
 	public GenericPolygon(double x, double y, double height, AdjustablePolygon p) {
-		super(x, y, height);
+		// TODO: We'll just say radius is 1 for now
+		super(x, y, height, 5.0);
 		this.p = p;
 	}
 	

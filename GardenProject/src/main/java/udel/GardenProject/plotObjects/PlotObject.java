@@ -25,6 +25,11 @@ public abstract class PlotObject {
 	private double height;
 	
 	/**
+	 * Radius of obejct in feet.
+	 */
+	private double radius;
+	
+	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
 	 * calculating plant transition, shade, etc.
@@ -33,10 +38,11 @@ public abstract class PlotObject {
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
 	 */
-	public PlotObject(double x, double y, double height) {
+	public PlotObject(double x, double y, double height, double radius) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
+		this.radius = radius;
 	}
 	
 	/**
@@ -61,6 +67,14 @@ public abstract class PlotObject {
 	 */
 	public final double getHeight() {
 		return this.height;
+	}
+	
+	/**
+	 * Getter.
+	 * @return	Radius of this plot object in feet.
+	 */
+	public final double getRadius() {
+		return this.radius;
 	}
 
 }

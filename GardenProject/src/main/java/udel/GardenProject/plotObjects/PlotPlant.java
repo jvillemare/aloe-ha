@@ -29,7 +29,10 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param y Vertical position in PlotDesign.
 	 */
 	public PlotPlant(Plant p, double x, double y) {
-		super(x, y, p.getCanopy().getAverageCanopyHeight());
+		// TODO: A plant is always about a foot wide? Let's say for simplicity.
+		// Fix later. Definitely a helper method in plant that reads the 
+		// description or calculates or something
+		super(x, y, p.getCanopy().getAverageCanopyHeight(), 5.0);
 		this.p = p;
 	}
 	
