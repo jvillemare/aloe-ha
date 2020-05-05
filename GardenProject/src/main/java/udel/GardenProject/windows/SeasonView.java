@@ -121,13 +121,7 @@ public class SeasonView extends Window {
 	 * Holds the toggle options and the bottom navigation buttons
 	 */
 	public VBox bottomBox;
-
-	/**
-	 * Create a SeasonView window instance.
-	 *
-	 * @param m Model
-	 */
-
+	
 	/**
 	 * Width of garden on the window.
 	 */
@@ -147,6 +141,17 @@ public class SeasonView extends Window {
 	 * Maximum width a plot object may be placed on plot design
 	 */
 	private final int MAXWIDTH = 620;
+	
+	/**
+	 * Factor for scaling images in the window view
+	 */
+	private double factor;
+
+	/**
+	 * Create a SeasonView window instance.
+	 *
+	 * @param m Model
+	 */
 	
 	int inset5 = 5;
 	int buttonTextSize = 12;
@@ -191,6 +196,10 @@ public class SeasonView extends Window {
 		viewWidth = View.getCanvasWidth() - 20;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Image sky = new Image(getClass().getResourceAsStream("/windowImages/clouds.png"));
+		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.setFill(Color.FORESTGREEN);
+		gc.fillRect(0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 		drawCanvas(gc);
 		
 		square = new Rectangle();
@@ -407,11 +416,17 @@ public class SeasonView extends Window {
 	public void drawCanvas(GraphicsContext gc) {
 		//ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		ArrayList<PlotObject> plot = new ArrayList<>();
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 50, 500));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 50, MAXDEPTH));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 180, MAXDEPTH));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 290, MAXDEPTH));
 		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 225, 450));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 25, 400));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 530, 390));
 		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 100, 180));
 		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 350, 175));
+		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 150, 230));
 		plot.add(new PlotFlamingo(225, 100, 3));
+		plot.add(new PlotFlamingo(400, 405, 3));
 		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 395, 350));
 		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 475, 500));
 		Image floor = new Image(getClass().getResourceAsStream("/buttonImages/flower1.png"), 104, 126, true, false);
@@ -421,27 +436,27 @@ public class SeasonView extends Window {
 		Image obstacle = new Image(getClass().getResourceAsStream("/buttonImages/boulder.png"), 126, 76, true, false);
 		Collections.sort(plot, new YDistanceComparator());
 		for (PlotObject po : plot) {
-			double factor = .25;
-			if (po.getPlotY()/MAXDEPTH > .25) {
+			double factor = .3;
+			if (po.getPlotY()/MAXDEPTH > factor) {
 				factor = po.getPlotY()/MAXDEPTH; 
 			}
 			gc.setEffect(new DropShadow());
 			if (po.getClass().equals(PlotPlant.class)) {
 				if (po.getHeight() <= 15) {
-					gc.drawImage(floor, po.getPlotX()/MAXWIDTH*viewWidth - floor.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - floor.getHeight() * factor, floor.getWidth() * factor, floor.getHeight() * factor);
+					gc.drawImage(floor, po.getPlotX()/MAXWIDTH*viewWidth - (floor.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (floor.getHeight()*factor) + viewDepth/3*2, floor.getWidth() * factor, floor.getHeight() * factor);
 				}
 				else if(po.getHeight() <= 55) {
-					gc.drawImage(understory, po.getPlotX()/MAXWIDTH*viewWidth - understory.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - understory.getHeight() * factor, understory.getWidth() * factor, understory.getHeight() * factor);
+					gc.drawImage(understory, po.getPlotX()/MAXWIDTH*viewWidth - (understory.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (understory.getHeight()*factor) + viewDepth/3*2, understory.getWidth() * factor, understory.getHeight() * factor);
 				}
 				else if(po.getHeight() <= 95) {	
-					gc.drawImage(canopy, po.getPlotX()/MAXWIDTH*viewWidth - canopy.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - canopy.getHeight() * factor, canopy.getWidth() * factor, canopy.getHeight() * factor);
+					gc.drawImage(canopy, po.getPlotX()/MAXWIDTH*viewWidth - (canopy.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (canopy.getHeight()*factor) + viewDepth/3*2, canopy.getWidth() * factor, canopy.getHeight() * factor);
 				}
 				else {
-					gc.drawImage(emergent, po.getPlotX()/MAXWIDTH*viewWidth - emergent.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - emergent.getHeight() * factor, emergent.getWidth() * factor, emergent.getHeight() * factor);
+					gc.drawImage(emergent, po.getPlotX()/MAXWIDTH*viewWidth - (emergent.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (emergent.getHeight()*factor) + viewDepth/3*2, emergent.getWidth() * factor, emergent.getHeight() * factor);
 				}
 			}
 			else {
-				gc.drawImage(obstacle, po.getPlotX()/MAXWIDTH*viewWidth - obstacle.getWidth()/2 * factor, po.getPlotY()/MAXDEPTH*viewDepth - obstacle.getHeight() * factor, obstacle.getWidth() * factor, obstacle.getHeight() * factor);
+				gc.drawImage(obstacle, po.getPlotX()/MAXWIDTH*viewWidth - (obstacle.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (obstacle.getHeight()*factor) + viewDepth/3*2, obstacle.getWidth() * factor, obstacle.getHeight() * factor);
 			}
 		}
 		
