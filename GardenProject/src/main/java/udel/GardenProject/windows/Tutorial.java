@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -75,6 +74,8 @@ public class Tutorial extends Window {
 	 */
 	private VBox topBox;
 
+	private int inset10 = 10;
+	private int inset20 = 20;
 	private int tutorialCanvasWidth = View.getCanvasWidth() - 320;
 	private int scrollWidthAdjustment = 150;
 	private int scrollHeightAdjustment = 115;
@@ -102,12 +103,11 @@ public class Tutorial extends Window {
 
 		welcomeTxt = new Text(
 				"Welcome to the Tutorial! Click on the drop down options below to help you get started on your plot. Happy planting!");
-		welcomeTxt.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+		welcomeTxt.setFont(getModel().getHackBold20());
 		welcomeTxt.setWrappingWidth(messageWrapWidth);
 
 		topBox.setStyle(View.getPinkBackgroundStyle());
-		topBox.setPadding(new Insets(10));
+		topBox.setPadding(new Insets(inset10));
 		topBox.getChildren().add(welcomeTxt);
 
 		scroll = new ScrollPane();
@@ -123,7 +123,7 @@ public class Tutorial extends Window {
 		createAccordion();
 
 		centerBox.setStyle("-fx-background-color: #F6DCDA;");
-		centerBox.setPadding(new Insets(20, 10, 10, 10));
+		centerBox.setPadding(new Insets(inset20, inset10, inset10, inset10));
 		centerBox.setMaxWidth(scroll.getWidth());
 		centerBox.getChildren().addAll(topBox, accordion);
 

@@ -95,6 +95,8 @@ public class Download extends Window {
 	private int squareWidthAdjustment = 20;
 	private int gapBetweenButtons = 100;
 	private int backgroundScreenWidthAndHeight = 100;
+	private String mouseEnterBottomButton = View.getWhiteBackgroundStyle() + View.getBlackTextFill();
+	private String mouseExitBottomButton = View.getLightGreenBackgroundStyle() + View.getBlackTextFill();
 
 	/**
 	 * Assume the user has no last save file downloaded.
@@ -114,8 +116,7 @@ public class Download extends Window {
 
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
 		text.setWrappingWidth(View.getCanvasWidth() - topTextWidthAdjustment);
-		text.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+		text.setFont(getModel().getHackBold20());
 		vbox.getChildren().addAll(text);
 		vbox.setAlignment(Pos.CENTER);
 
@@ -205,7 +206,7 @@ public class Download extends Window {
 		bottomButtons.add(downloadButton);
 
 		for (Button b : bottomButtons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setFont(getModel().getHackBold12());
 			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 			b.setPrefWidth(View.getButtonPrefWidth());
 
@@ -214,7 +215,7 @@ public class Download extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
+					b.setStyle(mouseEnterBottomButton);
 				}
 			});
 
@@ -222,7 +223,7 @@ public class Download extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+					b.setStyle(mouseExitBottomButton);
 				}
 			});
 		}
@@ -237,9 +238,8 @@ public class Download extends Window {
 	public void formatToggleButton(ToggleButton b) {
 
 		b.setPrefWidth(View.getButtonPrefWidth());
-		b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
-		b.setStyle("-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-				+ "-fx-outer-border: #63A331;");
+		b.setFont(getModel().getHackBold12());
+		b.setStyle(getModel().getNotHover());
 
 		DropShadow shadow = new DropShadow();
 
@@ -247,8 +247,7 @@ public class Download extends Window {
 			@Override
 			public void handle(MouseEvent e) {
 				b.setEffect(shadow);
-				b.setStyle("-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-						+ "-fx-outer-border: #63A331;");
+				b.setStyle(getModel().getHover());
 			}
 		});
 
@@ -256,8 +255,7 @@ public class Download extends Window {
 			@Override
 			public void handle(MouseEvent e) {
 				b.setEffect(null);
-				b.setStyle("-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-						+ "-fx-outer-border: #63A331;");
+				b.setStyle(getModel().getNotHover());
 			}
 		});
 

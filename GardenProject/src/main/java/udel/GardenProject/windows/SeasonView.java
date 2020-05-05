@@ -22,7 +22,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
@@ -107,7 +106,9 @@ public class SeasonView extends Window {
 	 *
 	 * @param m Model
 	 */
-
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int inset20 = 20;
 	private int gapBetweenButtons = 100;
 	private int squareHeightAdjustment = 130;
 	private int squareWidthAdjustment = 20;
@@ -125,8 +126,7 @@ public class SeasonView extends Window {
 		tilePane = new TilePane();
 
 		text = new Text("Select the season, year, and view you would like to see your Garden in!");
-		text.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+		text.setFont(getModel().getHackBold20());
 		text.setWrappingWidth(View.getCanvasWidth() - textWrapAdjustment);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.getChildren().addAll(text);
@@ -135,14 +135,14 @@ public class SeasonView extends Window {
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
+		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(back, save, next);
 
 		toggleOptionsTilePane.setAlignment(Pos.CENTER);
-		toggleOptionsTilePane.setPadding(new Insets(5));
-		toggleOptionsTilePane.setHgap(20);
-		toggleOptionsTilePane.setVgap(20);
+		toggleOptionsTilePane.setPadding(new Insets(inset5));
+		toggleOptionsTilePane.setHgap(inset20);
+		toggleOptionsTilePane.setVgap(inset20);
 
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
@@ -150,7 +150,7 @@ public class SeasonView extends Window {
 		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
-		imageVBox.setPadding(new Insets(0, 0, 20, 0));
+		imageVBox.setPadding(new Insets(0, 0, inset20, 0));
 		imageVBox.getChildren().add(square);
 
 		toggleOptionsTilePane.getChildren().addAll(seasonHBox, yearHBox, viewHBox);
@@ -165,7 +165,7 @@ public class SeasonView extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 
-		borderPane.setPadding(new Insets(10));
+		borderPane.setPadding(new Insets(inset10));
 		borderPane.setCenter(layoutCenterVBox);
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBox);
@@ -231,7 +231,7 @@ public class SeasonView extends Window {
 		buttons.add(next);
 
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setFont(getModel().getHackBold12());
 			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 			b.setPrefWidth(View.getButtonPrefWidth());
 
@@ -335,18 +335,19 @@ public class SeasonView extends Window {
 
 	public void createToggleEvent(ToggleButton b) {
 
-		b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
-		b.setStyle("-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-				+ "-fx-outer-border: #63A331;");
-
 		DropShadow shadow = new DropShadow();
+		String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
+		String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
 
+		b.setFont(getModel().getHackBold12());
+		b.setStyle(notHover);
 		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				b.setEffect(shadow);
-				b.setStyle("-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-						+ "-fx-outer-border: #63A331;");
+				b.setStyle(hover);
 			}
 		});
 
@@ -354,8 +355,7 @@ public class SeasonView extends Window {
 			@Override
 			public void handle(MouseEvent e) {
 				b.setEffect(null);
-				b.setStyle("-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-						+ "-fx-outer-border: #63A331;");
+				b.setStyle(notHover);
 			}
 		});
 
