@@ -151,7 +151,6 @@ public class Questionnaire extends Window {
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
-
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
 		topBox.setPadding(new Insets(10));
