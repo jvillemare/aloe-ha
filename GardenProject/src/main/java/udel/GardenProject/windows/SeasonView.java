@@ -197,9 +197,11 @@ public class SeasonView extends Window {
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Image sky = new Image(getClass().getResourceAsStream("/windowImages/clouds.png"));
+		Image grass = new Image(getClass().getResourceAsStream("/windowImages/grass.png"));
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.setFill(Color.FORESTGREEN);
-		gc.fillRect(0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+//		gc.setFill(Color.FORESTGREEN);
+//		gc.fillRect(0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 		drawCanvas(gc);
 		
 		square = new Rectangle();
