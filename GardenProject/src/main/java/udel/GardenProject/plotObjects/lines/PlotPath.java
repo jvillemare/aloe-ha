@@ -18,9 +18,10 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param x			Horizontal position of first point in plot design.
 	 * @param y			Vertical position of first point in plot design.
 	 * @param height	Height of path object.
+	 * @param path		Path to plot object's image.
 	 */
-	public PlotPath(double x, double y, double height) {
-		super(x, y, 1.0, new AdjustableLine());
+	public PlotPath(double x, double y, double height, String path) {
+		super(x, y, 1.0, new AdjustableLine(), path);
 		// TODO Auto-generated constructor stub
 	}	
 

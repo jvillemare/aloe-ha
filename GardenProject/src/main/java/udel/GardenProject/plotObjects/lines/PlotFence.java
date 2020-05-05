@@ -11,8 +11,8 @@ public class PlotFence extends GenericLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public PlotFence(double x, double y, double height) {
-		super(x, y, height, new AdjustableLine());
+	public PlotFence(double x, double y, double height, String path) {
+		super(x, y, height, new AdjustableLine(), path);
 		// TODO Auto-generated constructor stub
 	}
 

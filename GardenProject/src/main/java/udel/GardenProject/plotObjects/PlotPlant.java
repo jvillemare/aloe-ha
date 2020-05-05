@@ -27,9 +27,10 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param p	Plant that's appearing on the Plot.
 	 * @param x Horizontal position in PlotDesign.
 	 * @param y Vertical position in PlotDesign.
+	 * @param path Path to plot object's image.
 	 */
-	public PlotPlant(Plant p, double x, double y) {
-		super(x, y, p.getCanopy().getAverageCanopyHeight());
+	public PlotPlant(Plant p, double x, double y, String path) {
+		super(x, y, p.getCanopy().getAverageCanopyHeight(), path);
 		this.p = p;
 	}
 	

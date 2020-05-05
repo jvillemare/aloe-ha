@@ -414,50 +414,16 @@ public class SeasonView extends Window {
 	}
 	
 	public void drawCanvas(GraphicsContext gc) {
-		//ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
-		ArrayList<PlotObject> plot = new ArrayList<>();
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 50, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 180, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, false, null, null), 290, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 225, 450));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 25, 400));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, false, null, null), 530, 390));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 100, 180));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 350, 175));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 150, 230));
-		plot.add(new PlotFlamingo(225, 100, 3));
-		plot.add(new PlotFlamingo(400, 405, 3));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, false, null, null), 395, 350));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, false, null, null), 475, 500));
-		Image floor = new Image(getClass().getResourceAsStream("/buttonImages/flower1.png"), 104, 126, true, false);
-		Image understory = new Image(getClass().getResourceAsStream("/buttonImages/bush1.png"), 175, 231, true, false);
-		Image canopy = new Image(getClass().getResourceAsStream("/buttonImages/tree1.png"), 611, 380, true, false);
-		Image emergent = new Image(getClass().getResourceAsStream("/buttonImages/tree3.png"), 581, 465, true, false);
-		Image obstacle = new Image(getClass().getResourceAsStream("/buttonImages/boulder.png"), 126, 76, true, false);
-		Collections.sort(plot, new YDistanceComparator());
+		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
+		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
-			double factor = .3;
+			factor = .3;
 			if (po.getPlotY()/MAXDEPTH > factor) {
 				factor = po.getPlotY()/MAXDEPTH; 
 			}
-			gc.setEffect(new DropShadow());
-			if (po.getClass().equals(PlotPlant.class)) {
-				if (po.getHeight() <= 15) {
-					gc.drawImage(floor, po.getPlotX()/MAXWIDTH*viewWidth - (floor.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (floor.getHeight()*factor) + viewDepth/3*2, floor.getWidth() * factor, floor.getHeight() * factor);
-				}
-				else if(po.getHeight() <= 55) {
-					gc.drawImage(understory, po.getPlotX()/MAXWIDTH*viewWidth - (understory.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (understory.getHeight()*factor) + viewDepth/3*2, understory.getWidth() * factor, understory.getHeight() * factor);
-				}
-				else if(po.getHeight() <= 95) {	
-					gc.drawImage(canopy, po.getPlotX()/MAXWIDTH*viewWidth - (canopy.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (canopy.getHeight()*factor) + viewDepth/3*2, canopy.getWidth() * factor, canopy.getHeight() * factor);
-				}
-				else {
-					gc.drawImage(emergent, po.getPlotX()/MAXWIDTH*viewWidth - (emergent.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (emergent.getHeight()*factor) + viewDepth/3*2, emergent.getWidth() * factor, emergent.getHeight() * factor);
-				}
-			}
-			else {
-				gc.drawImage(obstacle, po.getPlotX()/MAXWIDTH*viewWidth - (obstacle.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (obstacle.getHeight()*factor) + viewDepth/3*2, obstacle.getWidth() * factor, obstacle.getHeight() * factor);
-			}
+			gc.setEffect(shadow);
+			Image i = new Image(getClass().getResourceAsStream(po.getImagePath()));
+			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
 		}
 		
 	}
