@@ -200,8 +200,6 @@ public class SeasonView extends Window {
 		Image grass = new Image(getClass().getResourceAsStream("/windowImages/grass.png"));
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
-//		gc.setFill(Color.FORESTGREEN);
-//		gc.fillRect(0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 		drawCanvas(gc);
 		
 		square = new Rectangle();
@@ -415,7 +413,13 @@ public class SeasonView extends Window {
 		});
 	}
 	
+	/**
+	 * Draws all the plot objects on the canvas for the window view.
+	 * 
+	 * @param gc GraphicsContext that corresponds to window view canvas
+	 */
 	public void drawCanvas(GraphicsContext gc) {
+		gc.setFill(Color.rgb(140, 140, 140, .35));
 		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
@@ -423,11 +427,11 @@ public class SeasonView extends Window {
 			if (po.getPlotY()/MAXDEPTH > factor) {
 				factor = po.getPlotY()/MAXDEPTH; 
 			}
-			gc.setEffect(shadow);
 			Image i = new Image(getClass().getResourceAsStream(po.getImagePath()));
+			gc.fillOval(po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()/3*factor) + viewDepth/3*2, i.getWidth()*factor, i.getHeight()/2*factor);
+			gc.setEffect(shadow);
 			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
 		}
 		
 	}
-
 }
