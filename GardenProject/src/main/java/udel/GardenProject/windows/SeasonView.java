@@ -274,33 +274,23 @@ public class SeasonView extends Window {
 	public void createToggleGroups() {
 		seasonHBox = new HBox();
 		seasonGroup = new ToggleGroup();
-		List<String> seasonSelection = List.of("SPRING", "SUMMER", "WINTER", "FALL");
+		Seasons[] seasonSelection = Seasons.values();
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
-		for (String s : seasonSelection) {
-			ToggleButton toggle = new ToggleButton(s);
-			seasonPick.add(s); // adds the seasons to an observable list
+		for (Seasons s : seasonSelection) {
+			ToggleButton toggle = new ToggleButton(s.getSeason());
+			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
 			createToggleEvent(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				if (s.equals("SUMMER")) {
-					chooseSeason = Seasons.SUMMER;
-				}
-				if (s.equals("SPRING")) {
-					chooseSeason = Seasons.SPRING;
-				}
-				if (s.equals("FALL")) {
-					chooseSeason = Seasons.FALL;
-				}
-				if (s.equals("WINTER")) {
-					chooseSeason = Seasons.WINTER;
-				}
+				chooseSeason=s;
 			});
 		}
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		List<String> yearSelection = List.of("0 YEARS", "1 YEAR", "2 YEARS");
+		//List<String> yearSelection = List.of("0 YEARS", "1 YEAR", "2 YEARS");
+		String[] yearSelection = {"0 YEARS", "1 YEAR", "2 YEARS"};
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
 		for (String y : yearSelection) {
 			ToggleButton toggle = new ToggleButton(y);
@@ -323,7 +313,8 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
+		//List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
+		String[] viewSelection = {"TOP VIEW", "WINDOW VIEW"};
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
 			ToggleButton toggle = new ToggleButton(v);

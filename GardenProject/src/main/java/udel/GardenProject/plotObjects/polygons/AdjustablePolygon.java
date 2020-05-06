@@ -77,11 +77,31 @@ public class AdjustablePolygon implements Serializable {
 			public void handle(MouseEvent mouseEvent) {
 				double x = mouseEvent.getX();
 				double y = mouseEvent.getY();
-				polygon.setLayoutX(polygon.getLayoutX() + x);
-				polygon.setLayoutY(polygon.getLayoutY() + y);
+				//System.out.println(polygon.getLayoutX()+x+":"+polygon.getScene().getWidth());
+				if(polygon.getLayoutX()+x>0&&polygon.getLayoutX()+x<polygon.getScene().getWidth()) {
+					polygon.setLayoutX(polygon.getLayoutX() + x);
+				}
+				if(polygon.getLayoutY()+y>0) {
+					polygon.setLayoutY(polygon.getLayoutY() + y);
+				}
 			}
 		});
-        
+        polygon.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() > 1) {
+                	visible=!visible;
+                	for(Anchor a:anchors) {
+                		a.setVisible(visible);
+                	}
+                	if(visible) 
+                		b.setText("Stop Editing");
+                	else
+                		b.setText("Resume Edit");
+                }
+            }
+        });
+
         //get the anchors list and set the color to given anchorColor
 		anchors=createAnchors(polygon, polygon.getPoints(),anchorColor);
 	}

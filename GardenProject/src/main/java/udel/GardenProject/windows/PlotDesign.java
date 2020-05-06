@@ -16,6 +16,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -97,10 +98,6 @@ public class PlotDesign extends Window {
 	 */
 	private Group group;
 
-	/**
-	 * Used in drag
-	 */
-	private double xbound;
 
 	/**
 	 * ScrollPane created for the canopy drop down choices
@@ -119,6 +116,15 @@ public class PlotDesign extends Window {
 	private int borderSideMargins = 200;
 	private int autoRateBarWidth = 200;
 	private int autoRateBarHeight = 10;
+	
+	/**
+	 * Use in drag to determine create a new image or not
+	 */
+	private boolean create=true;
+	/**
+	 * Use in drag for control between different handler
+	 */
+	ImageView tmp;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -173,9 +179,14 @@ public class PlotDesign extends Window {
 		 * createFlowPane for the plants and obstacles May need another method for the
 		 * obstacles
 		 */
-		TitledPane existing = new TitledPane("Existing Plants", new Text("Existing Plants")); // createFlowPane(/*Model.existingPlantsArray*/));
+		//Here's the code to use when need to set the drag and drop for a new imageview
+		ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true));
+		imageView.setOnMouseDragged(getHandlerForDrag());
+		imageView.setOnMouseReleased(getHandlerForRelease());
+		TitledPane existing = new TitledPane("Existing Plants", /*new Text("Existing Plants"),*/imageView); // createFlowPane(/*Model.existingPlantsArray*/));
 		TitledPane selected = new TitledPane("Selected Plants", new Text("SelectedPlants")); // createFlowPane(/*Model.selectedPlantsArray*/));
 		TitledPane obstacles = new TitledPane("Obstacles", editPlotButton); // createFlowPane(/*Model.obstaclesArray*/));
+		
 		List<TitledPane> accArr = new ArrayList<TitledPane>();
 		accArr.add(existing);
 		accArr.add(selected);
@@ -251,6 +262,7 @@ public class PlotDesign extends Window {
 		borderPane.setLeft(choices);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
+		
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
@@ -406,25 +418,53 @@ public class PlotDesign extends Window {
 	/**
 	 * TODO: FIX DRAGGING
 	 * 
-	 * @param img
+	 * @param img the image need to be copy
+	 * @param x the X coordinate for the image
+	 * @param y the Y coordinate for the image
 	 */
-	public void addimage(ImageView img) {
-		group.getChildren().add(img);
+	public void addimage(ImageView img, double x, double y) {
+		ImageView temp=new ImageView(img.getImage());
+		group.getChildren().add(temp);
+		temp.setTranslateX(x);
+		temp.setTranslateY(y);
+		temp.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+            	ImageView n = (ImageView) event.getSource();
+                double newX=n.getTranslateX()+event.getX();
+                double newY=n.getTranslateY()+event.getY();
+                if(newX>0&&newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
+                	n.setTranslateX(newX);//n.getTranslateX()+event.getX());
+                	n.setTranslateY(newY);//n.getTranslateY()+event.getY());
+                }
+            }
+        });
 	}
-
 	public void drag(MouseEvent event) {
 		ImageView n = (ImageView) event.getSource();
-		ImageView tmp = new ImageView(n.getImage());
-		System.out.println(n.getX());
-		xbound = n.getParent().getLayoutBounds().getMaxX();
-		System.out.println(n.getScene().getWidth());
-		if (!n.getParent().getLayoutBounds().contains(new Point2D(n.getX() + event.getX(), n.getY() + event.getY()))) {
-			addimage(tmp);
+		if(create) {
+			tmp = new ImageView(n.getImage());
+			root.getChildren().add(tmp);
+			create=false;
 		}
+		tmp.setLayoutX(n.getLayoutX()+event.getX());
+		tmp.setLayoutY(n.getLayoutY()+event.getY());
 
 	}
 
 	public EventHandler getHandlerForDrag() {
 		return event -> drag((MouseEvent) event);
+	}
+	public void release(MouseEvent event) {
+		ImageView n = (ImageView) event.getSource();
+		create=true;
+		if(group.contains(tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight())) {
+			addimage(tmp,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
+		}
+		root.getChildren().remove(tmp);
+		
+	}
+	public EventHandler getHandlerForRelease() {
+		return event -> release((MouseEvent) event);
 	}
 }
