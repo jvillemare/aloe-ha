@@ -88,6 +88,7 @@ public class Download extends Window {
 	 * Adjustments of size for insets, texts, the center square, buttons, and
 	 * background
 	 */
+	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
 	private int gapBetweenButtons = 100;
@@ -136,7 +137,7 @@ public class Download extends Window {
 		square.setFill(null);
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
+		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(back, downloadButton);
 
