@@ -422,7 +422,7 @@ public class PlotDesign extends Window {
 	 * @param x the X coordinate for the image
 	 * @param y the Y coordinate for the image
 	 */
-	public void addimage(ImageView img, double x, double y) {
+	public void addImage(ImageView img, double x, double y) {
 		ImageView temp=new ImageView(img.getImage());
 		group.getChildren().add(temp);
 		temp.setTranslateX(x);
@@ -433,8 +433,10 @@ public class PlotDesign extends Window {
             	ImageView n = (ImageView) event.getSource();
                 double newX=n.getTranslateX()+event.getX();
                 double newY=n.getTranslateY()+event.getY();
-                if(newX>0&&newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
+                if(newX>0&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
                 	n.setTranslateX(newX);//n.getTranslateX()+event.getX());
+                }
+                if(newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()) {
                 	n.setTranslateY(newY);//n.getTranslateY()+event.getY());
                 }
             }
@@ -459,7 +461,7 @@ public class PlotDesign extends Window {
 		ImageView n = (ImageView) event.getSource();
 		create=true;
 		if(group.contains(tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight())) {
-			addimage(tmp,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
+			addImage(tmp,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
 		}
 		root.getChildren().remove(tmp);
 		
