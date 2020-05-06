@@ -81,7 +81,7 @@ public class AdjustablePolygon implements Serializable {
 				if(polygon.getLayoutX()+x>0&&polygon.getLayoutX()+x<polygon.getScene().getWidth()) {
 					polygon.setLayoutX(polygon.getLayoutX() + x);
 				}
-				if(polygon.getLayoutY()+y>0) {
+				if(polygon.getLayoutY()+y>0&&polygon.getLayoutY()+y<polygon.getScene().getHeight()) {
 					polygon.setLayoutY(polygon.getLayoutY() + y);
 				}
 			}
@@ -152,10 +152,10 @@ public class AdjustablePolygon implements Serializable {
 	
 	/**
 	 * Generate the list of anchors for drawings.
-	 * @param polygon	TODO: ...?
-	 * @param points	TODO: ...?
-	 * @param color		TODO: ...?
-	 * @return TODO: ...?
+	 * @param polygon Polygon object to draw the circle on the anchor
+	 * @param points All points of polygon
+	 * @param color The color of the anchor
+	 * @return An ObservableList of anchors
 	 */
     private ObservableList<Anchor> createAnchors(Polygon polygon, ObservableList<Double> points, Color color) {
     	ObservableList<Anchor> anchors = FXCollections.observableArrayList();
