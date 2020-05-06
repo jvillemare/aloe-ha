@@ -71,13 +71,17 @@ public class PlantInfo extends Window {
 	/**
 	 * Adjustments, fonts, widths and heights for the Info Screen format
 	 */
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int inset40 = 40;
+	private double buttonSizeFactor = 1.5;
 	private int screenWidth = (View.getCanvasWidth() / 5 * 4) - 100;
-	private String boldItalic = "/fonts/Hack-BoldItalic.ttf";
-	private int infoMinHeight = View.getCanvasHeight() - 100;
 	private int scrollPrefWidth = screenWidth / 2;
-	private int scrollPrefHeight = View.getCanvasHeight() - 100;
 	private int imgWidthAndHeight = screenWidth / 2;
 	private int infoWrapTextWidth = screenWidth / 2 - 20;
+	private String boldItalic = "/fonts/Hack-BoldItalic.ttf";
+	private int infoMinHeight = View.getCanvasHeight() - 100;
+	private int scrollPrefHeight = View.getCanvasHeight() - 100;
 
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: ");
@@ -117,7 +121,7 @@ public class PlantInfo extends Window {
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setPrefSize(scrollPrefWidth, scrollPrefHeight);
-		scroll.setPadding(new Insets(10));
+		scroll.setPadding(new Insets(inset10));
 		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 		scroll.setContent(information);
@@ -136,7 +140,7 @@ public class PlantInfo extends Window {
 
 		// where the image will be place
 		VBox image = new VBox();
-		image.setPadding(new Insets(10));
+		image.setPadding(new Insets(inset10));
 		ImageView img = new ImageView();
 		img.setImage(plantImage);
 		image.getChildren().addAll(img, name);
@@ -144,7 +148,7 @@ public class PlantInfo extends Window {
 		createButton();
 
 		borderPane.setStyle(View.getPinkBackgroundStyle());
-		borderPane.setPadding(new Insets(10, 40, 10, 10));
+		borderPane.setPadding(new Insets(inset10, inset40, inset10, inset10));
 		borderPane.setLeft(image);
 		borderPane.setRight(scroll);
 		borderPane.setBottom(button);
@@ -171,7 +175,7 @@ public class PlantInfo extends Window {
 		Text desire = new Text(info);
 		desire.setWrappingWidth(infoWrapTextWidth);
 		desire.minWidth(infoWrapTextWidth);
-		desire.setFont(new Font(View.getTextSizeForButtonsAndText() * 1.5));
+		desire.setFont(new Font(View.getTextSizeForButtonsAndText() * buttonSizeFactor));
 		return desire;
 	}
 
@@ -193,8 +197,8 @@ public class PlantInfo extends Window {
 		button = new TilePane();
 
 		backButton = new Button("Go Back");
-		backButton.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize() * 1.5));
+		backButton.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+				View.getButtonTextSize() * buttonSizeFactor));
 		backButton.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 		backButton.setPrefWidth(View.getButtonPrefWidth());
 		backButton.setPrefHeight(View.getButtonPrefWidth() / 2);
@@ -223,7 +227,7 @@ public class PlantInfo extends Window {
 			}
 		});
 
-		button.setPadding(new Insets(20));
+		button.setPadding(new Insets(inset20));
 		button.setAlignment(Pos.CENTER);
 		button.getChildren().add(backButton);
 	}
