@@ -189,32 +189,34 @@ public class Tutorial extends Window {
 
 		accordion = new Accordion();
 
-		TitledPane pane1 = new TitledPane("How to Get Started", createGetStarted());
-		TitledPane pane2 = new TitledPane("How to Navigate to Different Screens", createNavigation());
-		TitledPane pane3 = new TitledPane("How to Add Existing Plants", createAddExistingPlants());
-		TitledPane pane4 = new TitledPane("About the Questionnaire", createQuestionnaireTutorial());
-		TitledPane pane5 = new TitledPane("How to Select Plants", createSelectingPlants());
-		TitledPane pane6 = new TitledPane("About Your Plot Design", createPlotDesign());
-		TitledPane pane7 = new TitledPane("About the Garden Previewer", createGardenPreviewer());
-		TitledPane pane8 = new TitledPane("About the Load and Save Plot Screen", createDownload());
-		TitledPane pane9 = new TitledPane("About the Plant Database", createPlantDatabase());
-		TitledPane pane10 = new TitledPane("About the Plant Info Screen", createPlantInfo());
-		TitledPane pane11 = new TitledPane("About Adding Obstacles to Your Plot", createObstacles());
-		TitledPane pane12 = new TitledPane("Where the Plant Information Comes From", createAbout());
+		TitledPane paneGetStarted = new TitledPane("How to Get Started", createGetStarted());
+		TitledPane paneNavigation = new TitledPane("How to Navigate to Different Screens", createNavigation());
+		TitledPane paneHoverInfo = new TitledPane("About Tool Tips", createHoverInfo());
+		TitledPane paneExistingPlants = new TitledPane("How to Add Existing Plants", createAddExistingPlants());
+		TitledPane paneQuestionnaire = new TitledPane("About the Questionnaire", createQuestionnaireTutorial());
+		TitledPane paneSelectingPlants = new TitledPane("How to Select Plants", createSelectingPlants());
+		TitledPane panePlotDesign = new TitledPane("About Your Plot Design", createPlotDesign());
+		TitledPane paneGardenPreviewer = new TitledPane("About the Garden Previewer", createGardenPreviewer());
+		TitledPane paneDownload = new TitledPane("About the Load and Save Plot Screen", createDownload());
+		TitledPane panePlantDatabase = new TitledPane("About the Plant Database", createPlantDatabase());
+		TitledPane panePlantInfo = new TitledPane("About the Plant Info Screen", createPlantInfo());
+		TitledPane paneObstacles = new TitledPane("About Adding Obstacles to Your Plot", createObstacles());
+		TitledPane paneAbout = new TitledPane("Where the Plant Information Comes From", createAbout());
 
 		List<TitledPane> accArr = new ArrayList<TitledPane>();
-		accArr.add(pane1);
-		accArr.add(pane2);
-		accArr.add(pane3);
-		accArr.add(pane4);
-		accArr.add(pane5);
-		accArr.add(pane6);
-		accArr.add(pane7);
-		accArr.add(pane8);
-		accArr.add(pane9);
-		accArr.add(pane10);
-		accArr.add(pane11);
-		accArr.add(pane12);
+		accArr.add(paneGetStarted);
+		accArr.add(paneNavigation);
+		accArr.add(paneHoverInfo);
+		accArr.add(paneExistingPlants);
+		accArr.add(paneQuestionnaire);
+		accArr.add(paneSelectingPlants);
+		accArr.add(panePlotDesign);
+		accArr.add(paneGardenPreviewer);
+		accArr.add(paneDownload);
+		accArr.add(panePlantDatabase);
+		accArr.add(panePlantInfo);
+		accArr.add(paneObstacles);
+		accArr.add(paneAbout);
 
 		for (TitledPane t : accArr) {
 			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
@@ -282,6 +284,20 @@ public class Tutorial extends Window {
 				"Click on the buttons at the bottom of the screen to either go back to the previous screen or move on to the next one.",
 				contentBox);
 		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the Go Back and Next Buttons
+		return contentBox;
+	}
+
+	/**
+	 * Gives information about the tool tips in the program
+	 * 
+	 * @return The content box
+	 */
+	public VBox createHoverInfo() {
+		VBox contentBox = new VBox();
+		createContentText(
+				"Tool tips are set up to help you know more about what to do. For example, hover over the name of plant from the drop down when you search for a plant. You will be able to see a picture of the plant!",
+				contentBox);
+		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of existing plants drop down with hover
 		return contentBox;
 	}
 

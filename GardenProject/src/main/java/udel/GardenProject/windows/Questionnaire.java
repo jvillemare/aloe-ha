@@ -130,14 +130,14 @@ public class Questionnaire extends Window {
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int buttonGap = 100;
+	private int buttonPrefWidth = 100;
+	private int borderSideMargins = 230;
+	private int questionWrapWidth = 800;
 	private int scrollWidthAdjustment = 150;
 	private int scrollHeightAdjustment = 115;
-	private int textWrapWidth = View.getCanvasWidth() / 2;
-	private int backgroundWidthAndHeight = 100;
-	private int borderSideMargins = 230;
 	private int borderTopAndBottonMargin = 40;
-	private int questionWrapWidth = 800;
-	private int buttonPrefWidth = 100;
+	private int backgroundWidthAndHeight = 100;
+	private int textWrapWidth = View.getCanvasWidth() / 2;
 
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
@@ -248,13 +248,13 @@ public class Questionnaire extends Window {
 
 		gardenWidth = new Label("Width:");
 		q1textField1 = new TextField();
-		q1textField1.setPromptText("50");
+		q1textField1.setPromptText("25");
 		hbWidth = new HBox();
 		hbWidth.getChildren().addAll(gardenWidth, q1textField1);
 
 		gardenLength = new Label("Length:");
 		q1textField2 = new TextField();
-		q1textField2.setPromptText("75");
+		q1textField2.setPromptText("25");
 		hbLength = new HBox();
 		hbLength.getChildren().addAll(gardenLength, q1textField2);
 
@@ -286,6 +286,11 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
 			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
+
+		// sets the first checkbox to selected
+		if (!q2items.get(0).isSelected()) {
+			q2items.get(0).setSelected(true);
 		}
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
@@ -350,6 +355,12 @@ public class Questionnaire extends Window {
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
+
+		// sets the first checkbox to selected
+		if (!q7items.get(0).isSelected()) {
+			q7items.get(0).setSelected(true);
+		}
+
 		q7ListView = new ListView<>();
 		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -375,6 +386,12 @@ public class Questionnaire extends Window {
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
+
+		// sets the first checkbox to selected
+		if (!q8items.get(0).isSelected()) {
+			q8items.get(0).setSelected(true);
+		}
+
 		q8ListView = new ListView<>();
 		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -401,16 +418,24 @@ public class Questionnaire extends Window {
 				// sends information from questionnaire to Session for later use. User MUST
 				// answer all questions.
 
+				// handles if user doesn't type anything in for the plot name
 				if (textField.getText().isEmpty()) {
 					getSession().setPlotName("My Garden");
 				} else {
 					getSession().setPlotName(textField.getText());
 				}
-				if (q1textField1.getText().isEmpty() == false)
-					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 
-				if (q1textField2.getText().isEmpty() == false)
+				// handles if user doesn't type anything in for the width or length for the plot
+				if (q1textField1.getText().isEmpty()) {
+					getSession().setWidthOfUserPlot(25);
+				} else {
+					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
+				}
+				if (q1textField2.getText().isEmpty()) {
+					getSession().setLengthOfUserPlot(25);
+				} else {
 					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+				}
 
 				checkSelectedPlot(nearPlot);
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
@@ -546,18 +571,19 @@ public class Questionnaire extends Window {
 		// user selected
 		// used for testing purposes
 
-		System.out.println("Questionnaire: Refreshing...");
-		System.out.println(getSession().getExistingPlants()); // existing plants
-		System.out.println(textField.getText()); // name of plot
-		System.out.println(q1textField1.getText()); // width
-		System.out.println(q1textField2.getText()); // length
-		System.out.println(getSession().getSelectedPlotObjects()); // plot objects
-		System.out.println(getChoice(q4ChoiceBox)); // moisture
-		System.out.println(getChoice(q5ChoiceBox)); // soil type
-		System.out.println(getChoice(q6ChoiceBox)); // sunlight
-		System.out.println(getSession().getSeasonsUserSelected()); // seasons
-		System.out.println(getSession().getColorsUserSelected()); // colors
-
+		/*
+		 * System.out.println("Questionnaire: Refreshing...");
+		 * System.out.println(getSession().getExistingPlants()); // existing plants
+		 * System.out.println(getSession().getPlotName());//name of plot
+		 * System.out.println(getSession().getWidthOfUserPlot());// width
+		 * System.out.println(getSession().getLengthOfUserPlot()); // length
+		 * System.out.println(getSession().getSelectedPlotObjects()); // plot objects
+		 * System.out.println(getChoice(q4ChoiceBox)); // moisture
+		 * System.out.println(getChoice(q5ChoiceBox)); // soil type
+		 * System.out.println(getChoice(q6ChoiceBox)); // sunlight
+		 * System.out.println(getSession().getSeasonsUserSelected()); // seasons
+		 * System.out.println(getSession().getColorsUserSelected()); // colors
+		 */
 	}
 
 }

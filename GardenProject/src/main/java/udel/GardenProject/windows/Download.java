@@ -90,10 +90,10 @@ public class Download extends Window {
 	 */
 	private int inset10 = 10;
 	private int inset20 = 20;
+	private int gapBetweenButtons = 100;
+	private int squareWidthAdjustment = 20;
 	private int topTextWidthAdjustment = 20;
 	private int squareHightAdjustment = 130;
-	private int squareWidthAdjustment = 20;
-	private int gapBetweenButtons = 100;
 	private int backgroundScreenWidthAndHeight = 100;
 	private String mouseEnterBottomButton = View.getWhiteBackgroundStyle() + View.getBlackTextFill();
 	private String mouseExitBottomButton = View.getLightGreenBackgroundStyle() + View.getBlackTextFill();
