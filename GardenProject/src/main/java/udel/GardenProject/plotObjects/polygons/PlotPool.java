@@ -2,6 +2,8 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.image.Image;
+
 /**
  * Chlorine-and-water filled of water.
  * 
@@ -16,11 +18,11 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 * 
 	 * @param x	Horizontal position determined by MouseRelease event handler.
 	 * @param y	Vertical position determined by MouseRelease event handler.
-	 * @param path Path to plot object's image.
+	 * @param i Plot object's image.
 	 */
-	public PlotPool(double x, double y, String path) {
+	public PlotPool(double x, double y, Image i) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), path);
+		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), i);
 		// TODO Auto-generated constructor stub
 	}
 

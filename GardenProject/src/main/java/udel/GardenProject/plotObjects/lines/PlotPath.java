@@ -2,6 +2,8 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
+import javafx.scene.image.Image;
+
 /**
  * TODO: What is this? If polygon, move to polygons package and make it match
  * the other polygons.
@@ -20,8 +22,8 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param height	Height of path object.
 	 * @param path		Path to plot object's image.
 	 */
-	public PlotPath(double x, double y, double height, String path) {
-		super(x, y, 1.0, new AdjustableLine(), path);
+	public PlotPath(double x, double y, double height, Image i) {
+		super(x, y, 1.0, new AdjustableLine(), i);
 		// TODO Auto-generated constructor stub
 	}	
 

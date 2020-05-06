@@ -3,6 +3,7 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
@@ -28,10 +29,10 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * @param height	Height in feet.
 	 * @param p			AdjustablePolygon that represents what this polygon
 	 * 					should look like.
-	 * @param path		Path to plot object's image
+	 * @param i			Plot object's image
 	 */
-	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String path) {
-		super(x, y, height, path);
+	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, Image i) {
+		super(x, y, height, i);
 		this.p = p;
 	}
 	

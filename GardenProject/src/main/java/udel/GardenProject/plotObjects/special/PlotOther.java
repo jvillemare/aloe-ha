@@ -2,6 +2,7 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
+import javafx.scene.image.Image;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -20,8 +21,8 @@ public class PlotOther extends PlotObject implements Serializable {
 	 * @param y			...
 	 * @param height	...
 	 */
-	public PlotOther(double x, double y, double height, String path) {
-		super(x, y, height, path);
+	public PlotOther(double x, double y, double height, Image i) {
+		super(x, y, height, i);
 		// TODO Auto-generated constructor stub
 	}
 
