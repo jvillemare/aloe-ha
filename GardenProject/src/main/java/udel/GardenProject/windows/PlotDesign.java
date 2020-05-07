@@ -28,9 +28,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.Session;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
 /**
@@ -125,6 +127,11 @@ public class PlotDesign extends Window {
 	 * Use in drag for control between different handler
 	 */
 	ImageView tmp;
+	
+	/**
+	 * Use to save the session of the plotdesign
+	 */
+	private Session session;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -133,7 +140,7 @@ public class PlotDesign extends Window {
 	 */
 	public PlotDesign(Model m) {
 		super(m, "Plot Designer");
-
+		session=new Session();
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -423,6 +430,9 @@ public class PlotDesign extends Window {
 	 * @param y the Y coordinate for the image
 	 */
 	public void addImage(ImageView img, double x, double y) {
+		Plant plant = null;//TODO: Should be import during the createFlowPane
+		PlotPlant plotplant=new PlotPlant(plant,x,y);
+		session.getPlot().add(plotplant);
 		ImageView temp=new ImageView(img.getImage());
 		group.getChildren().add(temp);
 		temp.setTranslateX(x);
@@ -435,9 +445,11 @@ public class PlotDesign extends Window {
                 double newY=n.getTranslateY()+event.getY();
                 if(newX>0&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
                 	n.setTranslateX(newX);//n.getTranslateX()+event.getX());
+                	plotplant.setPlotX(newX);
                 }
                 if(newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()) {
                 	n.setTranslateY(newY);//n.getTranslateY()+event.getY());
+                	plotplant.setPlotY(newY);
                 }
             }
         });
