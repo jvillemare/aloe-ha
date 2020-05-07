@@ -2,7 +2,6 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,28 +11,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
@@ -117,13 +106,14 @@ public class SeasonView extends Window {
 	 *
 	 * @param m Model
 	 */
-
-	int inset5 = 5;
-	int buttonTextSize = 12;
-	int buttonPrefWidth = 100;
-	int topTextSize = 20;
-	int textWrapAdjustment = 20;
-	int buttonGap = 100;
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int gapBetweenButtons = 100;
+	private int squareHeightAdjustment = 130;
+	private int squareWidthAdjustment = 20;
+	private int backgroundScreenWidthAndHeight = 100;
+	private int textWrapAdjustment = 20;
 
 	public SeasonView(Model m) {
 		super(m, "Garden Previewer");
@@ -136,7 +126,7 @@ public class SeasonView extends Window {
 		tilePane = new TilePane();
 
 		text = new Text("Select the season, year, and view you would like to see your Garden in!");
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
+		text.setFont(getModel().getHackBold20());
 		text.setWrappingWidth(View.getCanvasWidth() - textWrapAdjustment);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.getChildren().addAll(text);
@@ -145,39 +135,37 @@ public class SeasonView extends Window {
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(buttonGap);
+		tilePane.setPadding(new Insets(inset5));
+		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(back, save, next);
 
 		toggleOptionsTilePane.setAlignment(Pos.CENTER);
 		toggleOptionsTilePane.setPadding(new Insets(inset5));
-		toggleOptionsTilePane.setHgap(20);
-		toggleOptionsTilePane.setVgap(20);
+		toggleOptionsTilePane.setHgap(inset20);
+		toggleOptionsTilePane.setVgap(inset20);
 
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
-				- toggleOptionsTilePane.getHeight() - 130);
-		square.setWidth(View.getCanvasWidth() - 20);
+				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment);
+		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
-		imageVBox.setPadding(new Insets(0, 0, 20, 0));
+		imageVBox.setPadding(new Insets(0, 0, inset20, 0));
 		imageVBox.getChildren().add(square);
 
 		toggleOptionsTilePane.getChildren().addAll(seasonHBox, yearHBox, viewHBox);
-
-		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-		Background background = new Background(backgroundImage);
 
 		layoutCenterVBox.getChildren().add(imageVBox);
 
 		bottomBox = new VBox();
 		bottomBox.getChildren().addAll(toggleOptionsTilePane, tilePane);
 
-		borderPane.setBackground(background);
-		borderPane.setPadding(new Insets(10));
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
+
+		borderPane.setBackground(View.getBackgroundScreen());
+
+		borderPane.setPadding(new Insets(inset10));
 		borderPane.setCenter(layoutCenterVBox);
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBox);
@@ -243,16 +231,16 @@ public class SeasonView extends Window {
 		buttons.add(next);
 
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-			b.setPrefWidth(buttonPrefWidth);
+			b.setFont(getModel().getHackBold12());
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
 
 			DropShadow shadow = new DropShadow();
 			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -260,7 +248,7 @@ public class SeasonView extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -278,10 +266,10 @@ public class SeasonView extends Window {
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (String s : seasonSelection) {
 			ToggleButton toggle = new ToggleButton(s);
+			createToggleEvent(toggle);
 			seasonPick.add(s); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
-			createToggleEvent(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				if (s.equals("SUMMER")) {
 					chooseSeason = Seasons.SUMMER;
@@ -341,26 +329,36 @@ public class SeasonView extends Window {
 			});
 		}
 
+		viewGroup.getSelectedToggle();
+
 	}
 
 	public void createToggleEvent(ToggleButton b) {
 
 		DropShadow shadow = new DropShadow();
+		String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
+		String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
 
-		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-		b.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		b.setFont(getModel().getHackBold12());
+		b.setStyle(notHover);
+		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if (b.isSelected()) {
-					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
-				} else {
-					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-				}
+				b.setEffect(shadow);
+				b.setStyle(hover);
 			}
 		});
+
+		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(null);
+				b.setStyle(notHover);
+			}
+		});
+
 	}
 
 }

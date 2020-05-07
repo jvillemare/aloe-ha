@@ -4,8 +4,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
@@ -68,6 +70,11 @@ public class ExistingPlants extends Window {
 	private Text text1;
 
 	/**
+	 * This is the textfield the user types into as the "search"
+	 */
+	private TextField text;
+
+	/**
 	 * Used to place button for the bottom of the borderPane
 	 */
 	private TilePane tilePane;
@@ -78,20 +85,40 @@ public class ExistingPlants extends Window {
 	private ScrollPane scroll;
 
 	/**
+	 * Used for the container for the dropdown menu when the user is typing and
+	 * there are too many plants to fit on the screen
+	 */
+	private ScrollPane containerScroll;
+
+	/**
 	 * Used for displaying what the user selected
 	 */
 	private static VBox selection;
 
 	/**
+	 * Hashmap with the name of the plant as the key and the plant as the value
+	 */
+	private HashMap<String, Plant> dropDownPlants;
+
+	/**
 	 * Used for the user to type in the search box
 	 */
-	private TextField text;
-
-	private int scrollWidthAdjustment = 208;
-	private int scrollHeightAdjustment = 35;
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int buttonGap = 100;
 	private int wrapTextAdjustment = 170;
+	private int selectedPlantHBoxSize = 50;
+	private int selectedPlantFontSize = 15;
+	private int scrollWidthAdjustment = 12;
+	private int scrollHeightAdjustment = 35;
 	private int backgroundScreenWidth = 100;
 	private int backgroundScreenHeight = 100;
+	private int tooltipImageWidthAndHeight = 300;
+	private String boldFontWeight = "-fx-font-weight: bold";
+	private int containerScrollPrefHeight = (View.getCanvasHeight() - 50);
+	private int selectedPlantWrappingWidth = View.getCanvasWidth() / 9 * 5;
+	private int containerScrollPrefWidth = (View.getCanvasWidth() / 3 - 10);
 
 	/**
 	 * Create an ExistingPlants window instance.
@@ -104,28 +131,28 @@ public class ExistingPlants extends Window {
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		container = new GridPane();
+		container.setPadding(new Insets(10));
 		searchBox = new HBox();
 		tilePane = new TilePane();
 
 		selection = new VBox();
-		selection.setPadding(new Insets(5));
+		selection.setPadding(new Insets(inset5));
 		selection.setStyle(View.getPinkBackgroundStyle());
 
 		text1 = new Text("Which plants are already in your Garden?");
 
 		text1.setWrappingWidth(View.getCanvasWidth() - selection.getWidth() - wrapTextAdjustment);
-		text1.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
+		text1.setFont(getModel().getHackBold20());
 		vbox.setStyle(View.getPinkBackgroundStyle());
 		vbox.getChildren().addAll(text1);
-		vbox.setPadding(new Insets(10));
+		vbox.setPadding(new Insets(inset10));
 
 		createSearch();
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(100);
+		tilePane.setPadding(new Insets(inset5));
+		tilePane.setHgap(buttonGap);
 		tilePane.getChildren().addAll(backToMain, save, nextButton);
 
 		vbox.getChildren().add(selection);
@@ -133,7 +160,7 @@ public class ExistingPlants extends Window {
 		scroll = new ScrollPane();
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scroll.setPrefSize(View.getCanvasWidth() - selection.getWidth() - scrollWidthAdjustment,
+		scroll.setPrefSize(View.getCanvasWidth() / 3 * 2 + scrollWidthAdjustment,
 				View.getCanvasHeight() - vbox.getHeight() - tilePane.getHeight() - scrollHeightAdjustment);
 		scroll.setContent(vbox);
 
@@ -142,7 +169,7 @@ public class ExistingPlants extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		borderPane.setRight(scroll);
-		borderPane.setLeft(container);
+		borderPane.setLeft(containerScroll);
 		borderPane.setCenter(vbox);
 		borderPane.setBottom(tilePane);
 
@@ -195,7 +222,7 @@ public class ExistingPlants extends Window {
 		buttons.add(nextButton);
 
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+			b.setFont(getModel().getHackBold12());
 			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 			b.setPrefWidth(View.getButtonPrefWidth());
 
@@ -232,10 +259,21 @@ public class ExistingPlants extends Window {
 				container.getChildren().remove(1);
 			}
 			container.add(populateDropDownMenu(newValue), 0, 1);
+
 		});
 
+		containerScroll = new ScrollPane();
+		containerScroll.setPrefSize(containerScrollPrefWidth, containerScrollPrefHeight);
+		containerScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		containerScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		containerScroll.setContent(container);
+
+		Tooltip tooltipSearch = new Tooltip(
+				"Search up your existing plants and click on the name to add it to your list.");
+		text.setTooltip(tooltipSearch);
+
 		close = new Button("Clear");
-		close.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
+		close.setFont(getModel().getHackBold12());
 		close.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-width: 1;" + "-fx-border-color: #000000;");
 		close.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -245,6 +283,10 @@ public class ExistingPlants extends Window {
 			}
 		});
 
+		Tooltip tooltip = new Tooltip("Click to clear the text box.");
+		close.setTooltip(tooltip);
+		text.setPrefWidth(View.getCanvasWidth() / 4 - close.getWidth());
+		searchBox.setPadding(new Insets(0, inset20, 0, 0));
 		searchBox.getChildren().addAll(text, close);
 
 		container.add(searchBox, 0, 0);
@@ -252,26 +294,78 @@ public class ExistingPlants extends Window {
 	}
 
 	/**
-	 * TODO: ?...
-	 * @param query		what the user typed
-	 * @return ...
+	 * A method that gets the plant names and puts them in a drop down to create a
+	 * list of plants the user may be searching for.
+	 * 
+	 * @param query what the user typed
+	 * @return the list of plants that contains the string the user typed in
 	 */
 	public VBox populateDropDownMenu(String query) {
 		VBox dropDownMenu = new VBox();
-		dropDownMenu.setAlignment(Pos.CENTER);
-		
-		HashMap<String, Plant> dropDownPlants = getModel().searchPlants(query);
-		
+		dropDownMenu.setAlignment(Pos.BASELINE_LEFT);
+
+		dropDownPlants = getModel().searchPlants(query);
+
 		if (dropDownPlants != null) {
 			for (Plant p : dropDownPlants.values()) {
 				Label label = new Label(p.getFriendlyName());
+				label.setMaxWidth(containerScroll.getWidth());
 
+				/**
+				 * Sets up a highlight color for the user to see what plant they are hovering
+				 * over
+				 */
+				label.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						label.setStyle(View.getPinkBackgroundStyle());
+
+						/**
+						 * Gets the image the user is hovering over and creates a tool tip for that
+						 * image
+						 */
+						/**
+						 * TODO: FIX the name of the trim to latin name is 2 strings but when it calls
+						 * for the images it could include var. ...
+						 */
+						String plantImageLinks[] = dropDownPlants.get(Plant.trimToLatinName(label.getText()))
+								.getImages();
+						Image plantImage;
+
+						// Get the actual image if it exists
+						if (plantImageLinks != null) {
+							String path = plantImageLinks[0];
+							plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
+									true);
+						} else {
+							// get a default image
+							plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
+									tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true, true);
+						}
+
+						Tooltip tooltipPick = new Tooltip();
+						label.setTooltip(tooltipPick); // tooltip set on the name of plant from the selected list
+						tooltipPick.setGraphic(new ImageView(plantImage));
+					}
+				});
+
+				label.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						label.setStyle(View.getLightGreenBackgroundStyle());
+					}
+				});
+
+				/**
+				 * When a plant is clicked on, name will turn bold, plant will get added to box
+				 * on the right (with a delete box), and is added to the existing plants array
+				 */
 				label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent mouseEvent) {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
-								label.setStyle("-fx-font-weight: bold");
+								label.setStyle(boldFontWeight);
 								String latinName = Plant.trimToLatinName(label.getText());
 								if (getModel().getSession().getExistingPlants().containsKey(latinName))
 									return;
@@ -280,9 +374,11 @@ public class ExistingPlants extends Window {
 										dropDownPlants.get(latinName)) == null) {
 
 									Text textarea = new Text(label.getText());
+									textarea.setWrappingWidth(selectedPlantWrappingWidth);
 									textarea.setStyle("-fx-font-size: 20px;");
-									textarea.setFont(Font
-											.loadFont(getClass().getResourceAsStream("/fonts/Hack-Regular.ttf"), 15));
+									textarea.setFont(
+											Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Regular.ttf"),
+													selectedPlantFontSize));
 
 									Button deleteButton = new Button("X");
 									deleteButton.setStyle(View.getWhiteBackgroundStyle() + "-fx-text-fill: #BC0504;"
@@ -291,12 +387,17 @@ public class ExistingPlants extends Window {
 																										// button
 									deleteButton.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
 
+									/**
+									 * Hovering over delete button characteristics so user knows that they are over
+									 * the delete button
+									 */
 									DropShadow shadow = new DropShadow();
 									deleteButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
 											new EventHandler<MouseEvent>() {
 												@Override
 												public void handle(MouseEvent e) {
 													deleteButton.setEffect(shadow);
+													textarea.setEffect(shadow);
 													deleteButton.setStyle("-fx-background-color: #C1AFAF;"
 															+ "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
 															+ "-fx-border-color: #000000;");
@@ -308,27 +409,24 @@ public class ExistingPlants extends Window {
 												@Override
 												public void handle(MouseEvent e) {
 													deleteButton.setEffect(null);
+													textarea.setEffect(null);
 													deleteButton.setStyle(View.getWhiteBackgroundStyle()
 															+ "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
 															+ "-fx-border-color: #000000;");
 												}
 											});
 
-									HBox selectedPlant = new HBox(100);
+									HBox selectedPlant = new HBox(selectedPlantHBoxSize);
 									selectedPlant.getChildren().addAll(deleteButton, textarea);
 
 									selection.getChildren().addAll(selectedPlant);
 									deleteButton.setOnAction(new EventHandler<ActionEvent>() {
 										@Override
 										public void handle(ActionEvent event) {
-											System.out.println("X: removing selection");
 											getModel().getSession().getExistingPlants().remove(latinName);
 											selectedPlant.getChildren().removeAll(deleteButton, textarea);
 										}
 									});
-								} else {
-									System.out.println("ExistingPlants: '" + label.getText() + "' is already selected, "
-											+ "or failed to be added.");
 								}
 							}
 						}

@@ -27,7 +27,10 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
@@ -125,19 +128,27 @@ public class Questionnaire extends Window {
 	private HBox hbname, hbWidth, hbLength;
 
 	/**
-	 * Adjustments to size for margins, text, buttons, and scrollPane
+	 * Adjustments to size for margins, text, buttons, and scrollPane for the main
+	 * Questionnaire screen
 	 */
 	private int inset5 = 5;
-	private int inset10 = 10;
 	private int buttonGap = 100;
+	private int buttonPrefWidth = 100;
+	private int borderSideMargins = 230;
+	private int questionWrapWidth = 800;
 	private int scrollWidthAdjustment = 150;
 	private int scrollHeightAdjustment = 115;
-	private int textWrapWidth = View.getCanvasWidth() / 2;
-	private int backgroundWidthAndHeight = 100;
-	private int borderSideMargins = 230;
 	private int borderTopAndBottonMargin = 40;
-	private int questionWrapWidth = 800;
-	private int buttonPrefWidth = 100;
+	private int backgroundWidthAndHeight = 100;
+	private int textWrapWidth = View.getCanvasWidth() / 2;
+
+	/**
+	 * Adjustments for the Alert class: for the pop up screen
+	 */
+	private static int inset10 = 10;
+	private static int messageFontSize = 15;
+	private static int alertScreenWidth = 400;
+	private static int alertScreenHeight = 150;
 
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...");
@@ -149,9 +160,7 @@ public class Questionnaire extends Window {
 
 		text = new Text(
 				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
-		text.setFont(
-				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
-
+		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
 		topBox.setPadding(new Insets(10));
@@ -249,13 +258,13 @@ public class Questionnaire extends Window {
 
 		gardenWidth = new Label("Width:");
 		q1textField1 = new TextField();
-		q1textField1.setPromptText("50");
+		q1textField1.setPromptText("25");
 		hbWidth = new HBox();
 		hbWidth.getChildren().addAll(gardenWidth, q1textField1);
 
 		gardenLength = new Label("Length:");
 		q1textField2 = new TextField();
-		q1textField2.setPromptText("75");
+		q1textField2.setPromptText("25");
 		hbLength = new HBox();
 		hbLength.getChildren().addAll(gardenLength, q1textField2);
 
@@ -287,6 +296,11 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
 			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
+		}
+
+		// sets the first checkbox to selected
+		if (!q2items.get(0).isSelected()) {
+			q2items.get(0).setSelected(true);
 		}
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
@@ -351,6 +365,12 @@ public class Questionnaire extends Window {
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
+
+		// sets the first checkbox to selected
+		if (!q7items.get(0).isSelected()) {
+			q7items.get(0).setSelected(true);
+		}
+
 		q7ListView = new ListView<>();
 		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -376,11 +396,34 @@ public class Questionnaire extends Window {
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
 		}
+
+		// sets the first checkbox to selected
+		if (!q8items.get(0).isSelected()) {
+			q8items.get(0).setSelected(true);
+		}
+
 		q8ListView = new ListView<>();
 		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		vbox.getChildren().addAll(q8ListView);
 
+	}
+
+	/**
+	 * Checks if the input for Width and Length of the plot has invalid characters
+	 * 
+	 * @param s String from the text of the input for Width and Length
+	 * @return True if the input is all numbers, False if there is a letter
+	 */
+	public boolean checkNumberValidation(String s) {
+		boolean hasNumbersOnly = true;
+		for (int i = 0; i < s.length(); i++) {
+			if (!Character.isDigit(s.charAt(i))) {
+				hasNumbersOnly = false;
+				break;
+			}
+		}
+		return hasNumbersOnly;
 	}
 
 	/**
@@ -402,16 +445,34 @@ public class Questionnaire extends Window {
 				// sends information from questionnaire to Session for later use. User MUST
 				// answer all questions.
 
+				// handles if user doesn't type anything in for the plot name
 				if (textField.getText().isEmpty()) {
 					getSession().setPlotName("My Garden");
 				} else {
 					getSession().setPlotName(textField.getText());
 				}
-				if (q1textField1.getText().isEmpty() == false)
-					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 
-				if (q1textField2.getText().isEmpty() == false)
+				/**
+				 * Handles if user doesn't type anything into the width and length text boxes
+				 * and gives and error message if letters are typed
+				 */
+				String widthUserInput = q1textField1.getText();
+				String lengthUserInput = q1textField2.getText();
+
+				if (widthUserInput.isEmpty()) {
+					getSession().setWidthOfUserPlot(25);
+				} else if (checkNumberValidation(widthUserInput)) {
+					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
+				} else {
+					Alert.display("ERROR", "Please enter a valid width for Question 2");
+				}
+				if (lengthUserInput.isEmpty()) {
+					getSession().setLengthOfUserPlot(25);
+				} else if (checkNumberValidation(lengthUserInput)) {
 					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
+				} else {
+					Alert.display("ERROR", "Please enter a valid length for Question 2");
+				}
 
 				checkSelectedPlot(nearPlot);
 				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
@@ -547,18 +608,64 @@ public class Questionnaire extends Window {
 		// user selected
 		// used for testing purposes
 
-		System.out.println("Questionnaire: Refreshing...");
-		System.out.println(getSession().getExistingPlants()); // existing plants
-		System.out.println(textField.getText()); // name of plot
-		System.out.println(q1textField1.getText()); // width
-		System.out.println(q1textField2.getText()); // length
-		System.out.println(getSession().getSelectedPlotObjects()); // plot objects
-		System.out.println(getChoice(q4ChoiceBox)); // moisture
-		System.out.println(getChoice(q5ChoiceBox)); // soil type
-		System.out.println(getChoice(q6ChoiceBox)); // sunlight
-		System.out.println(getSession().getSeasonsUserSelected()); // seasons
-		System.out.println(getSession().getColorsUserSelected()); // colors
+		/*
+		 * System.out.println("Questionnaire: Refreshing...");
+		 * System.out.println(getSession().getExistingPlants()); // existing plants
+		 * System.out.println(getSession().getPlotName());//name of plot
+		 * System.out.println(getSession().getWidthOfUserPlot());// width
+		 * System.out.println(getSession().getLengthOfUserPlot()); // length
+		 * System.out.println(getSession().getSelectedPlotObjects()); // plot objects
+		 * System.out.println(getChoice(q4ChoiceBox)); // moisture
+		 * System.out.println(getChoice(q5ChoiceBox)); // soil type
+		 * System.out.println(getChoice(q6ChoiceBox)); // sunlight
+		 * System.out.println(getSession().getSeasonsUserSelected()); // seasons
+		 * System.out.println(getSession().getColorsUserSelected()); // colors
+		 */
+	}
 
+	/**
+	 * Sets up an alert Box that sends a message to the user on a smaller pop up
+	 * screen
+	 * 
+	 * @author Team 11-0
+	 *
+	 */
+	public static class Alert {
+
+		/**
+		 * Create the display screen for the error messages used when a user has invalid
+		 * input in question 2
+		 * 
+		 * @param title   The title of the new pop up screen
+		 * @param message The message that shows up in the center of the box
+		 */
+		public static void display(String title, String message) {
+			Stage displayWindow = new Stage();
+			displayWindow.initModality(Modality.APPLICATION_MODAL);
+			displayWindow.setTitle(title);
+			displayWindow.setWidth(alertScreenWidth);
+			displayWindow.setHeight(alertScreenHeight);
+
+			Label label = new Label();
+			label.setText(message);
+			label.setFont(Font.font("Verdana", FontWeight.BOLD, messageFontSize));
+
+			Button closeButton = new Button("Close");
+			closeButton.setOnAction(e -> displayWindow.close());
+			closeButton.setStyle("-fx-base: #EFF0F1;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+					+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+
+			VBox layout = new VBox(inset10);
+			layout.setStyle(View.getWhiteBackgroundStyle() + "-fx-font-weight: bold;" + "-fx-border-color: #C10C13;"
+					+ "-fx-border-insets: 5;" + "-fx-border-width: 3;" + "-fx-border-style: solid;");
+			layout.getChildren().addAll(label, closeButton);
+			layout.setAlignment(Pos.CENTER);
+
+			Scene scene = new Scene(layout);
+			displayWindow.setScene(scene);
+			displayWindow.showAndWait();
+
+		}
 	}
 
 }
