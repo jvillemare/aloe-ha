@@ -113,9 +113,13 @@ public class Model {
 	 * from Runtime.
 	 */
 	public void printMemoryInfo() {
-		System.out.println("\n" + "MaxMemory:   " + Runtime.getRuntime().maxMemory() + "\n" + "FreeMemory:  "
-				+ Runtime.getRuntime().freeMemory() + "\n" + "TotalMemory: " + Runtime.getRuntime().totalMemory() + "\n"
-				+ "UsedMemory:  " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + "\n");
+		System.out.println(
+				"\n" + 
+				"MaxMemory:   " + Runtime.getRuntime().maxMemory() + "\n" + 
+				"FreeMemory:  " + Runtime.getRuntime().freeMemory() + "\n" + 
+				"TotalMemory: " + Runtime.getRuntime().totalMemory() + "\n" + 
+				"UsedMemory:  " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + "\n"
+				);
 	}
 
 	/**
@@ -494,9 +498,9 @@ public class Model {
 	}
 
 	/**
-	 * Hack Bold font of size 20 
+	 * Hack Bold font of size 20
 	 */
-	private Font hackBold20;
+	private Font hackBold20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
 
 	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
@@ -505,13 +509,28 @@ public class Model {
 	 * @return The input stream of the HackBold font
 	 */
 	public Font getHackBold20() {
-		return this.hackBold20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
+		return this.hackBold20;
 	}
-	
+
 	/**
-	 * Hack Bold font of size 12 for buttons 
+	 * Hack Bold Italic font of size 20
 	 */
-	private Font hackBold12;
+	private Font hackBoldItalic20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-BoldItalic.ttf"), 20);
+
+	/**
+	 * Gets the Input Stream of the HackBold Italic font from the fonts resource
+	 * package to be used in windows
+	 * 
+	 * @return The input stream of the HackBold font
+	 */
+	public Font getHackBoldItalic20() {
+		return this.hackBoldItalic20;
+	}
+
+	/**
+	 * Hack Bold font of size 12 for buttons
+	 */
+	private Font hackBold12 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
 
 	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
@@ -520,39 +539,38 @@ public class Model {
 	 * @return The input stream of the HackBold font
 	 */
 	public Font getHackBold12() {
-		return this.hackBold12 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
+		return this.hackBold12;
 	}
-	
+
 	/**
-	 * Not hovering over the bottom buttons with keep it light green 
+	 * Not hovering over the bottom buttons with keep it light green
 	 */
-	private String notHover;
-	
+	private String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
+
 	/**
 	 * Not hovering over buttons
-	 * @return String of attributes for when the user is not hovering over bottom button
+	 * 
+	 * @return String of attributes for when the user is not hovering over bottom
+	 *         button
 	 */
 	public String getNotHover() {
-		return this.notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-				+ "-fx-outer-border: #63A331;";
+		return this.notHover;
 	}
-		
-		/**
-		 * When the user is hovering over the bottom buttons
-		 */
-		private String hover;
-		
-		/**
-		 * Hovering over buttons
-		 * @return String of attributes for when the user is hovering over bottom button
-		 */
-		public String getHover() {
-			return this.hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-					+ "-fx-outer-border: #63A331;";
-		}
 
-		
-	
-	
+	/**
+	 * When the user is hovering over the bottom buttons
+	 */
+	private String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
+
+	/**
+	 * Hovering over buttons
+	 * 
+	 * @return String of attributes for when the user is hovering over bottom button
+	 */
+	public String getHover() {
+		return this.hover;
+	}
 
 }

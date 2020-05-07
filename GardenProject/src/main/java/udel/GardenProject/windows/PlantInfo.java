@@ -79,7 +79,6 @@ public class PlantInfo extends Window {
 	private int scrollPrefWidth = screenWidth / 2;
 	private int imgWidthAndHeight = screenWidth / 2;
 	private int infoWrapTextWidth = screenWidth / 2 - 20;
-	private String boldItalic = "/fonts/Hack-BoldItalic.ttf";
 	private int infoMinHeight = View.getCanvasHeight() - 100;
 	private int scrollPrefHeight = View.getCanvasHeight() - 100;
 
@@ -103,7 +102,7 @@ public class PlantInfo extends Window {
 		setTitle("Plant Info: " + plant.getLatinName());
 
 		name = new Text(plant.getLatinName());
-		name.setFont(Font.loadFont(getClass().getResourceAsStream(boldItalic), View.getTextSizeForButtonsAndText()));
+		name.setFont(getModel().getHackBoldItalic20());
 
 		information = new VBox();
 		information.setStyle(View.getWhiteBackgroundStyle());

@@ -76,16 +76,16 @@ public class Tutorial extends Window {
 
 	private int inset10 = 10;
 	private int inset20 = 20;
-	private int tutorialCanvasWidth = View.getCanvasWidth() - 320;
+	private int borderLeft = 50;
+	private int infoTextSize = 15;
+	private int borderBottom = 50;
+	private int borderRight = 400;
+	private int backPaneTranslateY = -30;
 	private int scrollWidthAdjustment = 150;
 	private int scrollHeightAdjustment = 115;
-	private int backPaneTranslateX = (tutorialCanvasWidth / 2) - (View.getButtonPrefWidth() / 2);
-	private int backPaneTranslateY = -30;
-	private int infoTextSize = 15;
 	private int messageWrapWidth = View.getCanvasWidth() / 5 * 3;
-	private int borderRight = 400;
-	private int borderBottom = 50;
-	private int borderLeft = 50;
+	private int tutorialCanvasWidth = View.getCanvasWidth() - 320;
+	private int backPaneTranslateX = (tutorialCanvasWidth / 2) - (View.getButtonPrefWidth() / 2);
 
 	/**
 	 * Create a Tutorial window instance.
@@ -185,44 +185,42 @@ public class Tutorial extends Window {
 		return this.scene;
 	}
 
+	/**
+	 * Sets the new information drop down menu with the the Hack Bold font, size 20,
+	 * and puts it into the dropdown menu itself.
+	 * 
+	 * @param s The string that shows the title of the drop down menu
+	 * @param v The VBox to be placed within the drop down menu with the information
+	 *          (strings and images)
+	 */
+	public void createTitledPane(String s, VBox v) {
+		TitledPane titledPane = new TitledPane(s, v);
+		titledPane.setFont(getModel().getHackBold20());
+		accordion.getPanes().add(titledPane);
+	}
+
+	/**
+	 * Creates the dropdown menus for each of the different titledPanes If another
+	 * tiled pane needs to be added, just place it anywhere within the list.
+	 */
 	public void createAccordion() {
 
 		accordion = new Accordion();
 
-		TitledPane paneGetStarted = new TitledPane("How to Get Started", createGetStarted());
-		TitledPane paneNavigation = new TitledPane("How to Navigate to Different Screens", createNavigation());
-		TitledPane paneHoverInfo = new TitledPane("About Tool Tips", createHoverInfo());
-		TitledPane paneExistingPlants = new TitledPane("How to Add Existing Plants", createAddExistingPlants());
-		TitledPane paneQuestionnaire = new TitledPane("About the Questionnaire", createQuestionnaireTutorial());
-		TitledPane paneSelectingPlants = new TitledPane("How to Select Plants", createSelectingPlants());
-		TitledPane panePlotDesign = new TitledPane("About Your Plot Design", createPlotDesign());
-		TitledPane paneGardenPreviewer = new TitledPane("About the Garden Previewer", createGardenPreviewer());
-		TitledPane paneDownload = new TitledPane("About the Load and Save Plot Screen", createDownload());
-		TitledPane panePlantDatabase = new TitledPane("About the Plant Database", createPlantDatabase());
-		TitledPane panePlantInfo = new TitledPane("About the Plant Info Screen", createPlantInfo());
-		TitledPane paneObstacles = new TitledPane("About Adding Obstacles to Your Plot", createObstacles());
-		TitledPane paneAbout = new TitledPane("Where the Plant Information Comes From", createAbout());
+		createTitledPane("How to Get Started", createGetStarted());
+		createTitledPane("How to Navigate to Different Screens", createNavigation());
+		createTitledPane("About Tool Tips", createHoverInfo());
+		createTitledPane("How to Add Existing Plants", createAddExistingPlants());
+		createTitledPane("About the Questionnaire", createQuestionnaireTutorial());
+		createTitledPane("How to Select Plants", createSelectingPlants());
+		createTitledPane("About Your Plot Design", createPlotDesign());
+		createTitledPane("About the Garden Previewer", createGardenPreviewer());
+		createTitledPane("About the Load and Save Plot Screen", createDownload());
+		createTitledPane("About the Plant Database", createPlantDatabase());
+		createTitledPane("About the Plant Info Screen", createPlantInfo());
+		createTitledPane("About Adding Obstacles to Your Plot", createObstacles());
+		createTitledPane("Where the Plant Information Comes From", createAbout());
 
-		List<TitledPane> accArr = new ArrayList<TitledPane>();
-		accArr.add(paneGetStarted);
-		accArr.add(paneNavigation);
-		accArr.add(paneHoverInfo);
-		accArr.add(paneExistingPlants);
-		accArr.add(paneQuestionnaire);
-		accArr.add(paneSelectingPlants);
-		accArr.add(panePlotDesign);
-		accArr.add(paneGardenPreviewer);
-		accArr.add(paneDownload);
-		accArr.add(panePlantDatabase);
-		accArr.add(panePlantInfo);
-		accArr.add(paneObstacles);
-		accArr.add(paneAbout);
-
-		for (TitledPane t : accArr) {
-			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
-					View.getTextSizeForButtonsAndText()));
-			accordion.getPanes().add(t);
-		}
 	}
 
 	/**
