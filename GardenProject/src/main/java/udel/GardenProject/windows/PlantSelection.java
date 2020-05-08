@@ -1,31 +1,24 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -34,6 +27,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Moisture;
+import udel.GardenProject.enums.Seasons;
+import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -75,28 +71,9 @@ public class PlantSelection extends Window {
 	private Button back, next;
 
 	/**
-	 * Allows scrolling for all the plants shown in categories
-	 */
-	private ScrollPane scroll;
-
-	/**
-	 * Holds all the images of the plants
-	 */
-	private FlowPane flow;
-
-	private Plant plantArray[];
-
-	private HBox toggles;
-
-	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
 	 */
 	private ScrollPane scrollSelected;
-
-	/**
-	 * Holds the category toggles together so the user can only pick one at a time
-	 */
-	private ToggleGroup plantGroup;
 
 	/**
 	 * ScrollPane for the accordion selection
@@ -114,6 +91,9 @@ public class PlantSelection extends Window {
 	 */
 	private HBox centerBox;
 
+	/**
+	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
+	 */
 	private int backgroundScreenWidthAndHeight = 100;
 	private int borderTopAndBottonMargin = 40;
 	private int borderSideMargins = 80;
@@ -124,10 +104,23 @@ public class PlantSelection extends Window {
 	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 	private int scrollSelectedWidth = View.getCanvasWidth() / 2 + 30;
 	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
+	private int imgWidth = 350;
+	private int imgHeight = 100;
+	
 
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection");
+		
+		displaySelection();
 
+		
+	}
+	
+	/**
+	 * Similar to PlantInfo, allows this method to be called in Refresh and thus
+	 * renew the new desired traits for each plant in the left hand side.
+	 */
+	public void displaySelection() {
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -144,15 +137,10 @@ public class PlantSelection extends Window {
 		centerBox = new HBox();
 
 		Accordion canopySelection = new Accordion();
-		TitledPane floor = new TitledPane("Floor", createFlowPane(Canopy.FLOOR));
-		TitledPane understory = new TitledPane("Understory", createFlowPane(Canopy.UNDERSTORY));
-		TitledPane canopy = new TitledPane("Canopy", createFlowPane(Canopy.CANOPY));
-		TitledPane emergent = new TitledPane("Emergent", createFlowPane(Canopy.EMERGENT));
+		
 		List<TitledPane> accArr = new ArrayList<TitledPane>();
-		accArr.add(floor);
-		accArr.add(understory);
-		accArr.add(canopy);
-		accArr.add(emergent);
+		
+		populateTiles(accArr);
 
 		for (TitledPane t : accArr) {
 			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
@@ -168,6 +156,8 @@ public class PlantSelection extends Window {
 		selectedPlantsBox = new FlowPane();
 		selectedPlantsBox.setMinWidth(selectedPlantBoxMinWidth);
 		selectedPlantsBox.setMinHeight(selectedPlantBoxMinHeight);
+		
+		addSelected();
 
 		scrollSelected = new ScrollPane();
 		scrollPaneFormat(scrollSelected);
@@ -197,6 +187,11 @@ public class PlantSelection extends Window {
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
 
+	/**
+	 * Formats the ScrollPane to the desired width, height, and padding.
+	 * 
+	 * @param ScrollPane
+	 */
 	public void scrollPaneFormat(ScrollPane scroll) {
 		scroll.setPadding(new Insets(10));
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -205,59 +200,169 @@ public class PlantSelection extends Window {
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 
 	}
+	
+	/**
+	 * Populates each canopy level with plants that match from the users desires in Questionnaire.
+	 * 
+	 * @param List<TiledPane>
+	 */
+	public void populateTiles(List<TitledPane> accArr) {
+		TitledPane floor = new TitledPane("Floor", createFlowPane(Canopy.FLOOR));
+		TitledPane understory = new TitledPane("Understory", createFlowPane(Canopy.UNDERSTORY));
+		TitledPane canopy = new TitledPane("Canopy", createFlowPane(Canopy.CANOPY));
+		TitledPane emergent = new TitledPane("Emergent", createFlowPane(Canopy.EMERGENT));
+		accArr.add(floor);
+		accArr.add(understory);
+		accArr.add(canopy);
+		accArr.add(emergent);
+	}
 
 	/**
 	 * Function creates a flow pane (with Scroll) for the type of canopy selected.
+	 * Filters the plants to match those desired.
 	 * 
 	 * @param canopy --> Takes in a canopy
 	 */
 	public FlowPane createFlowPane(Canopy canopy) {
 
 		FlowPane flowCanopy = new FlowPane();
-
-		/**
-		 * TODO: set all of the plants here that correspond with canopy.
-		 */
-		/*
-		 * This is a temporary addition to test if function works
-		 */
-		Image pages[] = new Image[20];
-		for (int i = 0; i < 20; i++) {
-			pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
-			ImageView imageView = new ImageView(pages[i]);
-			Button addPlant = new Button("Add Plant");
-
-			Button infoButton = new Button("Info");
-			infoButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					getModel().setPlantInfoPlant(getModel().getPlants().get(0));
-					switchToWindow(Windows.PlantInfo);
+		
+		Moisture m = getSession().getMoistureOfPlot();
+		SoilTypes s = getSession().getSoilTypeOfPlot();
+		double l = getSession().getSunlightOfPlot();
+		
+		ArrayList<Plant> plants = getModel().getPlants();
+		
+		Iterator<Plant> itr = plants.iterator();
+		
+		while (itr.hasNext()) {
+			Plant p = itr.next();
+		    
+			boolean fits = false;
+			
+			if(p.getDelawareNative() == true) {
+				if(p.getCanopy() == canopy) {
+					if(p.getMoisture() == m || p.getMoisture() == null || m == null) {
+						if(p.getSoilType() == s || p.getSoilType() == SoilTypes.ANY || s == SoilTypes.ANY) {
+							if(p.getLight() == l || 
+									(p.getLight() < (l + 0.2) && p.getLight() >= l ) 
+									|| p.getLight() == -1.0 || l == -1.0) {
+								fits = true;
+							}
+						} 
+					}
 				}
-			});
-
-			HBox buttonHolder = new HBox();
-			buttonHolder.getChildren().addAll(infoButton, addPlant);
-
-			VBox imgButtonHolder = new VBox();
-			imgButtonHolder.getChildren().addAll(imageView, buttonHolder);
-			flowCanopy.getChildren().add(imgButtonHolder);
-
-			addPlant.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					selectedPlantsBox.getChildren().add(imgButtonHolder);
-
-				}
-			});
+			}
+			
+			if(fits) {
+				fits = checkSeason(p);
+			}			
+			
+			if(fits) {
+				flowCanopy.getChildren().add(createPlantBox(p));
+				
+			}
+			
 		}
 
 		return flowCanopy;
 
 	}
 
+	/**
+	 * Checks if the seasons for a plant match what the user desires.
+	 * 
+	 * @param Plant
+	 * @return boolean
+	 */
+	public boolean checkSeason(Plant p) {
+		ArrayList<Seasons> seasonFilter = getSession().getSeasonsUserSelected();
+		
+		boolean[] year = p.getBloomTime();
+		
+		if(year == null) {
+			return true;
+		}else {
+			ArrayList<Seasons> plantBloom = Seasons.getFilterSeason(year);
+			for(Seasons desiredSeason : seasonFilter) {
+				for(Seasons plantSeason : plantBloom) {
+					if(desiredSeason == Seasons.YEARROUND) {
+						return true;
+					}else if(desiredSeason == plantSeason) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Creates a VBox of a plant including its image, button for info, and add button
+	 * 
+	 * @param Plant
+	 * @return VBox
+	 */
+	public VBox createPlantBox(Plant p) {
+
+		String[] plantImg = p.getImages();
+		
+		Image plantImage;
+
+		//Get the actual image if it exists
+		if (plantImg != null) {
+			String path = p.getImages()[0];
+			plantImage = new Image(path, imgWidth, imgHeight, true, true);
+		} else {
+			// get a default image
+			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidth,
+					imgHeight, true, true);
+		}
+		ImageView imageView = new ImageView();
+		imageView.setImage(plantImage);
+		
+		Button addPlant = new Button("Add Plant");
+
+		Button infoButton = new Button("Info");
+		infoButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				getModel().setPlantInfoPlant(p);
+				switchToWindow(Windows.PlantInfo);
+			}
+		});
+
+		HBox buttonHolder = new HBox();
+		buttonHolder.getChildren().addAll(infoButton, addPlant);
+
+		VBox imgButtonHolder = new VBox();
+		imgButtonHolder.getChildren().addAll(imageView, buttonHolder);
+
+		addPlant.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				selectedPlantsBox.getChildren().add(imgButtonHolder);
+				//TODO: ADD TO HASHMAP!
+				getSession().addSelectedPlant(p);
+
+			}
+		});
+		return imgButtonHolder;
+	}
+	
+	/**
+	 * This displays all plants that are in the HashMap that the user desired from Plant Selection
+	 */
+	public void addSelected() {
+		for(Map.Entry<String, Plant> plant : getSession().getSelectedPlants().entrySet()) {
+			Plant p = plant.getValue();
+			selectedPlantsBox.getChildren().add(createPlantBox(p));
+		}
+	}
+	
 	/**
 	 * Function that creates button at the bottom of the screen with handlers
 	 */
@@ -305,6 +410,15 @@ public class PlantSelection extends Window {
 					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Refreshes the screen and to get the correct info from Model
+	 */
+	public void refresh() {
+		if(getModel().getLastWindow().getTitle().equals("Questions About Your Garden...") ) {
+			displaySelection();
 		}
 	}
 

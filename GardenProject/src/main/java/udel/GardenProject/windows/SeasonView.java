@@ -262,7 +262,7 @@ public class SeasonView extends Window {
 	public void createToggleGroups() {
 		seasonHBox = new HBox();
 		seasonGroup = new ToggleGroup();
-		List<String> seasonSelection = List.of("SPRING", "SUMMER", "WINTER", "FALL");
+		List<String> seasonSelection = new ArrayList<>();//List.of("SPRING", "SUMMER", "WINTER", "FALL");
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (String s : seasonSelection) {
 			ToggleButton toggle = new ToggleButton(s);
@@ -288,7 +288,7 @@ public class SeasonView extends Window {
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		List<String> yearSelection = List.of("0 YEARS", "1 YEAR", "2 YEARS");
+		List<String> yearSelection = new ArrayList<>();//List.of("0 YEARS", "1 YEAR", "2 YEARS");
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
 		for (String y : yearSelection) {
 			ToggleButton toggle = new ToggleButton(y);
@@ -311,7 +311,7 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
+		List<String> viewSelection =  new ArrayList<>();//List.of("TOP VIEW", "WINDOW VIEW");
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
 			ToggleButton toggle = new ToggleButton(v);

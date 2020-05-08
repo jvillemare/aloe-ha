@@ -73,7 +73,7 @@ public class PlantInfo extends Window {
 	 */
 	private int inset10 = 10;
 	private int inset20 = 20;
-	private int inset40 = 40;
+	private int inset200 = 200;
 	private double buttonSizeFactor = 1.5;
 	private int screenWidth = (View.getCanvasWidth() / 5 * 4) - 100;
 	private int scrollPrefWidth = screenWidth / 2;
@@ -81,7 +81,8 @@ public class PlantInfo extends Window {
 	private int infoWrapTextWidth = screenWidth / 2 - 20;
 	private int infoMinHeight = View.getCanvasHeight() - 100;
 	private int scrollPrefHeight = View.getCanvasHeight() - 100;
-
+	private int screenWidthAdjustment = 30;
+	
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: ");
 
@@ -92,8 +93,6 @@ public class PlantInfo extends Window {
 	/**
 	 * Change PlantInfo's scene and display a plant's info by it's latin name. This
 	 * will be used by PlantSelection and AllPlants for their button
-	 * getModel().getWindow(Windows.PlantInfo).displayPlant(myCoolPlant,
-	 * Windows.AllPlants)
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
 	 */
@@ -147,11 +146,13 @@ public class PlantInfo extends Window {
 		createButton();
 
 		borderPane.setStyle(View.getPinkBackgroundStyle());
-		borderPane.setPadding(new Insets(inset10, inset40, inset10, inset10));
+		borderPane.setPadding(new Insets(inset10, inset200, inset10, inset10));
 		borderPane.setLeft(image);
 		borderPane.setRight(scroll);
 		borderPane.setBottom(button);
-
+		
+		screenWidth = (int) (imgWidthAndHeight + scrollPrefWidth + screenWidthAdjustment);
+		
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, screenWidth, View.getCanvasHeight());
