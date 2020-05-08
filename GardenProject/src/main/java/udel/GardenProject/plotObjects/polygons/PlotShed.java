@@ -13,7 +13,7 @@ public class PlotShed extends GenericPolygon implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static Image shed  = new Image("/plantImages/shed.png", 611, 380, true, false);
+	private static Image shed  = new Image("/viewImages/shed.png", 519, 323, true, false);
 
 	/**
 	 * Constructor.

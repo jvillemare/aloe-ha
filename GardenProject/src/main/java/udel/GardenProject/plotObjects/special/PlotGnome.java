@@ -17,7 +17,7 @@ public class PlotGnome extends PlotObject implements Serializable {
 	/**
 	 * Image of a garden gnome.
 	 */
-	private static Image gnome = new Image("/plantImages/gnome.png", 119, 137, true, false);
+	private static Image gnome = new Image("/viewImages/gnome.png", 95, 110, true, false);
 
 	public PlotGnome(double x, double y) {
 		super(x, y, 1, gnome);

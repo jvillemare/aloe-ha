@@ -10,14 +10,14 @@ import udel.GardenProject.plotObjects.PlotObject;
  * 
  * @author Team 0
  */
-public class PlotBirdBath extends PlotObject implements Serializable {
+public class PlotBench extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Image of a bird bath.
+	 * Image of a bench.
 	 */
-	private static Image birdBath = new Image("/viewImages/birdBath.png", 227, 137, true, false);
+	private static Image bench = new Image("/viewImages/bench.png", 222, 134, true, false);
 	
 	/**
 	 * TODO: ...
@@ -25,8 +25,8 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	 * @param x			...
 	 * @param y			...
 	 */
-	public PlotBirdBath(double x, double y) {
-		super(x, y, 2.0, birdBath); // a bird bath is about 4 feet tall right? 
+	public PlotBench(double x, double y) {
+		super(x, y, 2.0, bench);
 	}
 
 }

@@ -16,7 +16,7 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	/**
 	 * Image of a pool.
 	 */
-	private static Image pool = new Image("/plantImages/pool.png", 380, 440, true, false);
+	private static Image pool = new Image("/viewImages/pool.png", 380, 440, true, false);
 	
 	/**
 	 * Constructor.

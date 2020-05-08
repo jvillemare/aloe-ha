@@ -16,7 +16,7 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	/**
 	 * Image of a playground.
 	 */
-	private static Image playground = new Image("/plantImages/playground.png", 380, 440, true, false);
+	private static Image playground = new Image("/viewImages/playground.png", 304, 352, true, false);
 	
 	public PlotPlayground(double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?

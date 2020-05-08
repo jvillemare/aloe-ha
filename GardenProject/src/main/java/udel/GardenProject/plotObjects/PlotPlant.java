@@ -21,27 +21,27 @@ public class PlotPlant extends PlotObject implements Serializable {
 	/**
 	 * Image of a floor plant.
 	 */
-	private static Image floor = new Image("/plantImages/floorFlowers.png", 180, 207, true, false);
+	private static Image floor = new Image("/viewImages/floorFlowers.png", 162, 186, true, false);
 
 	/**
 	 * Image of an understory plant.
 	 */
-	private static Image understory = new Image("/plantImages/understory.png", 223, 295, true, false);
+	private static Image understory = new Image("/viewImages/understory.png", 228, 318, true, false);
 	
 	/**
 	 * Image of a canopy plant.
 	 */
-	private static Image canopy = new Image("/plantImages/canopy.png", 611, 380, true, false);
+	private static Image canopy = new Image("/viewImages/canopy.png", 733, 456, true, false);
 	
 	/**
 	 * Image of an emergent plant.
 	 */
-	private static Image emergent = new Image("/plantImages/emergent.png", 697, 558, true, false);
+	private static Image emergent = new Image("/viewImages/emergent.png", 697, 558, true, false);
 	
 	/**
 	 * Image of a plant. Will be used if no canopy specified.
 	 */
-	private static Image aPlant = new Image("/plantImages/sunflower.png", 153, 176, true, false);
+	private static Image aPlant = new Image("/viewImages/sunflower.png", 153, 176, true, false);
 	
 	/**
 	 * The plant this PlotPlant is representing.

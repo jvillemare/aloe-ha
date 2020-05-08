@@ -13,6 +13,11 @@ import udel.GardenProject.plotObjects.PlotObject;
 public class PlotOther extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Image of a raised garden bed.
+	 */
+	private static Image picture = new Image("/viewImages/gardenBed.png", 315, 190, true, false);
 
 	/**
 	 * TODO: ?...
@@ -21,8 +26,8 @@ public class PlotOther extends PlotObject implements Serializable {
 	 * @param y			...
 	 * @param height	...
 	 */
-	public PlotOther(double x, double y, double height, Image i) {
-		super(x, y, height, i);
+	public PlotOther(double x, double y, double height) {
+		super(x, y, height, picture);
 		// TODO Auto-generated constructor stub
 	}
 
