@@ -13,17 +13,20 @@ import udel.GardenProject.plotObjects.PlotObject;
 public class PlotBirdBath extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Image of a bird bath.
+	 */
+	private static Image birdBath = new Image("/plantImages/birdBath.png", 252, 152, true, false);
 	
 	/**
 	 * TODO: ...
 	 * 
 	 * @param x			...
 	 * @param y			...
-	 * @param height	...
-	 * @param i		...
 	 */
-	public PlotBirdBath(double x, double y, double height, Image i) {
-		super(x, y, 2.0, i); // a bird bath is about 4 feet tall right? 
+	public PlotBirdBath(double x, double y) {
+		super(x, y, 2.0, birdBath); // a bird bath is about 4 feet tall right? 
 	}
 
 }

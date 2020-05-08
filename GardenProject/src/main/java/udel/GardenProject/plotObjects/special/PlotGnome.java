@@ -10,17 +10,17 @@ import udel.GardenProject.plotObjects.PlotObject;
  * 
  * @author Team 0
  */
-public class PlotFlamingo extends PlotObject implements Serializable {
+public class PlotGnome extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a lawn flamingo
+	 * Image of a garden gnome.
 	 */
-	private static Image flamingo = new Image("/plantImages/flamingo.png", 283, 171, true, false);
+	private static Image gnome = new Image("/plantImages/gnome.png", 119, 137, true, false);
 
-	public PlotFlamingo(double x, double y, double height) {
-		super(x, y, height, flamingo);
+	public PlotGnome(double x, double y) {
+		super(x, y, 1, gnome);
 		// TODO Auto-generated constructor stub
 	}
 

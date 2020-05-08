@@ -17,8 +17,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -42,7 +45,10 @@ import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.YDistanceComparator;
+import udel.GardenProject.plotObjects.polygons.PlotShed;
+import udel.GardenProject.plotObjects.special.PlotBirdBath;
 import udel.GardenProject.plotObjects.special.PlotFlamingo;
+import udel.GardenProject.plotObjects.special.PlotGnome;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -196,8 +202,8 @@ public class SeasonView extends Window {
 		viewWidth = View.getCanvasWidth() - 20;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		Image sky = new Image(getClass().getResourceAsStream("/windowImages/clouds.png"));
-		Image grass = new Image(getClass().getResourceAsStream("/windowImages/grass.png"));
+		Image sky = new Image(getClass().getResourceAsStream("/plantImages/clouds.png"));
+		Image grass = new Image(getClass().getResourceAsStream("/plantImages/grass.png"));
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 		drawCanvas(gc);
@@ -419,8 +425,9 @@ public class SeasonView extends Window {
 	 * @param gc GraphicsContext that corresponds to window view canvas
 	 */
 	public void drawCanvas(GraphicsContext gc) {
-		gc.setFill(Color.rgb(140, 140, 140, .15));
+		gc.setFill(Color.rgb(140, 140, 140, .23));
 		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
+		Collections.sort(plot, new YDistanceComparator());
 		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
 			factor = .3;

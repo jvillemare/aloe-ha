@@ -3,6 +3,7 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.image.Image;
+import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.plants.Plant;
 
 /**
@@ -18,6 +19,31 @@ public class PlotPlant extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * Image of a floor plant.
+	 */
+	private static Image floor = new Image("/plantImages/floorFlowers.png", 180, 207, true, false);
+
+	/**
+	 * Image of an understory plant.
+	 */
+	private static Image understory = new Image("/plantImages/understory.png", 223, 295, true, false);
+	
+	/**
+	 * Image of a canopy plant.
+	 */
+	private static Image canopy = new Image("/plantImages/canopy.png", 611, 380, true, false);
+	
+	/**
+	 * Image of an emergent plant.
+	 */
+	private static Image emergent = new Image("/plantImages/emergent.png", 697, 558, true, false);
+	
+	/**
+	 * Image of a plant. Will be used if no canopy specified.
+	 */
+	private static Image aPlant = new Image("/plantImages/sunflower.png", 153, 176, true, false);
+	
+	/**
 	 * The plant this PlotPlant is representing.
 	 */
 	private Plant p;
@@ -28,10 +54,9 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param p	Plant that's appearing on the Plot.
 	 * @param x Horizontal position in PlotDesign.
 	 * @param y Vertical position in PlotDesign.
-	 * @param i Plot object's image.
 	 */
-	public PlotPlant(Plant p, double x, double y, Image i) {
-		super(x, y, p.getCanopy().getAverageCanopyHeight(), i);
+	public PlotPlant(Plant p, double x, double y) {
+		super(x, y, checkIfCanopy(p.getCanopy()), chooseImage(p));
 		this.p = p;
 	}
 	
@@ -41,6 +66,39 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 */
 	public Plant getPlant() {
 		return this.p;
+	}
+	
+	public static double checkIfCanopy(Canopy c) {
+		if (c == null) {
+			return -1;
+		}
+		else {
+			return c.getAverageCanopyHeight();
+		}
+	}
+	
+	
+	/**
+	 * Determines the image to be used for the window view.
+	 * @param p The plant object.
+	 * @return The correct image based on canopy level.
+	 */
+	public static Image chooseImage(Plant p) {
+		if (p.getCanopy() == null) {
+			return aPlant;
+		}
+		switch(p.getCanopy()) {
+		case FLOOR:
+			return floor;
+		case UNDERSTORY:
+			return understory;
+		case CANOPY:
+			return canopy;
+		case EMERGENT:
+			return emergent;
+		default:
+			return aPlant;
+		}
 	}
 
 }

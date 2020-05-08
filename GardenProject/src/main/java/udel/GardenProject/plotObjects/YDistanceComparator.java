@@ -2,6 +2,8 @@ package udel.GardenProject.plotObjects;
 
 import java.util.Comparator;
 
+import udel.GardenProject.plotObjects.polygons.PlotPool;
+
 public class YDistanceComparator implements Comparator<PlotObject>{
 	
 	private boolean ascending;
@@ -27,6 +29,12 @@ public class YDistanceComparator implements Comparator<PlotObject>{
 			return 0;
 		}
 		else if (this.ascending) {
+			if (o1.getClass().equals(PlotPool.class)) {
+				return -1;
+			}
+			if (o2.getClass().equals(PlotPool.class)) {
+				return 1;
+			}
 			if (o1.getPlotY() < o2.getPlotY()) {
 				return -1;
 			}
@@ -35,6 +43,12 @@ public class YDistanceComparator implements Comparator<PlotObject>{
 			}
 		}
 		else {
+			if (o1.getClass().equals(PlotPool.class)) {
+				return 1;
+			}
+			if (o2.getClass().equals(PlotPool.class)) {
+				return -1;
+			}
 			if (o1.getPlotY() < o2.getPlotY()) {
 				return 1;
 			}
