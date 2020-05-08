@@ -17,9 +17,11 @@ public enum PlotObjects {
 	Road("polygons", false), 
 	Rock("polygons", true), 
 	Shed("polygons", true), 
-	BirdBath("polygons", true), 
-	Flamingo("polygons", true), 
-	Other("polygons", true);
+	BirdBath("special", true), 
+	Bench("Special", true),
+	Flamingo("special", true), 
+	Gnome("special", true),
+	Other("special", true);
 	
 	/**
 	 * What package is this PlotObject found in (for categorization).
@@ -40,6 +42,7 @@ public enum PlotObjects {
 	 */
 	private PlotObjects(String type, boolean typicallyInGarden) {
 		this.type = type;
+		this.typicallyInGarden = typicallyInGarden;
 	}
 	
 	/**

@@ -13,6 +13,11 @@ import javafx.scene.image.Image;
 public class PlotPath extends GenericLine implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Image of a path.
+	 */
+	private static Image path = new Image("/viewImages/path.png", 452, 660, true, false);
 
 	/**
 	 * Constructor.
@@ -20,10 +25,9 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param x			Horizontal position of first point in plot design.
 	 * @param y			Vertical position of first point in plot design.
 	 * @param height	Height of path object.
-	 * @param path		Path to plot object's image.
 	 */
-	public PlotPath(double x, double y, double height, Image i) {
-		super(x, y, 1.0, new AdjustableLine(), i);
+	public PlotPath(double x, double y, double height) {
+		super(x, y, 1.0, new AdjustableLine(), path);
 		// TODO Auto-generated constructor stub
 	}	
 
