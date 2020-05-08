@@ -429,23 +429,7 @@ public class SeasonView extends Window {
 	 */
 	public void drawCanvas(GraphicsContext gc) {
 		gc.setFill(Color.rgb(140, 140, 140, .25));
-		//ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
-		
-		
-		
-		ArrayList<PlotObject> plot = new ArrayList<>();
-		plot.add(new PlotBench(100, MAXDEPTH));
-		plot.add(new PlotOther (400, MAXDEPTH, .75));
-		//plot.add(new PlotFlamingo(200, MAXDEPTH, 2));
-		plot.add(new PlotGnome(150, MAXDEPTH));
-		plot.add(new PlotBirdBath(175, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null,  Canopy.CANOPY, true, true, null, null), 500, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null,  Canopy.FLOOR, true, true, null, null), 20, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null,  Canopy.UNDERSTORY, true, true, null, null), 200, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null,  Canopy.EMERGENT, true, true, null, null), 300, MAXDEPTH));
-		
-		
-		
+		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		Collections.sort(plot, new YDistanceComparator());
 		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
