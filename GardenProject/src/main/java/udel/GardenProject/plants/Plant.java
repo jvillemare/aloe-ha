@@ -284,9 +284,12 @@ public class Plant {
 			}
 			end = descript.indexOf(System.lineSeparator(), ind);
 			inDesc = descript.substring(ind + 7, end);
-			String[] possible = inDesc.split(",");
+			String[] possible = inDesc.split(", ");
 			for (String c : possible) {
 				c = c.split(" ")[0];
+				if (c.endsWith("ish")) {
+					c = c.substring(0, c.length()-3);
+				}
 				c = c.toUpperCase();
 				if (values.contains(c)) {
 					colors.add(allColors[values.indexOf(c)]);
