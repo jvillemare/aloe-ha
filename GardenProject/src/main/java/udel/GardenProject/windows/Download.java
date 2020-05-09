@@ -206,29 +206,16 @@ public class Download extends Window {
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
 				fileChooser.setInitialFileName(getSession().getPlotName());
-				
+
 				/**
 				 * TODO: JPG and PNG...?? .gardenProject...???
 				 */
 				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG", "*.png"));
 				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
-				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt")); //testing
-				
-				
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
 
 				File file = fileChooser.showSaveDialog(scene2);
-				if (file != null) {
-
-					try {
-						Desktop desktop = null;
-						fileChooser.setInitialFileName("hi");
-						desktop.open(file);
-					} catch (IOException ex) {
-						/**
-						 * TODO: Add something here ...???
-						 */
-					}
-				}
+				getModel().saveSession(file.getAbsolutePath());
 
 			}
 		});
