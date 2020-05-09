@@ -26,6 +26,13 @@ public enum Seasons {
 		return season;
 	}
 	
+	/**
+	 * Creates an ArrayList<Seasons> that contains all the seasons the given
+	 * boolean year would bloom at.
+	 * 
+	 * @param year
+	 * @return ArrayList<Seasons>
+	 */
 	public static ArrayList<Seasons> getFilterSeason(boolean[] year){
 		ArrayList<Seasons> filter = new ArrayList<Seasons>();
 		int size = year.length;

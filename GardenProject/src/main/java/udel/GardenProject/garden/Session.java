@@ -288,6 +288,12 @@ public class Session implements Serializable {
 		this.selectedPlants = selectedPlants;
 	}
 	
+	/**
+	 * Takes in a plant and adds to selectedPlants list which is all the
+	 * plants a user wishes to have.
+	 * 
+	 * @param Plant
+	 */
 	public void addSelectedPlant(Plant plant) {
 		selectedPlants.put(plant.getLatinName(), plant);
 	}

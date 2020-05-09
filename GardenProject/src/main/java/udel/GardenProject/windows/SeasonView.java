@@ -311,7 +311,7 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		List<String> viewSelection =  List.of("TOP VIEW", "WINDOW VIEW");
+		List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
 			ToggleButton toggle = new ToggleButton(v);

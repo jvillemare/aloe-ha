@@ -207,14 +207,11 @@ public class PlantSelection extends Window {
 	 * @param List<TiledPane>
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		TitledPane floor = new TitledPane("Floor", createFlowPane(Canopy.FLOOR));
-		TitledPane understory = new TitledPane("Understory", createFlowPane(Canopy.UNDERSTORY));
-		TitledPane canopy = new TitledPane("Canopy", createFlowPane(Canopy.CANOPY));
-		TitledPane emergent = new TitledPane("Emergent", createFlowPane(Canopy.EMERGENT));
-		accArr.add(floor);
-		accArr.add(understory);
-		accArr.add(canopy);
-		accArr.add(emergent);
+		
+		for(Canopy c : Canopy.values()) {
+			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
+			accArr.add(tile);
+		}
 	}
 
 	/**
@@ -416,8 +413,8 @@ public class PlantSelection extends Window {
 	/**
 	 * Refreshes the screen and to get the correct info from Model
 	 */
-	public void refresh() {
-		if(getModel().getLastWindow().getTitle().equals("Questions About Your Garden...") ) {
+	public void refresh() {		
+		if(getModel().getLastWindow().getTitle().equals("Questions About Your Garden...")) {
 			displaySelection();
 		}
 	}
