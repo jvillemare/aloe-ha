@@ -2,6 +2,8 @@ package udel.GardenProject.plants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -298,6 +300,22 @@ public class Plant {
 			start = end;
 		}
 		return colors;
+  }
+
+  /**
+	 * Trimmed version of the URL for the images of Plants, purpose for copyright.
+	 * 
+	 * @param url
+	 * @return trimmed version of the url
+	 * @throws MalformedURLException 
+	 */
+	public static String getImageSourceDomain(String url) throws MalformedURLException {
+		URL u = new URL(url);
+		
+		String trim;
+		trim = u.getAuthority();
+		
+		return trim;
 	}
 
 }

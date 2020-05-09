@@ -12,9 +12,14 @@ import udel.GardenProject.plotObjects.PlotObject;
 public class PlotFlamingo extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Path to image of a lawn flamingo
+	 */
+	private static String flamingo = "/viewImages/flamingo.png";
 
 	public PlotFlamingo(double x, double y, double height) {
-		super(x, y, height);
+		super(x, y, height, flamingo);
 		// TODO Auto-generated constructor stub
 	}
 
