@@ -1,11 +1,10 @@
 package udel.GardenProject.windows;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
-import udel.GardenProject.plants.Plant;
 
 /**
  * A window that can be displayed to the user.

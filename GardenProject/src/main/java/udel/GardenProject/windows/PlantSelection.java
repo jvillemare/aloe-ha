@@ -111,7 +111,12 @@ public class PlantSelection extends Window {
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
-		displaySelection();
+		try {
+			displaySelection();
+		}catch(Exception e) {
+			System.out.println("Wrong size of a plants year Boolean Array");
+		}
+		
 
 		
 	}
@@ -119,8 +124,9 @@ public class PlantSelection extends Window {
 	/**
 	 * Similar to PlantInfo, allows this method to be called in Refresh and thus
 	 * renew the new desired traits for each plant in the left hand side.
+	 * @throws Exception 
 	 */
-	public void displaySelection() {
+	public void displaySelection() throws Exception {
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -205,8 +211,9 @@ public class PlantSelection extends Window {
 	 * Populates each canopy level with plants that match from the users desires in Questionnaire.
 	 * 
 	 * @param List<TiledPane>
+	 * @throws Exception 
 	 */
-	public void populateTiles(List<TitledPane> accArr) {
+	public void populateTiles(List<TitledPane> accArr) throws Exception {
 		
 		for(Canopy c : Canopy.values()) {
 			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
@@ -219,8 +226,9 @@ public class PlantSelection extends Window {
 	 * Filters the plants to match those desired.
 	 * 
 	 * @param canopy --> Takes in a canopy
+	 * @throws Exception 
 	 */
-	public FlowPane createFlowPane(Canopy canopy) {
+	public FlowPane createFlowPane(Canopy canopy) throws Exception {
 
 		FlowPane flowCanopy = new FlowPane();
 		
@@ -271,8 +279,9 @@ public class PlantSelection extends Window {
 	 * 
 	 * @param Plant
 	 * @return boolean
+	 * @throws Exception 
 	 */
-	public boolean checkSeason(Plant p) {
+	public boolean checkSeason(Plant p) throws Exception {
 		ArrayList<Seasons> seasonFilter = getSession().getSeasonsUserSelected();
 		
 		boolean[] year = p.getBloomTime();
@@ -342,7 +351,6 @@ public class PlantSelection extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				selectedPlantsBox.getChildren().add(imgButtonHolder);
-				//TODO: ADD TO HASHMAP!
 				getSession().addSelectedPlant(p);
 
 			}
@@ -413,10 +421,15 @@ public class PlantSelection extends Window {
 	/**
 	 * Refreshes the screen and to get the correct info from Model
 	 */
-	public void refresh() {		
-		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
-			displaySelection();
+	public void refresh() {	
+		try {
+			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
+				displaySelection();
+			}
+		}catch(Exception e) {
+			System.out.println("Wrong size of a plants year Boolean Array");
 		}
+		
 	}
 
 	@Override

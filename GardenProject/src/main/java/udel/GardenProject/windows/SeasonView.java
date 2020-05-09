@@ -3,8 +3,6 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.java.swing.plaf.windows.WindowsLabelUI;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

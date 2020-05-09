@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,6 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
-import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -510,7 +510,6 @@ public class Questionnaire extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				switchToWindow(Windows.PlantSelection);
-				System.out.println(getModel().getLastWindow());
 			}
 		});
 
@@ -627,23 +626,7 @@ public class Questionnaire extends Window {
 	}
 
 	public void refresh() {
-		// before it goes to the next window, show that it added the plants the
-		// user selected
-		// used for testing purposes
-
-		/*
-		 * System.out.println("Questionnaire: Refreshing...");
-		 * System.out.println(getSession().getExistingPlants()); // existing plants
-		 * System.out.println(getSession().getPlotName());//name of plot
-		 * System.out.println(getSession().getWidthOfUserPlot());// width
-		 * System.out.println(getSession().getLengthOfUserPlot()); // length
-		 * System.out.println(getSession().getSelectedPlotObjects()); // plot objects
-		 * System.out.println(getChoice(q4ChoiceBox)); // moisture
-		 * System.out.println(getChoice(q5ChoiceBox)); // soil type
-		 * System.out.println(getChoice(q6ChoiceBox)); // sunlight
-		 * System.out.println(getSession().getSeasonsUserSelected()); // seasons
-		 * System.out.println(getSession().getColorsUserSelected()); // colors
-		 */
+		
 	}
 
 	/**
