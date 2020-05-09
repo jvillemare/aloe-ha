@@ -1,5 +1,7 @@
 package udel.GardenProject.windows;
 
+import java.net.MalformedURLException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -101,8 +103,9 @@ public class PlantInfo extends Window {
 	 * Windows.AllPlants)
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
+	 * @throws MalformedURLException 
 	 */
-	public void displayPlant(Plant plant) {
+	public void displayPlant(Plant plant) throws MalformedURLException {
 
 		setTitle("Plant Info: " + plant.getLatinName());
 
@@ -190,7 +193,11 @@ public class PlantInfo extends Window {
 	 * Refreshes the screen and to get the correct info from Model
 	 */
 	public void refresh() {
-		displayPlant(getModel().getPlantInfoPlant());
+		try {
+			displayPlant(getModel().getPlantInfoPlant());
+		}catch(MalformedURLException e) {
+			
+		}
 	}
 
 	/**
