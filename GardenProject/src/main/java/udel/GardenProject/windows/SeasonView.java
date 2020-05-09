@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,12 +11,19 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -27,6 +35,8 @@ import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.YDistanceComparator;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -80,6 +90,11 @@ public class SeasonView extends Window {
 	 * Prospective area where the image of the garden plot should be
 	 */
 	private Rectangle square;
+	
+	/**
+	 * Canvas to draw plants on for window view
+	 */
+	private Canvas canvas;
 
 	/**
 	 * Final toggle the user chose for season
@@ -100,12 +115,32 @@ public class SeasonView extends Window {
 	 * Holds the toggle options and the bottom navigation buttons
 	 */
 	public VBox bottomBox;
-
+	
 	/**
-	 * Create a SeasonView window instance.
-	 *
-	 * @param m Model
+	 * Width of garden on the window.
 	 */
+	private double viewWidth;
+	
+	/**
+	 * Depth of garden on the window.
+	 */
+	private double viewDepth;
+	
+	/**
+	 * Maximum depth a plot object may be placed on plot desigh
+	 */
+	private final int MAXDEPTH = 550;
+	
+	/**
+	 * Maximum width a plot object may be placed on plot design
+	 */
+	private final int MAXWIDTH = 620;
+	
+	/**
+	 * Factor for scaling images in the window view
+	 */
+	private double factor;
+  
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
@@ -115,6 +150,11 @@ public class SeasonView extends Window {
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
 
+  /**
+	 * Create a SeasonView window instance.
+	 *
+	 * @param m Model
+	 */
 	public SeasonView(Model m) {
 		super(m, "Garden Previewer");
 
@@ -144,6 +184,18 @@ public class SeasonView extends Window {
 		toggleOptionsTilePane.setHgap(inset20);
 		toggleOptionsTilePane.setVgap(inset20);
 
+		
+		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
+				- toggleOptionsTilePane.getHeight() - 130;
+		viewWidth = View.getCanvasWidth() - 20;
+		canvas = new Canvas(viewWidth, viewDepth);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+		Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+		drawCanvas(gc);
+		
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
 				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment);
@@ -321,9 +373,11 @@ public class SeasonView extends Window {
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				if (v.equals("TOP VIEW")) {
+					imageVBox.getChildren().set(0, square);
 					chosenView = "TOP";
 				}
 				if (v.equals("WINDOW VIEW")) {
+					imageVBox.getChildren().set(0, canvas);
 					chosenView = "WINDOW";
 				}
 			});
@@ -360,5 +414,34 @@ public class SeasonView extends Window {
 		});
 
 	}
-
+	
+	/**
+	 * Draws all the plot objects on the canvas for the window view.
+	 * 
+	 * @param gc GraphicsContext that corresponds to window view canvas
+	 */
+	public void drawCanvas(GraphicsContext gc) {
+		gc.setFill(Color.rgb(140, 140, 140, .25));
+		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
+		Collections.sort(plot, new YDistanceComparator());
+		DropShadow shadow = new DropShadow();
+		for (PlotObject po : plot) {
+			factor = .3;
+			if (po.getPlotY()/MAXDEPTH > factor) {
+				factor = po.getPlotY()/MAXDEPTH; 
+			}
+			Image i = new Image(po.getImage());
+			gc.fillOval(po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()/3*factor) + viewDepth/3*2, i.getWidth()*factor, i.getHeight()/2*factor);
+		}
+		for (PlotObject po : plot) {
+			factor = .3;
+			if (po.getPlotY()/MAXDEPTH > factor) {
+				factor = po.getPlotY()/MAXDEPTH; 
+			}
+			Image i = new Image(po.getImage());
+			gc.setEffect(shadow);
+			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
+		}
+		
+	}
 }
