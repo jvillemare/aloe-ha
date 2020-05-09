@@ -256,5 +256,18 @@ public class Plant {
 	public String[] getImages() {
 		return this.images;
 	}
+	
+	/**
+	 * Trimmed version of the URL for the images of Plants, purpose for copyright.
+	 * 
+	 * @param url
+	 * @return trimmed version of the url
+	 */
+	public static String getImageSourceDomain(String url) {
+		String trim;
+		trim = url.substring(8,31);
+		
+		return trim;
+	}
 
 }

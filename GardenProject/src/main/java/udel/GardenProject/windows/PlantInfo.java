@@ -67,7 +67,12 @@ public class PlantInfo extends Window {
 	 * The pane to which the back button is places (at the bottom of the screen)
 	 */
 	private TilePane button;
-
+	
+	/**
+	 * The text for URL for copyright: empty if using default image.
+	 */
+	private Text url = new Text("");
+	
 	/**
 	 * Adjustments, fonts, widths and heights for the Info Screen format
 	 */
@@ -131,10 +136,13 @@ public class PlantInfo extends Window {
 		if (plantImg != null) {
 			String path = plant.getImages()[0];
 			plantImage = new Image(path, imgWidthAndHeight, imgWidthAndHeight, true, true);
+			url = makeText(Plant.getImageSourceDomain(path));
+			url.setFont(getModel().getHackBoldItalic20());
 		} else {
 			// get a default image
 			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidthAndHeight,
 					imgWidthAndHeight, true, true);
+			url = makeText("");
 		}
 
 		// where the image will be place
@@ -142,7 +150,7 @@ public class PlantInfo extends Window {
 		image.setPadding(new Insets(inset10));
 		ImageView img = new ImageView();
 		img.setImage(plantImage);
-		image.getChildren().addAll(img, name);
+		image.getChildren().addAll(img, name, url);
 
 		createButton();
 
