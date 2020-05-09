@@ -17,7 +17,7 @@ public class PlotPath extends GenericLine implements Serializable {
 	/**
 	 * Image of a path.
 	 */
-	private static Image path = new Image("/viewImages/path.png", 452, 660, true, false);
+	private static String path = "/viewImages/path.png";
 
 	/**
 	 * Constructor.

@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * Chlorine-and-water filled of water.
  * 
@@ -14,9 +12,9 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a pool.
+	 * Path of an image of a pool.
 	 */
-	private static Image pool = new Image("/viewImages/pool.png", 380, 440, true, false);
+	private static String pool = "/viewImages/pool.png";
 	
 	/**
 	 * Constructor.

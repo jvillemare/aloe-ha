@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.plants.Plant;
 
@@ -18,30 +17,6 @@ public class PlotPlant extends PlotObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * Image of a floor plant.
-	 */
-	private static Image floor = new Image("/viewImages/floorFlowers.png", 162, 186, true, false);
-
-	/**
-	 * Image of an understory plant.
-	 */
-	private static Image understory = new Image("/viewImages/understory.png", 205, 286, true, false);
-	
-	/**
-	 * Image of a canopy plant.
-	 */
-	private static Image canopy = new Image("/viewImages/canopy.png", 662, 412, true, false);
-	
-	/**
-	 * Image of an emergent plant.
-	 */
-	private static Image emergent = new Image("/viewImages/emergent.png", 697, 558, true, false);
-	
-	/**
-	 * Image of a plant. Will be used if no canopy specified.
-	 */
-	private static Image aPlant = new Image("/viewImages/sunflower.png", 153, 176, true, false);
 	
 	/**
 	 * The plant this PlotPlant is representing.
@@ -68,6 +43,12 @@ public class PlotPlant extends PlotObject implements Serializable {
 		return this.p;
 	}
 	
+	/**
+	 * Checks to see if the canopy is null.
+	 * @param c Canopy of a plant.
+	 * @return -1 if the canopy is null. Otherwise it will return the 
+	 * getAverageCanopyHeight of the given canopy.
+	 */
 	public static double checkIfCanopy(Canopy c) {
 		if (c == null) {
 			return -1;
@@ -83,21 +64,21 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param p The plant object.
 	 * @return The correct image based on canopy level.
 	 */
-	public static Image chooseImage(Plant p) {
+	public static String chooseImage(Plant p) {
 		if (p.getCanopy() == null) {
-			return aPlant;
+			return "/viewImages/sunflower.png";
 		}
 		switch(p.getCanopy()) {
 		case FLOOR:
-			return floor;
+			return "/viewImages/floor.png";
 		case UNDERSTORY:
-			return understory;
+			return "/viewImages/understory.png";
 		case CANOPY:
-			return canopy;
+			return "/viewImages/canopy.png";
 		case EMERGENT:
-			return emergent;
+			return "/viewImages/emergent.png";
 		default:
-			return aPlant;
+			return "/viewImages/sunflower.png";
 		}
 	}
 

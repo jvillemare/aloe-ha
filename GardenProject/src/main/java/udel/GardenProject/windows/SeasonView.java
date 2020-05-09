@@ -17,11 +17,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -36,22 +33,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
-import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.YDistanceComparator;
-import udel.GardenProject.plotObjects.polygons.PlotPlayground;
-import udel.GardenProject.plotObjects.polygons.PlotShed;
-import udel.GardenProject.plotObjects.special.PlotBench;
-import udel.GardenProject.plotObjects.special.PlotBirdBath;
-import udel.GardenProject.plotObjects.special.PlotFlamingo;
-import udel.GardenProject.plotObjects.special.PlotGnome;
-import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -429,15 +416,7 @@ public class SeasonView extends Window {
 	 */
 	public void drawCanvas(GraphicsContext gc) {
 		gc.setFill(Color.rgb(140, 140, 140, .25));
-		//ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
-		
-		ArrayList<PlotObject> plot = new ArrayList<>();
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, true, true, null, null), 50, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, true, true, null, null), 300, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, true, true, null, null), 150, MAXDEPTH));
-		plot.add(new PlotPlant(new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, true, true, null, null), 400, MAXDEPTH-20));
-		
-		
+		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		Collections.sort(plot, new YDistanceComparator());
 		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
@@ -445,7 +424,7 @@ public class SeasonView extends Window {
 			if (po.getPlotY()/MAXDEPTH > factor) {
 				factor = po.getPlotY()/MAXDEPTH; 
 			}
-			Image i = po.getImage();
+			Image i = new Image(po.getImage());
 			gc.fillOval(po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()/3*factor) + viewDepth/3*2, i.getWidth()*factor, i.getHeight()/2*factor);
 		}
 		for (PlotObject po : plot) {
@@ -453,7 +432,7 @@ public class SeasonView extends Window {
 			if (po.getPlotY()/MAXDEPTH > factor) {
 				factor = po.getPlotY()/MAXDEPTH; 
 			}
-			Image i = po.getImage();
+			Image i = new Image(po.getImage());
 			gc.setEffect(shadow);
 			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
 		}

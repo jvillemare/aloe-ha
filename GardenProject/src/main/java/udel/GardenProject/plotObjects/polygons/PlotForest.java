@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 
 /**
  * TODO: What is?...
@@ -14,9 +13,9 @@ public class PlotForest extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a forest.
+	 * Path to an image of a forest.
 	 */
-	private static Image forest = new Image("/viewImages/forest.png", 656, 958, true, false);
+	private static String forest = "/viewImages/forest.png";
 
 	/**
 	 * Constructor.

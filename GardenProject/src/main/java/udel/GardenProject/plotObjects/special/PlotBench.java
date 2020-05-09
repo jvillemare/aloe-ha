@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -15,9 +14,9 @@ public class PlotBench extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Image of a bench.
+	 * Path to image of a bench.
 	 */
-	private static Image bench = new Image("/viewImages/bench.png", 222, 134, true, false);
+	private static String bench = "/viewImages/bench.png";
 	
 	/**
 	 * TODO: ...

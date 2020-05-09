@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * TODO: What is?...
  * 
@@ -13,7 +11,10 @@ public class PlotShed extends GenericPolygon implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static Image shed  = new Image("/viewImages/shed.png", 519, 323, true, false);
+	/**
+	 * Path to an image of a shed.
+	 */
+	private static String shed  = "/viewImages/shed.png";
 
 	/**
 	 * Constructor.

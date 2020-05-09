@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * Path way for vehicles.
  * 
@@ -14,9 +12,9 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a road.
+	 * Path to an image of a road.
 	 */
-	private static Image road = new Image("/viewImages/road.png", 656, 958, true, false);
+	private static String road = "/viewImages/road.png";
 	
 	/**
 	 * Constructor.

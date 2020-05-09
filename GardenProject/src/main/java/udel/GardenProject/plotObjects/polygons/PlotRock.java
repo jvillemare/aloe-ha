@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * TODO: What is?...
  * 
@@ -14,9 +12,9 @@ public class PlotRock extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a rock
+	 * Path to an image of a rock
 	 */
-	private static Image rock = new Image("/plantImages/rock.png", 170, 102, true, false);
+	private static String rock = "/plantImages/rock.png";
 	
 	/**
 	 * Constructor.

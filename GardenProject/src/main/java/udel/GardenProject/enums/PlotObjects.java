@@ -18,7 +18,7 @@ public enum PlotObjects {
 	Rock("polygons", true), 
 	Shed("polygons", true), 
 	BirdBath("special", true), 
-	Bench("Special", true),
+	Bench("special", true),
 	Flamingo("special", true), 
 	Gnome("special", true),
 	Other("special", true);

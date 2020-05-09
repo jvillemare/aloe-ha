@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * TODO: What is?...
  * 
@@ -14,9 +12,9 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of patio furniture.
+	 * Path to an image of patio furniture.
 	 */
-	private static Image patio = new Image("/viewImages/patio.png", 274, 317, true, false);
+	private static String patio = "/viewImages/patio.png";
 
 	/**
 	 * Constructor.

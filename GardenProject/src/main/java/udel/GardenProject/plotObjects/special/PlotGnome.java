@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -15,9 +14,9 @@ public class PlotGnome extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a garden gnome.
+	 * Path to image of a garden gnome.
 	 */
-	private static Image gnome = new Image("/viewImages/gnome.png", 95, 110, true, false);
+	private static String gnome = "/viewImages/gnome.png";
 
 	public PlotGnome(double x, double y) {
 		super(x, y, 1, gnome);

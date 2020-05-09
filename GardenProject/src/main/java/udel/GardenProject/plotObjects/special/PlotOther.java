@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -15,9 +14,9 @@ public class PlotOther extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a raised garden bed.
+	 * Path to image of a raised garden bed.
 	 */
-	private static Image picture = new Image("/viewImages/gardenBed.png", 315, 190, true, false);
+	private static String picture = "/viewImages/gardenBed.png";
 
 	/**
 	 * TODO: ?...

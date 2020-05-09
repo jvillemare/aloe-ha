@@ -1,7 +1,5 @@
 package udel.GardenProject.plotObjects;
 
-import javafx.scene.image.Image;
-
 /**
  * An object that can appear in PlotDesign must implement this interface.
  * 
@@ -29,7 +27,7 @@ public abstract class PlotObject {
 	/**
 	 * Image representing the plant
 	 */
-	private Image image;
+	private String image;
 	
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
@@ -39,9 +37,9 @@ public abstract class PlotObject {
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
-	 * @param i			Image representing the plant
+	 * @param i			String of path to image representing the plant
 	 */
-	public PlotObject(double x, double y, double height, Image i) {
+	public PlotObject(double x, double y, double height, String i) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
@@ -76,7 +74,7 @@ public abstract class PlotObject {
 	 * Getter
 	 * @return Image for plot object.
 	 */
-	public final Image getImage() {
+	public final String getImage() {
 		return this.image;
 	}
 

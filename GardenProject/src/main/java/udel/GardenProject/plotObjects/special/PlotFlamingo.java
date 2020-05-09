@@ -2,7 +2,6 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -15,9 +14,9 @@ public class PlotFlamingo extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a lawn flamingo
+	 * Path to image of a lawn flamingo
 	 */
-	private static Image flamingo = new Image("/viewImages/flamingo.png", 226, 137, true, false);
+	private static String flamingo = "/viewImages/flamingo.png";
 
 	public PlotFlamingo(double x, double y, double height) {
 		super(x, y, height, flamingo);

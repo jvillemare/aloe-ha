@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 /**
  * Playground.
  * 
@@ -14,9 +12,9 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a playground.
+	 * Path to an image of a playground.
 	 */
-	private static Image playground = new Image("/viewImages/playground.png", 304, 352, true, false);
+	private static String playground = "/viewImages/playground.png";
 	
 	public PlotPlayground(double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
