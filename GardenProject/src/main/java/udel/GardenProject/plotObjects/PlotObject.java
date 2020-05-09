@@ -25,7 +25,7 @@ public abstract class PlotObject {
 	private double height;
 	
 	/**
-	 * Image representing the plant
+	 * Path of image representing the plant
 	 */
 	private String image;
 	
@@ -37,13 +37,13 @@ public abstract class PlotObject {
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
-	 * @param i			String of path to image representing the plant
+	 * @param imagePath	String of path to image representing the plant
 	 */
-	public PlotObject(double x, double y, double height, String i) {
+	public PlotObject(double x, double y, double height, String imagePath) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
-		this.image = i;
+		this.image = imagePath;
 	}
 	
 	/**

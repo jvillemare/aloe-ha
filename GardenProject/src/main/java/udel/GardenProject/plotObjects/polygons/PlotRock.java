@@ -3,7 +3,7 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 /**
- * TODO: What is?...
+ * Large Stone
  * 
  * @author Team 0
  */

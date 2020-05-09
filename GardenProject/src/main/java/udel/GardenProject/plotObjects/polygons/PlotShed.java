@@ -3,7 +3,7 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 /**
- * TODO: What is?...
+ * Outdoor storage structure
  * 
  * @author Team 0
  */

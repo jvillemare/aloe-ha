@@ -5,7 +5,7 @@ import java.io.Serializable;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
- * Critical object. Wards off the evil spirits.
+ * Another Critical object. Wards off the evil spirits.
  * 
  * @author Team 0
  */

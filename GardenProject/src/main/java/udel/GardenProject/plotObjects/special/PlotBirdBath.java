@@ -5,7 +5,7 @@ import java.io.Serializable;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
- * TODO: What is?...
+ * Bath for birds.
  * 
  * @author Team 0
  */

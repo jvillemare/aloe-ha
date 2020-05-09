@@ -20,10 +20,10 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 * @param y			Vertical position on plot.
 	 * @param height	Height in feet.
 	 * @param p			AdjustableLine that represent a line object.
-	 * @param i			Plot object's path to image.
+	 * @param imagePath	Plot object's path to image.
 	 */
-	public GenericLine(double x, double y, double height, AdjustableLine l, String i) {
-		super(x, y, height, i);
+	public GenericLine(double x, double y, double height, AdjustableLine l, String imagePath) {
+		super(x, y, height, imagePath);
 		// TODO Auto-generated constructor stub
 		this.l = l;
 	}

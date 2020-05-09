@@ -5,7 +5,7 @@ import java.io.Serializable;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
- * TODO: What is?...
+ * Place to sit.
  * 
  * @author Team 0
  */
