@@ -1,8 +1,12 @@
 package udel.GardenProject.plants;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.apache.commons.lang3.StringUtils;
 
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
@@ -255,6 +259,42 @@ public class Plant {
 	 */
 	public String[] getImages() {
 		return this.images;
+	}
+	
+	/**
+	 * Goes through plant description and finds the color(s) of the plant.
+	 * @return A HashSet of colors that are found in the plant
+	 */
+	public HashSet<Colors> getColors(){
+		Colors[] allColors = Colors.values();
+		ArrayList<String> values = new ArrayList<>();
+		for (int i = 0; i < allColors.length; i++) {
+			values.add(allColors[i].toString());
+		}
+		HashSet<Colors> colors = new HashSet<>();
+		int ind, end;
+		int start = 0;
+		String inDesc;
+		String descript = this.getDescription();
+		boolean hasColor = true;
+		while(hasColor) {
+			ind = descript.indexOf("Color: ", start);
+			if (ind == -1) {
+				break;
+			}
+			end = descript.indexOf(System.lineSeparator(), ind);
+			inDesc = descript.substring(ind + 7, end);
+			String[] possible = inDesc.split(",");
+			for (String c : possible) {
+				c = c.split(" ")[0];
+				c = c.toUpperCase();
+				if (values.contains(c)) {
+					colors.add(allColors[values.indexOf(c)]);
+				}
+			}
+			start = end;
+		}
+		return colors;
 	}
 
 }
