@@ -109,7 +109,7 @@ public class PlantSelection extends Window {
 	
 
 	public PlantSelection(Model m) {
-		super(m, "Plant Selection");
+		super(m, "Plant Selection", Windows.PlantSelection);
 		
 		displaySelection();
 
@@ -414,7 +414,7 @@ public class PlantSelection extends Window {
 	 * Refreshes the screen and to get the correct info from Model
 	 */
 	public void refresh() {		
-		if(getModel().getLastWindow().getTitle().equals("Questions About Your Garden...")) {
+		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
 			displaySelection();
 		}
 	}

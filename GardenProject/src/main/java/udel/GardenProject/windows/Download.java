@@ -105,7 +105,7 @@ public class Download extends Window {
 	 * @param m Model
 	 */
 	public Download(Model m) {
-		super(m, downloadSceneTitle);
+		super(m, downloadSceneTitle, Windows.Download);
 		this.lastSaveFile = "";
 
 		borderPane = new BorderPane();
@@ -269,7 +269,7 @@ public class Download extends Window {
 	 * @param lastSaveFile Path of the user's last save file.
 	 */
 	public Download(Model m, String lastSaveFile) {
-		super(m, downloadSceneTitle);
+		super(m, downloadSceneTitle, Windows.Download);
 		this.lastSaveFile = lastSaveFile;
 	}
 

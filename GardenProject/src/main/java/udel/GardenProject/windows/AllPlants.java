@@ -53,7 +53,7 @@ public class AllPlants extends Window {
 	private ScrollPane scroll;
 	
 	public AllPlants(Model m) {
-		super(m, "Plant Database");
+		super(m, "Plant Database", Windows.AllPlants);
 				
 		border = new BorderPane();
 		

@@ -93,7 +93,7 @@ public class Tutorial extends Window {
 	 * @param m Model
 	 */
 	public Tutorial(Model m) {
-		super(m, "Tutorial Window");
+		super(m, "Tutorial Window", Windows.Tutorial);
 
 		borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(10));

@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
@@ -84,7 +85,7 @@ public class PlantInfo extends Window {
 	private int screenWidthAdjustment = 30;
 	
 	public PlantInfo(Model m) {
-		super(m, "Plant Info: ");
+		super(m, "Plant Info: ", Windows.PlantInfo);
 
 		borderPane = new BorderPane();
 

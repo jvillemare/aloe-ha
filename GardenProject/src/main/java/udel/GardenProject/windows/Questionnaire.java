@@ -151,7 +151,7 @@ public class Questionnaire extends Window {
 	private static int alertScreenHeight = 150;
 
 	public Questionnaire(Model m) {
-		super(m, "Questions About Your Garden...");
+		super(m, "Questions About Your Garden...", Windows.Questionnaire);
 
 		borderPane = new BorderPane();
 		topBox = new VBox();
