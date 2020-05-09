@@ -136,7 +136,7 @@ public class PlantInfo extends Window {
 		if (plantImg != null) {
 			String path = plant.getImages()[0];
 			plantImage = new Image(path, imgWidthAndHeight, imgWidthAndHeight, true, true);
-			url = makeText(Plant.getImageSourceDomain(path));
+			url = makeText("Image Source: " + Plant.getImageSourceDomain(path));
 			url.setFont(getModel().getHackBoldItalic20());
 		} else {
 			// get a default image
