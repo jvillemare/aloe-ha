@@ -1,5 +1,7 @@
 package udel.GardenProject.windows;
 
+import java.net.MalformedURLException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -67,7 +69,12 @@ public class PlantInfo extends Window {
 	 * The pane to which the back button is places (at the bottom of the screen)
 	 */
 	private TilePane button;
-
+	
+	/**
+	 * The text for URL for copyright: empty if using default image.
+	 */
+	private Text url = new Text("");
+	
 	/**
 	 * Adjustments, fonts, widths and heights for the Info Screen format
 	 */
@@ -96,8 +103,9 @@ public class PlantInfo extends Window {
 	 * Windows.AllPlants)
 	 * 
 	 * @param plantLatinName Linnaeus Genus species plant name.
+	 * @throws MalformedURLException 
 	 */
-	public void displayPlant(Plant plant) {
+	public void displayPlant(Plant plant) throws MalformedURLException {
 
 		setTitle("Plant Info: " + plant.getLatinName());
 
@@ -131,10 +139,13 @@ public class PlantInfo extends Window {
 		if (plantImg != null) {
 			String path = plant.getImages()[0];
 			plantImage = new Image(path, imgWidthAndHeight, imgWidthAndHeight, true, true);
+			url = makeText("Image Source: " + Plant.getImageSourceDomain(path));
+			url.setFont(getModel().getHackBoldItalic20());
 		} else {
 			// get a default image
 			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidthAndHeight,
 					imgWidthAndHeight, true, true);
+			url = makeText("");
 		}
 
 		// where the image will be place
@@ -142,7 +153,7 @@ public class PlantInfo extends Window {
 		image.setPadding(new Insets(inset10));
 		ImageView img = new ImageView();
 		img.setImage(plantImage);
-		image.getChildren().addAll(img, name);
+		image.getChildren().addAll(img, name, url);
 
 		createButton();
 
@@ -182,7 +193,11 @@ public class PlantInfo extends Window {
 	 * Refreshes the screen and to get the correct info from Model
 	 */
 	public void refresh() {
-		displayPlant(getModel().getPlantInfoPlant());
+		try {
+			displayPlant(getModel().getPlantInfoPlant());
+		}catch(MalformedURLException e) {
+			System.out.println("PlantInfo: Failed to trim source image URL");
+		}
 	}
 
 	/**

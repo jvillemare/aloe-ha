@@ -1,5 +1,8 @@
 package udel.GardenProject.plants;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.commons.lang3.StringUtils;
 
 import udel.GardenProject.enums.Canopy;
@@ -255,6 +258,22 @@ public class Plant {
 	 */
 	public String[] getImages() {
 		return this.images;
+	}
+	
+	/**
+	 * Trimmed version of the URL for the images of Plants, purpose for copyright.
+	 * 
+	 * @param url
+	 * @return trimmed version of the url
+	 * @throws MalformedURLException 
+	 */
+	public static String getImageSourceDomain(String url) throws MalformedURLException {
+		URL u = new URL(url);
+		
+		String trim;
+		trim = u.getAuthority();
+		
+		return trim;
 	}
 
 }
