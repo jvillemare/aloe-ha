@@ -196,7 +196,7 @@ public class PlantInfo extends Window {
 		try {
 			displayPlant(getModel().getPlantInfoPlant());
 		}catch(MalformedURLException e) {
-			
+			System.out.println("PlantInfo: Failed to trim source image URL");
 		}
 	}
 
