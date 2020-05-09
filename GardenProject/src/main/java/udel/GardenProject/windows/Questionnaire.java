@@ -546,9 +546,7 @@ public class Questionnaire extends Window {
 	public void checkSelectedPlot(ArrayList<CheckBox> cb) {
 
 		// Removes everything in list first so no doubles are added
-		for (int i = getSession().getSelectedPlotObjects().size() - 1; i >= 0; i--) {
-			getSession().getSelectedPlotObjects().remove(i);
-		}
+		getSession().getSelectedPlotObjects().clear();
 
 		// for every selected plot object in the cb list, convert it back to a
 		// PlotObjects enum, and add it to the Session ArrayList.
@@ -568,9 +566,7 @@ public class Questionnaire extends Window {
 	public void checkSelectedSeasons(ArrayList<CheckBox> cb) {
 
 		// Removes everything in list first so no doubles are added
-		for (int i = getSession().getSeasonsUserSelected().size() - 1; i >= 0; i--) {
-			getSession().getSeasonsUserSelected().remove(i);
-		}
+		getSession().getSeasonsUserSelected().clear();
 
 		// for every selected plot object in the cb list, convert it back to a
 		// Seasons enum, and add it to the Session ArrayList.
@@ -591,9 +587,8 @@ public class Questionnaire extends Window {
 	public void checkSelectedColor(ArrayList<CheckBox> cb) {
 
 		// Removes everything in list first so no doubles are added
-		for (int i = getSession().getColorsUserSelected().size() - 1; i >= 0; i--) {
-			getSession().getColorsUserSelected().remove(i);
-		}
+		getSession().getColorsUserSelected().clear();
+		
 		// for every selected plot object in the cb list, convert it back to a
 		// Colors from Colors Enum and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {

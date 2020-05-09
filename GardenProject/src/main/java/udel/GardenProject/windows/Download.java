@@ -1,7 +1,13 @@
 package udel.GardenProject.windows;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,6 +28,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -194,6 +202,33 @@ public class Download extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				getInput();
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
+				fileChooser.setInitialFileName(getSession().getPlotName());
+				
+				/**
+				 * TODO: JPG and PNG...?? .gardenProject...???
+				 */
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG", "*.png"));
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT", "*.txt")); //testing
+				
+				
+
+				File file = fileChooser.showSaveDialog(scene2);
+				if (file != null) {
+
+					try {
+						Desktop desktop = null;
+						fileChooser.setInitialFileName("hi");
+						desktop.open(file);
+					} catch (IOException ex) {
+						/**
+						 * TODO: Add something here ...???
+						 */
+					}
+				}
 
 			}
 		});
