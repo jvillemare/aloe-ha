@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -19,8 +20,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Windows;
@@ -107,22 +110,22 @@ public class AllPlants extends Window {
 		super(m, "Plant Database", Windows.AllPlants);
 
     // TODO: Left over from merge conflict
-		//infoBox = new VBox();
-		//scrollAndPageButtons = new VBox();
+		infoBox = new VBox();
+		scrollAndPageButtons = new VBox();
 
-		//info = new Text(
-		//		"Need more plants? Click on the drop down list for the first letter of the plant name you want to add. Plants will be found based on their Latin names.");
-		//info.setFont(getModel().getHackBold20());
-		//info.setWrappingWidth(View.getCanvasWidth());
+		info = new Text(
+				"Need more plants? Click on the drop down list for the first letter of the plant name you want to add. Plants will be found based on their Latin names.");
+		info.setFont(getModel().getHackBold20());
+		info.setWrappingWidth(View.getCanvasWidth());
 		
 		//left side will be filter
 		TextField text = new TextField();
 	
-		searchBox = new HBox();
+		//searchBox = new HBox();
 		
-		Button close = new Button("X");
-        Button search = new Button("Search");
-        searchBox.getChildren().addAll(text,close,search);
+		//Button close = new Button("X");
+        //Button search = new Button("Search");
+        //searchBox.getChildren().addAll(text,close,search);
 		
 		Text title = new Text("Please Make Plant Selections");
 		title.setFont(new Font(18));
@@ -150,7 +153,8 @@ public class AllPlants extends Window {
 		comboBox.setTranslateX(View.getCanvasWidth() / 2 - comboBoxXAdjustment);
 		comboBox.setTranslateY(comboBoxYAdjustment);
 		comboBox.setPromptText("Select");
-		infoBox.getChildren().addAll(info, comboBox);
+		// TODO: @mpatel-2022, no more combobox from @vivatheeast?
+		//infoBox.getChildren().addAll(info, comboBox);
 
 		comboBox.setOnAction(e -> {
 			/**
@@ -222,6 +226,8 @@ public class AllPlants extends Window {
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
 
+		// TODO: @mpatel-2022, borderpane uninitialized?
+		borderPane = new BorderPane();
 		borderPane.setBackground(View.getBackgroundScreen());
 		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(infoBox);

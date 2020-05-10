@@ -94,12 +94,13 @@ public class Session implements Serializable {
 	private HashSet<Plant> existingPlants = new HashSet<Plant>();
 
 	/**
-	 * Selected Plants user wishes to see in Plot from SelectedPlant and AllPlants.<br>
-	 * <br>
+	 * Selected Plants user wishes to see in Plot from SelectedPlant and 
+	 * AllPlants.<br><br>
 	 * 
 	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
 	 */
-	private HashMap<String, Plant> selectedPlants = new HashMap<String, Plant>();
+	private HashSet<Plant> selectedPlants = new HashSet<Plant>();
+	// TODO: This doesn't have a getter. Remove at some point?
 	
 	/**
 	 * User's selected seasons for blooms
@@ -226,7 +227,7 @@ public class Session implements Serializable {
 	 * Gets moisture of the users plant from Questionnaire 
 	 * @return
 	 */
-	public String getMoistureOfPlot() {
+	public Moisture getMoistureOfPlot() {
 		return moistureOfPlot;
 	}
 
@@ -234,7 +235,7 @@ public class Session implements Serializable {
 	 * Sets the moisture of the user's plot according to Q4 in Questionnaire 
 	 * @param m Text chosen from the drop down in Questionnaire 
 	 */
-	public void setMoistureOfPlot(String m) {
+	public void setMoistureOfPlot(Moisture m) {
 		this.moistureOfPlot = m;
 	}
 
@@ -242,7 +243,7 @@ public class Session implements Serializable {
 	 * Gets the soil type for the user's plot 
 	 * @return String of the soil type
 	 */
-	public String getSoilTypeOfPlot() {
+	public SoilTypes getSoilTypeOfPlot() {
 		return soilTypeOfPlot;
 	}
 
@@ -250,7 +251,7 @@ public class Session implements Serializable {
 	 * Sets the soil type of the user's plot as their answer in Q5 of Questionnaire 
 	 * @param st The String input from Questionnaire 
 	 */
-	public void setSoilTypeOfPlot(String st) {
+	public void setSoilTypeOfPlot(SoilTypes st) {
 		this.soilTypeOfPlot = st;
 	}
 
@@ -258,7 +259,7 @@ public class Session implements Serializable {
 	 * Getst the sunlight of the user's plot 
 	 * @return The string input of the users plot 
 	 */
-	public String getSunlightOfPlot() {
+	public double getSunlightOfPlot() {
 		return sunlightOfPlot;
 	}
 
@@ -266,7 +267,7 @@ public class Session implements Serializable {
 	 * Sets the sunlight of the user's plot as per Q6 of the Questionnaire 
 	 * @param sun String input from the Questionnaire 
 	 */
-	public void setSunlightOfPlot(String sun) {
+	public void setSunlightOfPlot(double sun) {
 		this.sunlightOfPlot = sun;
 	}
 
@@ -359,10 +360,20 @@ public class Session implements Serializable {
 	}
 
 	/**
-	 * A place for all the plants that were selected by the user from the Existing Plants Screen 
-	 * @return HashSet of Existing Plants
+	 * A place for all the plants that were selected by the user from the 
+	 * Existing Plants Screen.
+	 * @return HashSet of Existing Plants.
 	 */
 	public HashSet<Plant> getExistingPlants() {
 		return existingPlants;
 	}
+	
+	/**
+	 * Getter.
+	 * @return	HashSet of Selected Plants.
+	 */
+	public HashSet<Plant> getSelectedPlants() {
+		return selectedPlants;
+	}
+	
 }

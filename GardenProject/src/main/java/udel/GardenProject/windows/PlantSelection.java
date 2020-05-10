@@ -33,6 +33,7 @@ import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plants.Plant;
 
 /**
  * To display all the information of a Plant to the user.
@@ -93,8 +94,6 @@ public class PlantSelection extends Window {
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
-	private int backgroundScreenWidthAndHeight = 100;
-	private int borderTopAndBottonMargin = 40;
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
 	private int borderTopAndBottonMargin = 40;
@@ -351,7 +350,7 @@ public class PlantSelection extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				selectedPlantsBox.getChildren().add(imgButtonHolder);
-				getSession().addSelectedPlant(p);
+				getSession().getSelectedPlants().add(p);
 
 			}
 		});
@@ -362,9 +361,8 @@ public class PlantSelection extends Window {
 	 * This displays all plants that are in the HashMap that the user desired from Plant Selection
 	 */
 	public void addSelected() {
-		for(Map.Entry<String, Plant> plant : getSession().getSelectedPlants().entrySet()) {
-			Plant p = plant.getValue();
-			selectedPlantsBox.getChildren().add(createPlantBox(p));
+		for(Plant plant : getSession().getSelectedPlants()) {
+			selectedPlantsBox.getChildren().add(createPlantBox(plant));
 		}
 	}
 	
@@ -427,11 +425,8 @@ public class PlantSelection extends Window {
 			});
 		}
 	}
-	
-	/**
-	 * Refreshes the screen and to get the correct info from Model
-	 */
-	public void refresh() {	
+
+	public void refresh() {
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
 				displaySelection();
@@ -440,13 +435,6 @@ public class PlantSelection extends Window {
 			System.out.println("Wrong size of a plants year Boolean Array");
 		}
 		
-	}
-
-	/**
-	 * Refreshes the screen to have the correct plants on the right side according
-	 * to the session
-	 */
-	public void refresh() {
 		/**
 		 * TODO: create proper implementation of clearing and repopulating the flow pane
 		 * for selected plants

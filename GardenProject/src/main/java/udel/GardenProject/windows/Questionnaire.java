@@ -650,13 +650,19 @@ public class Questionnaire extends Window {
 		}
 
 		// Moisture
-		q4ChoiceBox.setValue(getSession().getMoistureOfPlot());
+		q4ChoiceBox.setValue(getSession().getMoistureOfPlot().name());
+		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
+		//			adding .name() please double check
 
 		// Soil type
-		q4ChoiceBox.setValue(getSession().getSoilTypeOfPlot());
+		q4ChoiceBox.setValue(getSession().getSoilTypeOfPlot().name());
+		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
+		//			adding .name() please double check
 
 		// Sunlight
-		q6ChoiceBox.setValue(getSession().getSunlightOfPlot());
+		q6ChoiceBox.setValue(String.valueOf(getSession().getSunlightOfPlot()));
+		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
+		//			using String.valueOf(...) please double check
 
 		// Seasons Selected
 		clearCheckBoxes(q7items);
