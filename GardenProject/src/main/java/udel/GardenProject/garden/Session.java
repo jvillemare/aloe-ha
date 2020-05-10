@@ -106,7 +106,7 @@ public class Session implements Serializable {
 	 * User's selected seasons for blooms
 	 */
 	private ArrayList<Seasons> seasonsUserSelected = new ArrayList<Seasons>();
-
+	
 	/**
 	 * User's selected colors for flowers
 	 */
@@ -116,6 +116,15 @@ public class Session implements Serializable {
 	 * Objects actually in the plot, to be displayed in PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
+	
+	/**
+	 * Constructor. Initializes default values for complex objects.
+	 */
+	public Session() {
+		selectedPlotObjects.add(PlotObjects.Plant);
+		seasonsUserSelected.add(Seasons.WINTER);
+		colorsUserSelected.add(Colors.ALICEBLUE);
+	}
 
 	/**
 	 * Season selected by user from SeasonView
