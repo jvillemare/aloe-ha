@@ -1,8 +1,13 @@
 package udel.GardenProject.plants;
 
+import java.util.HashSet;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
@@ -265,6 +270,73 @@ public class Plant implements Serializable {
 	 */
 	public String[] getImages() {
 		return this.images;
+	}
+	
+	/**
+	 * Goes through plant description and finds the color(s) of the plant.
+	 * Gathers information from all sources that have color data: NPC, SUNNYEDGE,
+	 * and NRCS; UDEL has no color data.
+	 * @return Either a HashSet of colors that are found in the plant or null
+	 * if the only data source is UDEL.
+	 */
+	public HashSet<Colors> getColors(){
+		if (this.getSource().length == 1 && this.getSource()[0] == PlantDataSource.UDEL) {
+			return null;
+		}
+		HashSet<Colors> colors = new HashSet<>();
+		int ind, end;
+		int start = 0;
+		String inDesc;
+		String descript = this.getDescription();
+		boolean hasColor = true;
+		while(hasColor) {
+			ind = descript.indexOf("Color: ", start);
+			if (ind == -1) {
+				hasColor = false;
+				continue;
+			}
+			end = descript.indexOf(System.lineSeparator(), ind);
+			inDesc = descript.substring(ind + 7, end);
+			if (inDesc.equals("whitish")) {
+				inDesc = "white";
+			}
+			inDesc = inDesc.replace("ish", "");
+			inDesc = inDesc.replace("dark ", "");
+			inDesc = inDesc.replace("Dark ", "dark");
+			inDesc = inDesc.replace("semi-ever", "");
+			if (inDesc.equals("evergreen")) {
+				inDesc = "forestgreen";
+			}
+			inDesc = inDesc.replace("-", "");
+			String[] possible = inDesc.split(", ");
+			for (String c : possible) {
+				c = c.split(" ")[0];
+				c = c.toUpperCase();
+				try {
+				    colors.add(Colors.valueOf(c));
+				} catch(IllegalArgumentException e) { }
+			}
+			start = end;
+		}
+		inDesc = null;
+		descript = null;
+		return colors;
+  }
+
+  /**
+	 * Trimmed version of the URL for the images of Plants, purpose for copyright.
+	 * 
+	 * @param url
+	 * @return trimmed version of the url
+	 * @throws MalformedURLException 
+	 */
+	public static String getImageSourceDomain(String url) throws MalformedURLException {
+		URL u = new URL(url);
+		
+		String trim;
+		trim = u.getAuthority();
+		
+		return trim;
 	}
 
 }

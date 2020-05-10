@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import udel.GardenProject.enums.Colors;
+import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
+import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 
@@ -71,17 +73,17 @@ public class Session implements Serializable {
 	/**
 	 * User's moisture level of their plot
 	 */
-	private String moistureOfPlot = "";
+	private Moisture moistureOfPlot = Moisture.DRY;
 
 	/**
 	 * User's soil type of their plot
 	 */
-	private String soilTypeOfPlot = "";
+	private SoilTypes soilTypeOfPlot = SoilTypes.CLAY;
 
 	/**
-	 * Users sunlight of their plot
+	 * Users sunlight of their plot. Decimal percentage (from 0.0 to 1.0).
 	 */
-	private String sunlightOfPlot = "";
+	private double sunlightOfPlot = 0.0;
 
 	/**
 	 * Existing plants already in users plot.<br>
@@ -91,6 +93,14 @@ public class Session implements Serializable {
 	 */
 	private HashSet<Plant> existingPlants = new HashSet<Plant>();
 
+	/**
+	 * Selected Plants user wishes to see in Plot from SelectedPlant and AllPlants.<br>
+	 * <br>
+	 * 
+	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
+	 */
+	private HashMap<String, Plant> selectedPlants = new HashMap<String, Plant>();
+	
 	/**
 	 * User's selected seasons for blooms
 	 */
@@ -355,5 +365,4 @@ public class Session implements Serializable {
 	public HashSet<Plant> getExistingPlants() {
 		return existingPlants;
 	}
-
 }

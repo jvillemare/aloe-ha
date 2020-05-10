@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,6 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
-import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -166,7 +166,7 @@ public class Questionnaire extends Window {
 	private static int alertScreenHeight = 150;
 
 	public Questionnaire(Model m) {
-		super(m, "Questions About Your Garden...");
+		super(m, "Questions About Your Garden...", Windows.Questionnaire);
 
 		borderPane = new BorderPane();
 		topBox = new VBox();
@@ -325,9 +325,10 @@ public class Questionnaire extends Window {
 		createText(
 				"4) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
 		q4ChoiceBox = new ChoiceBox<>();
-		q4ChoiceBox.getItems().addAll(Moisture.DRY.toString(), Moisture.DRY_MOIST.toString(), Moisture.MOIST.toString(),
-				Moisture.MOIST_DAMP.toString(), Moisture.DAMP.toString(), "My plot has different moisture");
-		q4ChoiceBox.setValue(Moisture.DRY.toString());
+		for(Moisture m : Moisture.values())
+			q4ChoiceBox.getItems().add(m.name());
+		q4ChoiceBox.getItems().add("My plot has different moisture");
+		q4ChoiceBox.setValue(Moisture.DRY.name());
 		vbox.getChildren().addAll(q4ChoiceBox);
 	}
 
@@ -337,9 +338,10 @@ public class Questionnaire extends Window {
 	public void createQ5() {
 		createText("5) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
 		q5ChoiceBox = new ChoiceBox<>();
-		q5ChoiceBox.getItems().addAll(SoilTypes.CLAY.toString(), SoilTypes.SANDY.toString(), SoilTypes.LOAMY.toString(),
-				"My plot has different soil types");
-		q5ChoiceBox.setValue(SoilTypes.CLAY.toString());
+		for(SoilTypes st : SoilTypes.values())
+			q5ChoiceBox.getItems().add(st.name());
+		q5ChoiceBox.getItems().add("My plot has different soil type");
+		q5ChoiceBox.setValue(SoilTypes.CLAY.name());
 		vbox.getChildren().addAll(q5ChoiceBox);
 	}
 
@@ -350,10 +352,10 @@ public class Questionnaire extends Window {
 		createText(
 				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
-		q6ChoiceBox.getItems().addAll(Sunlight.FULLSUN.toString(), Sunlight.PARTIALSHADE.toString(),
-				Sunlight.PARTIALSUN.toString(), Sunlight.FULLSHADE.toString(),
-				"My plot receives different levels of sunlight");
-		q6ChoiceBox.setValue(Sunlight.FULLSUN.toString());
+		for(double s = 0.0; s <= 1.0; s += 0.2)
+			q6ChoiceBox.getItems().add(Double.toString(s));
+		q6ChoiceBox.getItems().add("My plot receives different levels of sunlight");
+		q6ChoiceBox.setValue("0.0");
 		vbox.getChildren().addAll(q6ChoiceBox);
 	}
 
@@ -480,9 +482,29 @@ public class Questionnaire extends Window {
 				}
 
 				checkSelectedPlot(nearPlot);
-				getSession().setMoistureOfPlot(getChoice(q4ChoiceBox));
-				getSession().setSoilTypeOfPlot(getChoice(q5ChoiceBox));
-				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
+				
+				try {
+					getSession().setMoistureOfPlot(Moisture.valueOf(getChoice(q4ChoiceBox)));
+				} catch(IllegalArgumentException e) {
+					if(getChoice(q4ChoiceBox).equals("My plot has a different moisture"))
+						getSession().setMoistureOfPlot(null);
+					// TODO @mpatel-2022: error invalid moisture
+				}
+				
+				try {
+					getSession().setSoilTypeOfPlot(SoilTypes.valueOf(getChoice(q5ChoiceBox)));
+				} catch(IllegalArgumentException e) {
+					if(getChoice(q5ChoiceBox).equals("My plot has a different soil type"))
+						getSession().setSoilTypeOfPlot(SoilTypes.ANY);
+					// TODO @mpatel-2022: error invalid moisture
+				}
+				try {
+					getSession().setSunlightOfPlot(Double.parseDouble(getChoice(q6ChoiceBox)));
+				} catch(NumberFormatException e) {
+					if(getChoice(q6ChoiceBox).equals("My plot receives different levels of sunlight"))
+						getSession().setSunlightOfPlot(-1.0);
+					// TODO @mpatel-2022: throw new error to user for invalid sunlight 
+				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
 
@@ -605,7 +627,6 @@ public class Questionnaire extends Window {
 	 * corresponds to
 	 */
 	public void refresh() {
-
 		// Name of plot
 		textField.clear();
 		textField.setText(getSession().getPlotName());

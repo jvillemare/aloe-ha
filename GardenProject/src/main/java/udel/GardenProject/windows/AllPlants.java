@@ -104,17 +104,34 @@ public class AllPlants extends Window {
 	private int backgroundScreenWidthAndHeight = 100;
 
 	public AllPlants(Model m) {
-		super(m, "Plant Database");
+		super(m, "Plant Database", Windows.AllPlants);
 
-		borderPane = new BorderPane();
-		infoBox = new VBox();
-		scrollAndPageButtons = new VBox();
+    // TODO: Left over from merge conflict
+		//infoBox = new VBox();
+		//scrollAndPageButtons = new VBox();
 
-		info = new Text(
-				"Need more plants? Click on the drop down list for the first letter of the plant name you want to add. Plants will be found based on their Latin names.");
-		info.setFont(getModel().getHackBold20());
-		info.setWrappingWidth(View.getCanvasWidth());
-
+		//info = new Text(
+		//		"Need more plants? Click on the drop down list for the first letter of the plant name you want to add. Plants will be found based on their Latin names.");
+		//info.setFont(getModel().getHackBold20());
+		//info.setWrappingWidth(View.getCanvasWidth());
+		
+		//left side will be filter
+		TextField text = new TextField();
+	
+		searchBox = new HBox();
+		
+		Button close = new Button("X");
+        Button search = new Button("Search");
+        searchBox.getChildren().addAll(text,close,search);
+		
+		Text title = new Text("Please Make Plant Selections");
+		title.setFont(new Font(18));
+		title.setFill(Color.DARKGREEN);
+		
+		StackPane txt = new StackPane();
+		txt.setStyle("-fx-background-color: DAE6F3;");
+		txt.getChildren().add(title);
+		
 		flow = new FlowPane();
 		flow.setPadding(new Insets(inset5));
 		flow.setVgap(inset10);

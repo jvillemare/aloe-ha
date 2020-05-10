@@ -88,7 +88,7 @@ public class Welcome extends Window {
 	private int buttonFlowBottomPadding = 30;
 
 	public Welcome(Model m) {
-		super(m, "Welcome Menu");
+		super(m, "Welcome Menu", Windows.Welcome);
 
 		welcomeScreen = new BorderPane();
 		logo = new Image(getClass().getResourceAsStream("/buttonImages/logo.png"));

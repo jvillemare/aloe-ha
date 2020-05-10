@@ -131,7 +131,7 @@ public class PlotDesign extends Window {
 	 * @param m Model
 	 */
 	public PlotDesign(Model m) {
-		super(m, "Plot Designer");
+		super(m, "Plot Designer", Windows.PlotDesign);
 
 		borderPane = new BorderPane();
 		vbox = new VBox();

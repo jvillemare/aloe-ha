@@ -304,7 +304,7 @@ public class PlantLoader {
 	 * <li>soilType: null
 	 * <li>canopy: null
 	 * <li>delawareNative: false
-	 * <li>source: {PlantDataSource.NPC}
+	 * <li>source: {PlantDataSource.SUNNYEDGE}
 	 * 
 	 * @return an ArrayList<Plant> with the plants from sunny-edge-plants-data.json
 	 * @throws FileNotFoundException
@@ -316,7 +316,7 @@ public class PlantLoader {
 		myReader.close();
 		JSONObject obj = new JSONObject(data);
 		Set<String> latinNames = obj.keySet();
-		PlantDataSource[] source = { PlantDataSource.SUNNYEDGE };
+		PlantDataSource[] source = { PlantDataSource.SUNNYEDGE};
 		for (String plant : latinNames) {
 			String latin = null;
 			String[] common = null;
