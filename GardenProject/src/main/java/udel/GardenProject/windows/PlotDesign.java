@@ -139,6 +139,7 @@ public class PlotDesign extends Window {
 	
 	private HashMap<String, Plant> existingPlants;
 	
+	private HashMap<ImageView, PlotPlant> plotPlants=new HashMap<ImageView, PlotPlant>();
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -306,6 +307,7 @@ public class PlotDesign extends Window {
 		while(exist.hasNext()) {
 			Map.Entry element=((Map.Entry) exist.next());
 			Plant p=(Plant) element.getValue();
+			String name= (String) element.getKey();
 			String[] imgs=p.getImages();
 			if(imgs!=null) {
 				img = new Image(p.getImages()[0],300,100,true,true);
@@ -314,7 +316,7 @@ public class PlotDesign extends Window {
 				img=new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 100, true, true);
 			}
 			ImageView imageView=new ImageView(img);
-			imageView.setId((String)element.getKey());
+			plotPlants.put(imageView, new PlotPlant(p,0,0));
 			imageView.setOnMouseDragged(getHandlerForDrag());
 			imageView.setOnMouseReleased(getHandlerForRelease());
 			existFlow.getChildren().add(imageView);
@@ -431,9 +433,12 @@ public class PlotDesign extends Window {
 	 * @param y the Y coordinate for the image
 	 */
 	public void addImage(ImageView img, double x, double y) {
-		/*Plant plant = null;//TODO: Should be import during the createFlowPane
-		PlotPlant plotplant=new PlotPlant(plant,x,y);*/
+		PlotPlant plotplant= plotPlants.get(img);
+		plotplant.setPlotX(x);
+		plotplant.setPlotY(y);
 		ImageView temp=new ImageView(img.getImage());
+		System.out.println(plotPlants.get(img));
+		session.getPlot().add(plotplant);
 		group.getChildren().add(temp);
 		temp.setTranslateX(x);
 		temp.setTranslateY(y);
@@ -445,11 +450,11 @@ public class PlotDesign extends Window {
                 double newY=n.getTranslateY()+event.getY();
                 if(newX>0&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
                 	n.setTranslateX(newX);//n.getTranslateX()+event.getX());
-                	//plotplant.setPlotX(newX);
+                	plotplant.setPlotX(newX);
                 }
                 if(newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()) {
                 	n.setTranslateY(newY);//n.getTranslateY()+event.getY());
-                	//plotplant.setPlotY(newY);
+                	plotplant.setPlotY(newY);
                 }
             }
         });
@@ -473,7 +478,7 @@ public class PlotDesign extends Window {
 		ImageView n = (ImageView) event.getSource();
 		create=true;
 		if(group.contains(tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight())) {
-			addImage(tmp,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
+			addImage(n,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
 		}
 		root.getChildren().remove(tmp);
 		
