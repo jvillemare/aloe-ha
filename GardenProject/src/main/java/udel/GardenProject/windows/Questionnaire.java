@@ -302,8 +302,7 @@ public class Questionnaire extends Window {
 		// list of items that appear NEAR a plot
 		List<PlotObjects> objectsNearPlot = new ArrayList<PlotObjects>();
 		for (PlotObjects enumPlotObjects : PlotObjects.values())
-			if (enumPlotObjects.isTypicallyInGarden() == false)
-				objectsNearPlot.add(enumPlotObjects);
+			objectsNearPlot.add(enumPlotObjects);
 
 		q2items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (PlotObjects plotObjectEnum : objectsNearPlot) {
