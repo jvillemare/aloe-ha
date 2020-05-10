@@ -297,16 +297,17 @@ public class Plant implements Serializable {
 			}
 			end = descript.indexOf(System.lineSeparator(), ind);
 			inDesc = descript.substring(ind + 7, end);
-			if (inDesc.equals("whitish")) {
+			if (inDesc.indexOf("evergreen")>=0) {
+				inDesc = "forestgreen";
+			}
+			if (inDesc.indexOf("whitish")>=0) {
 				inDesc = "white";
 			}
 			inDesc = inDesc.replace("ish", "");
 			inDesc = inDesc.replace("dark ", "");
 			inDesc = inDesc.replace("Dark ", "dark");
 			inDesc = inDesc.replace("semi-ever", "");
-			if (inDesc.equals("evergreen")) {
-				inDesc = "forestgreen";
-			}
+
 			inDesc = inDesc.replace("-", "");
 			String[] possible = inDesc.split(", ");
 			for (String c : possible) {
