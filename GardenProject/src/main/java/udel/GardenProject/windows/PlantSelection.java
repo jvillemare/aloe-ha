@@ -239,6 +239,8 @@ public class PlantSelection extends Window {
 		
 		ArrayList<Plant> plants = getModel().getPlants();
 		
+		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		
 		Iterator<Plant> itr = plants.iterator();
 		
 		while (itr.hasNext()) {
@@ -265,7 +267,7 @@ public class PlantSelection extends Window {
 			}			
 			
 			if (fits) {
-				fits = checkColors(p);
+				fits = checkColors(p, selected);
 			}
 			
 			if(fits) {
@@ -309,14 +311,14 @@ public class PlantSelection extends Window {
 	}
 	
 	/**
-	 * Checks if a given plant contains any of the selected colors from the questionnaire.
+	 * Checks if a given plant contains any of the selected colors from the given ArrayList.
 	 * 
-	 * @param p Plant to compare colors.
-	 * @return Boolean on if the plant contains any of the selected colors.
+	 * @param p 		Plant to compare colors.
+	 * @param selected 	Colors to compare plant colors to.
+	 * @return 			Boolean on if the plant contains any of the selected colors.
 	 */
-	public boolean checkColors(Plant p) {
+	public boolean checkColors(Plant p, ArrayList<Colors> selected) {
 		HashSet<Colors> colors = p.getColors();
-		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		for (Colors color : colors) {
 			if (selected.contains(color)) {
 				return true;
