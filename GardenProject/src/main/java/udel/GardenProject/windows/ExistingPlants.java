@@ -126,7 +126,7 @@ public class ExistingPlants extends Window {
 	 * @param m Model
 	 */
 	public ExistingPlants(Model m) {
-		super(m, "What Plants are in your Garden?");
+		super(m, "What Plants are in your Garden?", Windows.ExistingPlants);
 
 		borderPane = new BorderPane();
 		vbox = new VBox();

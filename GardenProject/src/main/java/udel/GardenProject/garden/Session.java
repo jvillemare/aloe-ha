@@ -6,8 +6,10 @@ import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 import udel.GardenProject.enums.Colors;
+import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
+import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 
@@ -73,17 +75,17 @@ public class Session implements Serializable {
 	/**
 	 * User's moisture level of their plot
 	 */
-	private String moistureOfPlot = "";
+	private Moisture moistureOfPlot = Moisture.DRY;
 
 	/**
 	 * User's soil type of their plot
 	 */
-	private String soilTypeOfPlot = "";
+	private SoilTypes soilTypeOfPlot = SoilTypes.CLAY;
 
 	/**
-	 * Users sunlight of their plot
+	 * Users sunlight of their plot. Decimal percentage (from 0.0 to 1.0).
 	 */
-	private String sunlightOfPlot = "";
+	private double sunlightOfPlot = 0.0;
 
 	/**
 	 * Existing plants already in users plot.<br>
@@ -93,6 +95,14 @@ public class Session implements Serializable {
 	 */
 	private HashMap<String, Plant> existingPlants = new HashMap<String, Plant>();
 
+	/**
+	 * Selected Plants user wishes to see in Plot from SelectedPlant and AllPlants.<br>
+	 * <br>
+	 * 
+	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
+	 */
+	private HashMap<String, Plant> selectedPlants = new HashMap<String, Plant>();
+	
 	/**
 	 * User's selected seasons for blooms
 	 */
@@ -190,27 +200,27 @@ public class Session implements Serializable {
 		return lengthOfUserPlot;
 	}
 
-	public String getMoistureOfPlot() {
+	public Moisture getMoistureOfPlot() {
 		return moistureOfPlot;
 	}
 
-	public void setMoistureOfPlot(String m) {
+	public void setMoistureOfPlot(Moisture m) {
 		this.moistureOfPlot = m;
 	}
 
-	public String getSoilTypeOfPlot() {
+	public SoilTypes getSoilTypeOfPlot() {
 		return soilTypeOfPlot;
 	}
 
-	public void setSoilTypeOfPlot(String st) {
+	public void setSoilTypeOfPlot(SoilTypes st) {
 		this.soilTypeOfPlot = st;
 	}
 
-	public String getSunlightOfPlot() {
+	public double getSunlightOfPlot() {
 		return sunlightOfPlot;
 	}
 
-	public void setSunlightOfPlot(String sun) {
+	public void setSunlightOfPlot(double sun) {
 		this.sunlightOfPlot = sun;
 	}
 
@@ -268,6 +278,24 @@ public class Session implements Serializable {
 
 	public void setExistingPlants(HashMap<String, Plant> existingPlants) {
 		this.existingPlants = existingPlants;
+	}
+	
+	public HashMap<String, Plant> getSelectedPlants() {
+		return selectedPlants;
+	}
+
+	public void setSelectedPlants(HashMap<String, Plant> selectedPlants) {
+		this.selectedPlants = selectedPlants;
+	}
+	
+	/**
+	 * Takes in a plant and adds to selectedPlants list which is all the
+	 * plants a user wishes to have.
+	 * 
+	 * @param Plant
+	 */
+	public void addSelectedPlant(Plant plant) {
+		selectedPlants.put(plant.getLatinName(), plant);
 	}
 
 }

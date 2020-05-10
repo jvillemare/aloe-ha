@@ -3,6 +3,7 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -156,7 +157,7 @@ public class SeasonView extends Window {
 	 * @param m Model
 	 */
 	public SeasonView(Model m) {
-		super(m, "Garden Previewer");
+		super(m, "Garden Previewer", Windows.SeasonView);
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
@@ -314,7 +315,7 @@ public class SeasonView extends Window {
 	public void createToggleGroups() {
 		seasonHBox = new HBox();
 		seasonGroup = new ToggleGroup();
-		List<String> seasonSelection = List.of("SPRING", "SUMMER", "WINTER", "FALL");
+		String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (String s : seasonSelection) {
 			ToggleButton toggle = new ToggleButton(s);
@@ -340,7 +341,7 @@ public class SeasonView extends Window {
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		List<String> yearSelection = List.of("0 YEARS", "1 YEAR", "2 YEARS");
+		String[] yearSelection = {"0 YEARS", "1 YEAR", "2 YEARS"};
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
 		for (String y : yearSelection) {
 			ToggleButton toggle = new ToggleButton(y);
@@ -363,7 +364,7 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
+		String[] viewSelection = {"TOP VIEW", "WINDOW VIEW"};
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
 			ToggleButton toggle = new ToggleButton(v);
