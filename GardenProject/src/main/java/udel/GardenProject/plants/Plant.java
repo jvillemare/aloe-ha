@@ -1,6 +1,5 @@
 package udel.GardenProject.plants;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -265,13 +264,14 @@ public class Plant {
 	
 	/**
 	 * Goes through plant description and finds the color(s) of the plant.
-	 * @return A HashSet of colors that are found in the plant
+	 * Gathers information from all sources that have color data: NPC, SUNNYEDGE,
+	 * and NRCS; UDEL has no color data.
+	 * @return Either a HashSet of colors that are found in the plant or null
+	 * if the only data source is UDEL.
 	 */
 	public HashSet<Colors> getColors(){
-		Colors[] allColors = Colors.values();
-		ArrayList<String> values = new ArrayList<>();
-		for (int i = 0; i < allColors.length; i++) {
-			values.add(allColors[i].toString());
+		if (this.getSource().length == 1 && this.getSource()[0] == PlantDataSource.UDEL) {
+			return null;
 		}
 		HashSet<Colors> colors = new HashSet<>();
 		int ind, end;
@@ -282,23 +282,34 @@ public class Plant {
 		while(hasColor) {
 			ind = descript.indexOf("Color: ", start);
 			if (ind == -1) {
-				break;
+				hasColor = false;
+				continue;
 			}
 			end = descript.indexOf(System.lineSeparator(), ind);
 			inDesc = descript.substring(ind + 7, end);
+			if (inDesc.equals("whitish")) {
+				inDesc = "white";
+			}
+			inDesc = inDesc.replace("ish", "");
+			inDesc = inDesc.replace("dark ", "");
+			inDesc = inDesc.replace("Dark ", "dark");
+			inDesc = inDesc.replace("semi-ever", "");
+			if (inDesc.equals("evergreen")) {
+				inDesc = "forestgreen";
+			}
+			inDesc = inDesc.replace("-", "");
 			String[] possible = inDesc.split(", ");
 			for (String c : possible) {
 				c = c.split(" ")[0];
-				if (c.endsWith("ish")) {
-					c = c.substring(0, c.length()-3);
-				}
 				c = c.toUpperCase();
-				if (values.contains(c)) {
-					colors.add(allColors[values.indexOf(c)]);
-				}
+				try {
+				    colors.add(Colors.valueOf(c));
+				} catch(IllegalArgumentException e) { }
 			}
 			start = end;
 		}
+		inDesc = null;
+		descript = null;
 		return colors;
   }
 
