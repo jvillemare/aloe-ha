@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
@@ -70,7 +72,7 @@ public class Model {
 	 * Where all the user data is collected and stored.
 	 */
 	private Session session;
-
+	
 	/**
 	 * Constructor, initialize everything.
 	 * 
@@ -223,12 +225,12 @@ public class Model {
 			Plant p = pIterator.next();
 			boolean addToResults = false;
 
-			if (p.getLatinName().contains(query))
+			if (p.getLatinName().toLowerCase().contains(query.toLowerCase()))
 				addToResults = true;
 
 			if (p.getCommonNames() != null)
 				for (String commonName : p.getCommonNames())
-					if (commonName.contains(query))
+					if (commonName.toLowerCase().contains(query.toLowerCase()))
 						addToResults = true;
 
 			if (addToResults)

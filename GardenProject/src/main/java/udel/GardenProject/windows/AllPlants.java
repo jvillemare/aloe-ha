@@ -1,5 +1,10 @@
 package udel.GardenProject.windows;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,9 +14,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -19,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -45,7 +53,7 @@ public class AllPlants extends Window {
 	/**
 	 * Main layout format for screen
 	 */
-	private BorderPane borderPane;
+	private BorderPane borderPane = new BorderPane();;
 
 	/**
 	 * Holds all the images of the plants in the scrollPane
@@ -68,9 +76,9 @@ public class AllPlants extends Window {
 	private Text info;
 
 	/**
-	 * Drop down menu to select the letter
+	 * Drop down menu to select if they want all plants or just native plants
 	 */
-	private ComboBox comboBox;
+	private ComboBox<String> nativeChoice;
 
 	/**
 	 * Holds the scroll pane and the buttons at the bottom for navigating the pages
@@ -93,39 +101,75 @@ public class AllPlants extends Window {
 	private TilePane tilePane;
 
 	/**
+	 * Used for the search box and the options that show up
+	 */
+	private GridPane container = new GridPane(); 
+	
+	/**
+	 * List of Plants that the user can choose from depending on their search box
+	 *  search
+	 */
+	private ArrayList<Plant> potentialPlants = new ArrayList<Plant>();
+	
+	/**
+	 * Current page the user is on.
+	 */
+	private int currentPage = 0;
+	
+	/**
+	 * Max Plants per page.
+	 */
+	private int maxImagesPerPage = 25;
+	
+	/**
+	 * True if the atlantic Filter was checked, false otherwise.
+	 */
+	private boolean atlanticFilter = false;
+	
+	/**
+	 * Text that appears if no no plants fit the description.
+	 */
+	private Text noPlants = new Text("No Such Plants");
+	
+	/**
+	 * Text that appears if more characters need to be added.
+	 */
+	private Text moreCharacters = new Text("Please Add More Characters in Search");
+	
+	/**
+	 * The textfield for search.
+	 */
+	private TextField text;
+	
+	/**
+	 * ArrayList<Plant> of native plants only
+	 */
+	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
+	
+	/**
 	 * Adjustments to screen and buttons
 	 */
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
-	private int comboBoxXAdjustment = 40;
-	private int comboBoxYAdjustment = -20;
 	private int scrollWidthAdjustment = 20;
 	private int gapBetweenPageButtons = 220;
 	private int flowPrefWidthAdjustment = 30;
 	private int scrollHeightAdjustment = 150;
 	private int backgroundScreenWidthAndHeight = 100;
-
+	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
+		
+		createNativeList();
 
-    // TODO: Left over from merge conflict
 		infoBox = new VBox();
 		scrollAndPageButtons = new VBox();
 
 		info = new Text(
-				"Need more plants? Click on the drop down list for the first letter of the plant name you want to add. Plants will be found based on their Latin names.");
+				"Need more plants? Search or go through this database. Plants will be found based on their Latin names.");
 		info.setFont(getModel().getHackBold20());
 		info.setWrappingWidth(View.getCanvasWidth());
-		
-		//left side will be filter
-		TextField text = new TextField();
-	
-		//searchBox = new HBox();
-		
-		//Button close = new Button("X");
-        //Button search = new Button("Search");
-        //searchBox.getChildren().addAll(text,close,search);
 		
 		Text title = new Text("Please Make Plant Selections");
 		title.setFont(new Font(18));
@@ -141,28 +185,8 @@ public class AllPlants extends Window {
 		flow.setHgap(inset20);
 		flow.setPrefWrapLength(View.getCanvasWidth() - flowPrefWidthAdjustment);
 		flow.setStyle(View.getWhiteBackgroundStyle());
-
-		/*
-		 * Populates the drop down menu A-Z
-		 */
-		ObservableList<String> letterChoice = FXCollections.observableArrayList();
-		for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-			letterChoice.add(Character.toString(alphabet));
-		}
-		comboBox = new ComboBox(letterChoice);
-		comboBox.setTranslateX(View.getCanvasWidth() / 2 - comboBoxXAdjustment);
-		comboBox.setTranslateY(comboBoxYAdjustment);
-		comboBox.setPromptText("Select");
-		// TODO: @mpatel-2022, no more combobox from @vivatheeast?
-		//infoBox.getChildren().addAll(info, comboBox);
-
-		comboBox.setOnAction(e -> {
-			/**
-			 * TODO: implement functionality with this function (function found at bottom of
-			 * screen)
-			 */
-			populateFlowPane((String) comboBox.getValue()); // comboBox.getValue() is the letter that is chosen
-		});
+		
+		createSearch();
 
 		scroll = new ScrollPane();
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -174,16 +198,20 @@ public class AllPlants extends Window {
 
 		pageNavigation = new FlowPane();
 		pageNavigation.setHgap(View.getCanvasWidth() - gapBetweenPageButtons);
-
+		
 		prev = new Button("<- Prev");
+		if(currentPage == 0) {
+			prev.setVisible(false);
+		}
 		prev.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				/**
-				 * TODO: implement going back a page Will need to have some way of keeping track
-				 * what page you are on?
-				 */
+				currentPage--;
+				populateFlowPane();
+				if(currentPage == 0) {
+					prev.setVisible(false);
+				}
 			}
 		});
 		prev.setFont(getModel().getHackBold12());
@@ -195,15 +223,41 @@ public class AllPlants extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				/**
-				 * TODO: implement going to the next page Will need to have some way of keeping
-				 * track what page you are on?
-				 */
+				currentPage++;
+				populateFlowPane();
+				prev.setVisible(true);
 			}
 		});
 		next.setFont(getModel().getHackBold12());
 		handleButtonEffect(next);
 		pageNavigation.getChildren().add(next);
+		
+		ObservableList<String> nativeChoices = FXCollections.observableArrayList();
+		nativeChoices.add("All Plants");
+		nativeChoices.add("Delaware Native Plants");
+		nativeChoice = new ComboBox<String>(nativeChoices);
+		nativeChoice.setPromptText("All Plants");
+		
+		nativeChoice.setOnAction(e -> {
+			if(((String)nativeChoice.getValue()).equals("All Plants")) {
+				atlanticFilter = false;
+				currentPage = 0;
+				prev.setVisible(false);
+				text.setText("");
+				potentialPlants.clear();
+			}else if(((String)nativeChoice.getValue()).equals("Delaware Native Plants")) {
+				atlanticFilter = true;
+				currentPage = 0;
+				text.setText("");
+				prev.setVisible(false);
+				potentialPlants.clear();
+			}
+			populateFlowPane();
+		});
+		
+		infoBox.getChildren().addAll(info, container, nativeChoice);
+		
+		populateFlowPane();
 
 		scrollAndPageButtons.getChildren().addAll(scroll, pageNavigation);
 
@@ -218,7 +272,8 @@ public class AllPlants extends Window {
 			}
 		});
 
-		back.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize() + 3));
+		back.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+				View.getButtonTextSize() + 3));
 		back.setPrefHeight(View.getButtonPrefWidth() / 2);
 		handleButtonEffect(back);
 		tilePane.getChildren().add(back);
@@ -226,8 +281,6 @@ public class AllPlants extends Window {
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
 
-		// TODO: @mpatel-2022, borderpane uninitialized?
-		borderPane = new BorderPane();
 		borderPane.setBackground(View.getBackgroundScreen());
 		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(infoBox);
@@ -238,82 +291,257 @@ public class AllPlants extends Window {
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
-
+	
 	/**
-	 * Gets the letter chosen from the drop down menu and gets all the corresponding
-	 * plants that start with that later (by Latin name)
+	 * Used to create searching area for when the user looks up plants
+	 */
+	public void createSearch() {
+		
+		HBox searchBox = new HBox();
+		searchBox.setAlignment(Pos.CENTER);
+
+		text = new TextField();
+		text.textProperty().addListener((observable, oldValue, newValue) -> {
+			// getting whatever the user type inside the container if they've
+			// typed anything.
+			if (container.getChildren().size() > 1) {
+				container.getChildren().remove(1);
+			}
+			populateOptions(newValue);
+			populateFlowPane();
+
+		});
+		
+
+		Tooltip tooltipSearch = new Tooltip(
+				"Search desired plants here.");
+		text.setTooltip(tooltipSearch);
+
+		Button close = new Button("Clear");
+		close.setFont(getModel().getHackBold12());
+		close.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+		close.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				text.setText("");
+				potentialPlants.clear();
+				populateFlowPane();
+			}
+		});
+
+		Tooltip tooltip = new Tooltip("Click to clear the text box.");
+		close.setTooltip(tooltip);
+		text.setPrefWidth(View.getCanvasWidth() / 4 - close.getWidth());
+	
+		searchBox.getChildren().addAll(text, close);
+
+		container.add(searchBox, 0, 0);
+	}
+	
+	/**
+	 * Populates an ArrayList of all the potential plants user wants from search.
+	 * 
+	 * @param query
+	 */
+	public void populateOptions(String query) {
+		potentialPlants.clear();
+		currentPage = 0;
+
+		if(atlanticFilter) {
+			if(searchAtlantic(query) != null) {
+				for(Map.Entry<String, Plant> entry : searchAtlantic(query).entrySet()) {
+					potentialPlants.add(entry.getValue());
+				}
+			}
+		}else {
+			if(getModel().searchPlants(query) != null) {
+				for(Map.Entry<String, Plant> entry : getModel().searchPlants(query).entrySet()) {
+					potentialPlants.add(entry.getValue());
+				}
+			}
+		}	
+	}
+	
+	/**
+	 * Searched the atlantic only plants and add any that fit with the string.
+	 * @param query
+	 * @return
+	 */
+	public HashMap<String, Plant> searchAtlantic(String query) {
+		// preconditions for queries
+		if (query.length() < 3)
+			return null;
+
+		// regular
+		HashMap<String, Plant> results = new HashMap<String, Plant>();
+
+		Iterator<Plant> pIterator = nativeOnly.iterator();
+		while (pIterator.hasNext()) {
+			Plant p = pIterator.next();
+			boolean addToResults = false;
+
+			if (p.getLatinName().toLowerCase().contains(query.toLowerCase()))
+				addToResults = true;
+
+			if (p.getCommonNames() != null)
+				for (String commonName : p.getCommonNames())
+					if (commonName.toLowerCase().contains(query.toLowerCase()))
+						addToResults = true;
+
+			if (addToResults)
+				results.put(p.getLatinName(), p);
+		}
+
+		return results;
+	}
+	
+	/**
+	 * Populates the searchbox.
 	 * 
 	 * @param letter The letter chosen from the drop down
 	 */
-	public void populateFlowPane(String letter) {
-		System.out.println(letter);
-
-		/**
-		 * TODO: change this to the corresponding letter-plant name
-		 */
-		int num = 30;
-		Image pages[] = new Image[num];
-		for (int i = 0; i < num; i++) {
-			Plant p = getModel().getPlants().get(i);
-
-			String[] plantImg = p.getImages();
-
-			if (plantImg != null) {
-				pages[i] = new Image(p.getImages()[0], 350, 100, true, true);
-			} else {
-				pages[i] = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 350, 100, true, true);
+	public void populateFlowPane() {
+		flow.getChildren().clear();
+		next.setVisible(true);
+		
+		if(!potentialPlants.isEmpty() && potentialPlants != null) {
+			if(potentialPlants.size() <= maxImagesPerPage) {
+				next.setVisible(false);
+				for(Plant p : potentialPlants) {
+					createBox(p);
+				}
+			}else {
+				pageCreation(potentialPlants);
 			}
-
-			ImageView imageView = new ImageView(pages[i]);
-
-			Text latinName = new Text(p.getLatinName());
-
-			/**
-			 * Creates the Add Plant button for each plant and changes image color depending
-			 * on if the plant is added or not
-			 */
-			Button addPlant = new Button("Add Plant");
-			addPlant.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent e) {
-
-					if (addPlant.getText().equals("Add Plant")) {
-						ColorAdjust colorAdjust = new ColorAdjust();
-						colorAdjust.setContrast(0.4);
-						colorAdjust.setHue(-0.05);
-						colorAdjust.setBrightness(0.9);
-						colorAdjust.setSaturation(0.8);
-						imageView.setEffect(colorAdjust);
-						addPlant.setText("Remove");
-						/**
-						 * TODO: add plant to the corresponding HashMap*** of Plants
-						 */
-					} else {
-						imageView.setEffect(null);
-						addPlant.setText("Add Plant");
-						/**
-						 * TODO: remove plant to the corresponding HashMap*** of Plants
-						 */
-					}
+		}else {
+			if(text.getText().isEmpty()) {
+				showDefault();
+			}else {
+				if(text.getText().length() < 3) {
+					moreCharacters();
+				}else {
+					noSuchPlant();
 				}
-			});
-
-			Button infoButton = new Button("Info");
-			infoButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					getModel().setPlantInfoPlant(p);
-					switchToWindow(Windows.PlantInfo);
-				}
-			});
-
-			HBox hbox = new HBox();
-			hbox.getChildren().addAll(infoButton, addPlant);
-
-			VBox imgButtonHolder = new VBox();
-			imgButtonHolder.getChildren().addAll(imageView, latinName, hbox);
-			flow.getChildren().add(imgButtonHolder);
+			}
 		}
+	}
+	
+	/**
+	 * Showcases the default amount of plants for AllPlants.
+	 */
+	public void showDefault() {
+		if(atlanticFilter) {
+			pageCreation(nativeOnly);
+		}else {
+			pageCreation(getModel().getPlants());
+		}
+	}
+	
+	/**
+	 * Fills the flowPane with the Plants depending upon what page the user is on
+	 * @param PlantList
+	 */
+	public void pageCreation(ArrayList<Plant> PlantList) {
+		int plantStart = currentPage * maxImagesPerPage;
+		for(int i = plantStart; i < plantStart + maxImagesPerPage && i < PlantList.size(); i++) {
+			createBox(PlantList.get(i));
+			if(i == PlantList.size() - 1) {
+				next.setVisible(false);
+			}
+		}
+	}
+	
+	/**
+	 * Adds a Text announcing there are not plants.
+	 */
+	public void noSuchPlant() {
+		noPlants.setFont(getModel().getHackBold20());
+		StackPane noPlant = new StackPane();
+		noPlant.getChildren().add(noPlants);
+		flow.getChildren().add(noPlant);
+	}
+	
+	/**
+	 * Adds a Text announcing the user needs to add more characters to search.
+	 */
+	public void moreCharacters() {
+		moreCharacters.setFont(getModel().getHackBold20());
+		StackPane moreChar = new StackPane();
+		moreChar.getChildren().add(moreCharacters);
+		flow.getChildren().add(moreChar);
+	}
+	
+	/**
+	 * Creates the list of all Native plants
+	 */
+	public void createNativeList() {
+		for(Plant p : getModel().getPlants()) {
+			if(p.getDelawareNative()) {
+				nativeOnly.add(p);
+			}
+		}
+	}
+	
+	/**
+	 * Creates a Plants box including its image, add button, and info button.
+	 * @param Plant
+	 */
+	public void createBox(Plant p) {
+		Image pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
+				350, 100, true, true);
+		
+		String[] plantImg = p.getImages();
+		if (plantImg != null) {
+			try {
+				pages = new Image(plantImg[0], 350, 100, true, true);
+			}catch(ArrayIndexOutOfBoundsException Exception){
+				pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
+						350, 100, true, true);
+			}
+			
+		}
+
+		ImageView imageView = new ImageView(pages);
+
+		Text latinName = new Text(p.getLatinName());
+
+		Button addPlant = new Button("Add Plant");
+		addPlant.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+
+				if (addPlant.getText().equals("Add Plant")) {
+					ColorAdjust colorAdjust = new ColorAdjust();
+					colorAdjust.setContrast(0.4);
+					colorAdjust.setHue(-0.05);
+					colorAdjust.setBrightness(0.9);
+					colorAdjust.setSaturation(0.8);
+					imageView.setEffect(colorAdjust);
+					addPlant.setText("Remove");
+					getSession().getSelectedPlants().add(p);
+				} else {
+					imageView.setEffect(null);
+					addPlant.setText("Add Plant");
+					getSession().getSelectedPlants().remove(p);
+				}
+			}
+		});
+
+		Button infoButton = new Button("Info");
+		infoButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				getModel().setPlantInfoPlant(p);
+				switchToWindow(Windows.PlantInfo);
+			}
+		});
+
+		HBox hbox = new HBox();
+		hbox.getChildren().addAll(infoButton, addPlant);
+
+		VBox imgButtonHolder = new VBox();
+		imgButtonHolder.getChildren().addAll(imageView, latinName, hbox);
+		flow.getChildren().add(imgButtonHolder);
 	}
 
 	/**
@@ -325,7 +553,6 @@ public class AllPlants extends Window {
 
 		b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 		b.setPrefWidth(View.getButtonPrefWidth());
-		// b.setPadding(new Insets(inset10));
 		b.setAlignment(Pos.CENTER);
 
 		DropShadow shadow = new DropShadow();
