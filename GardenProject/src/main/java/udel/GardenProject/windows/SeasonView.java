@@ -64,9 +64,9 @@ public class SeasonView extends Window {
 	private TilePane tilePane, toggleOptionsTilePane;
 
 	/**
-	 * buttons to move between screens and save user input
+	 * buttons to move between screens
 	 */
-	private Button back, save, next;
+	private Button back, backToMain, next;
 
 	/**
 	 * Used for grouping different toggle selections
@@ -139,7 +139,7 @@ public class SeasonView extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, save, next);
+		tilePane.getChildren().addAll(back, backToMain, next);
 
 		toggleOptionsTilePane.setAlignment(Pos.CENTER);
 		toggleOptionsTilePane.setPadding(new Insets(inset5));
@@ -179,7 +179,7 @@ public class SeasonView extends Window {
 	}
 
 	/**
-	 * Sends input from user to the session after user clicks SAVE
+	 * Sends input from user to the session after user clicks NEXT
 	 */
 	public void getInput() {
 
@@ -209,12 +209,12 @@ public class SeasonView extends Window {
 			}
 		});
 
-		save = new Button("Save");
-		save.setOnAction(new EventHandler<ActionEvent>() {
+		backToMain = new Button("Main Menu");
+		backToMain.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				getInput();
+				switchToWindow(Windows.Welcome);
 			}
 		});
 
@@ -223,13 +223,14 @@ public class SeasonView extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
+				getInput();
 				switchToWindow(Windows.Download);
 			}
 		});
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
-		buttons.add(save);
+		buttons.add(backToMain);
 		buttons.add(next);
 
 		for (Button b : buttons) {

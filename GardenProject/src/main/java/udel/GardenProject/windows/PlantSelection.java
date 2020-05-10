@@ -61,7 +61,7 @@ public class PlantSelection extends Window {
 	/**
 	 * Navigation buttons at the bottom of the screen
 	 */
-	private Button back, next;
+	private Button back, mainMenu, next;
 
 	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
@@ -152,7 +152,7 @@ public class PlantSelection extends Window {
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, next);
+		tilePane.getChildren().addAll(back, mainMenu, next);
 
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
@@ -244,6 +244,15 @@ public class PlantSelection extends Window {
 			}
 		});
 
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.Welcome);
+			}
+		});
+
 		next = new Button("Next");
 		next.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -255,6 +264,7 @@ public class PlantSelection extends Window {
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
+		buttons.add(mainMenu);
 		buttons.add(next);
 
 		for (Button b : buttons) {

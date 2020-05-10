@@ -106,6 +106,7 @@ public class ExistingPlants extends Window {
 	 */
 	private int inset5 = 5;
 	private int inset10 = 10;
+	private int inset8 = 8;
 	private int inset20 = 20;
 	private int buttonGap = 100;
 	private int wrapTextAdjustment = 170;
@@ -278,7 +279,7 @@ public class ExistingPlants extends Window {
 		Tooltip tooltip = new Tooltip("Click to clear the text box.");
 		close.setTooltip(tooltip);
 		text.setPrefWidth(View.getCanvasWidth() / 4 - close.getWidth());
-		searchBox.setPadding(new Insets(0, inset20, 0, 0));
+		searchBox.setPadding(new Insets(0, inset20, inset8, 0));
 		searchBox.getChildren().addAll(text, close);
 
 		container.add(searchBox, 0, 0);

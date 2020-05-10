@@ -57,7 +57,7 @@ public class Download extends Window {
 	/**
 	 * Buttons to go back, load, and download
 	 */
-	private Button back, downloadButton;
+	private Button back, mainMenu, downloadButton;
 
 	/**
 	 * Used to center button
@@ -140,7 +140,7 @@ public class Download extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, downloadButton);
+		tilePane.getChildren().addAll(back, mainMenu, downloadButton);
 
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
@@ -180,6 +180,15 @@ public class Download extends Window {
 			}
 		});
 
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.Welcome);
+			}
+		});
+
 		downloadButton = new Button("Download");
 		downloadButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -187,19 +196,20 @@ public class Download extends Window {
 			public void handle(ActionEvent event) {
 				getInput();
 				/*
-				 * Opens the file chooser and allows the user to save the file to thier computer 
+				 * Opens the file chooser and allows the user to save the file to thier computer
 				 */
 				javafx.stage.Window scene2 = null;
 				FileChooser fileChooser = new FileChooser();
 				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
 				fileChooser.setInitialFileName(getSession().getPlotName());
-				fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
-				
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
+
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-				
-				System.out.println(getModel().saveSession(file.getAbsolutePath()));
-				getModel().saveSession(file.getAbsolutePath());
+
+					System.out.println(getModel().saveSession(file.getAbsolutePath()));
+					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
 		});
@@ -209,6 +219,7 @@ public class Download extends Window {
 		 */
 		List<Button> bottomButtons = new ArrayList<Button>();
 		bottomButtons.add(back);
+		bottomButtons.add(mainMenu);
 		bottomButtons.add(downloadButton);
 
 		for (Button b : bottomButtons) {
@@ -234,11 +245,6 @@ public class Download extends Window {
 			});
 		}
 	}
-	
-	
-	
-	
-	
 
 	/**
 	 * Function that formats each of the toggle buttons for the options on how the
@@ -341,13 +347,15 @@ public class Download extends Window {
 		getSession().setSaveOption(saveOption);
 
 	}
-	
+
 	/**
-	 * Refreshes the screen to the image of the plot corresponding to the users options in SeasonView
+	 * Refreshes the screen to the image of the plot corresponding to the users
+	 * options in SeasonView
 	 */
 	public void refresh() {
 		/**
-		 * TODO: remove the previous image in the center box and replace with new image from session 
+		 * TODO: remove the previous image in the center box and replace with new image
+		 * from session
 		 */
 	}
 

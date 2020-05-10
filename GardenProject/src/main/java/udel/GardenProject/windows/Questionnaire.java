@@ -75,7 +75,7 @@ public class Questionnaire extends Window {
 	/**
 	 * For saving all of the user's questionnaire answers And moving between screens
 	 */
-	private Button backToExistingPlants, toPlotDesign;
+	private Button backToExistingPlants, mainMenu, toPlotDesign;
 
 	/**
 	 * Used for the text in the VBox Info text
@@ -190,7 +190,7 @@ public class Questionnaire extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(0, inset5, inset10, inset5));
 		tilePane.setHgap(buttonGap);
-		tilePane.getChildren().addAll(backToExistingPlants, toPlotDesign);
+		tilePane.getChildren().addAll(backToExistingPlants, mainMenu, toPlotDesign);
 
 		scroll = new ScrollPane();
 
@@ -435,6 +435,14 @@ public class Questionnaire extends Window {
 			}
 		});
 
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.Welcome);
+			}
+		});
+
 		toPlotDesign = new Button("Next");
 		toPlotDesign.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -487,6 +495,7 @@ public class Questionnaire extends Window {
 		 */
 		List<Button> bottomButtons = new ArrayList<Button>();
 		bottomButtons.add(backToExistingPlants);
+		bottomButtons.add(mainMenu);
 		bottomButtons.add(toPlotDesign);
 
 		for (Button b : bottomButtons) {
