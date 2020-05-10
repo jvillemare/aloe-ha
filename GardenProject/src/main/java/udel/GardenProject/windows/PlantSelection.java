@@ -68,7 +68,7 @@ public class PlantSelection extends Window {
 	/**
 	 * Navigation buttons at the bottom of the screen
 	 */
-	private Button back, next;
+	private Button back, mainMenu, next;
 
 	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
@@ -94,19 +94,18 @@ public class PlantSelection extends Window {
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
-	private int backgroundScreenWidthAndHeight = 100;
-	private int borderTopAndBottonMargin = 40;
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
+	private int borderTopAndBottonMargin = 40;
+	private int backgroundScreenWidthAndHeight = 100;
 	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
 	private int prefScrollHeight = View.getCanvasHeight() / 5 * 4;
 	private int selectedPlantBoxMinWidth = View.getCanvasWidth() / 2;
-	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 	private int scrollSelectedWidth = View.getCanvasWidth() / 2 + 30;
 	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
+	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 	private int imgWidth = 350;
 	private int imgHeight = 100;
-	
 
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
@@ -175,7 +174,7 @@ public class PlantSelection extends Window {
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, next);
+		tilePane.getChildren().addAll(back, mainMenu, next);
 
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
@@ -351,7 +350,7 @@ public class PlantSelection extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				selectedPlantsBox.getChildren().add(imgButtonHolder);
-				getSession().addSelectedPlant(p);
+				getSession().getSelectedPlants().add(p);
 
 			}
 		});
@@ -362,9 +361,8 @@ public class PlantSelection extends Window {
 	 * This displays all plants that are in the HashMap that the user desired from Plant Selection
 	 */
 	public void addSelected() {
-		for(Map.Entry<String, Plant> plant : getSession().getSelectedPlants().entrySet()) {
-			Plant p = plant.getValue();
-			selectedPlantsBox.getChildren().add(createPlantBox(p));
+		for(Plant plant : getSession().getSelectedPlants()) {
+			selectedPlantsBox.getChildren().add(createPlantBox(plant));
 		}
 	}
 	
@@ -381,6 +379,15 @@ public class PlantSelection extends Window {
 			}
 		});
 
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.Welcome);
+			}
+		});
+
 		next = new Button("Next");
 		next.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -392,6 +399,7 @@ public class PlantSelection extends Window {
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
+		buttons.add(mainMenu);
 		buttons.add(next);
 
 		for (Button b : buttons) {
@@ -417,11 +425,8 @@ public class PlantSelection extends Window {
 			});
 		}
 	}
-	
-	/**
-	 * Refreshes the screen and to get the correct info from Model
-	 */
-	public void refresh() {	
+
+	public void refresh() {
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
 				displaySelection();
@@ -430,6 +435,15 @@ public class PlantSelection extends Window {
 			System.out.println("Wrong size of a plants year Boolean Array");
 		}
 		
+		/**
+		 * TODO: create proper implementation of clearing and repopulating the flow pane
+		 * for selected plants
+		 */
+		/*
+		 * selectedPlantsBox.getChildren().clear(); Iterator<Plant> pItr =
+		 * getSession().getSelectedPlants().iterator(); while (pItr.hasNext()) {
+		 * populateRightBox(pItr.next()); }
+		 */
 	}
 
 	@Override

@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
@@ -113,13 +110,9 @@ public class Model {
 	 * from Runtime.
 	 */
 	public void printMemoryInfo() {
-		System.out.println(
-				"\n" + 
-				"MaxMemory:   " + Runtime.getRuntime().maxMemory() + "\n" + 
-				"FreeMemory:  " + Runtime.getRuntime().freeMemory() + "\n" + 
-				"TotalMemory: " + Runtime.getRuntime().totalMemory() + "\n" + 
-				"UsedMemory:  " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + "\n"
-				);
+		System.out.println("\n" + "MaxMemory:   " + Runtime.getRuntime().maxMemory() + "\n" + "FreeMemory:  "
+				+ Runtime.getRuntime().freeMemory() + "\n" + "TotalMemory: " + Runtime.getRuntime().totalMemory() + "\n"
+				+ "UsedMemory:  " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + "\n");
 	}
 
 	/**
@@ -401,6 +394,7 @@ public class Model {
 	 */
 	public boolean loadSession(String filepath) {
 		try {
+			System.out.println(filepath);
 			FileInputStream file = new FileInputStream(filepath);
 			ObjectInputStream in = new ObjectInputStream(file);
 
@@ -411,9 +405,11 @@ public class Model {
 
 			System.out.println("Model: Loaded Session from " + filepath);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: IOException is caught, failed to load file");
 			return false;
 		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: ClassNotFoundException is caught, invalid file");
 			return false;
 		}

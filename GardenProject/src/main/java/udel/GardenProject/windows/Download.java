@@ -1,5 +1,6 @@
 package udel.GardenProject.windows;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
@@ -20,8 +21,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -56,7 +57,7 @@ public class Download extends Window {
 	/**
 	 * Buttons to go back, load, and download
 	 */
-	private Button back, load, downloadButton;
+	private Button back, mainMenu, downloadButton;
 
 	/**
 	 * Used to center button
@@ -139,7 +140,7 @@ public class Download extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, downloadButton);
+		tilePane.getChildren().addAll(back, mainMenu, downloadButton);
 
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
@@ -179,12 +180,12 @@ public class Download extends Window {
 			}
 		});
 
-		load = new Button("Load");
-		load.setOnAction(new EventHandler<ActionEvent>() {
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				saveOption = "gardenProject";
+				switchToWindow(Windows.Welcome);
 			}
 		});
 
@@ -194,7 +195,22 @@ public class Download extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				getInput();
+				/*
+				 * Opens the file chooser and allows the user to save the file to thier computer
+				 */
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
+				fileChooser.setInitialFileName(getSession().getPlotName());
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
 
+				File file = fileChooser.showSaveDialog(scene2);
+				if (file != null) {
+
+					System.out.println(getModel().saveSession(file.getAbsolutePath()));
+					getModel().saveSession(file.getAbsolutePath());
+				}
 			}
 		});
 
@@ -203,7 +219,7 @@ public class Download extends Window {
 		 */
 		List<Button> bottomButtons = new ArrayList<Button>();
 		bottomButtons.add(back);
-		bottomButtons.add(load);
+		bottomButtons.add(mainMenu);
 		bottomButtons.add(downloadButton);
 
 		for (Button b : bottomButtons) {
@@ -330,6 +346,17 @@ public class Download extends Window {
 
 		getSession().setSaveOption(saveOption);
 
+	}
+
+	/**
+	 * Refreshes the screen to the image of the plot corresponding to the users
+	 * options in SeasonView
+	 */
+	public void refresh() {
+		/**
+		 * TODO: remove the previous image in the center box and replace with new image
+		 * from session
+		 */
 	}
 
 }

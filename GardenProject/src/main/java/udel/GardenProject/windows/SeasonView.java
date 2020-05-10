@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.YDistanceComparator;
 
@@ -73,9 +75,9 @@ public class SeasonView extends Window {
 	private TilePane tilePane, toggleOptionsTilePane;
 
 	/**
-	 * buttons to move between screens and save user input
+	 * buttons to move between screens
 	 */
-	private Button back, save, next;
+	private Button back, backToMain, next;
 
 	/**
 	 * Used for grouping different toggle selections
@@ -178,7 +180,7 @@ public class SeasonView extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, save, next);
+		tilePane.getChildren().addAll(back, backToMain, next);
 
 		toggleOptionsTilePane.setAlignment(Pos.CENTER);
 		toggleOptionsTilePane.setPadding(new Insets(inset5));
@@ -230,7 +232,7 @@ public class SeasonView extends Window {
 	}
 
 	/**
-	 * Sends input from user to the session after user clicks SAVE
+	 * Sends input from user to the session after user clicks NEXT
 	 */
 	public void getInput() {
 
@@ -260,12 +262,12 @@ public class SeasonView extends Window {
 			}
 		});
 
-		save = new Button("Save");
-		save.setOnAction(new EventHandler<ActionEvent>() {
+		backToMain = new Button("Main Menu");
+		backToMain.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				getInput();
+				switchToWindow(Windows.Welcome);
 			}
 		});
 
@@ -274,13 +276,14 @@ public class SeasonView extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
+				getInput();
 				switchToWindow(Windows.Download);
 			}
 		});
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
-		buttons.add(save);
+		buttons.add(backToMain);
 		buttons.add(next);
 
 		for (Button b : buttons) {
@@ -388,6 +391,11 @@ public class SeasonView extends Window {
 
 	}
 
+	/**
+	 * Sets style and effects for the toggle buttons
+	 * 
+	 * @param b Each toggle button
+	 */
 	public void createToggleEvent(ToggleButton b) {
 
 		DropShadow shadow = new DropShadow();
@@ -414,6 +422,19 @@ public class SeasonView extends Window {
 			}
 		});
 
+	}
+
+	/**
+	 * Refreshes the screen to clear any of the toggles chosen
+	 */
+	public void refresh() {
+    // TODO: drawCanvas() doesn't need to be called here?
+		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
+		for (ToggleGroup group : tg) {
+			if (group.getSelectedToggle() != null) {
+				group.getSelectedToggle().setSelected(false);
+			}
+		}
 	}
 	
 	/**

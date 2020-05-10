@@ -32,6 +32,9 @@ public class ExistingPlantsTest {
 		assertTrue(w.getExistingPlants() instanceof Plant[]);
 	}*/
 	
+	// TODO: Also maybe strike this test since ExistingPlants shouldn't have
+	//			this.
+	/*
 	@Test
 	public void setExistingPlantsTest() {
 		Session s = new Session();
@@ -40,5 +43,6 @@ public class ExistingPlantsTest {
 		plants.put(p.getLatinName(), p);
 		s.setExistingPlants(plants);
 	}
+	*/
 
 }
