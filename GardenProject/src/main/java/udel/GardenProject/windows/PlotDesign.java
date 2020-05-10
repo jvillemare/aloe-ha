@@ -3,6 +3,7 @@ package udel.GardenProject.windows;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public class PlotDesign extends Window {
 	 */
 	private Session session;
 	
-	private HashMap<String, Plant> existingPlants;
+	private HashSet<Plant> existingPlants;
 	
 	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
 
@@ -155,7 +156,7 @@ public class PlotDesign extends Window {
 	public PlotDesign(Model m) {
 		super(m, "Plot Designer", Windows.PlotDesign);
 		session=getModel().getSession();
-		existingPlants=session.getExistingPlants();
+		existingPlants = session.getExistingPlants();
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
@@ -311,7 +312,7 @@ public class PlotDesign extends Window {
 			choices.getPanes().add(t);
 		}
 		
-		Iterator exist=session.getExistingPlants().entrySet().iterator();
+		Iterator exist=session.getExistingPlants().iterator();
 		while(exist.hasNext()) {
 			Map.Entry element=((Map.Entry) exist.next());
 			Plant p=(Plant) element.getValue();
@@ -334,10 +335,7 @@ public class PlotDesign extends Window {
 		borderPane.setLeft(choices);
 
 	}
-	@Override
-	public void refresh() {
-		createFlowPane();
-	}
+	
 	/**
 	 * Creates the buttons that will be added to the tilePane at the bottom of the
 	 * screen
@@ -429,22 +427,6 @@ public class PlotDesign extends Window {
 		return this.scene;
 	}
 
-	public void getObstacle() {
-
-	}
-
-	public Object setObstacle(Object obstacle) {
-		return null;
-	}
-
-	public Plant setPlant(Plant p) {
-		return p;
-	}
-
-	public void getPlant() {
-
-	}
-
 	/**
 	 * TODO: FIX DRAGGING
 	 * 
@@ -479,6 +461,7 @@ public class PlotDesign extends Window {
             }
         });
 	}
+	
 	public void drag(MouseEvent event) {
 		ImageView n = (ImageView) event.getSource();
 		if(create) {
@@ -507,13 +490,15 @@ public class PlotDesign extends Window {
   
 	public EventHandler getHandlerForRelease() {
 		return event -> release((MouseEvent) event);
-  }
+	}
   
 	/**
 	 * Remove everything from the flow panes, the center box, and the autorate boxes
 	 * and add info back in again for the correct session
 	 */
+	@Override
 	public void refresh() {
+		createFlowPane();
 		/**
 		 * TODO: remove everything from flowpanes and add back in
 		 */
@@ -524,4 +509,5 @@ public class PlotDesign extends Window {
 		 * TODO: remove everything from autorate boxes and add back in
 		 */
 	}
+	
 }

@@ -75,7 +75,7 @@ public abstract class PlotObject {
 	 * @param x
 	 */
 	public final void setPlotX(double x) {
-		this.x=x;
+		this.x = x;
 	}
 	
 	/**
@@ -83,7 +83,8 @@ public abstract class PlotObject {
 	 * @param y
 	 */
 	public final void setPlotY(double y) {
-		this.y=y;
+		this.y = y;
+	}
 
   /**
 	 * Getter
