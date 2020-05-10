@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
@@ -241,7 +243,7 @@ public class PlantSelection extends Window {
 		
 		while (itr.hasNext()) {
 			Plant p = itr.next();
-		    
+			
 			boolean fits = false;
 			
 			if(p.getDelawareNative() == true) {
@@ -262,9 +264,12 @@ public class PlantSelection extends Window {
 				fits = checkSeason(p);
 			}			
 			
+			if (fits) {
+				fits = checkColors(p);
+			}
+			
 			if(fits) {
 				flowCanopy.getChildren().add(createPlantBox(p));
-				
 			}
 			
 		}
@@ -300,6 +305,23 @@ public class PlantSelection extends Window {
 			}
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * Checks if a given plant contains any of the selected colors from the questionnaire.
+	 * 
+	 * @param p Plant to compare colors.
+	 * @return Boolean on if the plant contains any of the selected colors.
+	 */
+	public boolean checkColors(Plant p) {
+		HashSet<Colors> colors = p.getColors();
+		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		for (Colors color : colors) {
+			if (selected.contains(color)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
