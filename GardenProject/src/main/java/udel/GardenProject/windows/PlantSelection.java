@@ -3,8 +3,6 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,6 +13,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -94,6 +93,9 @@ public class PlantSelection extends Window {
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
+	private int inset10 = 10;
+	private int imgWidth = 350;
+	private int imgHeight = 100;
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
 	private int borderTopAndBottonMargin = 40;
@@ -104,9 +106,7 @@ public class PlantSelection extends Window {
 	private int scrollSelectedWidth = View.getCanvasWidth() / 2 + 30;
 	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
 	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
-	private int imgWidth = 350;
-	private int imgHeight = 100;
-
+	
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
@@ -115,8 +115,6 @@ public class PlantSelection extends Window {
 		}catch(Exception e) {
 			System.out.println("Wrong size of a plants year Boolean Array");
 		}
-		
-
 		
 	}
 	
@@ -159,6 +157,8 @@ public class PlantSelection extends Window {
 		scrollCanopies.setContent(canopySelection);
 
 		selectedPlantsBox = new FlowPane();
+		selectedPlantsBox.setHgap(inset10);
+		selectedPlantsBox.setVgap(inset10);
 		selectedPlantsBox.setMinWidth(selectedPlantBoxMinWidth);
 		selectedPlantsBox.setMinHeight(selectedPlantBoxMinHeight);
 		
@@ -198,7 +198,7 @@ public class PlantSelection extends Window {
 	 * @param ScrollPane
 	 */
 	public void scrollPaneFormat(ScrollPane scroll) {
-		scroll.setPadding(new Insets(10));
+		scroll.setPadding(new Insets(inset10));
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
@@ -256,6 +256,10 @@ public class PlantSelection extends Window {
 						} 
 					}
 				}
+			}
+			
+			if (getSession().getSelectedPlants().contains(p)) {
+				fits  = false;
 			}
 			
 			if(fits) {
@@ -327,8 +331,6 @@ public class PlantSelection extends Window {
 		ImageView imageView = new ImageView();
 		imageView.setImage(plantImage);
 		
-		Button addPlant = new Button("Add Plant");
-
 		Button infoButton = new Button("Info");
 		infoButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -338,20 +340,40 @@ public class PlantSelection extends Window {
 				switchToWindow(Windows.PlantInfo);
 			}
 		});
-
+		
+		Button addPlant = new Button();
+		if (getSession().getSelectedPlants().contains(p)){ 
+			addPlant.setText("Remove");
+		} else {
+			addPlant.setText("Add Plant");
+		}
+				
 		HBox buttonHolder = new HBox();
 		buttonHolder.getChildren().addAll(infoButton, addPlant);
 
 		VBox imgButtonHolder = new VBox();
-		imgButtonHolder.getChildren().addAll(imageView, buttonHolder);
-
+		imgButtonHolder.getChildren().addAll(imageView, new Text(p.getLatinName()), buttonHolder);
+		
 		addPlant.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				selectedPlantsBox.getChildren().add(imgButtonHolder);
-				getSession().getSelectedPlants().add(p);
-
+				
+				
+				if (addPlant.getText().equals("Add Plant")) {
+					if (!selectedPlantsBox.getChildren().contains(imgButtonHolder)) {
+						selectedPlantsBox.getChildren().add(imgButtonHolder);
+					}
+					imageView.setEffect(null);
+					getSession().getSelectedPlants().add(p);
+					addPlant.setText("Remove");
+				} else {
+					ColorAdjust grayscale = new ColorAdjust();
+					grayscale.setSaturation(-1);
+					imageView.setEffect(grayscale);
+					getSession().getSelectedPlants().remove(p);
+					addPlant.setText("Add Plant");
+				}
 			}
 		});
 		return imgButtonHolder;
@@ -425,25 +447,18 @@ public class PlantSelection extends Window {
 			});
 		}
 	}
-
+	
 	public void refresh() {
 		try {
-			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
+			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
+					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
 				displaySelection();
 			}
 		}catch(Exception e) {
 			System.out.println("Wrong size of a plants year Boolean Array");
 		}
-		
-		/**
-		 * TODO: create proper implementation of clearing and repopulating the flow pane
-		 * for selected plants
-		 */
-		/*
-		 * selectedPlantsBox.getChildren().clear(); Iterator<Plant> pItr =
-		 * getSession().getSelectedPlants().iterator(); while (pItr.hasNext()) {
-		 * populateRightBox(pItr.next()); }
-		 */
+		selectedPlantsBox.getChildren().clear();
+		addSelected();
 	}
 
 	@Override
