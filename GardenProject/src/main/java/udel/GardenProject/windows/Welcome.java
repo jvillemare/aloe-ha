@@ -1,5 +1,6 @@
 package udel.GardenProject.windows;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
@@ -19,6 +20,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -73,6 +76,9 @@ public class Welcome extends Window {
 	 */
 	private VBox centerVBox;
 
+	/**
+	 * Adjustments made to buttons, and screen
+	 */
 	private int logoHeightFactor = 6;
 	private int logoWidthFactor = 5;
 	private int buttonSideInset = 20;
@@ -121,6 +127,9 @@ public class Welcome extends Window {
 
 	}
 
+	/**
+	 * Creating the main 3 buttons on the screen with effects
+	 */
 	public void createButtons() {
 
 		DropShadow shadow = new DropShadow();
@@ -139,7 +148,21 @@ public class Welcome extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				switchToWindow(Windows.Download);
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Garden Project", "*.gardenproject"));
+
+				/*
+				 * User opens up a saved file and then be taken to plot design
+				 */
+				fileChooser.setTitle("Load 'Aloe-Ha' Garden Project");
+				File file = fileChooser.showOpenDialog(scene2);
+
+				if (file != null) {
+					getModel().loadSession(file.getAbsolutePath());
+					switchToWindow(Windows.PlotDesign);
+				}
+
 			}
 		});
 
@@ -152,6 +175,9 @@ public class Welcome extends Window {
 			}
 		});
 
+		/*
+		 * Adding Style and Effects to each of the buttons
+		 */
 		List<Button> buttonArr = new ArrayList<Button>();
 		buttonArr.add(startNewPlot);
 		buttonArr.add(loadSavedPlot);
@@ -187,4 +213,13 @@ public class Welcome extends Window {
 
 		}
 	}
+
+	/**
+	 * Refreshes the screen each time the user opens this up. Screen does not
+	 * refresh on initial startup
+	 */
+	public void refresh() {
+		System.out.println("refreshing in welcome");
+	}
+
 }

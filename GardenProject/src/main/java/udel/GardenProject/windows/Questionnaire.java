@@ -75,7 +75,7 @@ public class Questionnaire extends Window {
 	/**
 	 * For saving all of the user's questionnaire answers And moving between screens
 	 */
-	private Button backToExistingPlants, save, toPlotDesign;
+	private Button backToExistingPlants, toPlotDesign;
 
 	/**
 	 * Used for the text in the VBox Info text
@@ -119,6 +119,21 @@ public class Questionnaire extends Window {
 	 * Colors the user wants to see in their garden
 	 */
 	public ArrayList<Color> colorArr;
+
+	/**
+	 * A list of all the checkboxes for plot objects in Q3
+	 */
+	public ObservableList<CheckBox> q2items;
+
+	/**
+	 * A list of all the checkboxes for seasons in Q7
+	 */
+	public ObservableList<CheckBox> q7items;
+
+	/**
+	 * A list of all the checkboxes for colors in Q8
+	 */
+	public ObservableList<CheckBox> q8items;
 
 	/**
 	 * Used for user input
@@ -175,7 +190,7 @@ public class Questionnaire extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(0, inset5, inset10, inset5));
 		tilePane.setHgap(buttonGap);
-		tilePane.getChildren().addAll(backToExistingPlants, save, toPlotDesign);
+		tilePane.getChildren().addAll(backToExistingPlants, toPlotDesign);
 
 		scroll = new ScrollPane();
 
@@ -219,14 +234,13 @@ public class Questionnaire extends Window {
 		createQ6();
 		createQ7();
 		createQ8();
-
 	}
 
 	/**
 	 * Creates the Text of each question
 	 * 
 	 * @param question
-	 * @return
+	 * @return The characteristics of text
 	 */
 	public Text createText(String question) {
 		Text t = new Text(question);
@@ -291,16 +305,11 @@ public class Questionnaire extends Window {
 			if (enumPlotObjects.isTypicallyInGarden() == false)
 				objectsNearPlot.add(enumPlotObjects);
 
-		ObservableList<CheckBox> q2items = FXCollections.observableArrayList(); // add checkboxes to this list
+		q2items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (PlotObjects plotObjectEnum : objectsNearPlot) {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
-			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks save
-		}
-
-		// sets the first checkbox to selected
-		if (!q2items.get(0).isSelected()) {
-			q2items.get(0).setSelected(true);
+			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks next
 		}
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
@@ -359,18 +368,12 @@ public class Questionnaire extends Window {
 		for (Seasons enumSeason : Seasons.values())
 			seasonsWanted.add(enumSeason);
 
-		ObservableList<CheckBox> q7items = FXCollections.observableArrayList(); // add checkboxes to this list
+		q7items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (Seasons seasonEnum : seasonsWanted) {
 			CheckBox c = new CheckBox(seasonEnum.toString());
 			q7items.add(c); // added to this list to view
-			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks save
+			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks next
 		}
-
-		// sets the first checkbox to selected
-		if (!q7items.get(0).isSelected()) {
-			q7items.get(0).setSelected(true);
-		}
-
 		q7ListView = new ListView<>();
 		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -390,18 +393,12 @@ public class Questionnaire extends Window {
 		for (Colors enumColor : Colors.values())
 			colorsWanted.add(enumColor);
 
-		ObservableList<CheckBox> q8items = FXCollections.observableArrayList(); // add checkboxes to this list
+		q8items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (Colors colorEnum : colorsWanted) {
 			CheckBox c = new CheckBox(colorEnum.toString());
 			q8items.add(c); // added to this list to view
-			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks save
+			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks next
 		}
-
-		// sets the first checkbox to selected
-		if (!q8items.get(0).isSelected()) {
-			q8items.get(0).setSelected(true);
-		}
-
 		q8ListView = new ListView<>();
 		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -438,8 +435,8 @@ public class Questionnaire extends Window {
 			}
 		});
 
-		save = new Button("Save");
-		save.setOnAction(new EventHandler<ActionEvent>() {
+		toPlotDesign = new Button("Next");
+		toPlotDesign.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				// sends information from questionnaire to Session for later use. User MUST
@@ -480,20 +477,16 @@ public class Questionnaire extends Window {
 				getSession().setSunlightOfPlot(getChoice(q6ChoiceBox));
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
-			}
-		});
 
-		toPlotDesign = new Button("Next");
-		toPlotDesign.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
 				switchToWindow(Windows.PlantSelection);
 			}
 		});
 
+		/*
+		 * Sets up the Style and Effects for the buttons
+		 */
 		List<Button> bottomButtons = new ArrayList<Button>();
 		bottomButtons.add(backToExistingPlants);
-		bottomButtons.add(save);
 		bottomButtons.add(toPlotDesign);
 
 		for (Button b : bottomButtons) {
@@ -526,7 +519,7 @@ public class Questionnaire extends Window {
 	}
 
 	/**
-	 * Extracts String value from choice box. Used on button call save
+	 * Extracts String value from choice box. Used on button call next
 	 * 
 	 * @param q4ChoiceBox2
 	 * @return
@@ -588,7 +581,7 @@ public class Questionnaire extends Window {
 
 		// Removes everything in list first so no doubles are added
 		getSession().getColorsUserSelected().clear();
-		
+
 		// for every selected plot object in the cb list, convert it back to a
 		// Colors from Colors Enum and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
@@ -598,24 +591,76 @@ public class Questionnaire extends Window {
 		}
 	}
 
+	/**
+	 * Every question answer is cleared and added back again to the session it
+	 * corresponds to
+	 */
 	public void refresh() {
-		// before it goes to the next window, show that it added the plants the
-		// user selected
-		// used for testing purposes
 
-		/*
-		 * System.out.println("Questionnaire: Refreshing...");
-		 * System.out.println(getSession().getExistingPlants()); // existing plants
-		 * System.out.println(getSession().getPlotName());//name of plot
-		 * System.out.println(getSession().getWidthOfUserPlot());// width
-		 * System.out.println(getSession().getLengthOfUserPlot()); // length
-		 * System.out.println(getSession().getSelectedPlotObjects()); // plot objects
-		 * System.out.println(getChoice(q4ChoiceBox)); // moisture
-		 * System.out.println(getChoice(q5ChoiceBox)); // soil type
-		 * System.out.println(getChoice(q6ChoiceBox)); // sunlight
-		 * System.out.println(getSession().getSeasonsUserSelected()); // seasons
-		 * System.out.println(getSession().getColorsUserSelected()); // colors
-		 */
+		// Name of plot
+		textField.clear();
+		textField.setText(getSession().getPlotName());
+
+		// Width of Plot
+		q1textField1.clear();
+		q1textField1.setText(Integer.toString(getSession().getWidthOfUserPlot()));
+
+		// Length of Plot
+		q1textField2.clear();
+		q1textField2.setText(Integer.toString(getSession().getLengthOfUserPlot()));
+
+		// Plot Objects
+		clearCheckBoxes(q2items);
+		for (PlotObjects po : getSession().getSelectedPlotObjects()) {
+			for (CheckBox c : q2items) {
+				if (c.getText().toString().equals(po.toString())) {
+					c.setSelected(true);
+				}
+			}
+		}
+
+		// Moisture
+		q4ChoiceBox.setValue(getSession().getMoistureOfPlot());
+
+		// Soil type
+		q4ChoiceBox.setValue(getSession().getSoilTypeOfPlot());
+
+		// Sunlight
+		q6ChoiceBox.setValue(getSession().getSunlightOfPlot());
+
+		// Seasons Selected
+		clearCheckBoxes(q7items);
+		for (Seasons s : getSession().getSeasonsUserSelected()) {
+			for (CheckBox c : q7items) {
+				if (c.getText().toString().equals(s.toString())) {
+					c.setSelected(true);
+				}
+			}
+		}
+
+		// Colors Selected
+		clearCheckBoxes(q8items);
+		for (Colors color : getSession().getColorsUserSelected()) {
+			for (CheckBox c : q8items) {
+				if (c.getText().toString().equals(color.toString())) {
+					c.setSelected(true);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Clears all the checkboxes in the ListView
+	 * 
+	 * @param list
+	 */
+	public void clearCheckBoxes(ObservableList<CheckBox> list) {
+		for (CheckBox c : list) {
+			if (c.isSelected()) {
+				c.setSelected(false);
+			}
+		}
 	}
 
 	/**

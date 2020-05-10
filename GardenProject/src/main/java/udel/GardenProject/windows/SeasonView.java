@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,7 @@ import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plants.Plant;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -333,6 +335,11 @@ public class SeasonView extends Window {
 
 	}
 
+	/**
+	 * Sets style and effects for the toggle buttons
+	 * 
+	 * @param b Each toggle button
+	 */
 	public void createToggleEvent(ToggleButton b) {
 
 		DropShadow shadow = new DropShadow();
@@ -359,6 +366,18 @@ public class SeasonView extends Window {
 			}
 		});
 
+	}
+
+	/**
+	 * Refreshes the screen to clear any of the toggles chosen
+	 */
+	public void refresh() {
+		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
+		for (ToggleGroup group : tg) {
+			if (group.getSelectedToggle() != null) {
+				group.getSelectedToggle().setSelected(false);
+			}
+		}
 	}
 
 }

@@ -427,4 +427,21 @@ public class PlotDesign extends Window {
 	public EventHandler getHandlerForDrag() {
 		return event -> drag((MouseEvent) event);
 	}
+
+	/**
+	 * Remove everything from the flow panes, the center box, and the autorate boxes
+	 * and add info back in again for the correct session
+	 */
+	public void refresh() {
+		/**
+		 * TODO: remove everything from flowpanes and add back in
+		 */
+		/**
+		 * TODO: remove everything from center box and add back in
+		 */
+		/**
+		 * TODO: remove everything from autorate boxes and add back in
+		 */
+
+	}
 }

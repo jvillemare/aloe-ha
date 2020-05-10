@@ -2,30 +2,20 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -37,7 +27,6 @@ import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
-import udel.GardenProject.plants.Plant;
 
 /**
  * To display all the information of a Plant to the user.
@@ -75,28 +64,9 @@ public class PlantSelection extends Window {
 	private Button back, next;
 
 	/**
-	 * Allows scrolling for all the plants shown in categories
-	 */
-	private ScrollPane scroll;
-
-	/**
-	 * Holds all the images of the plants
-	 */
-	private FlowPane flow;
-
-	private Plant plantArray[];
-
-	private HBox toggles;
-
-	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
 	 */
 	private ScrollPane scrollSelected;
-
-	/**
-	 * Holds the category toggles together so the user can only pick one at a time
-	 */
-	private ToggleGroup plantGroup;
 
 	/**
 	 * ScrollPane for the accordion selection
@@ -114,16 +84,19 @@ public class PlantSelection extends Window {
 	 */
 	private HBox centerBox;
 
-	private int backgroundScreenWidthAndHeight = 100;
-	private int borderTopAndBottonMargin = 40;
+	/**
+	 * Adjustments to screen, buttons, and panes
+	 */
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
+	private int borderTopAndBottonMargin = 40;
+	private int backgroundScreenWidthAndHeight = 100;
 	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
 	private int prefScrollHeight = View.getCanvasHeight() / 5 * 4;
 	private int selectedPlantBoxMinWidth = View.getCanvasWidth() / 2;
-	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 	private int scrollSelectedWidth = View.getCanvasWidth() / 2 + 30;
 	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
+	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection");
@@ -306,6 +279,22 @@ public class PlantSelection extends Window {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Refreshes the screen to have the correct plants on the right side according
+	 * to the session
+	 */
+	public void refresh() {
+		/**
+		 * TODO: create proper implementation of clearing and repopulating the flow pane
+		 * for selected plants
+		 */
+		/*
+		 * selectedPlantsBox.getChildren().clear(); Iterator<Plant> pItr =
+		 * getSession().getSelectedPlants().iterator(); while (pItr.hasNext()) {
+		 * populateRightBox(pItr.next()); }
+		 */
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,7 +48,7 @@ public class ExistingPlants extends Window {
 	/**
 	 * Used for the buttons at the top of the screen
 	 */
-	private Button backToMain, save, nextButton;
+	private Button backToMain, nextButton;
 
 	/**
 	 * Used to remove typing in search bar
@@ -153,7 +154,7 @@ public class ExistingPlants extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(buttonGap);
-		tilePane.getChildren().addAll(backToMain, save, nextButton);
+		tilePane.getChildren().addAll(backToMain, nextButton);
 
 		vbox.getChildren().add(selection);
 
@@ -178,13 +179,10 @@ public class ExistingPlants extends Window {
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
 
-	// TODO: Constructor to pass in plant array?
-
 	@Override
 	public Scene getScene() {
 		// TODO Auto-generated method stub
 		return this.scene;
-
 	}
 
 	/**
@@ -200,14 +198,6 @@ public class ExistingPlants extends Window {
 			}
 		});
 
-		save = new Button("Save");
-		save.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// get existing plants function
-			}
-		});
-
 		nextButton = new Button("Next");
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -216,9 +206,11 @@ public class ExistingPlants extends Window {
 			}
 		});
 
+		/*
+		 * Setting Style and Effects for Buttons
+		 */
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(backToMain);
-		buttons.add(save);
 		buttons.add(nextButton);
 
 		for (Button b : buttons) {
@@ -366,67 +358,8 @@ public class ExistingPlants extends Window {
 						if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle(boldFontWeight);
-								String latinName = Plant.trimToLatinName(label.getText());
-								if (getModel().getSession().getExistingPlants().containsKey(latinName))
-									return;
-
-								if (getModel().getSession().getExistingPlants().put(latinName,
-										dropDownPlants.get(latinName)) == null) {
-
-									Text textarea = new Text(label.getText());
-									textarea.setWrappingWidth(selectedPlantWrappingWidth);
-									textarea.setStyle("-fx-font-size: 20px;");
-									textarea.setFont(
-											Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Regular.ttf"),
-													selectedPlantFontSize));
-
-									Button deleteButton = new Button("X");
-									deleteButton.setStyle(View.getWhiteBackgroundStyle() + "-fx-text-fill: #BC0504;"
-											+ "-fx-border-width: 1;" + "-fx-border-color: #000000;"); // creates the red
-																										// X inside the
-																										// button
-									deleteButton.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
-
-									/**
-									 * Hovering over delete button characteristics so user knows that they are over
-									 * the delete button
-									 */
-									DropShadow shadow = new DropShadow();
-									deleteButton.addEventHandler(MouseEvent.MOUSE_ENTERED,
-											new EventHandler<MouseEvent>() {
-												@Override
-												public void handle(MouseEvent e) {
-													deleteButton.setEffect(shadow);
-													textarea.setEffect(shadow);
-													deleteButton.setStyle("-fx-background-color: #C1AFAF;"
-															+ "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
-															+ "-fx-border-color: #000000;");
-												}
-											});
-
-									deleteButton.addEventHandler(MouseEvent.MOUSE_EXITED,
-											new EventHandler<MouseEvent>() {
-												@Override
-												public void handle(MouseEvent e) {
-													deleteButton.setEffect(null);
-													textarea.setEffect(null);
-													deleteButton.setStyle(View.getWhiteBackgroundStyle()
-															+ "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
-															+ "-fx-border-color: #000000;");
-												}
-											});
-
-									HBox selectedPlant = new HBox(selectedPlantHBoxSize);
-									selectedPlant.getChildren().addAll(deleteButton, textarea);
-
-									selection.getChildren().addAll(selectedPlant);
-									deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-										@Override
-										public void handle(ActionEvent event) {
-											getModel().getSession().getExistingPlants().remove(latinName);
-											selectedPlant.getChildren().removeAll(deleteButton, textarea);
-										}
-									});
+								if (getModel().getSession().getExistingPlants().add(p)) {
+									populateRightBox(p);
 								}
 							}
 						}
@@ -438,9 +371,75 @@ public class ExistingPlants extends Window {
 		return dropDownMenu;
 	}
 
-	private static void setFont(Font loadFont) {
-		// TODO Auto-generated method stub
+	/**
+	 * Takes the plants in existing plants and the plants that are being chosen to
+	 * be added ot the right VBox with the Latin name and a delete box
+	 * 
+	 * @param p Plant that has been selected from the drop down
+	 */
+	private void populateRightBox(Plant p) {
 
+		Text textarea = new Text(p.getFriendlyName());
+		textarea.setWrappingWidth(selectedPlantWrappingWidth);
+		textarea.setStyle("-fx-font-size: 20px;");
+		textarea.setFont(
+				Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Regular.ttf"), selectedPlantFontSize));
+
+		Button deleteButton = new Button("X");
+		deleteButton.setStyle(View.getWhiteBackgroundStyle() + "-fx-text-fill: #BC0504;" + "-fx-border-width: 1;"
+				+ "-fx-border-color: #000000;"); // creates the red
+													// X inside the
+													// button
+		deleteButton.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
+
+		/**
+		 * Hovering over delete button characteristics so user knows that they are over
+		 * the delete button
+		 */
+		DropShadow shadow = new DropShadow();
+		deleteButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				deleteButton.setEffect(shadow);
+				textarea.setEffect(shadow);
+				deleteButton.setStyle("-fx-background-color: #C1AFAF;" + "-fx-text-fill: #BC0504;"
+						+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+			}
+		});
+
+		deleteButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				deleteButton.setEffect(null);
+				textarea.setEffect(null);
+				deleteButton.setStyle(View.getWhiteBackgroundStyle() + "-fx-text-fill: #BC0504;"
+						+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+			}
+		});
+
+		HBox selectedPlant = new HBox(selectedPlantHBoxSize);
+		selectedPlant.getChildren().addAll(deleteButton, textarea);
+
+		selection.getChildren().addAll(selectedPlant);
+		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				getModel().getSession().getExistingPlants().remove(p);
+				selectedPlant.getChildren().removeAll(deleteButton, textarea);
+			}
+		});
+	}
+
+	/**
+	 * Clears the screen of any plants on the selected side and places the plants in
+	 * again according to the session in use.
+	 */
+	public void refresh() {
+		selection.getChildren().clear();
+		Iterator<Plant> pItr = getSession().getExistingPlants().iterator();
+		while (pItr.hasNext()) {
+			populateRightBox(pItr.next());
+		}
 	}
 
 }
