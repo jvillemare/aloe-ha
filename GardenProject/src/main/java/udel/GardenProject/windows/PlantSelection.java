@@ -1,6 +1,7 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
@@ -237,11 +239,13 @@ public class PlantSelection extends Window {
 		
 		ArrayList<Plant> plants = getModel().getPlants();
 		
+		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		
 		Iterator<Plant> itr = plants.iterator();
 		
 		while (itr.hasNext()) {
 			Plant p = itr.next();
-		    
+			
 			boolean fits = false;
 			
 			if(p.getDelawareNative() == true) {
@@ -262,9 +266,12 @@ public class PlantSelection extends Window {
 				fits = checkSeason(p);
 			}			
 			
+			if (fits) {
+				fits = checkColors(p, selected);
+			}
+			
 			if(fits) {
 				flowCanopy.getChildren().add(createPlantBox(p));
-				
 			}
 			
 		}
@@ -300,6 +307,23 @@ public class PlantSelection extends Window {
 			}
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * Checks if a given plant contains any of the selected colors from the given ArrayList.
+	 * 
+	 * @param p 		Plant to compare colors.
+	 * @param selected 	Colors to compare plant colors to.
+	 * @return 			Boolean on if the plant contains any of the selected colors.
+	 */
+	public boolean checkColors(Plant p, ArrayList<Colors> selected) {
+		HashSet<Colors> colors = p.getColors();
+		for (Colors color : colors) {
+			if (selected.contains(color)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
