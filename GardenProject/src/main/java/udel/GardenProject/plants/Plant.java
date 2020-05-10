@@ -274,8 +274,8 @@ public class Plant implements Serializable {
 	
 	/**
 	 * Goes through plant description and finds the color(s) of the plant.
-	 * Gathers information from all sources that have color data: NPC, SUNNYEDGE,
-	 * and NRCS; UDEL has no color data.
+	 * Gathers information from all sources that have color data: NPC, 
+	 * SUNNYEDGE, and NRCS; UDEL has no color data.
 	 * @return Either a HashSet of colors that are found in the plant or null
 	 * if the only data source is UDEL.
 	 */

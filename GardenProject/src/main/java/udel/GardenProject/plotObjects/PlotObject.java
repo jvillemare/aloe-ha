@@ -71,6 +71,22 @@ public abstract class PlotObject {
 	}
 	
 	/**
+	 * Setter.
+	 * @param x
+	 */
+	public final void setPlotX(double x) {
+		this.x = x;
+	}
+	
+	/**
+	 * Setter.
+	 * @param y
+	 */
+	public final void setPlotY(double y) {
+		this.y = y;
+	}
+
+  /**
 	 * Getter
 	 * @return Image for plot object.
 	 */

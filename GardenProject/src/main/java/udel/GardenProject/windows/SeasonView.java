@@ -318,27 +318,21 @@ public class SeasonView extends Window {
 	public void createToggleGroups() {
 		seasonHBox = new HBox();
 		seasonGroup = new ToggleGroup();
-		String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
+		Seasons[] seasonSelection = Seasons.values();
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
-		for (String s : seasonSelection) {
-			ToggleButton toggle = new ToggleButton(s);
-			createToggleEvent(toggle);
-			seasonPick.add(s); // adds the seasons to an observable list
+		for (Seasons s : seasonSelection) {
+			ToggleButton toggle = new ToggleButton(s.getSeason());
+			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
+		//String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
+		//ObservableList<String> seasonPick = FXCollections.observableArrayList();
+		//for (String s : seasonSelection) {
+		//	ToggleButton toggle = new ToggleButton(s);
+		//	createToggleEvent(toggle);
+		//	seasonPick.add(s); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				if (s.equals("SUMMER")) {
-					chooseSeason = Seasons.SUMMER;
-				}
-				if (s.equals("SPRING")) {
-					chooseSeason = Seasons.SPRING;
-				}
-				if (s.equals("FALL")) {
-					chooseSeason = Seasons.FALL;
-				}
-				if (s.equals("WINTER")) {
-					chooseSeason = Seasons.WINTER;
-				}
+				chooseSeason=s;
 			});
 		}
 
