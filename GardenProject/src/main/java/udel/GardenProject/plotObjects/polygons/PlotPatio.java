@@ -10,6 +10,11 @@ import java.io.Serializable;
 public class PlotPatio extends GenericPolygon implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Path to an image of patio furniture.
+	 */
+	private static String patio = "/viewImages/patio.png";
 
 	/**
 	 * Constructor.
@@ -19,7 +24,7 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	 */
 	public PlotPatio(double x, double y) {
 		// TODO: A patio is always 25.0 feet tall?
-		super(x, y, 25.0, new AdjustablePolygon(null, null, 0, 0));
+		super(x, y, 25.0, new AdjustablePolygon(null, null, 0, 0), patio);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 	}

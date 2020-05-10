@@ -1,6 +1,8 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -11,16 +13,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
@@ -31,13 +32,14 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.YDistanceComparator;
 
 /**
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
@@ -73,9 +75,9 @@ public class SeasonView extends Window {
 	private TilePane tilePane, toggleOptionsTilePane;
 
 	/**
-	 * buttons to move between screens and save user input
+	 * buttons to move between screens
 	 */
-	private Button back, save, next;
+	private Button back, backToMain, next;
 
 	/**
 	 * Used for grouping different toggle selections
@@ -91,6 +93,11 @@ public class SeasonView extends Window {
 	 * Prospective area where the image of the garden plot should be
 	 */
 	private Rectangle square;
+	
+	/**
+	 * Canvas to draw plants on for window view
+	 */
+	private Canvas canvas;
 
 	/**
 	 * Final toggle the user chose for season
@@ -111,22 +118,48 @@ public class SeasonView extends Window {
 	 * Holds the toggle options and the bottom navigation buttons
 	 */
 	public VBox bottomBox;
-
+	
 	/**
+	 * Width of garden on the window.
+	 */
+	private double viewWidth;
+	
+	/**
+	 * Depth of garden on the window.
+	 */
+	private double viewDepth;
+	
+	/**
+	 * Maximum depth a plot object may be placed on plot desigh
+	 */
+	private final int MAXDEPTH = 550;
+	
+	/**
+	 * Maximum width a plot object may be placed on plot design
+	 */
+	private final int MAXWIDTH = 620;
+	
+	/**
+	 * Factor for scaling images in the window view
+	 */
+	private double factor;
+  
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int gapBetweenButtons = 100;
+	private int squareHeightAdjustment = 130;
+	private int squareWidthAdjustment = 20;
+	private int backgroundScreenWidthAndHeight = 100;
+	private int textWrapAdjustment = 20;
+
+  /**
 	 * Create a SeasonView window instance.
 	 *
 	 * @param m Model
 	 */
-
-	int inset5 = 5;
-	int buttonTextSize = 12;
-	int buttonPrefWidth = 100;
-	int topTextSize = 20;
-	int textWrapAdjustment = 20;
-	int buttonGap = 100;
-
 	public SeasonView(Model m) {
-		super(m, "Garden Previewer");
+		super(m, "Garden Previewer", Windows.SeasonView);
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
@@ -136,7 +169,7 @@ public class SeasonView extends Window {
 		tilePane = new TilePane();
 
 		text = new Text("Select the season, year, and view you would like to see your Garden in!");
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), topTextSize));
+		text.setFont(getModel().getHackBold20());
 		text.setWrappingWidth(View.getCanvasWidth() - textWrapAdjustment);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.getChildren().addAll(text);
@@ -145,39 +178,49 @@ public class SeasonView extends Window {
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(buttonGap);
-		tilePane.getChildren().addAll(back, save, next);
+		tilePane.setPadding(new Insets(inset5));
+		tilePane.setHgap(gapBetweenButtons);
+		tilePane.getChildren().addAll(back, backToMain, next);
 
 		toggleOptionsTilePane.setAlignment(Pos.CENTER);
 		toggleOptionsTilePane.setPadding(new Insets(inset5));
-		toggleOptionsTilePane.setHgap(20);
-		toggleOptionsTilePane.setVgap(20);
+		toggleOptionsTilePane.setHgap(inset20);
+		toggleOptionsTilePane.setVgap(inset20);
 
+		
+		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
+				- toggleOptionsTilePane.getHeight() - 130;
+		viewWidth = View.getCanvasWidth() - 20;
+		canvas = new Canvas(viewWidth, viewDepth);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+		Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+		drawCanvas(gc);
+		
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
-				- toggleOptionsTilePane.getHeight() - 130);
-		square.setWidth(View.getCanvasWidth() - 20);
+				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment);
+		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
-		imageVBox.setPadding(new Insets(0, 0, 20, 0));
+		imageVBox.setPadding(new Insets(0, 0, inset20, 0));
 		imageVBox.getChildren().add(square);
 
 		toggleOptionsTilePane.getChildren().addAll(seasonHBox, yearHBox, viewHBox);
-
-		Image image = new Image(getClass().getResourceAsStream("/buttonImages/splash2.png"));
-		BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-		Background background = new Background(backgroundImage);
 
 		layoutCenterVBox.getChildren().add(imageVBox);
 
 		bottomBox = new VBox();
 		bottomBox.getChildren().addAll(toggleOptionsTilePane, tilePane);
 
-		borderPane.setBackground(background);
-		borderPane.setPadding(new Insets(10));
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
+
+		borderPane.setBackground(View.getBackgroundScreen());
+
+		borderPane.setPadding(new Insets(inset10));
 		borderPane.setCenter(layoutCenterVBox);
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBox);
@@ -189,7 +232,7 @@ public class SeasonView extends Window {
 	}
 
 	/**
-	 * Sends input from user to the session after user clicks SAVE
+	 * Sends input from user to the session after user clicks NEXT
 	 */
 	public void getInput() {
 
@@ -219,12 +262,12 @@ public class SeasonView extends Window {
 			}
 		});
 
-		save = new Button("Save");
-		save.setOnAction(new EventHandler<ActionEvent>() {
+		backToMain = new Button("Main Menu");
+		backToMain.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				getInput();
+				switchToWindow(Windows.Welcome);
 			}
 		});
 
@@ -233,26 +276,27 @@ public class SeasonView extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
+				getInput();
 				switchToWindow(Windows.Download);
 			}
 		});
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
-		buttons.add(save);
+		buttons.add(backToMain);
 		buttons.add(next);
 
 		for (Button b : buttons) {
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-			b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-			b.setPrefWidth(buttonPrefWidth);
+			b.setFont(getModel().getHackBold12());
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
 
 			DropShadow shadow = new DropShadow();
 			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -260,7 +304,7 @@ public class SeasonView extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
+					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
 
@@ -279,9 +323,14 @@ public class SeasonView extends Window {
 		for (Seasons s : seasonSelection) {
 			ToggleButton toggle = new ToggleButton(s.getSeason());
 			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
+		//String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
+		//ObservableList<String> seasonPick = FXCollections.observableArrayList();
+		//for (String s : seasonSelection) {
+		//	ToggleButton toggle = new ToggleButton(s);
+		//	createToggleEvent(toggle);
+		//	seasonPick.add(s); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
-			createToggleEvent(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chooseSeason=s;
 			});
@@ -289,7 +338,6 @@ public class SeasonView extends Window {
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		//List<String> yearSelection = List.of("0 YEARS", "1 YEAR", "2 YEARS");
 		String[] yearSelection = {"0 YEARS", "1 YEAR", "2 YEARS"};
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
 		for (String y : yearSelection) {
@@ -313,7 +361,6 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		//List<String> viewSelection = List.of("TOP VIEW", "WINDOW VIEW");
 		String[] viewSelection = {"TOP VIEW", "WINDOW VIEW"};
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
@@ -324,34 +371,93 @@ public class SeasonView extends Window {
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				if (v.equals("TOP VIEW")) {
+					imageVBox.getChildren().set(0, square);
 					chosenView = "TOP";
 				}
 				if (v.equals("WINDOW VIEW")) {
+					imageVBox.getChildren().set(0, canvas);
 					chosenView = "WINDOW";
 				}
 			});
 		}
 
+		viewGroup.getSelectedToggle();
+
 	}
 
+	/**
+	 * Sets style and effects for the toggle buttons
+	 * 
+	 * @param b Each toggle button
+	 */
 	public void createToggleEvent(ToggleButton b) {
 
 		DropShadow shadow = new DropShadow();
+		String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
+		String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+				+ "-fx-outer-border: #63A331;";
 
-		b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), buttonTextSize));
-		b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-		b.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		b.setFont(getModel().getHackBold12());
+		b.setStyle(notHover);
+		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if (b.isSelected()) {
-					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #FFFFFF;" + "-fx-text-fill: #000000;");
-				} else {
-					b.setEffect(null);
-					b.setStyle("-fx-background-color: #76C325;" + "-fx-text-fill: #000000;");
-				}
+				b.setEffect(shadow);
+				b.setStyle(hover);
 			}
 		});
+
+		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(null);
+				b.setStyle(notHover);
+			}
+		});
+
 	}
 
+	/**
+	 * Refreshes the screen to clear any of the toggles chosen
+	 */
+	public void refresh() {
+    // TODO: drawCanvas() doesn't need to be called here?
+		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
+		for (ToggleGroup group : tg) {
+			if (group.getSelectedToggle() != null) {
+				group.getSelectedToggle().setSelected(false);
+			}
+		}
+	}
+	
+	/**
+	 * Draws all the plot objects on the canvas for the window view.
+	 * 
+	 * @param gc GraphicsContext that corresponds to window view canvas
+	 */
+	public void drawCanvas(GraphicsContext gc) {
+		gc.setFill(Color.rgb(140, 140, 140, .25));
+		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
+		Collections.sort(plot, new YDistanceComparator());
+		DropShadow shadow = new DropShadow();
+		for (PlotObject po : plot) {
+			factor = .3;
+			if (po.getPlotY()/MAXDEPTH > factor) {
+				factor = po.getPlotY()/MAXDEPTH; 
+			}
+			Image i = new Image(po.getImage());
+			gc.fillOval(po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()/3*factor) + viewDepth/3*2, i.getWidth()*factor, i.getHeight()/2*factor);
+		}
+		for (PlotObject po : plot) {
+			factor = .3;
+			if (po.getPlotY()/MAXDEPTH > factor) {
+				factor = po.getPlotY()/MAXDEPTH; 
+			}
+			Image i = new Image(po.getImage());
+			gc.setEffect(shadow);
+			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
+		}
+		
+	}
 }

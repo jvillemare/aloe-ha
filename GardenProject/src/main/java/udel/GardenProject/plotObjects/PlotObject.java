@@ -25,6 +25,11 @@ public abstract class PlotObject {
 	private double height;
 	
 	/**
+	 * Path of image representing the plant
+	 */
+	private String image;
+	
+	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
 	 * calculating plant transition, shade, etc.
@@ -32,11 +37,13 @@ public abstract class PlotObject {
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
+	 * @param imagePath	String of path to image representing the plant
 	 */
-	public PlotObject(double x, double y, double height) {
+	public PlotObject(double x, double y, double height, String imagePath) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
+		this.image = imagePath;
 	}
 	
 	/**
@@ -77,6 +84,13 @@ public abstract class PlotObject {
 	 */
 	public final void setPlotY(double y) {
 		this.y=y;
+
+  /**
+	 * Getter
+	 * @return Image for plot object.
+	 */
+	public final String getImage() {
+		return this.image;
 	}
 
 }

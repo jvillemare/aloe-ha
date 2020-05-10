@@ -1,5 +1,6 @@
 package udel.GardenProject.windows;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
@@ -82,7 +84,7 @@ public class PlotDesign extends Window {
 	/**
 	 * Buttons in tilePane at the bottom of the screen
 	 */
-	private Button backButton, saveButton, loadButton, nextButton;
+	private Button backButton, saveButton, mainMenu, nextButton;
 
 	/**
 	 * Used for when the user wants to edit the points of their plot
@@ -110,18 +112,15 @@ public class PlotDesign extends Window {
 	 */
 	private ScrollPane scrollSelections;
 
-	private int rectWidth = View.getCanvasWidth() / 5 * 3;
-	private int rectHeight = View.getCanvasHeight() / 7 * 6;
-	private int scrollPrefWidth = View.getCanvasWidth() / 3 + 30;
-	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
+	/**
+	 * Adjustments to buttons and panes
+	 */
+	private int autoRateBarWidth = 200;
+	private int autoRateBarHeight = 10;
 	private int autoRateBoxWidth = 255;
 	private int autoRateBoxHeight = 550;
 	private int gapBetweenButtons = 100;
-	private int backgroundWidthAndHeight = 100;
-	private int borderTopAndBottonMargin = 90;
 	private int borderSideMargins = 200;
-	private int autoRateBarWidth = 200;
-	private int autoRateBarHeight = 10;
 	
 	/**
 	 * Use in drag to determine create a new image or not
@@ -139,7 +138,14 @@ public class PlotDesign extends Window {
 	
 	private HashMap<String, Plant> existingPlants;
 	
-	private HashMap<ImageView, PlotPlant> plotPlants=new HashMap<ImageView, PlotPlant>();
+	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
+
+	private int borderTopAndBottonMargin = 90;
+	private int backgroundWidthAndHeight = 100;
+	private int rectWidth = View.getCanvasWidth() / 5 * 3;
+	private int rectHeight = View.getCanvasHeight() / 7 * 6;
+	private int scrollPrefWidth = View.getCanvasWidth() / 3 + 30;
+	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -147,9 +153,10 @@ public class PlotDesign extends Window {
 	 * @param m Model
 	 */
 	public PlotDesign(Model m) {
-		super(m, "Plot Designer");
+		super(m, "Plot Designer", Windows.PlotDesign);
 		session=getModel().getSession();
 		existingPlants=session.getExistingPlants();
+
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -239,9 +246,11 @@ public class PlotDesign extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(backButton, saveButton, loadButton, nextButton);
 		
+    // TODO: @wjm2038 do the following two lines need to reversed?
 		createFlowPane();
+		tilePane.getChildren().addAll(backButton, mainMenu, saveButton, nextButton);
+
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
 
@@ -254,7 +263,6 @@ public class PlotDesign extends Window {
 
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
-		
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
@@ -344,21 +352,33 @@ public class PlotDesign extends Window {
 			}
 		});
 
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.Welcome);
+			}
+		});
+
 		saveButton = new Button("Save");
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				// add saving function
-			}
-		});
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
+				fileChooser.setInitialFileName(getSession().getPlotName());
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
 
-		loadButton = new Button("Load");
-		loadButton.setOnAction(new EventHandler<ActionEvent>() {
+				File file = fileChooser.showSaveDialog(scene2);
+				if (file != null) {
 
-			@Override
-			public void handle(ActionEvent event) {
-				// add loading function
+					System.out.println(getModel().saveSession(file.getAbsolutePath()));
+					getModel().saveSession(file.getAbsolutePath());
+				}
 			}
 		});
 
@@ -373,8 +393,8 @@ public class PlotDesign extends Window {
 
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(backButton);
+		buttons.add(mainMenu);
 		buttons.add(saveButton);
-		buttons.add(loadButton);
 		buttons.add(nextButton);
 
 		for (Button b : buttons) {
@@ -474,6 +494,7 @@ public class PlotDesign extends Window {
 	public EventHandler getHandlerForDrag() {
 		return event -> drag((MouseEvent) event);
 	}
+
 	public void release(MouseEvent event) {
 		ImageView n = (ImageView) event.getSource();
 		create=true;
@@ -483,7 +504,24 @@ public class PlotDesign extends Window {
 		root.getChildren().remove(tmp);
 		
 	}
+  
 	public EventHandler getHandlerForRelease() {
 		return event -> release((MouseEvent) event);
+  }
+  
+	/**
+	 * Remove everything from the flow panes, the center box, and the autorate boxes
+	 * and add info back in again for the correct session
+	 */
+	public void refresh() {
+		/**
+		 * TODO: remove everything from flowpanes and add back in
+		 */
+		/**
+		 * TODO: remove everything from center box and add back in
+		 */
+		/**
+		 * TODO: remove everything from autorate boxes and add back in
+		 */
 	}
 }
