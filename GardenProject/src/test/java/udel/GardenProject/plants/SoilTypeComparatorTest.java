@@ -22,7 +22,7 @@ public class SoilTypeComparatorTest {
 		assertTrue(privateDescending.getBoolean(c) == true);
 	}
 
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void booleanConstructorTest()
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		SoilTypeComparator c = new SoilTypeComparator(true);
@@ -41,17 +41,19 @@ public class SoilTypeComparatorTest {
 		assertTrue(c.compare(pine, flower) == 0);
 	}
 	
+	@Test
 	public void ascendTest() {
 		SoilTypeComparator c = new SoilTypeComparator(false);
 		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.SANDY, null, false, false, null, null);
 		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null, null);
-		assertTrue(c.compare(pine, flower) > 0);
+		assertTrue(c.compare(pine, flower) < 0);
 	}
 	
+	@Test
 	public void descendTest() {
 		SoilTypeComparator c = new SoilTypeComparator(true);
 		Plant pine = new Plant(null, null, null, null, 0, null, SoilTypes.LOAMY, null, false, false, null, null);
 		Plant flower = new Plant(null, null, null, null, 0, null, SoilTypes.CLAY, null, false, false, null, null);
-		assertTrue(c.compare(pine, flower) < 0);
+		assertTrue(c.compare(pine, flower) > 0);
 	}
 }

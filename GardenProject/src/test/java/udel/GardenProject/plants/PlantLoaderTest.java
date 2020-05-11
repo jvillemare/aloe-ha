@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -222,5 +223,23 @@ public class PlantLoaderTest {
 		assertTrue(p.getSoilType() == SoilTypes.LOAMY);
 		assertTrue(p.getMoisture() == Moisture.MOIST_DAMP);
 	}
+	
+	@Test
+	public void findTest() {
+		String[] arr= {"test1", "test2"};
+		assertTrue(PlantLoader.find(arr, "test3")==-1);
+	}
+	
+	@Test
+	public void combineBoolArrTest() {
+		boolean[] arr1= {false,true,false,true,false,true,false,true,false,true,false,true};
+		boolean[] arr2= {true,false,true,false,true,false,true,false,true,false,true,false};
+		boolean[] res= PlantLoader.combineBoolArr(arr1, arr2);//{true,true,true,true,true,true,true,true,true,true,true,true};
+		for (int i = 0; i < 12; i++) {
+			assertTrue(res[i]);
+		}
+	}
+
+	
 
 }
