@@ -14,10 +14,14 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Path to image of a bird bath.
+	 * Path to an image of a bird bath for window view.
 	 */
-	private static String birdBath = "/viewImages/birdBath.png";
+	private static String windowBirdBath = "/viewImages/birdBath.png";
 	
+	/**
+	 * Path to an image of a bird bath for plot design.
+	 */
+	private static String plotBirdBath= "/viewImages/plotBirdbath.png";
 	/**
 	 * TODO: ...
 	 * 
@@ -25,7 +29,7 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	 * @param y			...
 	 */
 	public PlotBirdBath(double x, double y) {
-		super(x, y, 2.0, birdBath); // a bird bath is about 4 feet tall right? 
+		super(x, y, 2.0, windowBirdBath, plotBirdBath); // a bird bath is about 4 feet tall right? 
 	}
 
 }

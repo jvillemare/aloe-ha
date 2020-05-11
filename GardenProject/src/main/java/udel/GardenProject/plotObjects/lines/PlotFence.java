@@ -14,13 +14,18 @@ public class PlotFence extends GenericLine implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Path to image of a fence.
+	 * Path to image of a fence for window view.
 	 */
-	private static String fence = "/viewImages/fence.png";
+	private static String windowFence = "/viewImages/fence.png";
+	
+	/**
+	 * Path of image of a fence for plot design.
+	 */
+	private static String plotFence = "/viewImages/plotFence.png";
 	
 
 	public PlotFence(double x, double y, double height) {
-		super(x, y, height, new AdjustableLine(), fence);
+		super(x, y, height, new AdjustableLine(), windowFence, plotFence);
 		// TODO Auto-generated constructor stub
 	}
 

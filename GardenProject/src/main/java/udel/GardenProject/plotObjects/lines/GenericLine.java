@@ -22,8 +22,8 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 * @param p			AdjustableLine that represent a line object.
 	 * @param imagePath	Plot object's path to image.
 	 */
-	public GenericLine(double x, double y, double height, AdjustableLine l, String imagePath) {
-		super(x, y, height, imagePath);
+	public GenericLine(double x, double y, double height, AdjustableLine l, String windowPath, String plotPath) {
+		super(x, y, height, windowPath, plotPath);
 		// TODO Auto-generated constructor stub
 		this.l = l;
 	}
