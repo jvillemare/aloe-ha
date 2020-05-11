@@ -237,11 +237,11 @@ public class PlantSelection extends Window {
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
 		
-		ArrayList<Plant> plants = getModel().getNativePlants();
+		ArrayList<Plant> nativePlants = getModel().getNativePlants();
 		
 		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
-		Iterator<Plant> itr = plants.iterator();
+		Iterator<Plant> itr = nativePlants.iterator();
 		
 		while (itr.hasNext()) {
 			Plant p = itr.next();
