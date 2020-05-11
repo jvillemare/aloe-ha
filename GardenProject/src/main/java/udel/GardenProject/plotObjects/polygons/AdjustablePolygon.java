@@ -48,18 +48,11 @@ public class AdjustablePolygon implements Serializable {
 		polygon.setStrokeWidth(2);
 		polygon.setStrokeLineCap(StrokeLineCap.ROUND);
 		//fill the polygon with given color
+		if(color==null) {
+			color=Color.AQUA;
+		}
 		polygon.setFill(color);
 		//initial a polygon
-        /*polygon.getPoints().addAll(new Double[]{
-        	    0.0+startx, 0.0+starty,
-        	    0.0+startx, 25.0+starty,
-        	    0.0+startx, 50.0+starty,
-        	    50.0+startx, 50.0+starty,
-        	    100.0+startx, 50.0+starty,
-        	    100.0+startx, 25.0+starty,
-        	    100.0+startx, 0.0+starty,
-        	    50.0+startx, 0.0+starty
-        	    });*/
 		polygon.getPoints().addAll(new Double[]{
         	    0.0, 0.0,
         	    0.0, 25.0,
@@ -103,6 +96,9 @@ public class AdjustablePolygon implements Serializable {
         });
 
         //get the anchors list and set the color to given anchorColor
+        if(anchorColor==null) {
+        	anchorColor=Color.DARKRED;
+        }
 		anchors=createAnchors(polygon, polygon.getPoints(),anchorColor);
 	}
 	
@@ -129,11 +125,9 @@ public class AdjustablePolygon implements Serializable {
 	 * @param y Vertical position.
 	 * @return Button object.
 	 */
-	public Button genButton(double x, double y) {
+	public Button genButton() {
 		b=new Button();
 		b.setText("Stop Editing");
-		b.setLayoutX(x);
-		b.setLayoutY(y);
 		b.setOnAction(new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
