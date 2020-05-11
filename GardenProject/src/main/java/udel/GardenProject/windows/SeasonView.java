@@ -462,7 +462,7 @@ public class SeasonView extends Window {
 			if (po.getPlotY() / MAXDEPTH > factor) {
 				factor = po.getPlotY() / MAXDEPTH;
 			}
-			Image i = new Image(po.getImage());
+			Image i = new Image(po.getWindowImage());
 			gc.fillOval(po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
 					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() / 3 * factor) + viewDepth / 3 * 2,
 					i.getWidth() * factor, i.getHeight() / 2 * factor);
