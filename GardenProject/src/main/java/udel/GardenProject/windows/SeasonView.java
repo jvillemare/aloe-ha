@@ -321,6 +321,9 @@ public class SeasonView extends Window {
 		Seasons[] seasonSelection = Seasons.values();
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (Seasons s : seasonSelection) {
+			if (s == Seasons.YEARROUND) {
+				continue;
+			}
 			ToggleButton toggle = new ToggleButton(s.getSeason());
 			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
 		//String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
@@ -333,6 +336,31 @@ public class SeasonView extends Window {
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chooseSeason=s;
+				if (s == Seasons.WINTER) {
+					GraphicsContext gc = canvas.getGraphicsContext2D();
+					Image sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					Image snow = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(snow, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+				}
+				else if(s == Seasons.FALL) {
+					GraphicsContext gc = canvas.getGraphicsContext2D();
+					Image sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+				}
+				else {
+					GraphicsContext gc = canvas.getGraphicsContext2D();
+					Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+					Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+				}
+				
 			});
 		}
 
