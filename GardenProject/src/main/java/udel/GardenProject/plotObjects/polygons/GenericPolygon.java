@@ -30,8 +30,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * 					should look like.
 	 * @param imagePath	Plot object's path to image representation
 	 */
-	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String imagePath) {
-		super(x, y, height, imagePath);
+	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String windowPath, String plotPath) {
+		super(x, y, height, windowPath, plotPath);
 		this.p = p;
 	}
 	

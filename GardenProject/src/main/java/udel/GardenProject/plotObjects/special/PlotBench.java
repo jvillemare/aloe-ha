@@ -14,9 +14,14 @@ public class PlotBench extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Path to image of a bench.
+	 * Path to an image of a bench for window view.
 	 */
-	private static String bench = "/viewImages/bench.png";
+	private static String windowBench = "/viewImages/bench.png";
+	
+	/**
+	 * Path to an image of a bench for plot design.
+	 */
+	private static String plotBench = "/viewImages/plotBench.png";
 	
 	/**
 	 * TODO: ...
@@ -25,7 +30,7 @@ public class PlotBench extends PlotObject implements Serializable {
 	 * @param y			...
 	 */
 	public PlotBench(double x, double y) {
-		super(x, y, 2.0, bench);
+		super(x, y, 2.0, windowBench, plotBench);
 	}
 
 }

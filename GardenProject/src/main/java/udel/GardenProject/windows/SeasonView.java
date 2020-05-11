@@ -1,7 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,11 +20,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -37,7 +31,6 @@ import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
-import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.YDistanceComparator;
 
@@ -149,7 +142,7 @@ public class SeasonView extends Window {
 	private int inset20 = 20;
 	private int gapBetweenButtons = 100;
 	private int squareHeightAdjustment = 130;
-	private int squareWidthAdjustment = 20;
+	private int squareWidthAdjustment = 40;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
 
@@ -187,9 +180,9 @@ public class SeasonView extends Window {
 		toggleOptionsTilePane.setHgap(inset20);
 		toggleOptionsTilePane.setVgap(inset20);
 
-		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - toggleOptionsTilePane.getHeight()
-				- 130;
-		viewWidth = View.getCanvasWidth() - 20;
+		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
+				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment;
+		viewWidth = View.getCanvasWidth() - squareWidthAdjustment;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
@@ -320,13 +313,42 @@ public class SeasonView extends Window {
 		Seasons[] seasonSelection = Seasons.values();
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (Seasons s : seasonSelection) {
+			if (s == Seasons.YEARROUND) {
+				continue;
+			}
+			
 			ToggleButton toggle = new ToggleButton(s.getSeason());
 			createToggleEvent(toggle);
 			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				chooseSeason = s;
+				chooseSeason=s;
+				Image sky, ground;
+				GraphicsContext gc = canvas.getGraphicsContext2D();
+				switch(s) {
+				case WINTER:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+					break;
+				case FALL:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+					break;
+				default:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					drawCanvas(gc);
+					break;
+				}
 			});
 		}
 
@@ -440,7 +462,7 @@ public class SeasonView extends Window {
 			if (po.getPlotY() / MAXDEPTH > factor) {
 				factor = po.getPlotY() / MAXDEPTH;
 			}
-			Image i = new Image(po.getImage());
+			Image i = new Image(po.getWindowImage());
 			gc.fillOval(po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
 					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() / 3 * factor) + viewDepth / 3 * 2,
 					i.getWidth() * factor, i.getHeight() / 2 * factor);
@@ -450,7 +472,7 @@ public class SeasonView extends Window {
 			if (po.getPlotY() / MAXDEPTH > factor) {
 				factor = po.getPlotY() / MAXDEPTH;
 			}
-			Image i = new Image(po.getImage());
+			Image i = new Image(po.getWindowImage());
 			gc.setEffect(shadow);
 			gc.drawImage(i, po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
 					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() * factor) + viewDepth / 3 * 2,
