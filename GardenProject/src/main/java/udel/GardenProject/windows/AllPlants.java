@@ -142,11 +142,6 @@ public class AllPlants extends Window {
 	private TextField text;
 	
 	/**
-	 * ArrayList<Plant> of native plants only
-	 */
-	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
-	
-	/**
 	 * Adjustments to screen and buttons
 	 */
 	private int inset5 = 5;
@@ -161,8 +156,6 @@ public class AllPlants extends Window {
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
 		
-		createNativeList();
-
 		infoBox = new VBox();
 		scrollAndPageButtons = new VBox();
 
@@ -348,8 +341,8 @@ public class AllPlants extends Window {
 		currentPage = 0;
 
 		if(atlanticFilter) {
-			if(searchAtlantic(query) != null) {
-				for(Map.Entry<String, Plant> entry : searchAtlantic(query).entrySet()) {
+			if(getModel().searchNativePlants(query) != null) {
+				for(Map.Entry<String, Plant> entry : getModel().searchNativePlants(query).entrySet()) {
 					potentialPlants.add(entry.getValue());
 				}
 			}
@@ -360,39 +353,6 @@ public class AllPlants extends Window {
 				}
 			}
 		}	
-	}
-	
-	/**
-	 * Searched the atlantic only plants and add any that fit with the string.
-	 * @param query
-	 * @return
-	 */
-	public HashMap<String, Plant> searchAtlantic(String query) {
-		// preconditions for queries
-		if (query.length() < 3)
-			return null;
-
-		// regular
-		HashMap<String, Plant> results = new HashMap<String, Plant>();
-
-		Iterator<Plant> pIterator = nativeOnly.iterator();
-		while (pIterator.hasNext()) {
-			Plant p = pIterator.next();
-			boolean addToResults = false;
-
-			if (p.getLatinName().toLowerCase().contains(query.toLowerCase()))
-				addToResults = true;
-
-			if (p.getCommonNames() != null)
-				for (String commonName : p.getCommonNames())
-					if (commonName.toLowerCase().contains(query.toLowerCase()))
-						addToResults = true;
-
-			if (addToResults)
-				results.put(p.getLatinName(), p);
-		}
-
-		return results;
 	}
 	
 	/**
@@ -431,7 +391,7 @@ public class AllPlants extends Window {
 	 */
 	public void showDefault() {
 		if(atlanticFilter) {
-			pageCreation(nativeOnly);
+			pageCreation(getModel().getNativePlants());
 		}else {
 			pageCreation(getModel().getPlants());
 		}
@@ -469,17 +429,6 @@ public class AllPlants extends Window {
 		StackPane moreChar = new StackPane();
 		moreChar.getChildren().add(moreCharacters);
 		flow.getChildren().add(moreChar);
-	}
-	
-	/**
-	 * Creates the list of all Native plants
-	 */
-	public void createNativeList() {
-		for(Plant p : getModel().getPlants()) {
-			if(p.getDelawareNative()) {
-				nativeOnly.add(p);
-			}
-		}
 	}
 	
 	/**
