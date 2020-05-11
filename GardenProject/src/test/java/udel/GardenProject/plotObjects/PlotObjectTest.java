@@ -17,7 +17,8 @@ public class PlotObjectTest {
 		plot.setPlotY(1);
 		assertTrue(plot.getPlotX()==1);
 		assertTrue(plot.getPlotY()==1);
-		assertTrue(plot.getImage().equals("/viewImages/pool.png"));
+		assertTrue(plot.getWindowImage().equals("/viewImages/pool.png"));
+		assertTrue(plot.getPlotImage().equals("/viewImages/plotPool.png"));
 		assertTrue(plot.getHeight()==100);
 	}
 

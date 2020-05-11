@@ -24,17 +24,29 @@ public class PlotPlantTest {
 	}
 
 	@Test
-	public void testChooseImage() {
+	public void testChooseWindowImage() {
 		Plant p=new Plant(null, null, null, null, 0, null, null, null, false, false, null, null);
-		assertTrue(PlotPlant.chooseImage(p).equals("/viewImages/sunflower.png"));
+		assertTrue(PlotPlant.chooseWindowImage(p).equals("/viewImages/sunflower.png"));
 		p=new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, false, false, null, null);
-		assertTrue(PlotPlant.chooseImage(p).equals("/viewImages/floor.png"));
+		assertTrue(PlotPlant.chooseWindowImage(p).equals("/viewImages/floor.png"));
 		p=new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, false, false, null, null);
-		assertTrue(PlotPlant.chooseImage(p).equals("/viewImages/understory.png"));
+		assertTrue(PlotPlant.chooseWindowImage(p).equals("/viewImages/understory.png"));
 		p=new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, false, false, null, null);
-		assertTrue(PlotPlant.chooseImage(p).equals("/viewImages/canopy.png"));
+		assertTrue(PlotPlant.chooseWindowImage(p).equals("/viewImages/canopy.png"));
 		p=new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, false, false, null, null);
-		assertTrue(PlotPlant.chooseImage(p).equals("/viewImages/emergent.png"));
+		assertTrue(PlotPlant.chooseWindowImage(p).equals("/viewImages/emergent.png"));
+	}
+	public void choosePlotImage() {
+		Plant p=new Plant(null, null, null, null, 0, null, null, null, false, false, null, null);
+		assertTrue(PlotPlant.choosePlotImage(p).equals("/viewImages/sunflower.png"));
+		p=new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, false, false, null, null);
+		assertTrue(PlotPlant.choosePlotImage(p).equals("/viewImages/plotFloor.png"));
+		p=new Plant(null, null, null, null, 0, null, null, Canopy.UNDERSTORY, false, false, null, null);
+		assertTrue(PlotPlant.choosePlotImage(p).equals("/viewImages/plotUnderstory.png"));
+		p=new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, false, false, null, null);
+		assertTrue(PlotPlant.choosePlotImage(p).equals("/viewImages/plotCanopy.png"));
+		p=new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, false, false, null, null);
+		assertTrue(PlotPlant.choosePlotImage(p).equals("/viewImages/plotEmergent.png"));
 	}
 
 }
