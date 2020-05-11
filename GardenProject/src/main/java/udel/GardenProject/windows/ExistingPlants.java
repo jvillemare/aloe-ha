@@ -103,6 +103,11 @@ public class ExistingPlants extends Window {
 	private HashMap<String, Plant> dropDownPlants;
 	
 	/**
+	 * TODO: What is?...
+	 */
+	private String[] plantImageLinks;
+	
+	/**
 	 * Text that appears if no no plants fit the description.
 	 */
 	private String noPlants = "No Such Plants";
