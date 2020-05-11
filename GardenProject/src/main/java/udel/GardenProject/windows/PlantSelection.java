@@ -237,7 +237,7 @@ public class PlantSelection extends Window {
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
 		
-		ArrayList<Plant> plants = getModel().getPlants();
+		ArrayList<Plant> plants = getModel().getNativePlants();
 		
 		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
@@ -248,17 +248,15 @@ public class PlantSelection extends Window {
 			
 			boolean fits = false;
 			
-			if(p.getDelawareNative() == true) {
-				if(p.getCanopy() == canopy) {
-					if(p.getMoisture() == m || p.getMoisture() == null || m == null) {
-						if(p.getSoilType() == s || p.getSoilType() == SoilTypes.ANY || s == SoilTypes.ANY) {
-							if(p.getLight() == l || 
-									(p.getLight() < (l + 0.2) && p.getLight() >= l ) 
-									|| p.getLight() == -1.0 || l == -1.0) {
-								fits = true;
-							}
-						} 
-					}
+			if(p.getCanopy() == canopy) {
+				if(p.getMoisture() == m || p.getMoisture() == null || m == null) {
+					if(p.getSoilType() == s || p.getSoilType() == SoilTypes.ANY || s == SoilTypes.ANY) {
+						if(p.getLight() == l || 
+								(p.getLight() < (l + 0.2) && p.getLight() >= l ) 
+								|| p.getLight() == -1.0 || l == -1.0) {
+							fits = true;
+						}
+					} 
 				}
 			}
 			
