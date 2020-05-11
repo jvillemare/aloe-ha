@@ -28,7 +28,7 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 
-	public PlotPath(double x, double y, double height) {
+	public PlotPath(double x, double y) {
 		super(x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
 		// TODO Auto-generated constructor stub
 	}	
