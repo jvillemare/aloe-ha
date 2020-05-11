@@ -100,6 +100,8 @@ public class ExistingPlants extends Window {
 	 * Hashmap with the name of the plant as the key and the plant as the value
 	 */
 	private HashMap<String, Plant> dropDownPlants;
+	
+	private String[] plantImageLinks;
 
 	/**
 	 * Used for the user to type in the search box
@@ -203,6 +205,7 @@ public class ExistingPlants extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				//System.out.println(getS
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -321,8 +324,11 @@ public class ExistingPlants extends Window {
 						 * TODO: FIX the name of the trim to latin name is 2 strings but when it calls
 						 * for the images it could include var. ...
 						 */
-						String plantImageLinks[] = dropDownPlants.get(Plant.trimToLatinName(label.getText()))
-								.getImages();
+						try {
+							plantImageLinks = dropDownPlants.get(Plant.trimToLatinName(label.getText())).getImages();
+						}catch(NullPointerException Exception) {
+							plantImageLinks = null;
+						}
 						Image plantImage;
 
 						// Get the actual image if it exists
@@ -437,6 +443,7 @@ public class ExistingPlants extends Window {
 	 */
 	public void refresh() {
 		selection.getChildren().clear();
+		System.out.println(getSession().getExistingPlants().size() + "size of existing plants in existing plants");
 		Iterator<Plant> pItr = getSession().getExistingPlants().iterator();
 		while (pItr.hasNext()) {
 			populateRightBox(pItr.next());

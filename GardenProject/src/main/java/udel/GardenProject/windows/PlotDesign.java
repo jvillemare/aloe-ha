@@ -7,11 +7,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,13 +17,15 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -33,12 +33,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.enums.Moisture;
+import udel.GardenProject.enums.SoilTypes;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
-import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
@@ -80,8 +82,6 @@ public class PlotDesign extends Window {
 	 */
 	private TilePane tilePane;
 
-	private int statistics[];
-
 	/**
 	 * Buttons in tilePane at the bottom of the screen
 	 */
@@ -107,11 +107,12 @@ public class PlotDesign extends Window {
 	 */
 	private Group group;
 
-
 	/**
 	 * ScrollPane created for the canopy drop down choices
 	 */
 	private ScrollPane scrollSelections;
+	
+	
 
 	/**
 	 * Adjustments to buttons and panes
@@ -137,7 +138,21 @@ public class PlotDesign extends Window {
 	 */
 	private Session session;
 	
+	/**
+	 * Accordion for existing, selected, and obstacles 
+	 */
+	private Accordion choicesAccordian;
+	
+	/**
+	 * Dropdown for Accordion
+	 */
+	private TitledPane existing;
+	private TitledPane selected;
+	private TitledPane obstacles;
+	
 	private HashSet<Plant> existingPlants;
+	
+	private List<TitledPane> accArr;
 	
 	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
 
@@ -155,8 +170,6 @@ public class PlotDesign extends Window {
 	 */
 	public PlotDesign(Model m) {
 		super(m, "Plot Designer", Windows.PlotDesign);
-		session=getModel().getSession();
-		existingPlants = session.getExistingPlants();
 
 		borderPane = new BorderPane();
 		vbox = new VBox();
@@ -197,9 +210,7 @@ public class PlotDesign extends Window {
 		});
 
 		
-		scrollSelections = new ScrollPane();
-		scrollPaneFormat(scrollSelections);
-		scrollSelections.setPrefSize(scrollPrefWidth, scrollPrefHeight);
+		
 		
 
 		animalsFedTxt = new Text("Animals Fed");
@@ -247,11 +258,28 @@ public class PlotDesign extends Window {
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(5));
 		tilePane.setHgap(gapBetweenButtons);
-		
-    // TODO: @wjm2038 do the following two lines need to reversed?
-		createFlowPane();
 		tilePane.getChildren().addAll(backButton, mainMenu, saveButton, nextButton);
-
+		
+		choicesAccordian = new Accordion();
+		 accArr = new ArrayList<TitledPane>();
+		try {
+			populateTiles(accArr);
+		} catch (Exception e) {
+			System.out.println("WRONG");
+		}
+		
+		
+		for (TitledPane t : accArr) {
+			t.setFont(getModel().getHackBold20());
+			choicesAccordian.getPanes().add(t);
+		}
+		
+		scrollSelections = new ScrollPane();
+		scrollPaneFormat(scrollSelections);
+		scrollSelections.setPrefSize(scrollPrefWidth, scrollPrefHeight);
+		//scrollSelections.setContent(choicesAccordian);
+		
+		
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
 
@@ -261,7 +289,7 @@ public class PlotDesign extends Window {
 		borderPane.setPadding(new Insets(10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
-
+		borderPane.setLeft(choicesAccordian);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
 
@@ -277,64 +305,99 @@ public class PlotDesign extends Window {
 	 */
 	public void scrollPaneFormat(ScrollPane scroll) {
 		scroll.setPadding(new Insets(10, 0, 10, 30));
-		scroll.setMaxWidth(View.getCanvasWidth() / 3);
+		scroll.setMaxWidth(View.getCanvasWidth() / 4);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 
 	}
+	
+public void populateTiles(List<TitledPane> accArr) throws Exception {
+		
+	System.out.println(getSession().getExistingPlants().size() + "size of existing plants : PLotdesign  \n");
+	TitledPane existing = new TitledPane("Existing Plants", createPlantFlow(getSession().getExistingPlants()));
+	accArr.add(existing);
+	
+	System.out.println(getSession().getSelectedPlants().size() + "size of selected plants : PLotdesign  \n");
+	TitledPane selected = new TitledPane("Selected Plants", createPlantFlow(getSession().getSelectedPlants()));
+	accArr.add(selected);
+	
+		
+	}
+	
+	public void createTitledPane(String s, FlowPane flow) {
+		TitledPane titledPane = new TitledPane(s, flow);
+		titledPane.setFont(getModel().getHackBold20());
+		choicesAccordian.getPanes().add(titledPane);
+		
+	}
+	
+	
 
 	/**
-	 * Function creates a flow pane (with Scroll) for the accordion bar selected.
-	 * (Only for existing and selected plants).
-	 * 
-	 * @param canopy --> Takes in a canopy
+	 * Creates the flow panes for each of the drop downs 
 	 */
-	public void createFlowPane() {
-		existingPlants=session.getExistingPlants();
-		FlowPane existFlow = new FlowPane();
-		Image img;
-		Accordion choices = new Accordion();
-
-		TitledPane existing = new TitledPane("Existing Plants", new Text("Existing Plants")); // createFlowPane(/*Model.existingPlantsArray*/));
-		TitledPane selected = new TitledPane("Selected Plants", new Text("SelectedPlants")); // createFlowPane(/*Model.selectedPlantsArray*/));
-		TitledPane obstacles = new TitledPane("Obstacles", editPlotButton); // createFlowPane(/*Model.obstaclesArray*/));
+	public FlowPane createPlantFlow(HashSet<Plant> plants) {
+		System.out.println("starting ");
+		FlowPane flow = new FlowPane();
+		flow.setMaxWidth(100);
 		
-		List<TitledPane> accArr = new ArrayList<TitledPane>();
-		accArr.add(existing);
-		accArr.add(selected);
-		accArr.add(obstacles);
-
-		for (TitledPane t : accArr) {
-			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
-					View.getTextSizeForButtonsAndText()));
-			choices.getPanes().add(t);
-		}
-		
-		Iterator exist=session.getExistingPlants().iterator();
-		while(exist.hasNext()) {
-			Map.Entry element=((Map.Entry) exist.next());
-			Plant p=(Plant) element.getValue();
-			String name= (String) element.getKey();
-			String[] imgs=p.getImages();
-			if(imgs!=null) {
-				img = new Image(p.getImages()[0],300,100,true,true);
-			}
-			else {
-				img=new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 300, 100, true, true);
-			}
-			ImageView imageView=new ImageView(img);
+		//System.out.println(plants.size() + "size of existing plants : PLotdesign  ");
+		Iterator<Plant> plantIter = plants.iterator();
+		System.out.println("after creating iterator  ");
+		while(plantIter.hasNext()) {
+			
+			
+			Plant p = plantIter.next();
+			
+			
+			/*
 			plotPlants.put(imageView, new PlotPlant(p,0,0));
 			imageView.setOnMouseDragged(getHandlerForDrag());
 			imageView.setOnMouseReleased(getHandlerForRelease());
-			existFlow.getChildren().add(imageView);
+			*/
+			flow.getChildren().add(createPlantBox(p));
+			System.out.println("added imageview to flow ");
 		}
-		existing.setContent(existFlow);
-		scrollSelections.setContent(choices);
-		borderPane.setLeft(choices);
-
+		System.out.println("returning flow ");
+		return flow;
 	}
+	
+	
+	public VBox createPlantBox(Plant p) {
+
+		String[] plantImg = p.getImages();
+		
+		Image plantImage;
+
+		//Get the actual image if it exists
+		if (plantImg != null) {
+			String path = p.getImages()[0];
+			plantImage = new Image(path, 20, 20, true, true);
+		} else {
+			// get a default image
+			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 20,
+					20, true, true);
+		}
+		ImageView imageView = new ImageView();
+		imageView.setImage(plantImage);
+		
+		//String name = p.getLatinName();
+		//System.out.println(name + "---------------");
+		
+		//Tooltip.install(imageView, new Tooltip(name));
+		//System.out.println("created tool tip ");
+		
+		VBox imgButtonHolder = new VBox();
+		imgButtonHolder.getChildren().addAll(imageView, new Text(p.getLatinName()));
+		
+		
+		return imgButtonHolder;
+	}
+	
+	
+	
 	
 	/**
 	 * Creates the buttons that will be added to the tilePane at the bottom of the
@@ -434,6 +497,7 @@ public class PlotDesign extends Window {
 	 * @param x the X coordinate for the image
 	 * @param y the Y coordinate for the image
 	 */
+	/*
 	public void addImage(ImageView img, double x, double y) {
 		PlotPlant plotplant= plotPlants.get(img);
 		plotplant.setPlotX(x);
@@ -491,14 +555,34 @@ public class PlotDesign extends Window {
 	public EventHandler getHandlerForRelease() {
 		return event -> release((MouseEvent) event);
 	}
-  
+  */
 	/**
 	 * Remove everything from the flow panes, the center box, and the autorate boxes
 	 * and add info back in again for the correct session
 	 */
 	@Override
 	public void refresh() {
-		createFlowPane();
+		
+		
+		/*
+		 * It is printing the all the plants I've selected to the screen, so why are they not showing up when I call it in create plant flow?
+		 */
+		Iterator<Plant> plants = getSession().getExistingPlants().iterator();
+		while (plants.hasNext()) {
+			String p = plants.next().getLatinName();
+			System.out.println(p);
+		}
+		
+		/**
+		 * This doesn't do anything 
+		 */
+		TitledPane existing = new TitledPane("Existing Plants", createPlantFlow(getSession().getExistingPlants()));
+		accArr.add(existing);
+		
+		//System.out.println(getSession().getSelectedPlants().size() + "size of selected plants : PLotdesign  \n");
+		TitledPane selected = new TitledPane("Selected Plants", createPlantFlow(getSession().getSelectedPlants()));
+		accArr.add(selected);
+		
 		/**
 		 * TODO: remove everything from flowpanes and add back in
 		 */
