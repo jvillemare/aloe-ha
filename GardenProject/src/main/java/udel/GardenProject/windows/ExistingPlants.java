@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -105,6 +106,16 @@ public class ExistingPlants extends Window {
 	 * links of pathways to images for a plant.
 	 */
 	private String[] plantImageLinks;
+	
+	/**
+	 * Text that appears if no no plants fit the description.
+	 */
+	private String noPlants = "No Such Plants";
+	
+	/**
+	 * Text that appears if more characters need to be added.
+	 */
+	private String moreCharacters = "Please Add More Characters in Search";
 
 	/**
 	 * Used for the user to type in the search box
@@ -304,7 +315,7 @@ public class ExistingPlants extends Window {
 
 		dropDownPlants = getModel().searchPlants(query);
 
-		if (dropDownPlants != null) {
+		if (dropDownPlants != null && !dropDownPlants.isEmpty()) {
 			for (Plant p : dropDownPlants.values()) {
 				Label label = new Label(p.getFriendlyName());
 				label.setMaxWidth(containerScroll.getWidth());
@@ -381,6 +392,16 @@ public class ExistingPlants extends Window {
 						}
 					}
 				});
+				dropDownMenu.getChildren().add(label);
+			}
+		}else {
+			if(text.getText().length() < 3) {
+				Label label = new Label(moreCharacters);
+				label.setMaxWidth(containerScroll.getWidth());
+				dropDownMenu.getChildren().add(label);
+			}else {
+				Label label = new Label(noPlants);
+				label.setMaxWidth(containerScroll.getWidth());
 				dropDownMenu.getChildren().add(label);
 			}
 		}
