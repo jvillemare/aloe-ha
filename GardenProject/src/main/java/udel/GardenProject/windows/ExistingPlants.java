@@ -100,6 +100,11 @@ public class ExistingPlants extends Window {
 	 * Hashmap with the name of the plant as the key and the plant as the value
 	 */
 	private HashMap<String, Plant> dropDownPlants;
+	
+	/**
+	 * links of pathways to images for a plant.
+	 */
+	private String[] plantImageLinks;
 
 	/**
 	 * Used for the user to type in the search box
@@ -321,15 +326,25 @@ public class ExistingPlants extends Window {
 						 * TODO: FIX the name of the trim to latin name is 2 strings but when it calls
 						 * for the images it could include var. ...
 						 */
-						String plantImageLinks[] = dropDownPlants.get(Plant.trimToLatinName(label.getText()))
-								.getImages();
+						try {
+							plantImageLinks = dropDownPlants.get(Plant.trimToLatinName(label.getText())).getImages();
+						}catch(NullPointerException Exception) {
+							plantImageLinks = null;
+						}
+						
 						Image plantImage;
 
 						// Get the actual image if it exists
 						if (plantImageLinks != null) {
-							String path = plantImageLinks[0];
-							plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
-									true);
+							try {
+								String path = plantImageLinks[0];
+								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
+										true);
+							}catch(NullPointerException Exception) {
+								plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
+										tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true, true);
+							}
+							
 						} else {
 							// get a default image
 							plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
