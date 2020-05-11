@@ -34,7 +34,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// TODO: A plant is always about a foot wide? Let's say for simplicity.
 		// Fix later. Definitely a helper method in plant that reads the 
 		// description or calculates or something
-		super(x, y, checkIfCanopy(p.getCanopy()), chooseWindowImage(p), choosePlotImage(p), 5.0);
+		super(x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p));
 		this.p = p;
 	}
 	

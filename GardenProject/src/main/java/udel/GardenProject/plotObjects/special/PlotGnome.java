@@ -24,7 +24,7 @@ public class PlotGnome extends PlotObject implements Serializable {
 	private static String plotGnome = "/viewImages/plotGnome.png";
 	
 	public PlotGnome(double x, double y) {
-		super(x, y, 1, windowGnome, plotGnome);
+		super(x, y, 1, 1.0, windowGnome, plotGnome);
 		// TODO Auto-generated constructor stub
 	}
 
