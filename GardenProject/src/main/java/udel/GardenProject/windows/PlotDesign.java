@@ -950,8 +950,8 @@ public class PlotDesign extends Window {
 		createObstacleFlow(getSession().getSelectedPlotObjects());
 		accArr.add(obstacles);
 
-		group.getChildren().clear();
-		createCenterBox();
+		//group.getChildren().clear();
+		//createCenterBox();
 
 		for (udel.GardenProject.plotObjects.PlotObject po : getSession().getPlot()) {
 			/**

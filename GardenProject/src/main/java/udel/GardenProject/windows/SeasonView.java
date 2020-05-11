@@ -445,6 +445,7 @@ public class SeasonView extends Window {
 				group.getSelectedToggle().setSelected(false);
 			}
 		}
+		drawCanvas(canvas.getGraphicsContext2D());
 	}
 
 	/**

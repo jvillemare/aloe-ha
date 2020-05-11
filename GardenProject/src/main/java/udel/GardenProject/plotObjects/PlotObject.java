@@ -1,11 +1,13 @@
 package udel.GardenProject.plotObjects;
 
+import java.io.Serializable;
+
 /**
  * An object that can appear in PlotDesign must implement this interface.
  * 
  * @author Team 0
  */
-public abstract class PlotObject {
+public abstract class PlotObject implements Serializable {
 	
 	/**
 	 * Horizontal position of object in plot design. May have a different 
@@ -51,7 +53,8 @@ public abstract class PlotObject {
 	 * @param imagePath	String of path to window view image.
 	 * @param plotPath	String of path to plot design image.
 	 */
-	public PlotObject(double x, double y, double height, double radius, String imagePath, String plotPath) {
+	public PlotObject(double x, double y, double height, double radius, 
+			String imagePath, String plotPath) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
