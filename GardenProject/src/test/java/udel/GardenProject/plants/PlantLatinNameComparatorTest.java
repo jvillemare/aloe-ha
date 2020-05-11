@@ -23,8 +23,8 @@ public class PlantLatinNameComparatorTest {
 	public void aZTest() {
 		Plant a = new Plant(null, "Apple", null, null, 0, null, null, null, false, true, null, null);
 		Plant b = new Plant(null, "Zebra", null, null, 0, null, null, null, false, true, null, null);
-		PlantNameComparator comp = new PlantNameComparator(true, false);
-		assertTrue(comp.compare(a, b) < 0);
+		PlantNameComparator comp = new PlantNameComparator(false, false);
+		assertTrue(comp.compare(a, b) > 0);
 	}
 
 	@Test
@@ -49,8 +49,29 @@ public class PlantLatinNameComparatorTest {
 		Plant b = new Plant(null, "Apple", null, null, 0, null, null, null, false, true, null, null);
 		PlantNameComparator comp = new PlantNameComparator(false, false);
 		assertTrue(comp.compare(a, b) > 0);
+		assertTrue(comp.compare(b, a) < 0);
 	}
-
+	
+	@Test
+	public void commonNullTest() {
+		PlantNameComparator comp = new PlantNameComparator(false, true);
+		String[] c1 = { "plant" };
+		Plant a = new Plant(null, null, null, null, 0, null, null, null, false, true, null, null);
+		Plant b = new Plant(c1, null, null, null, 0, null, null, null, false, true, null, null);
+		assertTrue(comp.compare(a, b) > 0);
+		assertTrue(comp.compare(b, a) < 0);
+	}
+	
+	@Test
+	public void commonAzTest() {
+		PlantNameComparator comp = new PlantNameComparator(false, true);
+		String[] c1 = { "plant" };
+		String[] c2 = { "flower" };
+		Plant a = new Plant(c2, null, null, null, 0, null, null, null, false, true, null, null);
+		Plant b = new Plant(c1, null, null, null, 0, null, null, null, false, true, null, null);
+		assertTrue(comp.compare(a, b) > 0);
+		assertTrue(comp.compare(b, a) < 0);
+	}
 	@Test
 	public void commonTest() {
 		String[] c1 = { "plant" };
@@ -59,6 +80,7 @@ public class PlantLatinNameComparatorTest {
 		Plant b = new Plant(c2, null, null, null, 0, null, null, null, false, true, null, null);
 		PlantNameComparator comp = new PlantNameComparator();
 		assertTrue(comp.compare(a, b) > 0);
+		assertTrue(comp.compare(a, a) == 0);
 	}
 
 	@Test
@@ -69,6 +91,7 @@ public class PlantLatinNameComparatorTest {
 		Plant b = new Plant(c1, null, null, null, 0, null, null, null, false, true, null, null);
 		PlantNameComparator comp = new PlantNameComparator(true);
 		assertTrue(comp.compare(a, b) < 0);
+		assertTrue(comp.compare(a, a) == 0);
 	}
 
 }

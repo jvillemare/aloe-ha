@@ -945,10 +945,8 @@ public class PlantLoader {
 					iLen = iImages.length;
 				}
 				String[] images = new String[pLen + iLen];
-				if (pCommon == null) {
-					if (iCommon != null) {
+				if (pCommon == null && iCommon != null) {
 						pCommon = iCommon;
-					}
 				} else {
 					if (iCommon != null) {
 						String[] all = new String[pCommon.length + iCommon.length];

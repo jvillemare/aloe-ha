@@ -100,13 +100,12 @@ public class Session implements Serializable {
 	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
 	 */
 	private HashSet<Plant> selectedPlants = new HashSet<Plant>();
-	// TODO: This doesn't have a getter. Remove at some point?
 	
 	/**
 	 * User's selected seasons for blooms
 	 */
 	private ArrayList<Seasons> seasonsUserSelected = new ArrayList<Seasons>();
-
+	
 	/**
 	 * User's selected colors for flowers
 	 */
@@ -116,6 +115,15 @@ public class Session implements Serializable {
 	 * Objects actually in the plot, to be displayed in PlotDesign.
 	 */
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
+	
+	/**
+	 * Constructor. Initializes default values for complex objects.
+	 */
+	public Session() {
+		selectedPlotObjects.add(PlotObjects.Plant);
+		seasonsUserSelected.add(Seasons.WINTER);
+		colorsUserSelected.add(Colors.ALICEBLUE);
+	}
 
 	/**
 	 * Season selected by user from SeasonView

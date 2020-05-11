@@ -1,7 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -178,11 +177,11 @@ public class Questionnaire extends Window {
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
-		topBox.setPadding(new Insets(10));
+		topBox.setPadding(new Insets(inset10));
 
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
-		vbox.setPadding(new Insets(10));
+		vbox.setPadding(new Insets(inset10));
 
 		populateQuestionnaire();
 		createButtons();
@@ -324,7 +323,7 @@ public class Questionnaire extends Window {
 		createText(
 				"4) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
 		q4ChoiceBox = new ChoiceBox<>();
-		for(Moisture m : Moisture.values())
+		for (Moisture m : Moisture.values())
 			q4ChoiceBox.getItems().add(m.name());
 		q4ChoiceBox.getItems().add("My plot has different moisture");
 		q4ChoiceBox.setValue(Moisture.DRY.name());
@@ -337,9 +336,9 @@ public class Questionnaire extends Window {
 	public void createQ5() {
 		createText("5) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
 		q5ChoiceBox = new ChoiceBox<>();
-		for(SoilTypes st : SoilTypes.values())
+		for (SoilTypes st : SoilTypes.values())
 			q5ChoiceBox.getItems().add(st.name());
-		q5ChoiceBox.getItems().add("My plot has different soil type");
+		q5ChoiceBox.getItems();
 		q5ChoiceBox.setValue(SoilTypes.CLAY.name());
 		vbox.getChildren().addAll(q5ChoiceBox);
 	}
@@ -351,8 +350,10 @@ public class Questionnaire extends Window {
 		createText(
 				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
-		for(double s = 0.0; s <= 1.0; s += 0.2)
-			q6ChoiceBox.getItems().add(Double.toString(s));
+		for (double s = 0.0; s <= 1.0; s += 0.2) {
+			double rounded1 = Math.round(s * 10) / 10.0;
+			q6ChoiceBox.getItems().add(Double.toString(rounded1));
+		}
 		q6ChoiceBox.getItems().add("My plot receives different levels of sunlight");
 		q6ChoiceBox.setValue("0.0");
 		vbox.getChildren().addAll(q6ChoiceBox);
@@ -481,28 +482,25 @@ public class Questionnaire extends Window {
 				}
 
 				checkSelectedPlot(nearPlot);
-				
+
 				try {
 					getSession().setMoistureOfPlot(Moisture.valueOf(getChoice(q4ChoiceBox)));
-				} catch(IllegalArgumentException e) {
-					if(getChoice(q4ChoiceBox).equals("My plot has a different moisture"))
+				} catch (IllegalArgumentException e) {
+					if (getChoice(q4ChoiceBox).equals("My plot has a different moisture"))
 						getSession().setMoistureOfPlot(null);
-					// TODO @mpatel-2022: error invalid moisture
 				}
-				
+
 				try {
 					getSession().setSoilTypeOfPlot(SoilTypes.valueOf(getChoice(q5ChoiceBox)));
-				} catch(IllegalArgumentException e) {
-					if(getChoice(q5ChoiceBox).equals("My plot has a different soil type"))
+				} catch (IllegalArgumentException e) {
+					if (getChoice(q5ChoiceBox).equals("My plot has a different soil type"))
 						getSession().setSoilTypeOfPlot(SoilTypes.ANY);
-					// TODO @mpatel-2022: error invalid moisture
 				}
 				try {
 					getSession().setSunlightOfPlot(Double.parseDouble(getChoice(q6ChoiceBox)));
-				} catch(NumberFormatException e) {
-					if(getChoice(q6ChoiceBox).equals("My plot receives different levels of sunlight"))
+				} catch (NumberFormatException e) {
+					if (getChoice(q6ChoiceBox).equals("My plot receives different levels of sunlight"))
 						getSession().setSunlightOfPlot(-1.0);
-					// TODO @mpatel-2022: throw new error to user for invalid sunlight 
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
@@ -650,18 +648,12 @@ public class Questionnaire extends Window {
 
 		// Moisture
 		q4ChoiceBox.setValue(getSession().getMoistureOfPlot().name());
-		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
-		//			adding .name() please double check
 
 		// Soil type
-		q4ChoiceBox.setValue(getSession().getSoilTypeOfPlot().name());
-		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
-		//			adding .name() please double check
+		q5ChoiceBox.setValue(getSession().getSoilTypeOfPlot().name());
 
 		// Sunlight
 		q6ChoiceBox.setValue(String.valueOf(getSession().getSunlightOfPlot()));
-		// TODO: @mpatel-2022, i'm not sure if i made the right fix here by
-		//			using String.valueOf(...) please double check
 
 		// Seasons Selected
 		clearCheckBoxes(q7items);

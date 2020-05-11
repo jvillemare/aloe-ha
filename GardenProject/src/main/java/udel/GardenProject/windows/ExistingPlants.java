@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -100,6 +101,21 @@ public class ExistingPlants extends Window {
 	 * Hashmap with the name of the plant as the key and the plant as the value
 	 */
 	private HashMap<String, Plant> dropDownPlants;
+	
+	/**
+	 * TODO: What is?...
+	 */
+	private String[] plantImageLinks;
+	
+	/**
+	 * Text that appears if no no plants fit the description.
+	 */
+	private String noPlants = "No Such Plants";
+	
+	/**
+	 * Text that appears if more characters need to be added.
+	 */
+	private String moreCharacters = "Please Add More Characters in Search";
 
 	/**
 	 * Used for the user to type in the search box
@@ -203,6 +219,7 @@ public class ExistingPlants extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				//System.out.println(getS
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -299,7 +316,7 @@ public class ExistingPlants extends Window {
 
 		dropDownPlants = getModel().searchPlants(query);
 
-		if (dropDownPlants != null) {
+		if (dropDownPlants != null && !dropDownPlants.isEmpty()) {
 			for (Plant p : dropDownPlants.values()) {
 				Label label = new Label(p.getFriendlyName());
 				label.setMaxWidth(containerScroll.getWidth());
@@ -321,15 +338,25 @@ public class ExistingPlants extends Window {
 						 * TODO: FIX the name of the trim to latin name is 2 strings but when it calls
 						 * for the images it could include var. ...
 						 */
-						String plantImageLinks[] = dropDownPlants.get(Plant.trimToLatinName(label.getText()))
-								.getImages();
+						try {
+							plantImageLinks = dropDownPlants.get(Plant.trimToLatinName(label.getText())).getImages();
+						}catch(NullPointerException Exception) {
+							plantImageLinks = null;
+						}
+
 						Image plantImage;
 
 						// Get the actual image if it exists
 						if (plantImageLinks != null) {
-							String path = plantImageLinks[0];
-							plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
-									true);
+							try {
+								String path = plantImageLinks[0];
+								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
+										true);
+							}catch(NullPointerException Exception) {
+								plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
+										tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true, true);
+							}
+							
 						} else {
 							// get a default image
 							plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
@@ -366,6 +393,16 @@ public class ExistingPlants extends Window {
 						}
 					}
 				});
+				dropDownMenu.getChildren().add(label);
+			}
+		}else {
+			if(text.getText().length() < 3) {
+				Label label = new Label(moreCharacters);
+				label.setMaxWidth(containerScroll.getWidth());
+				dropDownMenu.getChildren().add(label);
+			}else {
+				Label label = new Label(noPlants);
+				label.setMaxWidth(containerScroll.getWidth());
 				dropDownMenu.getChildren().add(label);
 			}
 		}
@@ -437,6 +474,7 @@ public class ExistingPlants extends Window {
 	 */
 	public void refresh() {
 		selection.getChildren().clear();
+		System.out.println(getSession().getExistingPlants().size() + "size of existing plants in existing plants");
 		Iterator<Plant> pItr = getSession().getExistingPlants().iterator();
 		while (pItr.hasNext()) {
 			populateRightBox(pItr.next());

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
@@ -70,7 +72,12 @@ public class Model {
 	 * Where all the user data is collected and stored.
 	 */
 	private Session session;
-
+	
+	/**
+	 * ArrayList<Plant> of native plants only
+	 */
+	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
+	
 	/**
 	 * Constructor, initialize everything.
 	 * 
@@ -95,6 +102,8 @@ public class Model {
 
 		setupWindows();
 		printMemoryInfo();
+		createNativeList();
+		
 	}
 
 	/**
@@ -103,6 +112,17 @@ public class Model {
 	 */
 	public void update() {
 		// TODO: Implement for PlotDesign...
+	}
+	
+	/**
+	 * Creates the list of all Native plants
+	 */
+	public void createNativeList() {
+		for(Plant p : plants) {
+			if(p.getDelawareNative()) {
+				nativeOnly.add(p);
+			}
+		}
 	}
 
 	/**
@@ -199,7 +219,7 @@ public class Model {
 	}
 
 	/**
-	 * Search the array of plants and return an array of all Plants that match the
+	 * Search a given array of plants and return an array of all Plants that match the
 	 * query. If the query matches the latin or any of the common names, that plant
 	 * is returned.<br>
 	 * <br>
@@ -208,9 +228,10 @@ public class Model {
 	 * 
 	 * @param query Simple, non-regex query where the query can appear anywhere in
 	 *              the plant latin or common name.
+	 *        plantList which are the plants to search thru.
 	 * @return null if no matching results, a Plant array of all matching results.
 	 */
-	public HashMap<String, Plant> searchPlants(String query) {
+	public HashMap<String, Plant> searchPlantsInArr(String query, ArrayList<Plant> plantList) {
 		// preconditions for queries
 		if (query.length() < 3)
 			return null;
@@ -218,17 +239,17 @@ public class Model {
 		// regular
 		HashMap<String, Plant> results = new HashMap<String, Plant>();
 
-		Iterator<Plant> pIterator = plants.iterator();
+		Iterator<Plant> pIterator = plantList.iterator();
 		while (pIterator.hasNext()) {
 			Plant p = pIterator.next();
 			boolean addToResults = false;
 
-			if (p.getLatinName().contains(query))
+			if (p.getLatinName().toLowerCase().contains(query.toLowerCase()))
 				addToResults = true;
 
 			if (p.getCommonNames() != null)
 				for (String commonName : p.getCommonNames())
-					if (commonName.contains(query))
+					if (commonName.toLowerCase().contains(query.toLowerCase()))
 						addToResults = true;
 
 			if (addToResults)
@@ -237,7 +258,33 @@ public class Model {
 
 		return results;
 	}
+	
+	/**
+	 * Search the array of plants and return an array of all Plants that match the
+	 * query. If the query matches the latin or any of the common names, that plant
+	 * is returned.<br>
+	 * <br>
+	 * 
+	 * @param query
+	 * @return a HashMap of all plants that fit with query
+	 */
+	public HashMap<String, Plant> searchPlants(String query) {
+		return searchPlantsInArr(query, plants);
+	}
 
+	/**
+	 * Search the array of native plants and return an array of all Plants that 
+	 * match the query. If the query matches the latin or any of the common names,
+	 *  that plant is returned.<br>
+	 * <br>
+	 * 
+	 * @param query
+	 * @return a HashMap of all plants that fit with query
+	 */
+	public HashMap<String, Plant> searchNativePlants(String query) {
+		return searchPlantsInArr(query, nativeOnly);
+	}
+	
 	/**
 	 * Safely <i>cache</i> a file to a user's computer. Hides all exceptions and
 	 * potential errors.
@@ -444,6 +491,7 @@ public class Model {
 
 	/**
 	 * Setup all the Windows objects of the project.
+	 * @throws Exception 
 	 */
 	private void setupWindows() {
 		windows = new Window[Windows.values().length];
@@ -567,6 +615,14 @@ public class Model {
 	 */
 	public String getHover() {
 		return this.hover;
+	}
+	
+	/**
+	 * Getter for getting an ArrayList<Plant> of only native plants.
+	 * @return nativePlants
+	 */
+	public ArrayList<Plant> getNativePlants(){
+		return nativeOnly;
 	}
 
 }
