@@ -119,10 +119,12 @@ public class PlantInfo extends Window {
 		Text moisture = makeText("Moisture: " + plant.getMoisture());
 		Text soil = makeText("Soil Type: " + plant.getSoilType());
 		Text canopy = makeText("Canopy: " + plant.getCanopy());
+		Text delaware = makeText("Delaware Native: " + plant.getDelawareNative());
 		Text description = makeText(plant.getDescription());
+		Text newLine = new Text("");
 
 		information.minHeight(infoMinHeight);
-		information.getChildren().addAll(light, moisture, soil, canopy, description);
+		information.getChildren().addAll(light, moisture, soil, canopy, delaware, newLine, description);
 
 		scroll = new ScrollPane();
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

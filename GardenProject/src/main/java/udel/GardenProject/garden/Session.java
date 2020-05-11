@@ -100,7 +100,6 @@ public class Session implements Serializable {
 	 * <b>NOTE</b>: Key should plant latin name, value the plant itself.
 	 */
 	private HashSet<Plant> selectedPlants = new HashSet<Plant>();
-	// TODO: This doesn't have a getter. Remove at some point?
 	
 	/**
 	 * User's selected seasons for blooms

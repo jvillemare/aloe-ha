@@ -19,7 +19,7 @@ import udel.GardenProject.windows.Window;
  * @author Team 0
  */
 public class View {
-
+	
 	/**
 	 * Pink background style to be used in Welcome
 	 */
