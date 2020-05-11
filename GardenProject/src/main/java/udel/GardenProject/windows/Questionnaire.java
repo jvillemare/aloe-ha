@@ -85,6 +85,11 @@ public class Questionnaire extends Window {
 	 * Allows your to scroll down the screen
 	 */
 	private ScrollPane scroll;
+	
+	/**
+	 * Standard String to check if user wants any moisture values.
+	 */
+	private String moistureAny = "My plot has different moisture";
 
 	/**
 	 * Used for single answers
@@ -325,7 +330,7 @@ public class Questionnaire extends Window {
 		q4ChoiceBox = new ChoiceBox<>();
 		for (Moisture m : Moisture.values())
 			q4ChoiceBox.getItems().add(m.getFriendlyName());
-		q4ChoiceBox.getItems().add("My plot has different moisture");
+		q4ChoiceBox.getItems().add(moistureAny);
 		q4ChoiceBox.setValue(Moisture.DRY.getFriendlyName());
 		vbox.getChildren().addAll(q4ChoiceBox);
 	}
@@ -657,7 +662,7 @@ public class Questionnaire extends Window {
 
 		// Moisture
 		if(getSession().getMoistureOfPlot() == null)
-			q4ChoiceBox.setValue("My plot has different moisture");
+			q4ChoiceBox.setValue(moistureAny);
 		else
 			q4ChoiceBox.setValue(getSession().getMoistureOfPlot().getFriendlyName());
 
