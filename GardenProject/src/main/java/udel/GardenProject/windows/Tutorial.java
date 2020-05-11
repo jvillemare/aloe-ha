@@ -86,6 +86,8 @@ public class Tutorial extends Window {
 	private int messageWrapWidth = View.getCanvasWidth() / 5 * 3;
 	private int tutorialCanvasWidth = View.getCanvasWidth() - 320;
 	private int backPaneTranslateX = (tutorialCanvasWidth / 2) - (View.getButtonPrefWidth() / 2);
+	private int imageWidth = 700;
+	private int imageHeight = 400;
 
 	/**
 	 * Create a Tutorial window instance.
@@ -251,8 +253,14 @@ public class Tutorial extends Window {
 		 * TODO: may have to add parameters for width and height for each image. Blocked
 		 * until program is finished an we can start taking screenshots of the screens
 		 */
-		iv.setFitHeight(70);
-		iv.setFitWidth(150);
+		if(img.equals("/buttonImages/fiveleaf.png")) {
+			iv.setFitHeight(70);
+			iv.setFitWidth(150);
+		}else {
+			iv.setFitHeight(imageHeight);
+			iv.setFitWidth(imageWidth);
+		}
+		
 		contentBox.getChildren().add(iv);
 	}
 
@@ -265,7 +273,7 @@ public class Tutorial extends Window {
 
 		VBox contentBox = new VBox();
 		createContentText("Click on the get started button on the main screen.", contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the start new plot button
+		createContentImage("/tutorialImages/Welcome_Page.png", contentBox); // image of the start new plot button
 		createContentText("Follow the instruction on each of the screen to complete your design garden.", contentBox);
 		return contentBox;
 
@@ -295,7 +303,7 @@ public class Tutorial extends Window {
 		createContentText(
 				"Tool tips are set up to help you know more about what to do. For example, hover over the name of plant from the drop down when you search for a plant. You will be able to see a picture of the plant!",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of existing plants drop down with hover
+		createContentImage("/tutorialImages/Tool_Tips.png", contentBox); // image of existing plants drop down with hover
 		return contentBox;
 	}
 
@@ -309,13 +317,12 @@ public class Tutorial extends Window {
 		createContentText(
 				"Search the plants you already have in your garden by typing either the plant's Latin or common name. Once selected, the name of the plant will become bold and your selected plant will appear in the box on the right.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the user selecting a plant
+		createContentImage("/tutorialImages/Existing_Plants.png", contentBox); // image of the user selecting a plant
 		createContentText(
 				"If your would like to remove the plant from your selection, click the X button on the left of the corresponding plant name.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the user hovering over the X next to a
+		createContentImage("/tutorialImages/X_Button.png", contentBox); // image of the user hovering over the X next to a
 																		// plant's name
-		createContentText("Select SAVE before you continue.", contentBox);
 		return contentBox;
 	}
 
@@ -329,6 +336,7 @@ public class Tutorial extends Window {
 		createContentText(
 				"Answer all the questions to the best of your ability. Your answers will help us filter out plants that cannot be placed in your garden and help you select plants that are native to your area.",
 				contentBox);
+		createContentImage("/tutorialImages/Question.png", contentBox);
 		return contentBox;
 	}
 
@@ -342,17 +350,17 @@ public class Tutorial extends Window {
 		createContentText(
 				"On the Plant Selection screen, you will see 4 options corresponding to different canopy levels.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the 4 canopies
+		createContentImage("/tutorialImages/Plant_Selection.png", contentBox); // image of the 4 canopies
 		createContentText(
 				"Click the 'Add Plant' button to select the plants from each canopy level for a garden that supports plants that require different levels of sunlight.",
 				contentBox);
 		createContentText("If you would like more infomation about the plant, click on the info button to learn more",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the info and add plant button
+		createContentImage("/tutorialImages/Add_Plant.png", contentBox); // image of the info and add plant button
 		createContentText(
 				"If you would like to remove your plant selection, click the 'Remove' button on the corresponding plant.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the remove button with the plant
+		createContentImage("/tutorialImages/Remove_Plant.png", contentBox); // image of the remove button with the plant
 		return contentBox;
 	}
 
@@ -426,7 +434,7 @@ public class Tutorial extends Window {
 		createContentText(
 				"The Plant DataBase button on the Plot Design screen will take you to where you can look at ALL plants, including plants not in your native area. You can search and choose which plants you'd like to add to your garden.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the plant data base screen
+		createContentImage("/tutorialImages/All_Plants.png", contentBox); // image of the plant data base screen
 		return contentBox;
 	}
 
@@ -438,9 +446,9 @@ public class Tutorial extends Window {
 	public VBox createPlantInfo() {
 		VBox contentBox = new VBox();
 		createContentText(
-				"The Plant Info button will take you to a screen that shows you all the information of the plant. This information allows your to learn more about the plants and help you decide which plants to add from the Existing Plants screen and the Plant Database",
+				"The Plant Info button will take you to a screen that shows you all the information of the plant. This information allows your to learn more about the plants and help you decide which plants to add from the Plant Selection screen and the Plant Database",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the Plant Info screen and how it works
+		createContentImage("/tutorialImages/Plant_Info.png", contentBox); // image of the Plant Info screen and how it works
 		return contentBox;
 	}
 
