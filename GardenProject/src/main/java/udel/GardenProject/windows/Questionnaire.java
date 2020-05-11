@@ -85,6 +85,11 @@ public class Questionnaire extends Window {
 	 * Allows your to scroll down the screen
 	 */
 	private ScrollPane scroll;
+	
+	/**
+	 * Standard String to check if user wants any moisture values.
+	 */
+	private String moistureAny = "My plot has different moisture";
 
 	/**
 	 * Used for single answers
@@ -324,9 +329,9 @@ public class Questionnaire extends Window {
 				"4) Does your entire plot have the same level of moisture? If yes, what level of moisture does your garden have?");
 		q4ChoiceBox = new ChoiceBox<>();
 		for (Moisture m : Moisture.values())
-			q4ChoiceBox.getItems().add(m.name());
-		q4ChoiceBox.getItems().add("My plot has different moisture");
-		q4ChoiceBox.setValue(Moisture.DRY.name());
+			q4ChoiceBox.getItems().add(m.getFriendlyName());
+		q4ChoiceBox.getItems().add(moistureAny);
+		q4ChoiceBox.setValue(Moisture.DRY.getFriendlyName());
 		vbox.getChildren().addAll(q4ChoiceBox);
 	}
 
@@ -337,9 +342,9 @@ public class Questionnaire extends Window {
 		createText("5) Does your entire plot have the same soil type? If yes, what soil type does your garden have?");
 		q5ChoiceBox = new ChoiceBox<>();
 		for (SoilTypes st : SoilTypes.values())
-			q5ChoiceBox.getItems().add(st.name());
+			q5ChoiceBox.getItems().add(st.getName());
 		q5ChoiceBox.getItems();
-		q5ChoiceBox.setValue(SoilTypes.CLAY.name());
+		q5ChoiceBox.setValue(SoilTypes.CLAY.getName());
 		vbox.getChildren().addAll(q5ChoiceBox);
 	}
 
@@ -372,7 +377,7 @@ public class Questionnaire extends Window {
 
 		q7items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (Seasons seasonEnum : seasonsWanted) {
-			CheckBox c = new CheckBox(seasonEnum.toString());
+			CheckBox c = new CheckBox(seasonEnum.getSeason());
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks next
 		}
@@ -397,7 +402,7 @@ public class Questionnaire extends Window {
 
 		q8items = FXCollections.observableArrayList(); // add checkboxes to this list
 		for (Colors colorEnum : colorsWanted) {
-			CheckBox c = new CheckBox(colorEnum.toString());
+			CheckBox c = new CheckBox(colorEnum.getFriendlyName());
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks next
 		}
@@ -484,23 +489,20 @@ public class Questionnaire extends Window {
 				checkSelectedPlot(nearPlot);
 
 				try {
-					getSession().setMoistureOfPlot(Moisture.valueOf(getChoice(q4ChoiceBox)));
+					getSession().setMoistureOfPlot(Moisture.valueOf(getChoice(q4ChoiceBox).replace(" ", "").toUpperCase()));
 				} catch (IllegalArgumentException e) {
-					if (getChoice(q4ChoiceBox).equals("My plot has a different moisture"))
-						getSession().setMoistureOfPlot(null);
+					getSession().setMoistureOfPlot(null);
 				}
 
 				try {
-					getSession().setSoilTypeOfPlot(SoilTypes.valueOf(getChoice(q5ChoiceBox)));
+					getSession().setSoilTypeOfPlot(SoilTypes.valueOf(getChoice(q5ChoiceBox).replace(" ", "").toUpperCase()));
 				} catch (IllegalArgumentException e) {
-					if (getChoice(q5ChoiceBox).equals("My plot has a different soil type"))
-						getSession().setSoilTypeOfPlot(SoilTypes.ANY);
+					getSession().setSoilTypeOfPlot(SoilTypes.ANY);
 				}
 				try {
 					getSession().setSunlightOfPlot(Double.parseDouble(getChoice(q6ChoiceBox)));
 				} catch (NumberFormatException e) {
-					if (getChoice(q6ChoiceBox).equals("My plot receives different levels of sunlight"))
-						getSession().setSunlightOfPlot(-1.0);
+					getSession().setSunlightOfPlot(-1.0);
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
@@ -593,7 +595,12 @@ public class Questionnaire extends Window {
 		// Seasons enum, and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				getSession().getSeasonsUserSelected().add(Seasons.valueOf(cb.get(counter).getText()));
+				try {
+					getSession().getSeasonsUserSelected().add(
+							Seasons.valueOf(cb.get(counter).getText().replace(" ", "").toUpperCase()));
+				}catch(IllegalArgumentException e) {
+					System.out.println("No Season exits for this");
+				}
 			}
 		}
 
@@ -614,7 +621,14 @@ public class Questionnaire extends Window {
 		// Colors from Colors Enum and add it to the Session ArrayList.
 		for (int counter = 0; counter < cb.size(); counter++) {
 			if (cb.get(counter).isSelected()) {
-				getSession().getColorsUserSelected().add(Colors.valueOf(cb.get(counter).getText()));
+				try {
+					getSession().getColorsUserSelected().add(
+							Colors.valueOf(cb.get(counter).getText().replace(" ", "").toUpperCase()));
+				}catch (IllegalArgumentException e) {
+					System.out.println("No color exits for this");
+				}
+				
+				
 			}
 		}
 	}
@@ -647,10 +661,13 @@ public class Questionnaire extends Window {
 		}
 
 		// Moisture
-		q4ChoiceBox.setValue(getSession().getMoistureOfPlot().name());
+		if(getSession().getMoistureOfPlot() == null)
+			q4ChoiceBox.setValue(moistureAny);
+		else
+			q4ChoiceBox.setValue(getSession().getMoistureOfPlot().getFriendlyName());
 
 		// Soil type
-		q5ChoiceBox.setValue(getSession().getSoilTypeOfPlot().name());
+		q5ChoiceBox.setValue(getSession().getSoilTypeOfPlot().getName());
 
 		// Sunlight
 		q6ChoiceBox.setValue(String.valueOf(getSession().getSunlightOfPlot()));
@@ -659,7 +676,7 @@ public class Questionnaire extends Window {
 		clearCheckBoxes(q7items);
 		for (Seasons s : getSession().getSeasonsUserSelected()) {
 			for (CheckBox c : q7items) {
-				if (c.getText().toString().equals(s.toString())) {
+				if (c.getText().toString().equals(s.getSeason())) {
 					c.setSelected(true);
 				}
 			}
@@ -669,7 +686,7 @@ public class Questionnaire extends Window {
 		clearCheckBoxes(q8items);
 		for (Colors color : getSession().getColorsUserSelected()) {
 			for (CheckBox c : q8items) {
-				if (c.getText().toString().equals(color.toString())) {
+				if (c.getText().toString().equals(color.getFriendlyName())) {
 					c.setSelected(true);
 				}
 			}

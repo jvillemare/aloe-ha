@@ -116,9 +116,27 @@ public class PlantInfo extends Window {
 		information.setStyle(View.getWhiteBackgroundStyle());
 
 		Text light = makeText("Light: " + plant.getLight());
-		Text moisture = makeText("Moisture: " + plant.getMoisture());
-		Text soil = makeText("Soil Type: " + plant.getSoilType());
-		Text canopy = makeText("Canopy: " + plant.getCanopy());
+		Text moisture;
+		Text soil;
+		Text canopy;
+		try {
+			moisture = makeText("Moisture: " + plant.getMoisture().getFriendlyName());
+		}catch(NullPointerException e) {
+			moisture = makeText("Moisture: Unavailable");
+		}
+		
+		try {
+			soil = makeText("Soil Type: " + plant.getSoilType().getName());
+		}catch(NullPointerException e) {
+			soil = makeText("Soil Type: Unavailable");
+		}
+		
+		try {
+			canopy = makeText("Canopy: " + plant.getCanopy().getFriendlyName());
+		}catch(NullPointerException e) {
+			canopy = makeText("Canopy Type: Unavailable");
+		}
+		
 		Text delaware = makeText("Delaware Native: " + plant.getDelawareNative());
 		Text description = makeText(plant.getDescription());
 		Text newLine = new Text("");

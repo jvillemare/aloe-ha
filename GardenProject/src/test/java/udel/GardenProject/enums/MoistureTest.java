@@ -15,8 +15,8 @@ public class MoistureTest {
 		assertTrue(m.getMoisture("Wet").equals(Moisture.DAMP));
 		assertTrue(m.getMoisture("Moist").equals(Moisture.MOIST));
 		assertTrue(m.getMoisture("Dry").equals(m));
-		assertTrue(m.getMoisture("wet-med").equals(Moisture.MOIST_DAMP));
-		assertTrue(m.getMoisture("dry-moist").equals(Moisture.DRY_MOIST));
+		assertTrue(m.getMoisture("wet-med").equals(Moisture.MOISTDAMP));
+		assertTrue(m.getMoisture("dry-moist").equals(Moisture.DRYMOIST));
 		assertTrue(m.getMoisture("non-exist")==null);
 	}
 

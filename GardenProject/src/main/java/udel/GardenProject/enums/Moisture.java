@@ -13,13 +13,23 @@ package udel.GardenProject.enums;
  */
 public enum Moisture {
 	
-	DRY,
-	DRY_MOIST,
-	MOIST,
-	MOIST_DAMP,
-	DAMP;
+	DRY("Dry"),
+	DRYMOIST("Dry Moist"),
+	MOIST("Moist"),
+	MOISTDAMP("Moist Damp"),
+	DAMP("Damp");
 
+	private String name;
 	
+	private Moisture(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * Getter to Establish what String belongs to what moisture level.
+	 * @param s
+	 * @return Moisture enum level
+	 */
 	public Moisture getMoisture(String s) {
 		if (s.equalsIgnoreCase("Wet") || s.equalsIgnoreCase("Damp")){
 			return DAMP;
@@ -28,12 +38,20 @@ public enum Moisture {
 		}else if (s.equalsIgnoreCase("Dry")) {
 			return DRY;
 		}else if (s.equalsIgnoreCase("wet-med") || s.equalsIgnoreCase("Moist, Wet")) {
-			return MOIST_DAMP;
+			return MOISTDAMP;
 		}else if (s.equalsIgnoreCase("dry-moist")) {
-			return DRY_MOIST;
+			return DRYMOIST;
 		}else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns the name of the Moisture Level.
+	 * @return String name of Moisture level
+	 */
+	public String getFriendlyName() {
+		return name;
 	}
 	
 }

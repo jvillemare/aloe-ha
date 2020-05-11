@@ -17,27 +17,21 @@ package udel.GardenProject.enums;
  */
 public enum SoilTypes {
 
-	CLAY("clay"), 
-	SANDY("sandy"), 
-	LOAMY("loamy"),
-	ANY("any soil");
+	CLAY("Clay"), 
+	SANDY("Sandy"), 
+	LOAMY("Loamy"),
+	ANY("Any Soil");
 	
 	private String name = null;
-	//private String ph = null;
 	
 	private SoilTypes(String s /*, String p */) {
 		name = s;
-		//ph = p;
 		
 	}
 	
 	public String getName() {
 		return name;
 	}
-	
-	/*public String getPHType() {
-		return ph;
-	}*/
 	
 	public SoilTypes getSoilTexture(String s) {
 		if (s.equalsIgnoreCase("Clay")) {
