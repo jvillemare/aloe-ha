@@ -12,9 +12,11 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Path of an image of a pool.
+	 * Path of an image of a pool for window view.
 	 */
-	private static String pool = "/viewImages/pool.png";
+	private static String windowPool = "/viewImages/pool.png";
+	
+	private static String plotPool;
 	
 	/**
 	 * Constructor.
@@ -25,7 +27,7 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 */
 	public PlotPool(double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), pool);
+		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPool, plotPool);
 		// TODO Auto-generated constructor stub
 	}
 

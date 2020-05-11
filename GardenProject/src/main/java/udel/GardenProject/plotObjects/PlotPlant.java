@@ -31,7 +31,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param y Vertical position in PlotDesign.
 	 */
 	public PlotPlant(Plant p, double x, double y) {
-		super(x, y, checkIfCanopy(p.getCanopy()), chooseImage(p));
+		super(x, y, checkIfCanopy(p.getCanopy()), chooseWindowImage(p), choosePlotImage(p));
 		this.p = p;
 	}
 	
@@ -64,7 +64,30 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 * @param p The plant object.
 	 * @return The correct image based on canopy level.
 	 */
-	public static String chooseImage(Plant p) {
+	public static String chooseWindowImage(Plant p) {
+		if (p.getCanopy() == null) {
+			return "/viewImages/sunflower.png";
+		}
+		switch(p.getCanopy()) {
+		case FLOOR:
+			return "/viewImages/floor.png";
+		case UNDERSTORY:
+			return "/viewImages/understory.png";
+		case CANOPY:
+			return "/viewImages/canopy.png";
+		case EMERGENT:
+			return "/viewImages/emergent.png";
+		default:
+			return "/viewImages/sunflower.png";
+		}
+	}
+	
+	/**
+	 * Determines the image to be used for the plot design.
+	 * @param p The plant object.
+	 * @return The correct image based on canopy level.
+	 */
+	public static String choosePlotImage(Plant p) {
 		if (p.getCanopy() == null) {
 			return "/viewImages/sunflower.png";
 		}

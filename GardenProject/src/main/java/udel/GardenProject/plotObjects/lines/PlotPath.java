@@ -15,9 +15,11 @@ public class PlotPath extends GenericLine implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Image of a path.
+	 * Image of a path for window view.
 	 */
-	private static String path = "/viewImages/path.png";
+	private static String windowPath = "/viewImages/path.png";
+	
+	private static String plotPath;
 
 	/**
 	 * Constructor.
@@ -27,7 +29,7 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param height	Height of path object.
 	 */
 	public PlotPath(double x, double y, double height) {
-		super(x, y, 1.0, new AdjustableLine(), path);
+		super(x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
 		// TODO Auto-generated constructor stub
 	}	
 

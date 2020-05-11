@@ -25,10 +25,14 @@ public abstract class PlotObject {
 	private double height;
 	
 	/**
-	 * Path of image representing the plant
+	 * Path of image for window view.
 	 */
-	private String image;
+	private String windowImage;
 	
+	/**
+	 * Path of image for plot design.
+	 */
+	private String plotImage;
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
@@ -37,13 +41,16 @@ public abstract class PlotObject {
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
-	 * @param imagePath	String of path to image representing the plant
+	 * @param imagePath	String of path to window view image
+	 * @param plotPath	String of path to plot design image
 	 */
-	public PlotObject(double x, double y, double height, String imagePath) {
+	public PlotObject(double x, double y, double height, String imagePath, String plotPath) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
-		this.image = imagePath;
+		this.windowImage = imagePath;
+		this.plotImage = plotPath;
+		
 	}
 	
 	/**
@@ -88,10 +95,18 @@ public abstract class PlotObject {
 
   /**
 	 * Getter
-	 * @return Image for plot object.
+	 * @return Path to image of plot object for window view.
 	 */
-	public final String getImage() {
-		return this.image;
+	public final String getWindowImage() {
+		return this.windowImage;
+	}
+	
+	/**
+	 * Getter
+	 * @return Path to image of plot object for plot design.
+	 */
+	public final String getPlotImage() {
+		return this.plotImage;
 	}
 
 }

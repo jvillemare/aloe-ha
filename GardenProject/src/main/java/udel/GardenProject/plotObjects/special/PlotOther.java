@@ -14,9 +14,14 @@ public class PlotOther extends PlotObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Path to image of a raised garden bed.
+	 * Path to an image of a raised garden bed for window view.
 	 */
-	private static String picture = "/viewImages/gardenBed.png";
+	private static String windowPicture = "/viewImages/gardenBed.png";
+	
+	/**
+	 * Path to an image of a raised garden bed for plot design.
+	 */
+	private static String plotPicture;
 
 	/**
 	 * TODO: ?...
@@ -26,7 +31,7 @@ public class PlotOther extends PlotObject implements Serializable {
 	 * @param height	...
 	 */
 	public PlotOther(double x, double y, double height) {
-		super(x, y, height, picture);
+		super(x, y, height, windowPicture, plotPicture);
 		// TODO Auto-generated constructor stub
 	}
 
