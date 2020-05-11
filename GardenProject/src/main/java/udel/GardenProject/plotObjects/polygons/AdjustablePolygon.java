@@ -145,6 +145,27 @@ public class AdjustablePolygon implements Serializable {
 	}
 	
 	/**
+	 * Getter.
+	 * @return The handler that allows you to toggle the editability of a 
+	 * 			AdjustablePolygon.
+	 */
+	public EventHandler<ActionEvent> getAnchorPointHandler() {
+		return new EventHandler<ActionEvent>() { 
+            public void handle(ActionEvent e) 
+            { 
+            	visible=!visible;
+            	for(Anchor a:anchors) {
+            		a.setVisible(visible);
+            	}
+            	if(visible) 
+            		b.setText("Stop Editing");
+            	else
+            		b.setText("Resume Edit");
+            } 
+        };
+	}
+	
+	/**
 	 * Generate the list of anchors for drawings.
 	 * @param polygon Polygon object to draw the circle on the anchor
 	 * @param points All points of polygon
