@@ -271,15 +271,16 @@ public class Plant implements Serializable {
 	public String[] getImages() {
 		return this.images;
 	}
-	
+
 	/**
-	 * Goes through plant description and finds the color(s) of the plant.
-	 * Gathers information from all sources that have color data: NPC, 
-	 * SUNNYEDGE, and NRCS; UDEL has no color data.
-	 * @return Either a HashSet of colors that are found in the plant or null
-	 * if the only data source is UDEL.
+	 * Goes through plant description and finds the color(s) of the plant. Gathers
+	 * information from all sources that have color data: NPC, SUNNYEDGE, and NRCS;
+	 * UDEL has no color data.
+	 * 
+	 * @return Either a HashSet of colors that are found in the plant or null if the
+	 *         only data source is UDEL.
 	 */
-	public HashSet<Colors> getColors(){
+	public HashSet<Colors> getColors() {
 		if (this.getSource().length == 1 && this.getSource()[0] == PlantDataSource.UDEL) {
 			return null;
 		}
@@ -289,7 +290,7 @@ public class Plant implements Serializable {
 		String inDesc;
 		String descript = this.getDescription();
 		boolean hasColor = true;
-		while(hasColor) {
+		while (hasColor) {
 			ind = descript.indexOf("Color: ", start);
 			if (ind == -1) {
 				hasColor = false;
@@ -297,10 +298,10 @@ public class Plant implements Serializable {
 			}
 			end = descript.indexOf(System.lineSeparator(), ind);
 			inDesc = descript.substring(ind + 7, end);
-			if (inDesc.indexOf("evergreen")>=0) {
+			if (inDesc.indexOf("evergreen") >= 0) {
 				inDesc = "forestgreen";
 			}
-			if (inDesc.indexOf("whitish")>=0) {
+			if (inDesc.indexOf("whitish") >= 0) {
 				inDesc = "white";
 			}
 			inDesc = inDesc.replace("ish", "");
@@ -314,30 +315,85 @@ public class Plant implements Serializable {
 				c = c.split(" ")[0];
 				c = c.toUpperCase();
 				try {
-				    colors.add(Colors.valueOf(c));
-				} catch(IllegalArgumentException e) { }
+					colors.add(Colors.valueOf(c));
+				} catch (IllegalArgumentException e) {
+				}
 			}
 			start = end;
 		}
 		inDesc = null;
 		descript = null;
 		return colors;
-  }
+	}
 
-  /**
+	/**
 	 * Trimmed version of the URL for the images of Plants, purpose for copyright.
 	 * 
 	 * @param url
 	 * @return trimmed version of the url
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
 	public static String getImageSourceDomain(String url) throws MalformedURLException {
 		URL u = new URL(url);
-		
+
 		String trim;
 		trim = u.getAuthority();
-		
+
 		return trim;
+	}
+
+	/**
+	 * Gets height of plant from plant's description.
+	 * @return A double representing the plant's height. -1 is returned if no
+	 * height is found.
+	 */
+	public double getHeight() {
+		String desc = this.description;
+		if (desc.contains("Height, Mature (feet): ")) {
+			String ht = desc.substring(desc.indexOf("Height, Mature (feet): ") + 23, desc.indexOf(System.lineSeparator(), desc.indexOf("Height, Mature (feet): ")));
+			if (ht.isEmpty()) {
+				return -1;
+			}
+			return Double.valueOf(ht);
+		}
+		else if(desc.contains("Height: ")) {
+			boolean inches = false;
+			String ht = desc.substring(desc.indexOf("Height: ") + 8, desc.indexOf(System.lineSeparator(), desc.indexOf("Height: ")));
+			if (ht.isEmpty()) {
+				return -1;
+			}
+			if (ht.contains("”")) {
+				ht = ht.replace("”", "");
+				inches = true;
+			}
+			if (ht.contains("\u2019")) {
+				ht.replace("\u2019", "");
+			}
+			if (ht.contains("ft")) {
+				ht = ht.substring(0, ht.indexOf("ft"));
+			}
+			if (ht.contains(" - ")) {
+				ht = ht.substring(ht.indexOf(" - ") + 3);
+			}
+			if (ht.contains("-")) {
+				ht = ht.substring(ht.indexOf("-") + 1);
+			}
+			if (ht.contains("’")) {
+				ht = ht.replace("’", "");
+			}
+			if (ht.contains("'")) {
+				ht = ht.replace("'", "");
+			}
+			if (inches) {
+				return Double.valueOf(ht)/12;
+			}
+			else {
+				return Double.valueOf(ht);
+			}
+		}
+		else {
+			return -1;
+		}
 	}
 
 }

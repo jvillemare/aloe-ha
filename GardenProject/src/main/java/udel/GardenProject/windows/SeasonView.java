@@ -27,8 +27,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.GardenView;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
+import udel.GardenProject.enums.Year;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -354,22 +356,22 @@ public class SeasonView extends Window {
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		String[] yearSelection = { "0 YEARS", "1 YEAR", "2 YEARS" };
+		Year[] years = Year.values();
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
-		for (String y : yearSelection) {
-			ToggleButton toggle = new ToggleButton(y);
+		for (Year y : years) {
+			ToggleButton toggle = new ToggleButton(y.getYear());
 			createToggleEvent(toggle);
-			yearPick.add(y); // adds the seasons to an observable list
+			yearPick.add(y.getYear()); // adds the seasons to an observable list
 			toggle.setToggleGroup(yearGroup);
 			yearHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				if (y.equals("0 YEARS")) {
+				if (y == Year.YEAR0) {
 					chosenYear = 0;
 				}
-				if (y.equals("1 YEAR")) {
+				if (y == Year.YEAR1) {
 					chosenYear = 1;
 				}
-				if (y.equals("2 YEARS")) {
+				if (y == Year.YEAR2) {
 					chosenYear = 2;
 				}
 			});
@@ -377,20 +379,20 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		String[] viewSelection = { "TOP VIEW", "WINDOW VIEW" };
+		GardenView[] views = GardenView.values();
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
-		for (String v : viewSelection) {
-			ToggleButton toggle = new ToggleButton(v);
+		for (GardenView v : views) {
+			ToggleButton toggle = new ToggleButton(v.getView());
 			createToggleEvent(toggle);
-			viewPick.add(v);
+			viewPick.add(v.getView());
 			toggle.setToggleGroup(viewGroup);
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				if (v.equals("TOP VIEW")) {
+				if (v == GardenView.TOPVIEW) {
 					imageVBox.getChildren().set(0, square);
 					chosenView = "TOP";
 				}
-				if (v.equals("WINDOW VIEW")) {
+				if (v == GardenView.WINDOWVIEW) {
 					imageVBox.getChildren().set(0, canvas);
 					chosenView = "WINDOW";
 				}
@@ -445,6 +447,7 @@ public class SeasonView extends Window {
 				group.getSelectedToggle().setSelected(false);
 			}
 		}
+		drawCanvas(canvas.getGraphicsContext2D());
 	}
 
 	/**
