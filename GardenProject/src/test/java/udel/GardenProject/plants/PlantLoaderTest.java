@@ -69,7 +69,7 @@ public class PlantLoaderTest {
 		for (int i = 0; i < plant.getBloomTime().length; i++) {
 			assertTrue(plant.getBloomTime()[i] == bloom[i]);
 		}
-		assertTrue(plant.getMoisture().compareTo(Moisture.MOIST_DAMP) == 0);
+		assertTrue(plant.getMoisture().compareTo(Moisture.MOISTDAMP) == 0);
 		assertTrue(plant.getLight() == .83);
 		assertTrue(plant.getLatinName().equals("Cornus seriacea"));
 		assertFalse(plant.getDelawareNative());
@@ -139,7 +139,7 @@ public class PlantLoaderTest {
 		assertTrue(plant.getCanopy() == Canopy.FLOOR);
 		assertTrue(plant.getLight() == .83);
 		assertTrue(plant.getSoilType() == SoilTypes.LOAMY);
-		assertTrue(plant.getMoisture() == Moisture.DRY_MOIST);
+		assertTrue(plant.getMoisture() == Moisture.DRYMOIST);
 		assertTrue(plant.getLatinName().equals("Coreopsis verticillata"));
 		assertFalse(plant.getDelawareNative());
 		assertFalse(plant.getInvasive());
@@ -221,7 +221,7 @@ public class PlantLoaderTest {
 			assertTrue(p.getSource()[i] == ds[i]);
 		}
 		assertTrue(p.getSoilType() == SoilTypes.LOAMY);
-		assertTrue(p.getMoisture() == Moisture.MOIST_DAMP);
+		assertTrue(p.getMoisture() == Moisture.MOISTDAMP);
 	}
 	
 	@Test

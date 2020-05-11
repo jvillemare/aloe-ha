@@ -222,10 +222,10 @@ public class PlantLoader {
 					moisture = Moisture.MOIST;
 					break;
 				case "Moist, Wet":
-					moisture = Moisture.MOIST_DAMP;
+					moisture = Moisture.MOISTDAMP;
 					break;
 				case "Dry, Moist":
-					moisture = Moisture.DRY_MOIST;
+					moisture = Moisture.DRYMOIST;
 					break;
 				case "Flooded, Moist, Wet":
 				case "Flooded, Wet":
@@ -376,7 +376,7 @@ public class PlantLoader {
 			case "moist/dry":
 			case "dry/wet":
 			case "dry/moist":
-				moisture = Moisture.DRY_MOIST;
+				moisture = Moisture.DRYMOIST;
 				break;
 			case "wet":
 				moisture = Moisture.DAMP;
@@ -385,7 +385,7 @@ public class PlantLoader {
 			case "wet/medium":
 			case "moist/medium":
 			case "wet/med":
-				moisture = Moisture.MOIST_DAMP;
+				moisture = Moisture.MOISTDAMP;
 				break;
 			}
 			String layer = obj.getJSONObject(plant).getString("canopy");

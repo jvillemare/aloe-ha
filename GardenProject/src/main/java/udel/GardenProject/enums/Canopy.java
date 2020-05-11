@@ -9,18 +9,24 @@ package udel.GardenProject.enums;
  */
 public enum Canopy {
 	
-	FLOOR(15), 
-	UNDERSTORY(55), 
-	CANOPY(95), 
-	EMERGENT(125);
+	FLOOR(15, "Floor"), 
+	UNDERSTORY(55, "Understory"), 
+	CANOPY(95, "Canopy"), 
+	EMERGENT(125, "Emergent");
 	
 	/**
 	 * Maximum height of a canopy layer in Imperial feet
 	 */
 	private int maximumHeight;
 	
-	Canopy(int max) {
+	/**
+	 * The name of the Canopy level.
+	 */
+	private String name;
+	
+	Canopy(int max, String name) {
 		this.maximumHeight = max;
+		this.name = name;
 	}
 	
 	/**
@@ -82,5 +88,14 @@ public enum Canopy {
 		
 		return null;
 	}
+	
+	/**
+	 * Returns the name of the Canopy Level.
+	 * @return String name of Canopy level
+	 */
+	public String getFriendlyName() {
+		return name;
+	}
+	
 
 }

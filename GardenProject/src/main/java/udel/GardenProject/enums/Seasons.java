@@ -14,7 +14,7 @@ public enum Seasons {
 	SPRING("Spring"), 
 	SUMMER("Summer"), 
 	FALL("Fall"), 
-	YEARROUND("Yearround");
+	YEARROUND("Year Round");
 	
 	
 	private String season = null;
@@ -62,3 +62,4 @@ public enum Seasons {
 	}
 	
 }
+
