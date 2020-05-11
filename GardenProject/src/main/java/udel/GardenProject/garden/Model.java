@@ -491,6 +491,7 @@ public class Model {
 
 	/**
 	 * Setup all the Windows objects of the project.
+	 * @throws Exception 
 	 */
 	private void setupWindows() {
 		windows = new Window[Windows.values().length];

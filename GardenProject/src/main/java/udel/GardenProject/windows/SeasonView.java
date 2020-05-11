@@ -93,7 +93,7 @@ public class SeasonView extends Window {
 	 * Prospective area where the image of the garden plot should be
 	 */
 	private Rectangle square;
-	
+
 	/**
 	 * Canvas to draw plants on for window view
 	 */
@@ -118,32 +118,32 @@ public class SeasonView extends Window {
 	 * Holds the toggle options and the bottom navigation buttons
 	 */
 	public VBox bottomBox;
-	
+
 	/**
 	 * Width of garden on the window.
 	 */
 	private double viewWidth;
-	
+
 	/**
 	 * Depth of garden on the window.
 	 */
 	private double viewDepth;
-	
+
 	/**
 	 * Maximum depth a plot object may be placed on plot desigh
 	 */
 	private final int MAXDEPTH = 550;
-	
+
 	/**
 	 * Maximum width a plot object may be placed on plot design
 	 */
 	private final int MAXWIDTH = 620;
-	
+
 	/**
 	 * Factor for scaling images in the window view
 	 */
 	private double factor;
-  
+
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
@@ -153,7 +153,7 @@ public class SeasonView extends Window {
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
 
-  /**
+	/**
 	 * Create a SeasonView window instance.
 	 *
 	 * @param m Model
@@ -187,18 +187,17 @@ public class SeasonView extends Window {
 		toggleOptionsTilePane.setHgap(inset20);
 		toggleOptionsTilePane.setVgap(inset20);
 
-		
-		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
-				- toggleOptionsTilePane.getHeight() - 130;
+		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - toggleOptionsTilePane.getHeight()
+				- 130;
 		viewWidth = View.getCanvasWidth() - 20;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
 		Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+		gc.drawImage(grass, 0, canvas.getHeight() / 3 * 2, canvas.getWidth(), canvas.getHeight() / 3);
 		drawCanvas(gc);
-		
+
 		square = new Rectangle();
 		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
 				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment);
@@ -322,23 +321,18 @@ public class SeasonView extends Window {
 		ObservableList<String> seasonPick = FXCollections.observableArrayList();
 		for (Seasons s : seasonSelection) {
 			ToggleButton toggle = new ToggleButton(s.getSeason());
+			createToggleEvent(toggle);
 			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
-		//String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
-		//ObservableList<String> seasonPick = FXCollections.observableArrayList();
-		//for (String s : seasonSelection) {
-		//	ToggleButton toggle = new ToggleButton(s);
-		//	createToggleEvent(toggle);
-		//	seasonPick.add(s); // adds the seasons to an observable list
 			toggle.setToggleGroup(seasonGroup);
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				chooseSeason=s;
+				chooseSeason = s;
 			});
 		}
 
 		yearHBox = new HBox();
 		yearGroup = new ToggleGroup();
-		String[] yearSelection = {"0 YEARS", "1 YEAR", "2 YEARS"};
+		String[] yearSelection = { "0 YEARS", "1 YEAR", "2 YEARS" };
 		ObservableList<String> yearPick = FXCollections.observableArrayList();
 		for (String y : yearSelection) {
 			ToggleButton toggle = new ToggleButton(y);
@@ -361,7 +355,7 @@ public class SeasonView extends Window {
 
 		viewHBox = new HBox();
 		viewGroup = new ToggleGroup();
-		String[] viewSelection = {"TOP VIEW", "WINDOW VIEW"};
+		String[] viewSelection = { "TOP VIEW", "WINDOW VIEW" };
 		ObservableList<String> viewPick = FXCollections.observableArrayList();
 		for (String v : viewSelection) {
 			ToggleButton toggle = new ToggleButton(v);
@@ -422,7 +416,7 @@ public class SeasonView extends Window {
 	 * Refreshes the screen to clear any of the toggles chosen
 	 */
 	public void refresh() {
-    // TODO: drawCanvas() doesn't need to be called here?
+		// TODO: drawCanvas() doesn't need to be called here?
 		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
 		for (ToggleGroup group : tg) {
 			if (group.getSelectedToggle() != null) {
@@ -430,7 +424,7 @@ public class SeasonView extends Window {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draws all the plot objects on the canvas for the window view.
 	 * 
@@ -443,21 +437,25 @@ public class SeasonView extends Window {
 		DropShadow shadow = new DropShadow();
 		for (PlotObject po : plot) {
 			factor = .3;
-			if (po.getPlotY()/MAXDEPTH > factor) {
-				factor = po.getPlotY()/MAXDEPTH; 
+			if (po.getPlotY() / MAXDEPTH > factor) {
+				factor = po.getPlotY() / MAXDEPTH;
 			}
 			Image i = new Image(po.getImage());
-			gc.fillOval(po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()/3*factor) + viewDepth/3*2, i.getWidth()*factor, i.getHeight()/2*factor);
+			gc.fillOval(po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
+					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() / 3 * factor) + viewDepth / 3 * 2,
+					i.getWidth() * factor, i.getHeight() / 2 * factor);
 		}
 		for (PlotObject po : plot) {
 			factor = .3;
-			if (po.getPlotY()/MAXDEPTH > factor) {
-				factor = po.getPlotY()/MAXDEPTH; 
+			if (po.getPlotY() / MAXDEPTH > factor) {
+				factor = po.getPlotY() / MAXDEPTH;
 			}
 			Image i = new Image(po.getImage());
 			gc.setEffect(shadow);
-			gc.drawImage(i, po.getPlotX()/MAXWIDTH*viewWidth - (i.getWidth()/2*factor), po.getPlotY()/MAXDEPTH*(viewDepth/3) - (i.getHeight()*factor) + viewDepth/3*2, i.getWidth() * factor, i.getHeight() * factor);
+			gc.drawImage(i, po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
+					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() * factor) + viewDepth / 3 * 2,
+					i.getWidth() * factor, i.getHeight() * factor);
 		}
-		
+
 	}
 }

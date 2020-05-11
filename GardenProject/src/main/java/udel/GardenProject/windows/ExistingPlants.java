@@ -103,7 +103,7 @@ public class ExistingPlants extends Window {
 	private HashMap<String, Plant> dropDownPlants;
 	
 	/**
-	 * links of pathways to images for a plant.
+	 * TODO: What is?...
 	 */
 	private String[] plantImageLinks;
 	
@@ -219,6 +219,7 @@ public class ExistingPlants extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				//System.out.println(getS
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -342,7 +343,7 @@ public class ExistingPlants extends Window {
 						}catch(NullPointerException Exception) {
 							plantImageLinks = null;
 						}
-						
+
 						Image plantImage;
 
 						// Get the actual image if it exists
@@ -473,6 +474,7 @@ public class ExistingPlants extends Window {
 	 */
 	public void refresh() {
 		selection.getChildren().clear();
+		System.out.println(getSession().getExistingPlants().size() + "size of existing plants in existing plants");
 		Iterator<Plant> pItr = getSession().getExistingPlants().iterator();
 		while (pItr.hasNext()) {
 			populateRightBox(pItr.next());
