@@ -25,6 +25,11 @@ public abstract class PlotObject {
 	private double height;
 	
 	/**
+	 * Radius of obejct in feet.
+	 */
+	private double radius;
+	
+	/**
 	 * Path of image for window view.
 	 */
 	private String windowImage;
@@ -33,6 +38,7 @@ public abstract class PlotObject {
 	 * Path of image for plot design.
 	 */
 	private String plotImage;
+  
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
@@ -41,16 +47,17 @@ public abstract class PlotObject {
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
-	 * @param imagePath	String of path to window view image
-	 * @param plotPath	String of path to plot design image
+   * @param radius  Radius in feet of plot object.
+	 * @param imagePath	String of path to window view image.
+	 * @param plotPath	String of path to plot design image.
 	 */
-	public PlotObject(double x, double y, double height, String imagePath, String plotPath) {
+	public PlotObject(double x, double y, double height, double radius, String imagePath, String plotPath) {
 		this.x = x;
 		this.y = y;
 		this.height = height;
+    this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
-		
 	}
 	
 	/**
@@ -78,6 +85,14 @@ public abstract class PlotObject {
 	}
 	
 	/**
+	 * Getter.
+	 * @return	Radius of this plot object in feet.
+	 */
+	public final double getRadius() {
+		return this.radius;
+  }
+    
+  /**
 	 * Setter.
 	 * @param x
 	 */

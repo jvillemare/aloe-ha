@@ -24,7 +24,7 @@ public class PlotFlamingo extends PlotObject implements Serializable {
 	private static String plotFlamingo = "/viewImages/plotFlamingo.png";
 
 	public PlotFlamingo(double x, double y, double height) {
-		super(x, y, height, windowFlamingo, plotFlamingo);
+		super(x, y, height, 1.0, windowFlamingo, plotFlamingo);
 		// TODO Auto-generated constructor stub
 	}
 

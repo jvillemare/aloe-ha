@@ -62,7 +62,7 @@ public class Session implements Serializable {
 	/**
 	 * Name of the user's plot so that they can customize them.
 	 */
-	private String plotName = "";
+	private String plotName = "My Garden Plot";
 
 	/**
 	 * Width and Length of the users plot in feet

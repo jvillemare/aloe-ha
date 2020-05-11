@@ -47,9 +47,9 @@ public class Plant implements Serializable {
 
 	/**
 	 * Percentage of light that plant normally receives from the sun during the
-	 * average sun light hours of a day.
+	 * average sun light hours of a day. From 0.0 to 1.0<br><br>
 	 * 
-	 * From 0.0 to 1.0
+	 * If there's no light value, -1.0 is put, instead.
 	 */
 	private double light;
 

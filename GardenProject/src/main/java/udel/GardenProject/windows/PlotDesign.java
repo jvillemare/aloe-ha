@@ -1,7 +1,7 @@
 package udel.GardenProject.windows;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,6 +35,7 @@ import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
+import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
@@ -50,44 +51,44 @@ public class PlotDesign extends Window {
 	private Scene scene;
 
 	/**
-	 * Used for the overall layout
+	 * Used for the overall layout.
 	 */
 	private BorderPane borderPane;
 
 	/**
-	 * Used to hold text, left and right panels
+	 * Used to hold text, left and right panels.
 	 */
 	private VBox vbox, autoRateVBox;
 
 	private Text text;
 
 	/**
-	 * Used for labeling autorate bars
+	 * Used for labeling autorate bars.
 	 */
 	private Text animalsFedTxt, contBloomTxt, matchTxt, transitionTxt;
 
 	/**
-	 * Text above editPlotButton
+	 * Text above editPlotButton.
 	 */
 	private Text editPlotText;
 
 	/**
-	 * Used inside of leftDropdownVBox for the plants we will put in the plot
+	 * Used inside of leftDropdownVBox for the plants we will put in the plot.
 	 */
 	private TilePane tilePane;
 
 	/**
-	 * Buttons in tilePane at the bottom of the screen
+	 * Buttons in tilePane at the bottom of the screen.
 	 */
 	private Button backButton, saveButton, mainMenu, nextButton;
 
 	/**
-	 * Used for when the user wants to edit the points of their plot
+	 * Used for when the user wants to edit the points of their plot.
 	 */
 	private Button editPlotButton;
 
 	/**
-	 * Used to outline the center area
+	 * Holds the options for what the user wants to put in their plot.
 	 */
 	private Rectangle box;
 
@@ -107,7 +108,8 @@ public class PlotDesign extends Window {
 	private ScrollPane scrollSelections;
 
 	/**
-	 * Use in drag to determine create a new image or not
+	 * Used for scrolling in the flowPane for all the options the user can all to
+	 * their plot.
 	 */
 	private boolean create = true;
 	/**
@@ -132,6 +134,7 @@ public class PlotDesign extends Window {
 	private List<TitledPane> accArr;
 
 	/**
+	 * Used for placement of adjustable polygon and plants/obstacles etc.
 	 * Implented for drag and drop TODO: MUST FIX IMPLEMENTATION
 	 */
 	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
@@ -599,10 +602,251 @@ public class PlotDesign extends Window {
 			});
 		}
 	}
+	
+	/**
+	 * Determine what percentage of plants have food sources for any animal. 
+	 * Looks at the plant descriptions to see if the plant has seeds, nuts, or
+	 * fruits that animals could feed on.
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * 			0.0 means no plants feed animals, and 1.0 means all plants in
+	 * 			the plot feeds animals.
+	 */
+	protected double evaluateAnimalsFed() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		PlotPlant p;
+		
+		int plantCount = 0;
+		int animalsFed = 0;
+		
+		for(PlotObject pObject : thePlot) {
+			// This is a little bit hacky, but you tell me what's a better
+			// solution. I thought about it for a few hours but couldn't come up
+			// with anything better.
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			plantCount++;
+			
+			// TODO: What if it does not even have "Berry...Product" in description?
+			if(p.getPlant().getDescription().contains("Berry/Nut/Seed Product: Yes"))
+				animalsFed++;
+		}
+		
+		// garbage collector cleanup
+		thePlot = null;
+		p = null;
+		
+		return (double)animalsFed / (double)plantCount;
+	}
+	
+	/**
+	 * Determine what percentage of the year has plants in bloom. Plants have 
+	 * bloom time stored as a 12 element boolean array, where every month
+	 * corresponds to a month of the year.<br><br>
+	 * 
+	 * This method ORs all the booleans in the Plant's bloom time into a master
+	 * boolean array, and this method determines what percentage of the latter
+	 * boolean array is true.
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * 			0.0 means there's no bloom in the plot, and 1.0 every month of
+	 * 			the year has a plant in bloom.
+	 */
+	protected double evaluateContinousBloom() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		
+		boolean[] bloom = new boolean[12];
+		PlotPlant p;
+		boolean[] plantsBloom;
+		
+		for(PlotObject pObject : thePlot) {
+			// Hacky solution that works. Check out explanation in
+			//		evaluatedAnimalsFed()
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			plantsBloom = p.getPlant().getBloomTime();
+			
+			for(int i = 0; i < plantsBloom.length; i++) {
+				bloom[i] = bloom[i] || plantsBloom[i];
+			}
+		}
+		
+		double monthsPlantsInBloom = 0.0;
+		
+		for(boolean monthHasPlantInBloom : bloom)
+			if(monthHasPlantInBloom)
+				monthsPlantsInBloom += 1.0;
+		
+		// garbage collector cleanup
+		thePlot = null;
+		bloom = null;
+		p = null;
+		plantsBloom = null;
+		
+		return monthsPlantsInBloom / 12.0;
+	}
+	
+	/**
+	 * Determine the percentage of plants and the percentage of each plant that
+	 * matches the chosen plot characteristics specified by the user in the
+	 * Questionnaire. Meaning, for every single Plant, what percentage of that
+	 * plant matches what the user is looking for?<br><br>
+	 * 
+	 * If a user wants a yellow plant that blooms all year round, and there is a
+	 * plant matching that description, that plant has a score of 
+	 * <code>1.0</code>. If its a yellow plant that blooms only part of the
+	 * year, it has a score of <code>0.5</code>. The average of these plant
+	 * scores is calculated for every plant.
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 */
+	protected double evaluateMatchesGarden() {
+		return 0.0;
+	}
+	
+	/**
+	 * <b>NOTE:</b> This method should only be run every so often because of its 
+	 * complexity and cost.<br><br>
+	 *
+	 * Checks every plant in the plot, and determines all the PlotObjects that 
+	 * are closest and furthest away to that plant. Assume that an 
+	 * <i>average</i> plant requires about 4 hours of sun light a day.
+	 * 
+	 *  ...Based on the angle of the sun
+	 * and the surrounding plan ... if any PlotObject is greater than the Plants
+	 * height * 2 then say its transition isn't good.
+	 * 
+	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 */
+	protected double evaluateTransition() {
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+		
+		double degreesToNorth = 0.0; // where is true north?
+		double sunlightWindow = 15.0; // how much does the sun-rise/set amplitude vary?
+		double windowResolution = 5.0; // increment of vectors to take for window intersection
+		
+		int plantCount = 0;
+		double averageLight = 0.0;
+		
+		PlotPlant p;
+		
+		for(PlotObject pObject : thePlot) {
+			// Hacky solution that works. Check out explanation in
+			//		evaluatedAnimalsFed()
+			try {
+				p = (PlotPlant)pObject;
+			} catch(ClassCastException e) {
+				continue;
+			}
+			
+			// how much light do the plot objects block
+			double totalShadeEffect = 0.0;
+			
+			for(PlotObject obstacle : thePlot) {
+				if(obstacle.equals(p))
+					continue; // don't compare P against itself
+				double obstacleDistance = distanceIn2d(p.getPlotX(), 
+						p.getPlotY(), obstacle.getPlotX(), obstacle.getPlotY());
+				if(obstacleDistance > obstacle.getHeight())
+					continue; // is the obstacle within shadow range?
+				
+				double currentVector = windowResolution;
+				boolean isIntersecting = false;
+				
+				while(currentVector > 0.0) {
+					if(lineIntersectsCircle(p.getPlotX(), p.getPlotY(),
+							// TODO: line below has to change according to currentVector
+							obstacle.getPlotX(), obstacle.getPlotY(), 
+							obstacle.getPlotX(), obstacle.getPlotY(), 
+							obstacle.getRadius())) {
+						isIntersecting = true;
+						break;
+					}
+					currentVector -= windowResolution;
+				}
+				
+				if(isIntersecting) {
+					// as obstacle height increases, so does its shadow
+					double obstacleShadeEffect = 
+							(1 - (p.getHeight() / obstacle.getHeight()));
+					// the closer the obstacle, the more effect its shadow has
+					obstacleShadeEffect *= Math.cos(
+							((obstacleDistance/obstacle.getHeight()) * Math.PI)/2.0
+							);
+					// what percentage of sunlight view does this object block?
+					obstacleShadeEffect *= (180 * obstacle.getRadius()) / 
+							(Math.PI * obstacleDistance);
+					// plot object can only block sunlight from east/west, not both
+					obstacleShadeEffect *= 0.5;
+					totalShadeEffect += obstacleShadeEffect;
+				}
+			}
+			
+			if(1.0 - totalShadeEffect < p.getPlant().getLight()) {
+				// plant is getting less light than it needs
+				// calculate what percentage of light it is getting
+				averageLight += (1.0 - totalShadeEffect) / p.getPlant().getLight();
+			} else {
+				// plant is getting enough light
+				averageLight += 1.0;
+			}
+			plantCount++;
+		}
+		
+		// garbage collector cleanup
+		thePlot = null;
+		p = null;
+		
+		if(averageLight != 0.0)
+			return averageLight / (double)plantCount;
+		else
+			return 0.0; // no plants to check
+	}
+	
+	/**
+	 * Determine if a line intersects a circle.
+	 * @param x1	X point of the first line.
+	 * @param y1	Y point of the first line.
+	 * @param x2	X point of the second line.
+	 * @param y2	Y point of the second line.
+	 * @param circleX
+	 * @param circleY
+	 * @param circleR
+	 * @return True if the line intersects a circle, False if not.
+	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
+	 */
+	private boolean lineIntersectsCircle(double x1, double y1, double x2, 
+			double y2, double circleX, double circleY, double circleR) {
+		return (Math.abs((x2 - x1)*circleY +  circleX*(y1 -     
+			       y2) + (x1 - x2)*y1 +
+			       (y1 - y2)*x1)/ Math.sqrt(Math.pow((x2 - x1), 2) +
+			       Math.pow((y1 - y2), 2)) <= circleR);
+	}
+	
+	/**
+	 * Determine distance between two points.
+	 * @param x1	X of first point.
+	 * @param y1	Y of first point.
+	 * @param x2	X of second point.
+	 * @param y2	Y of second point.
+	 * @return Distance between two points as a double.
+	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
+	 */
+	public double distanceIn2d(double x1, double y1,
+			double x2, double y2) {       
+		return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
 	}
 
@@ -719,7 +963,6 @@ public class PlotDesign extends Window {
 		/**
 		 * TODO: Remove stuff from autorate box and add back in
 		 */
-
 	}
 
 }

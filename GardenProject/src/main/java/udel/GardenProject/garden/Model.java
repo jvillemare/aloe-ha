@@ -161,6 +161,8 @@ public class Model {
 		lastWindow = currentWindow;
 		currentWindow = windows[w.ordinal()];
 		currentWindow.refresh();
+		// TODO: Refresh might need to be moved to before the switch so that the
+		// 	window has a chance to refresh before being displayed.
 	}
 
 	/**
@@ -171,6 +173,8 @@ public class Model {
 		currentWindow = lastWindow;
 		lastWindow = temp;
 		currentWindow.refresh();
+		// TODO: Refresh might need to be moved to before the switch so that the
+		// 	window has a chance to refresh before being displayed.
 	}
 
 	/**

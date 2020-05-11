@@ -30,7 +30,7 @@ public class PlotBench extends PlotObject implements Serializable {
 	 * @param y			...
 	 */
 	public PlotBench(double x, double y) {
-		super(x, y, 2.0, windowBench, plotBench);
+		super(x, y, 2.0, 5.0, windowBench, plotBench);
 	}
 
 }

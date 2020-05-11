@@ -247,15 +247,19 @@ public class View {
 	}
 
 	/**
-	 * Updates the current Window object (if need be) and stores a reference to the
-	 * current window.
+	 * Updates the current Window object (if need be) and stores a reference to 
+	 * the current window.<br><br>
 	 * 
-	 * Uses the current window to set the stage's scene and title.
+	 * Uses the current window to set the stage's scene and title.<br><br>
 	 * 
-	 * @param w The current Window object that should be shown to the user. If it is
-	 *          changed, then that new Window is stored.
+	 * Protected so that the Windows package cannot invoke this directly, and so
+	 * they have to go through the Model so the Model can handle what it needs
+	 * to do.
+	 * 
+	 * @param w The current Window object that should be shown to the user. If 
+	 * 			it is changed, then that new Window is stored.
 	 */
-	public void update(Window w) {
+	protected void update(Window w) {
 		if (this.window == null || this.window.equals(w) == false) {
 			this.window = w;
 			theStage.setScene(this.window.getScene());
