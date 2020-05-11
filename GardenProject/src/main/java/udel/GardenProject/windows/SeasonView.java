@@ -145,7 +145,7 @@ public class SeasonView extends Window {
 	private int inset20 = 20;
 	private int gapBetweenButtons = 100;
 	private int squareHeightAdjustment = 130;
-	private int squareWidthAdjustment = 20;
+	private int squareWidthAdjustment = 40;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
 
@@ -185,8 +185,8 @@ public class SeasonView extends Window {
 
 		
 		viewDepth = View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight()
-				- toggleOptionsTilePane.getHeight() - 130;
-		viewWidth = View.getCanvasWidth() - 20;
+				- toggleOptionsTilePane.getHeight() - squareHeightAdjustment;
+		viewWidth = View.getCanvasWidth() - squareWidthAdjustment;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
@@ -320,7 +320,9 @@ public class SeasonView extends Window {
 			if (s == Seasons.YEARROUND) {
 				continue;
 			}
+			
 			ToggleButton toggle = new ToggleButton(s.getSeason());
+			createToggleEvent(toggle);
 			seasonPick.add(s.getSeason()); // adds the seasons to an observable list
 		//String[] seasonSelection = {"SPRING", "SUMMER", "WINTER", "FALL"};
 		//ObservableList<String> seasonPick = FXCollections.observableArrayList();
