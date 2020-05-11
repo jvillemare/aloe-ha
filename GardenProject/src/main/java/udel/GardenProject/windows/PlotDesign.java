@@ -191,7 +191,7 @@ public class PlotDesign extends Window {
 				poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40);
 				group.getChildren().add(poly.getPolygon());
 				group.getChildren().addAll(poly.getAnchors());
-				autoRateVBox.getChildren().addAll(poly.genButton(400, 100));
+				autoRateVBox.getChildren().addAll(poly.genButton());
 
 			}
 		});
