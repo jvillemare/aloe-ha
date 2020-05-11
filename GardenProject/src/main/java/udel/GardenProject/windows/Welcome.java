@@ -1,9 +1,8 @@
 package udel.GardenProject.windows;
 
-import java.lang.reflect.Array;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,10 +19,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -39,19 +37,23 @@ public class Welcome extends Window {
 	private Scene scene;
 
 	/**
-	 * Buttons to move to corresponding windows
+	 * Buttons that takes you to Existing Plants
 	 */
-	Button startNewPlot;
-	Button loadSavedPlot;
-	Button tutorialButton;
+	private Button startNewPlot;
 
 	/**
-	 * Images are tied to the buttons
+	 * Button that takes you to Download
 	 */
-	Image imageSeed;
-	Image imagePlant;
-	Image imageTree;
+	private Button loadSavedPlot;
 
+	/**
+	 * Button that takes you to Tutorial
+	 */
+	private Button tutorialButton;
+
+	/**
+	 * Overall layout of the screen is set in a BorderPane
+	 */
 	private BorderPane welcomeScreen;
 
 	/**
@@ -74,22 +76,33 @@ public class Welcome extends Window {
 	 */
 	private VBox centerVBox;
 
+	/**
+	 * Adjustments made to buttons, and screen
+	 */
+	private int logoHeightFactor = 6;
+	private int logoWidthFactor = 5;
+	private int buttonSideInset = 20;
+	private int buttonTopBottomInset = 40;
+	private int buttonFlowSidePadding = 10;
+	private int buttonFlowTopPadding = 50;
+	private int buttonFlowBottomPadding = 30;
+
 	public Welcome(Model m) {
-		super(m, "Welcome Menu");
+		super(m, "Welcome Menu", Windows.Welcome);
 
 		welcomeScreen = new BorderPane();
 		logo = new Image(getClass().getResourceAsStream("/buttonImages/logo.png"));
 
 		logoShow = new ImageView(logo);
-
-		logoShow.setFitHeight(logoShow.getFitWidth() * 6);
-		logoShow.setFitWidth(logoShow.getFitWidth() * 5);
+		logoShow.setFitHeight(logoShow.getFitWidth() * logoHeightFactor);
+		logoShow.setFitWidth(logoShow.getFitWidth() * logoWidthFactor);
 
 		createButtons();
 
 		buttonFlow = new FlowPane(Orientation.HORIZONTAL);
 		buttonFlow.setAlignment(Pos.CENTER);
-		buttonFlow.setPadding(new Insets(50, 10, 30, 10));
+		buttonFlow.setPadding(new Insets(buttonFlowTopPadding, buttonFlowSidePadding, buttonFlowBottomPadding,
+				buttonFlowSidePadding));
 		buttonFlow.setVgap(50);
 		buttonFlow.setHgap(50);
 		buttonFlow.setPrefWrapLength(View.getCanvasWidth());
@@ -100,7 +113,7 @@ public class Welcome extends Window {
 		centerVBox.setPadding(new Insets(View.getCanvasHeight() / 8, 0, View.getCanvasHeight() / 5, 0));
 		centerVBox.getChildren().addAll(logoShow, buttonFlow);
 
-		welcomeScreen.setStyle("-fx-background-color: #F6E8E8;");
+		welcomeScreen.setStyle(View.getPinkBackgroundStyle());
 		welcomeScreen.setCenter(centerVBox);
 
 		this.root = new Group();
@@ -114,6 +127,9 @@ public class Welcome extends Window {
 
 	}
 
+	/**
+	 * Creating the main 3 buttons on the screen with effects
+	 */
 	public void createButtons() {
 
 		DropShadow shadow = new DropShadow();
@@ -132,7 +148,21 @@ public class Welcome extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				switchToWindow(Windows.Download);
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Garden Project", "*.gardenproject"));
+
+				/*
+				 * User opens up a saved file and then be taken to plot design
+				 */
+				fileChooser.setTitle("Load 'Aloe-Ha' Garden Project");
+				File file = fileChooser.showOpenDialog(scene2);
+
+				if (file != null) {
+					getModel().loadSession(file.getAbsolutePath());
+					switchToWindow(Windows.PlotDesign);
+				}
+
 			}
 		});
 
@@ -145,24 +175,29 @@ public class Welcome extends Window {
 			}
 		});
 
+		/*
+		 * Adding Style and Effects to each of the buttons
+		 */
 		List<Button> buttonArr = new ArrayList<Button>();
 		buttonArr.add(startNewPlot);
 		buttonArr.add(loadSavedPlot);
 		buttonArr.add(tutorialButton);
 
 		for (Button b : buttonArr) {
-			b.setPrefWidth(300);
+			b.setPrefWidth(View.getWelcomeButtonWidth());
 			b.setContentDisplay(ContentDisplay.TOP);
-			b.setStyle("-fx-background-color: #63A331; " + "-fx-background-radius: 0");
-			b.setPadding(new Insets(20, 40, 20, 40));
-			b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
+			b.setStyle(View.getDarkGreenBackgroundStyle() + "-fx-background-radius: 0");
+			b.setPadding(new Insets(buttonSideInset, buttonTopBottomInset, buttonSideInset, buttonTopBottomInset));
+			b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+					View.getTextSizeForButtonsAndText()));
 
 			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(shadow);
-					b.setStyle("-fx-background-color: #76C327;");
-					b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Italic.ttf"), 20));
+					b.setStyle(View.getLightGreenBackgroundStyle());
+					b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackItalic()),
+							View.getTextSizeForButtonsAndText()));
 				}
 			});
 
@@ -170,11 +205,21 @@ public class Welcome extends Window {
 				@Override
 				public void handle(MouseEvent e) {
 					b.setEffect(null);
-					b.setStyle("-fx-background-color: #63A331;");
-					b.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20));
+					b.setStyle(View.getDarkGreenBackgroundStyle());
+					b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+							View.getTextSizeForButtonsAndText()));
 				}
 			});
 
 		}
 	}
+
+	/**
+	 * Refreshes the screen each time the user opens this up. Screen does not
+	 * refresh on initial startup
+	 */
+	public void refresh() {
+		System.out.println("refreshing in welcome");
+	}
+
 }

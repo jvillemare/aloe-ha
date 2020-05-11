@@ -28,10 +28,10 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * @param height	Height in feet.
 	 * @param p			AdjustablePolygon that represents what this polygon
 	 * 					should look like.
+	 * @param imagePath	Plot object's path to image representation
 	 */
-	public GenericPolygon(double x, double y, double height, AdjustablePolygon p) {
-		// TODO: We'll just say radius is 1 for now
-		super(x, y, height, 5.0);
+	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String windowPath, String plotPath) {
+		super(x, y, height, 5.0, windowPath, plotPath);
 		this.p = p;
 	}
 	

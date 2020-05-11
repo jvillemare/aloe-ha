@@ -29,6 +29,25 @@ public class CanopyComparator implements Comparator<Plant> {
 	}
 
 	public int compare(Plant a, Plant b) {
+		if(a==null && b==null) {
+			return 0;
+		}
+		else if(a==null) {
+			if(descending) {
+				return b.getCanopy().ordinal();
+			}
+			else {
+				return 0 - b.getCanopy().ordinal();
+			}
+		}
+		else if(b==null) {
+			if(descending) {
+				return 0 - a.getCanopy().ordinal();
+			}
+			else {
+				return a.getCanopy().ordinal();
+			}
+		}
 		if (a.getCanopy().ordinal() == b.getCanopy().ordinal()) {
 			return 0;
 		}

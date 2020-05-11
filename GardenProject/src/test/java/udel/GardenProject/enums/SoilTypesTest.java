@@ -11,7 +11,11 @@ public class SoilTypesTest {
 	@Test
 	public void testSoilType() {
 		SoilTypes sl = SoilTypes.CLAY;
-		assertTrue(sl.name().toLowerCase().equals("clay"));
+		assertTrue(sl.getName().toLowerCase().equals("clay"));
+		assertTrue(sl.getSoilTexture("Clay").equals(sl));
+		assertTrue(sl.getSoilTexture("Sandy").equals(SoilTypes.SANDY));
+		assertTrue(sl.getSoilTexture("Loamy").equals(SoilTypes.LOAMY));
+		assertTrue(sl.getSoilTexture("any").equals(SoilTypes.ANY));
 	}
 
 }

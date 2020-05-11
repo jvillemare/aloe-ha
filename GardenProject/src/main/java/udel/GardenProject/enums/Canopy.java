@@ -19,8 +19,8 @@ public enum Canopy {
 	 */
 	private int maximumHeight;
 	
-	Canopy(int maxmimumHeight) {
-		this.maximumHeight = maximumHeight;
+	Canopy(int max) {
+		this.maximumHeight = max;
 	}
 	
 	/**

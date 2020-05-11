@@ -2,6 +2,7 @@ package udel.GardenProject.plotObjects;
 
 import java.io.Serializable;
 
+import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.plants.Plant;
 
 /**
@@ -15,6 +16,7 @@ import udel.GardenProject.plants.Plant;
 public class PlotPlant extends PlotObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	
 	/**
 	 * The plant this PlotPlant is representing.
@@ -32,7 +34,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// TODO: A plant is always about a foot wide? Let's say for simplicity.
 		// Fix later. Definitely a helper method in plant that reads the 
 		// description or calculates or something
-		super(x, y, p.getCanopy().getAverageCanopyHeight(), 5.0);
+		super(x, y, checkIfCanopy(p.getCanopy()), chooseWindowImage(p), choosePlotImage(p), 5.0);
 		this.p = p;
 	}
 	
@@ -42,6 +44,70 @@ public class PlotPlant extends PlotObject implements Serializable {
 	 */
 	public Plant getPlant() {
 		return this.p;
+	}
+	
+	/**
+	 * Checks to see if the canopy is null.
+	 * @param c Canopy of a plant.
+	 * @return -1 if the canopy is null. Otherwise it will return the 
+	 * getAverageCanopyHeight of the given canopy.
+	 */
+	public static double checkIfCanopy(Canopy c) {
+		if (c == null) {
+			return -1;
+		}
+		else {
+			return c.getAverageCanopyHeight();
+		}
+	}
+	
+	
+	/**
+	 * Determines the image to be used for the window view.
+	 * @param p The plant object.
+	 * @return The correct image based on canopy level. If no canopy level if 
+	 * provided, a sunflower is used.
+	 */
+	public static String chooseWindowImage(Plant p) {
+		if (p.getCanopy() == null) {
+			return "/viewImages/sunflower.png";
+		}
+		switch(p.getCanopy()) {
+		case FLOOR:
+			return "/viewImages/floor.png";
+		case UNDERSTORY:
+			return "/viewImages/understory.png";
+		case CANOPY:
+			return "/viewImages/canopy.png";
+		case EMERGENT:
+			return "/viewImages/emergent.png";
+		default:
+			return "/viewImages/sunflower.png";
+		}
+	}
+	
+	/**
+	 * Determines the image to be used for the plot design.
+	 * @param p The plant object.
+	 * @return The correct image based on canopy level. If no canopy level if 
+	 * provided, a young tree is used.
+	 */
+	public static String choosePlotImage(Plant p) {
+		if (p.getCanopy() == null) {
+			return "/viewImages/sunflower.png";
+		}
+		switch(p.getCanopy()) {
+		case FLOOR:
+			return "/viewImages/plotFloor.png";
+		case UNDERSTORY:
+			return "/viewImages/plotUnderstory.png";
+		case CANOPY:
+			return "/viewImages/plotCanopy.png";
+		case EMERGENT:
+			return "/viewImages/plotEmergent.png";
+		default:
+			return "/viewImages/babyTree.png";
+		}
 	}
 
 }

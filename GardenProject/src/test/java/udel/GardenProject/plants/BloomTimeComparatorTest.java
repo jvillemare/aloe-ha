@@ -40,6 +40,8 @@ public class BloomTimeComparatorTest {
 		Plant pine = new Plant(null, null, null, arr, 0, null, null, null, false, false, null, null);
 		Plant flower = new Plant(null, null, null, arr, 0, null, null, null, false, false, null, null);
 		assertTrue(b.compare(pine, flower) == 0);
+		b = new BloomTimeComparator(false);
+		assertTrue(b.compare(pine, flower) == 0);
 	}
 
 	@Test
@@ -60,5 +62,27 @@ public class BloomTimeComparatorTest {
 		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null, null);
 		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null, null);
 		assertTrue(b.compare(flower, pine) > 0);
+	}
+	
+	@Test
+	public void ascendnoBloomTimeTest() {
+		BloomTimeComparator b = new BloomTimeComparator(true);
+		boolean[] arr1 = {false, false, false, false, false, false, false, false, false, false, false, false};
+		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null, null);
+		assertTrue(b.compare(flower, pine) > 0);
+		assertTrue(b.compare(pine, flower) < 0);
+	}
+	
+	@Test
+	public void descendnoBloomTimeTest() {
+		BloomTimeComparator b = new BloomTimeComparator(false);
+		boolean[] arr1 = {false, false, false, false, false, false, false, false, false, false, false, false};
+		boolean[] arr2 = {false, false, true, true, false, false, false, false, false, false, false, false};
+		Plant flower = new Plant(null, null, null, arr1, 0, null, null, null, false, false, null, null);
+		Plant pine = new Plant(null, null, null, arr2, 0, null, null, null, false, false, null, null);
+		assertTrue(b.compare(flower, pine) > 0);
+		assertTrue(b.compare(pine, flower) < 0);
 	}
 }

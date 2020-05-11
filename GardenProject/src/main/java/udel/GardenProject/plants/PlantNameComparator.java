@@ -2,6 +2,12 @@ package udel.GardenProject.plants;
 
 import java.util.Comparator;
 
+/**
+ * Compare Plants by latin or common names, sorting by common names from A to Z by default.
+ * 
+ * @author Team 0
+ *
+ */
 public class PlantNameComparator implements Comparator<Plant> {
 
 	private boolean az;

@@ -19,7 +19,7 @@ public class CanopyComparatorTest {
 		CanopyComparator c = new CanopyComparator();
 		Field privateDescending = CanopyComparator.class.getDeclaredField("descending");
 		privateDescending.setAccessible(true);
-		assertTrue(privateDescending.getBoolean(c) == true);
+		assertTrue(privateDescending.getBoolean(c));
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class CanopyComparatorTest {
 		CanopyComparator c = new CanopyComparator(true);
 		Field privateDescending = CanopyComparator.class.getDeclaredField("descending");
 		privateDescending.setAccessible(true);
-		assertTrue(privateDescending.getBoolean(c) == true);
+		assertTrue(privateDescending.getBoolean(c));
 		assertTrue(c.compare(null, null) == 0);
 	}
 	
@@ -54,6 +54,18 @@ public class CanopyComparatorTest {
 		Plant pine = new Plant(null, null, null, null, 0, null, null, Canopy.FLOOR, false, false, null, null);
 		Plant flower = new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, false, false, null, null);
 		assertTrue(c.compare(pine, flower) < 0);
+	}
+	@Test
+	public void nullCompareTest() {
+		Plant pine = new Plant(null, null, null, null, 0, null, null, Canopy.EMERGENT, false, false, null, null);
+		CanopyComparator c = new CanopyComparator(false);
+		assertTrue(c.compare(pine, null) > 0);
+		assertTrue(c.compare(null, pine) < 0);
+		assertTrue(c.compare(null, null) == 0);
+		c = new CanopyComparator(true);
+		assertTrue(c.compare(pine, null) < 0);
+		assertTrue(c.compare(null, pine) > 0);
+		assertTrue(c.compare(null, null) == 0);
 	}
 
 }

@@ -1,11 +1,10 @@
 package udel.GardenProject.windows;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
-import udel.GardenProject.plants.Plant;
 
 /**
  * A window that can be displayed to the user.
@@ -32,6 +31,11 @@ public abstract class Window {
 	public double getWindowHeight() {
 		return windowHeight;
 	}
+	
+	/**
+	 * This stores the enum for every Window to reference.
+	 */
+	private Windows enumWindow;
 
 	/**
 	 * All Windows must store a reference to the Model for Window switching and have
@@ -41,9 +45,10 @@ public abstract class Window {
 	 * @param title Title of the Window on the Stage.
 	 * @see main.udel.enums.Windows
 	 */
-	public Window(Model model, String title) {
+	public Window(Model model, String title, Windows enumWindow) {
 		this.model = model;
 		this.title = title;
+		this.enumWindow = enumWindow;
 	}
 
 	/**
@@ -123,5 +128,13 @@ public abstract class Window {
 	 * @see udel.GardenProject.garden.Controller
 	 */
 	public void stop() { }
+	
+	/**
+	 * To obtain the Enum for each window.
+	 * @return enum of the window
+	 */
+	public final Windows getEnum() { 
+		return this.enumWindow;
+	}
 
 }

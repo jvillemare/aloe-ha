@@ -1,5 +1,8 @@
 package udel.GardenProject.windows;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,14 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -51,7 +57,7 @@ public class Download extends Window {
 	/**
 	 * Buttons to go back, load, and download
 	 */
-	private Button back, load, downloadButton;
+	private Button back, mainMenu, downloadButton;
 
 	/**
 	 * Used to center button
@@ -80,12 +86,27 @@ public class Download extends Window {
 	private String saveOption;
 
 	/**
+	 * Adjustments of size for insets, texts, the center square, buttons, and
+	 * background
+	 */
+	private int inset5 = 5;
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int gapBetweenButtons = 100;
+	private int squareWidthAdjustment = 20;
+	private int topTextWidthAdjustment = 20;
+	private int squareHightAdjustment = 130;
+	private int backgroundScreenWidthAndHeight = 100;
+	private String mouseEnterBottomButton = View.getWhiteBackgroundStyle() + View.getBlackTextFill();
+	private String mouseExitBottomButton = View.getLightGreenBackgroundStyle() + View.getBlackTextFill();
+
+	/**
 	 * Assume the user has no last save file downloaded.
 	 *
 	 * @param m Model
 	 */
 	public Download(Model m) {
-		super(m, downloadSceneTitle);
+		super(m, downloadSceneTitle, Windows.Download);
 		this.lastSaveFile = "";
 
 		borderPane = new BorderPane();
@@ -93,11 +114,11 @@ public class Download extends Window {
 		saveOptions = new HBox();
 		tilePane = new TilePane();
 
-		saveOptions.setPadding(new Insets(10, 10, 10, 10));
+		saveOptions.setPadding(new Insets(inset10));
 
 		text = new Text("Congrats! You've created your Garden! How would you like to save?");
-		text.setWrappingWidth(View.getCanvasWidth() - 20);
-		text.setFont(Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 30));
+		text.setWrappingWidth(View.getCanvasWidth() - topTextWidthAdjustment);
+		text.setFont(getModel().getHackBold20());
 		vbox.getChildren().addAll(text);
 		vbox.setAlignment(Pos.CENTER);
 
@@ -110,22 +131,25 @@ public class Download extends Window {
 		createAndHandleButtons();
 
 		square = new Rectangle();
-		square.setHeight(
-				View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight() - 130);
-		square.setWidth(View.getCanvasWidth() - 20);
+		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight()
+				- squareHightAdjustment);
+		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
 		square.setStroke(Color.BLACK);
 		square.setFill(null);
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
-		tilePane.setHgap(100);
-		tilePane.getChildren().addAll(back, downloadButton);
+		tilePane.setPadding(new Insets(inset5));
+		tilePane.setHgap(gapBetweenButtons);
+		tilePane.getChildren().addAll(back, mainMenu, downloadButton);
 
 		bottomBoxes = new VBox();
 		bottomBoxes.getChildren().addAll(saveOptions, tilePane);
 
-		borderPane.setStyle("-fx-background-color: #F6E8E8;"); // pink
-		borderPane.setPadding(new Insets(10, 10, 10, 10));
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
+
+		borderPane.setBackground(View.getBackgroundScreen());
+		borderPane.setPadding(new Insets(inset10, inset10, inset20, inset10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
 		borderPane.setCenter(square);
@@ -141,6 +165,7 @@ public class Download extends Window {
 	 */
 	public void createAndHandleButtons() {
 
+		formatToggleButton(pngSave);
 		pngSave.setOnAction((ActionEvent e) -> {
 			saveOption = "PNG";
 
@@ -155,13 +180,12 @@ public class Download extends Window {
 			}
 		});
 
-		load = new Button("Load");
-		load.setOnAction(new EventHandler<ActionEvent>() {
+		mainMenu = new Button("Main Menu");
+		mainMenu.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("Load: .gardenProject");
-				saveOption = "gardenProject";
+				switchToWindow(Windows.Welcome);
 			}
 		});
 
@@ -171,9 +195,87 @@ public class Download extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				getInput();
+				/*
+				 * Opens the file chooser and allows the user to save the file to thier computer
+				 */
+				javafx.stage.Window scene2 = null;
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Save 'Aloe-Ha' Garden Project");
+				fileChooser.setInitialFileName(getSession().getPlotName());
+				fileChooser.getExtensionFilters()
+						.addAll(new FileChooser.ExtensionFilter("GARDENPROJECT", "*.gardenproject"));
 
+				File file = fileChooser.showSaveDialog(scene2);
+				if (file != null) {
+
+					System.out.println(getModel().saveSession(file.getAbsolutePath()));
+					getModel().saveSession(file.getAbsolutePath());
+				}
 			}
 		});
+
+		/*
+		 * Formatting how the buttons will look at the bottom of the screen
+		 */
+		List<Button> bottomButtons = new ArrayList<Button>();
+		bottomButtons.add(back);
+		bottomButtons.add(mainMenu);
+		bottomButtons.add(downloadButton);
+
+		for (Button b : bottomButtons) {
+			b.setFont(getModel().getHackBold12());
+			b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			b.setPrefWidth(View.getButtonPrefWidth());
+
+			DropShadow shadow = new DropShadow();
+			b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(shadow);
+					b.setStyle(mouseEnterBottomButton);
+				}
+			});
+
+			b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent e) {
+					b.setEffect(null);
+					b.setStyle(mouseExitBottomButton);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Function that formats each of the toggle buttons for the options on how the
+	 * user wants to save
+	 * 
+	 * @param b --> a toggle button
+	 */
+	public void formatToggleButton(ToggleButton b) {
+
+		b.setPrefWidth(View.getButtonPrefWidth());
+		b.setFont(getModel().getHackBold12());
+		b.setStyle(getModel().getNotHover());
+
+		DropShadow shadow = new DropShadow();
+
+		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(shadow);
+				b.setStyle(getModel().getHover());
+			}
+		});
+
+		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(null);
+				b.setStyle(getModel().getNotHover());
+			}
+		});
+
 	}
 
 	/**
@@ -183,7 +285,7 @@ public class Download extends Window {
 	 * @param lastSaveFile Path of the user's last save file.
 	 */
 	public Download(Model m, String lastSaveFile) {
-		super(m, downloadSceneTitle);
+		super(m, downloadSceneTitle, Windows.Download);
 		this.lastSaveFile = lastSaveFile;
 	}
 
@@ -244,6 +346,17 @@ public class Download extends Window {
 
 		getSession().setSaveOption(saveOption);
 
+	}
+
+	/**
+	 * Refreshes the screen to the image of the plot corresponding to the users
+	 * options in SeasonView
+	 */
+	public void refresh() {
+		/**
+		 * TODO: remove the previous image in the center box and replace with new image
+		 * from session
+		 */
 	}
 
 }
