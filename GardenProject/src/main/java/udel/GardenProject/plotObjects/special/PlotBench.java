@@ -21,7 +21,7 @@ public class PlotBench extends PlotObject implements Serializable {
 	/**
 	 * Path to an image of a bench for plot design.
 	 */
-	private static String plotBench;
+	private static String plotBench = "/viewImages/plotBench.png";
 	
 	/**
 	 * TODO: ...

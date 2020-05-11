@@ -16,7 +16,7 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 */
 	private static String windowPool = "/viewImages/pool.png";
 	
-	private static String plotPool;
+	private static String plotPool = "/viewImages/plotPool.png";
 	
 	/**
 	 * Constructor.

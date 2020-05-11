@@ -19,7 +19,7 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of a road for plot design.
 	 */
-	private static String plotRoad;
+	private static String plotRoad = "/viewImages/plotRoad.png";
 	
 	/**
 	 * Constructor.

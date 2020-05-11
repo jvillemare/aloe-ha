@@ -62,7 +62,8 @@ public class PlotPlant extends PlotObject implements Serializable {
 	/**
 	 * Determines the image to be used for the window view.
 	 * @param p The plant object.
-	 * @return The correct image based on canopy level.
+	 * @return The correct image based on canopy level. If no canopy level if 
+	 * provided, a sunflower is used.
 	 */
 	public static String chooseWindowImage(Plant p) {
 		if (p.getCanopy() == null) {
@@ -85,7 +86,8 @@ public class PlotPlant extends PlotObject implements Serializable {
 	/**
 	 * Determines the image to be used for the plot design.
 	 * @param p The plant object.
-	 * @return The correct image based on canopy level.
+	 * @return The correct image based on canopy level. If no canopy level if 
+	 * provided, a young tree is used.
 	 */
 	public static String choosePlotImage(Plant p) {
 		if (p.getCanopy() == null) {
@@ -93,15 +95,15 @@ public class PlotPlant extends PlotObject implements Serializable {
 		}
 		switch(p.getCanopy()) {
 		case FLOOR:
-			return "/viewImages/floor.png";
+			return "/viewImages/plotFloor.png";
 		case UNDERSTORY:
-			return "/viewImages/understory.png";
+			return "/viewImages/plotUnderstory.png";
 		case CANOPY:
-			return "/viewImages/canopy.png";
+			return "/viewImages/plotCanopy.png";
 		case EMERGENT:
-			return "/viewImages/emergent.png";
+			return "/viewImages/plotEmergent.png";
 		default:
-			return "/viewImages/sunflower.png";
+			return "/viewImages/babyTree.png";
 		}
 	}
 

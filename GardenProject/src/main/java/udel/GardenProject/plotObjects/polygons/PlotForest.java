@@ -20,7 +20,7 @@ public class PlotForest extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of a forest for plot design.
 	 */
-	private static String plotForest;
+	private static String plotForest = "/viewImages/plotForest.png";
 	
 	/**
 	 * Constructor.

@@ -21,7 +21,7 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	/**
 	 * Path to an image of a bird bath for plot design.
 	 */
-	private static String plotBirdBath;
+	private static String plotBirdBath= "/viewImages/plotBirdbath.png";
 	/**
 	 * TODO: ...
 	 * 

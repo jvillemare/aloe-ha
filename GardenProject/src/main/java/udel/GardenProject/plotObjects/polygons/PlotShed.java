@@ -19,7 +19,7 @@ public class PlotShed extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of a shed for plot design.
 	 */
-	private static String plotShed;
+	private static String plotShed = "/viewImages/plotShed.png";
 	
 	/**
 	 * Constructor.

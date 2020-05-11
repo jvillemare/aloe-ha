@@ -19,7 +19,7 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of patio furniture for plot design.
 	 */
-	private static String plotPatio;
+	private static String plotPatio = "/viewImages/plotPatio.png";
 
 	/**
 	 * Constructor.

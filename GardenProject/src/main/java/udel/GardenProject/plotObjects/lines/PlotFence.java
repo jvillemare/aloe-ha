@@ -21,7 +21,7 @@ public class PlotFence extends GenericLine implements Serializable {
 	/**
 	 * Path of image of a fence for plot design.
 	 */
-	private static String plotFence;
+	private static String plotFence = "/viewImages/plotFence.png";
 	
 
 	public PlotFence(double x, double y, double height) {

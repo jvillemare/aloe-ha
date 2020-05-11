@@ -21,7 +21,7 @@ public class PlotOther extends PlotObject implements Serializable {
 	/**
 	 * Path to an image of a raised garden bed for plot design.
 	 */
-	private static String plotPicture;
+	private static String plotPicture = "/viewImages/plotGardenBed.png";
 
 	/**
 	 * TODO: ?...

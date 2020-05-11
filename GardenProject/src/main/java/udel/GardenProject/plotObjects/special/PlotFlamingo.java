@@ -21,7 +21,7 @@ public class PlotFlamingo extends PlotObject implements Serializable {
 	/**
 	 * Path to an image of a lawn flamingo for plot design.
 	 */
-	private static String plotFlamingo;
+	private static String plotFlamingo = "/viewImages/plotFlamingo.png";
 
 	public PlotFlamingo(double x, double y, double height) {
 		super(x, y, height, windowFlamingo, plotFlamingo);

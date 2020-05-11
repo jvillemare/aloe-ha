@@ -21,7 +21,7 @@ public class PlotGnome extends PlotObject implements Serializable {
 	/**
 	 * Path to an image of a garden gnome for plot design.
 	 */
-	private static String plotGnome;
+	private static String plotGnome = "/viewImages/plotGnome.png";
 	
 	public PlotGnome(double x, double y) {
 		super(x, y, 1, windowGnome, plotGnome);
