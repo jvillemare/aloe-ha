@@ -1,7 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,11 +20,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -33,12 +27,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.YDistanceComparator;
 
 /**
@@ -336,29 +332,30 @@ public class SeasonView extends Window {
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chooseSeason=s;
-				if (s == Seasons.WINTER) {
-					GraphicsContext gc = canvas.getGraphicsContext2D();
-					Image sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
-					Image snow = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
+				Image sky, ground;
+				GraphicsContext gc = canvas.getGraphicsContext2D();
+				switch(s) {
+				case WINTER:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
-					gc.drawImage(snow, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
-				}
-				else if(s == Seasons.FALL) {
-					GraphicsContext gc = canvas.getGraphicsContext2D();
-					Image sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
-					Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					break;
+				case FALL:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
-					gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
-				}
-				else {
-					GraphicsContext gc = canvas.getGraphicsContext2D();
-					Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
-					Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+					break;
+				default:
+					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
-					gc.drawImage(grass, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
+					break;
 				}
 				
 			});
