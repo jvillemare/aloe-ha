@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,14 +17,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -33,12 +30,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import udel.GardenProject.enums.Canopy;
-import udel.GardenProject.enums.Moisture;
-import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.garden.Session;
 import udel.GardenProject.garden.View;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotPlant;
@@ -111,8 +105,36 @@ public class PlotDesign extends Window {
 	 * ScrollPane created for the canopy drop down choices
 	 */
 	private ScrollPane scrollSelections;
-	
-	
+
+	/**
+	 * Use in drag to determine create a new image or not
+	 */
+	private boolean create = true;
+	/**
+	 * Use in drag for control between different handler
+	 */
+	private ImageView tmp;
+
+	/**
+	 * Accordion for existing, selected, and obstacles
+	 */
+	private Accordion choicesAccordian;
+
+	/**
+	 * Flows used to populate accordian drop down for existing, selected, and
+	 * obstable (plants and objects )
+	 */
+	private FlowPane flow, flow2, flow3, existingFlow, selectedFlow, obstaclesFlow;
+
+	/**
+	 * Used to add in Titled Panes to accordian
+	 */
+	private List<TitledPane> accArr;
+
+	/**
+	 * Implented for drag and drop TODO: MUST FIX IMPLEMENTATION
+	 */
+	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
 
 	/**
 	 * Adjustments to buttons and panes
@@ -123,45 +145,20 @@ public class PlotDesign extends Window {
 	private int autoRateBoxHeight = 550;
 	private int gapBetweenButtons = 100;
 	private int borderSideMargins = 200;
-	
-	/**
-	 * Use in drag to determine create a new image or not
-	 */
-	private boolean create=true;
-	/**
-	 * Use in drag for control between different handler
-	 */
-	ImageView tmp;
-	
-	/**
-	 * Use to save the session of the plotdesign
-	 */
-	private Session session;
-	
-	/**
-	 * Accordion for existing, selected, and obstacles 
-	 */
-	private Accordion choicesAccordian;
-	
-	/**
-	 * Dropdown for Accordion
-	 */
-	private TitledPane existing;
-	private TitledPane selected;
-	private TitledPane obstacles;
-	
-	private HashSet<Plant> existingPlants;
-	
-	private List<TitledPane> accArr;
-	
-	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
-
 	private int borderTopAndBottonMargin = 90;
 	private int backgroundWidthAndHeight = 100;
 	private int rectWidth = View.getCanvasWidth() / 5 * 3;
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
-	private int scrollPrefWidth = View.getCanvasWidth() / 3 + 30;
+	private int scrollPrefWidth = View.getCanvasWidth() / 5 + 30;
 	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
+	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 10;
+	private int allPlantsButtonFontSize = 17;
+	private int tilePaneWidthAdjustment = 20;
+	private int allPlantsButtonWidth = 170;
+	private int imageSize = 100;
+	private int inset10 = 10;
+	private int inset20 = 20;
+	private int inset5 = 5;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -175,11 +172,11 @@ public class PlotDesign extends Window {
 		vbox = new VBox();
 		tilePane = new TilePane();
 		group = new Group();
+		existingFlow = new FlowPane();
+		selectedFlow = new FlowPane();
+		obstaclesFlow = new FlowPane();
 
-		box = new Rectangle(rectWidth, rectHeight);
-		box.setStroke(Color.BLACK);
-		box.setFill(Color.WHITE);
-		group.getChildren().add(box);
+		createCenterBox();
 
 		text = new Text(
 				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
@@ -187,31 +184,30 @@ public class PlotDesign extends Window {
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
-		vbox.setPadding(new Insets(0, 0, 20, 5));
+		vbox.setPadding(new Insets(0, 0, inset20, inset5));
 		vbox.getChildren().addAll(text);
 
-		editPlotText = new Text("\nAddPlot");
-		editPlotText.setStyle("-fx-font-size: 20px;");
-		editPlotButton = new Button("Edit Plot");
-		editPlotButton.setPadding(new Insets(10, 5, 10, 5));
-		editPlotButton.setStyle("-fx-font-size: 20px;");
-
-		editPlotButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-
-				poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40);
-				group.getChildren().add(poly.getPolygon());
-				group.getChildren().addAll(poly.getAnchors());
-				autoRateVBox.getChildren().addAll(poly.genButton(400, 100));
-
-			}
-		});
-
-		
-		
-		
+		/**
+		 * TODO: Add proper implementation of all plot objects
+		 */
+		/*
+		 * editPlotText = new Text("\nAddPlot");
+		 * editPlotText.setStyle("-fx-font-size: 20px;"); editPlotButton = new
+		 * Button("Edit Plot"); editPlotButton.setPadding(new Insets(10, 5, 10, 5));
+		 * editPlotButton.setStyle("-fx-font-size: 20px;");
+		 * 
+		 * editPlotButton.setOnAction(new EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent event) {
+		 * 
+		 * poly = new AdjustablePolygon(Color.GREEN, Color.YELLOW, 40, 40); // TODO:
+		 * Somehow bind getAnchorPointHandler() to polygon whatevber
+		 * group.getChildren().add(poly.getPolygon());
+		 * group.getChildren().addAll(poly.getAnchors());
+		 * autoRateVBox.getChildren().addAll(poly.genButton(400, 100));
+		 * 
+		 * } });
+		 */
 
 		animalsFedTxt = new Text("Animals Fed");
 		contBloomTxt = new Text("Continuous Bloom");
@@ -227,7 +223,7 @@ public class PlotDesign extends Window {
 		autoRateVBox = new VBox();
 		autoRateVBox.setPrefWidth(autoRateBoxWidth);
 		autoRateVBox.setPrefHeight(autoRateBoxHeight);
-		autoRateVBox.setPadding(new Insets(5));
+		autoRateVBox.setPadding(new Insets(inset5));
 
 		for (Text t : autoRatings) {
 			t.setStyle("-fx-font-size: 20px;");
@@ -240,6 +236,31 @@ public class PlotDesign extends Window {
 		Text goToPlantData = new Text("\nGet More Plants");
 		goToPlantData.setStyle("-fx-font-size: 20px;");
 		Button plantDataButton = new Button("Plant Database");
+
+		plantDataButton
+				.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), allPlantsButtonFontSize));
+		plantDataButton.setStyle(View.getPinkBackgroundStyle() + View.getBlackTextFill() + "-fx-border-width: 1;"
+				+ "-fx-border-color: #000000;");
+		plantDataButton.setPrefWidth(allPlantsButtonWidth);
+		plantDataButton.setPadding(new Insets(inset10, inset5, inset10, inset5));
+
+		DropShadow shadow = new DropShadow();
+		plantDataButton.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				plantDataButton.setEffect(shadow);
+				plantDataButton.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
+			}
+		});
+
+		plantDataButton.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				plantDataButton.setEffect(null);
+				plantDataButton.setStyle(View.getPinkBackgroundStyle() + View.getBlackTextFill()
+						+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
+			}
+		});
 		plantDataButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -248,48 +269,43 @@ public class PlotDesign extends Window {
 			}
 		});
 
-		plantDataButton.setPadding(new Insets(10, 5, 10, 5));
-		plantDataButton.setStyle("-fx-font-size: 20px;");
-
 		autoRateVBox.getChildren().addAll(goToPlantData, plantDataButton);
 
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(5));
+		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(backButton, mainMenu, saveButton, nextButton);
-		
+
 		choicesAccordian = new Accordion();
-		 accArr = new ArrayList<TitledPane>();
+		accArr = new ArrayList<TitledPane>();
 		try {
 			populateTiles(accArr);
 		} catch (Exception e) {
 			System.out.println("WRONG");
 		}
-		
-		
+
 		for (TitledPane t : accArr) {
 			t.setFont(getModel().getHackBold20());
 			choicesAccordian.getPanes().add(t);
 		}
-		
+
 		scrollSelections = new ScrollPane();
 		scrollPaneFormat(scrollSelections);
 		scrollSelections.setPrefSize(scrollPrefWidth, scrollPrefHeight);
-		//scrollSelections.setContent(choicesAccordian);
-		
-		
+		scrollSelections.setContent(choicesAccordian);
+
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(box,
 				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
-		borderPane.setPadding(new Insets(10));
+		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
-		borderPane.setLeft(choicesAccordian);
+		borderPane.setLeft(scrollSelections);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
 
@@ -304,101 +320,203 @@ public class PlotDesign extends Window {
 	 * @param scroll --> a scroll pane
 	 */
 	public void scrollPaneFormat(ScrollPane scroll) {
-		scroll.setPadding(new Insets(10, 0, 10, 30));
-		scroll.setMaxWidth(View.getCanvasWidth() / 4);
+		scroll.setMaxWidth(scrollPrefWidth);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 
 	}
-	
-public void populateTiles(List<TitledPane> accArr) throws Exception {
-		
-	System.out.println(getSession().getExistingPlants().size() + "size of existing plants : PLotdesign  \n");
-	TitledPane existing = new TitledPane("Existing Plants", createPlantFlow(getSession().getExistingPlants()));
-	accArr.add(existing);
-	
-	System.out.println(getSession().getSelectedPlants().size() + "size of selected plants : PLotdesign  \n");
-	TitledPane selected = new TitledPane("Selected Plants", createPlantFlow(getSession().getSelectedPlants()));
-	accArr.add(selected);
-	
-		
-	}
-	
-	public void createTitledPane(String s, FlowPane flow) {
-		TitledPane titledPane = new TitledPane(s, flow);
-		titledPane.setFont(getModel().getHackBold20());
-		choicesAccordian.getPanes().add(titledPane);
-		
-	}
-	
-	
 
 	/**
-	 * Creates the flow panes for each of the drop downs 
+	 * Creates the white box in the center of the screen
+	 */
+	public void createCenterBox() {
+		box = new Rectangle(rectWidth, rectHeight);
+		box.setStroke(Color.BLACK);
+		box.setFill(Color.WHITE);
+		group.getChildren().add(box);
+	}
+
+	/**
+	 * Creates the Titled panes that need to be added in the accordion
+	 * 
+	 * @param accArr ArrayList of TitledPanes
+	 * @throws Exception
+	 */
+	public void populateTiles(List<TitledPane> accArr) throws Exception {
+
+		TitledPane existing = new TitledPane("Existing Plants", existingFlow);
+		createPlantFlow(getSession().getExistingPlants());
+		accArr.add(existing);
+
+		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
+		createSelectedFlow(getSession().getSelectedPlants());
+		accArr.add(selected);
+
+		TitledPane obstacles = new TitledPane("Plot Objects", obstaclesFlow);
+		createObstacleFlow(getSession().getSelectedPlotObjects());
+		accArr.add(obstacles);
+	}
+
+	/**
+	 * Sets the specification for the titled pane and sets it into the accordion
+	 * 
+	 * @param s    The title of the drop down menu
+	 * @param flow The Flow Pane of plant or objects
+	 */
+	public void createTitledPane(String s, FlowPane flow) {
+
+		TitledPane titledPane = new TitledPane(s, flow);
+		titledPane.setMaxWidth(scrollPrefWidth - tilePaneWidthAdjustment);
+		titledPane.setFont(getModel().getHackBold20());
+		choicesAccordian.getPanes().add(titledPane);
+
+	}
+
+	/**
+	 * Creates the flow pane for the objects the user chose
+	 * 
+	 * @param obj ArrayList of Plot Objects
+	 * @return Flow Pane
+	 */
+	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj) {
+		flow3 = new FlowPane();
+		flow3.setMaxWidth(flowPaneWidthAdjustment);
+		flow3.setPrefWidth(flowPaneWidthAdjustment);
+		flow3.setHgap(inset10);
+		flow3.setHgap(inset10);
+
+		for (PlotObjects p : obj) {
+			/**
+			 * TODO: implement images from wagnerB
+			 */
+			Image objectImage;
+
+			// The following line just holds images of trees
+			objectImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imageSize, imageSize,
+					true, true);
+			// = new Image(p.getImage(), 70, 70, true, true);
+			ImageView imageView = new ImageView();
+			imageView.setImage(objectImage);
+
+			String name = p.toString();
+			Tooltip.install(imageView, new Tooltip(name));
+
+			/**
+			 * TODO: IMPLEMENT DRAG FOR PLOT OBJECTS
+			 */
+			/*
+			 * plotPlants.put(imageView, new PlotPlant(p,0,0));
+			 * imageView.setOnMouseDragged(getHandlerForDrag());
+			 * imageView.setOnMouseReleased(getHandlerForRelease());
+			 */
+
+			VBox imgAndNameHolder = new VBox(imageView, new Text(name));
+			obstaclesFlow.getChildren().add(imgAndNameHolder);
+		}
+		return flow3;
+	}
+
+	/**
+	 * Creates the flow pane for the selected plants
+	 * 
+	 * @param plants HashSet of Selected Plants
+	 * @return FlowPane
+	 */
+	public FlowPane createSelectedFlow(HashSet<Plant> plants) {
+		System.out.println("starting ");
+		flow2 = new FlowPane();
+		flow2.setMaxWidth(flowPaneWidthAdjustment);
+		flow2.setPrefWidth(flowPaneWidthAdjustment);
+		flow2.setHgap(inset10);
+		flow2.setHgap(inset10);
+
+		Iterator<Plant> plantIter = plants.iterator();
+		while (plantIter.hasNext()) {
+
+			Plant p = plantIter.next();
+			String[] plantImg = p.getImages();
+			Image plantImage;
+
+			// Get the actual image if it exists
+			if (plantImg != null && plantImg.length > 0) {
+				String path = p.getImages()[0];
+				plantImage = new Image(path, imageSize, imageSize, true, true);
+			} else {
+				// get a default image
+				plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imageSize, imageSize,
+						true, true);
+			}
+			ImageView imageView = new ImageView();
+			imageView.setImage(plantImage);
+
+			String name = p.getLatinName();
+			Tooltip.install(imageView, new Tooltip(name));
+
+			/**
+			 * TODO: implement proper drag handling
+			 */
+			plotPlants.put(imageView, new PlotPlant(p, 0, 0));
+			imageView.setOnMouseDragged(getHandlerForDrag());
+			imageView.setOnMouseReleased(getHandlerForRelease());
+
+			VBox imageAndNameHolder = new VBox(imageView, new Text(name));
+			selectedFlow.getChildren().add(imageAndNameHolder);
+		}
+		return flow2;
+	}
+
+	/**
+	 * Creates Flow Pane in the Existing plants drop down
+	 * 
+	 * @param plants HashSet of Existing plants
+	 * @return FlowPane
 	 */
 	public FlowPane createPlantFlow(HashSet<Plant> plants) {
 		System.out.println("starting ");
-		FlowPane flow = new FlowPane();
-		flow.setMaxWidth(100);
-		
-		//System.out.println(plants.size() + "size of existing plants : PLotdesign  ");
+		flow = new FlowPane();
+		flow.setMaxWidth(flowPaneWidthAdjustment);
+		flow.setPrefWidth(flowPaneWidthAdjustment);
+		flow.setHgap(inset10);
+		flow.setHgap(inset10);
+
 		Iterator<Plant> plantIter = plants.iterator();
 		System.out.println("after creating iterator  ");
-		while(plantIter.hasNext()) {
-			
-			
+		while (plantIter.hasNext()) {
+
 			Plant p = plantIter.next();
-			
-			
-			/*
-			plotPlants.put(imageView, new PlotPlant(p,0,0));
+			String[] plantImg = p.getImages();
+			Image plantImage;
+
+			// Get the actual image if it exists
+			if (plantImg != null && plantImg.length > 0) {
+				String path = p.getImages()[0];
+				plantImage = new Image(path, imageSize, imageSize, true, true);
+			} else {
+				// get a default image
+				plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imageSize, imageSize,
+						true, true);
+			}
+			ImageView imageView = new ImageView();
+			imageView.setImage(plantImage);
+
+			String name = p.getLatinName();
+			Tooltip.install(imageView, new Tooltip(name));
+
+			/**
+			 * TODO: implement proper drag handling
+			 */
+			plotPlants.put(imageView, new PlotPlant(p, 0, 0));
 			imageView.setOnMouseDragged(getHandlerForDrag());
 			imageView.setOnMouseReleased(getHandlerForRelease());
-			*/
-			flow.getChildren().add(createPlantBox(p));
-			System.out.println("added imageview to flow ");
+
+			VBox imageAndNameHolder = new VBox(imageView, new Text(name));
+			existingFlow.getChildren().add(imageAndNameHolder);
 		}
-		System.out.println("returning flow ");
 		return flow;
 	}
-	
-	
-	public VBox createPlantBox(Plant p) {
 
-		String[] plantImg = p.getImages();
-		
-		Image plantImage;
-
-		//Get the actual image if it exists
-		if (plantImg != null) {
-			String path = p.getImages()[0];
-			plantImage = new Image(path, 20, 20, true, true);
-		} else {
-			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 20,
-					20, true, true);
-		}
-		ImageView imageView = new ImageView();
-		imageView.setImage(plantImage);
-		
-		//String name = p.getLatinName();
-		//System.out.println(name + "---------------");
-		
-		//Tooltip.install(imageView, new Tooltip(name));
-		//System.out.println("created tool tip ");
-		
-		VBox imgButtonHolder = new VBox();
-		imgButtonHolder.getChildren().addAll(imageView, new Text(p.getLatinName()));
-		
-		
-		return imgButtonHolder;
-	}
-	
-	
-	
-	
 	/**
 	 * Creates the buttons that will be added to the tilePane at the bottom of the
 	 * screen
@@ -479,11 +597,9 @@ public void populateTiles(List<TitledPane> accArr) throws Exception {
 					b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
 				}
 			});
-
 		}
-
 	}
-	
+
 	@Override
 	public Scene getScene() {
 		// TODO Auto-generated method stub
@@ -494,47 +610,52 @@ public void populateTiles(List<TitledPane> accArr) throws Exception {
 	 * TODO: FIX DRAGGING
 	 * 
 	 * @param img the image need to be copy
-	 * @param x the X coordinate for the image
-	 * @param y the Y coordinate for the image
+	 * @param x   the X coordinate for the image
+	 * @param y   the Y coordinate for the image
 	 */
-	/*
+
 	public void addImage(ImageView img, double x, double y) {
-		PlotPlant plotplant= plotPlants.get(img);
+		PlotPlant plotplant = plotPlants.get(img);
 		plotplant.setPlotX(x);
 		plotplant.setPlotY(y);
-		ImageView temp=new ImageView(img.getImage());
+		ImageView temp = new ImageView(img.getImage());
 		System.out.println(plotPlants.get(img));
-		session.getPlot().add(plotplant);
+		getSession().getPlot().add(plotplant);
 		group.getChildren().add(temp);
 		temp.setTranslateX(x);
 		temp.setTranslateY(y);
 		temp.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-            	ImageView n = (ImageView) event.getSource();
-                double newX=n.getTranslateX()+event.getX();
-                double newY=n.getTranslateY()+event.getY();
-                if(newX>0&&newX<group.getLayoutBounds().getWidth()-n.getImage().getRequestedWidth()) {
-                	n.setTranslateX(newX);//n.getTranslateX()+event.getX());
-                	plotplant.setPlotX(newX);
-                }
-                if(newY>0&&newY<group.getLayoutBounds().getHeight()-n.getImage().getRequestedHeight()) {
-                	n.setTranslateY(newY);//n.getTranslateY()+event.getY());
-                	plotplant.setPlotY(newY);
-                }
-            }
-        });
+			@Override
+			public void handle(MouseEvent event) {
+				ImageView n = (ImageView) event.getSource();
+				double newX = n.getTranslateX() + event.getX();
+				double newY = n.getTranslateY() + event.getY();
+				if (newX > 0 && newX < group.getLayoutBounds().getWidth() - n.getImage().getRequestedWidth()) {
+					n.setTranslateX(newX);// n.getTranslateX()+event.getX());
+					plotplant.setPlotX(newX);
+				}
+				if (newY > 0 && newY < group.getLayoutBounds().getHeight() - n.getImage().getRequestedHeight()) {
+					n.setTranslateY(newY);// n.getTranslateY()+event.getY());
+					plotplant.setPlotY(newY);
+				}
+			}
+		});
 	}
-	
+
+	/**
+	 * Create a temporary ImageView to follow around the mouse during drag.
+	 * 
+	 * @param event
+	 */
 	public void drag(MouseEvent event) {
 		ImageView n = (ImageView) event.getSource();
-		if(create) {
+		if (create) {
 			tmp = new ImageView(n.getImage());
 			root.getChildren().add(tmp);
-			create=false;
+			create = false;
 		}
-		tmp.setLayoutX(n.getLayoutX()+event.getX());
-		tmp.setLayoutY(n.getLayoutY()+event.getY());
+		tmp.setLayoutX(n.getLayoutX() + event.getX());
+		tmp.setLayoutY(n.getLayoutY() + event.getY());
 
 	}
 
@@ -542,56 +663,63 @@ public void populateTiles(List<TitledPane> accArr) throws Exception {
 		return event -> drag((MouseEvent) event);
 	}
 
+	/**
+	 * When user lets go of mouse on drag event, drop in new plot object.
+	 * 
+	 * @param event
+	 */
 	public void release(MouseEvent event) {
 		ImageView n = (ImageView) event.getSource();
-		create=true;
-		if(group.contains(tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight())) {
-			addImage(n,tmp.getLayoutX()-n.getParent().getLayoutBounds().getWidth(),tmp.getLayoutY()-vbox.getLayoutBounds().getHeight());
+		create = true;
+		if (group.contains(tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth(),
+				tmp.getLayoutY() - vbox.getLayoutBounds().getHeight())) {
+			addImage(n, tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth(),
+					tmp.getLayoutY() - vbox.getLayoutBounds().getHeight());
 		}
 		root.getChildren().remove(tmp);
-		
+
 	}
-  
+
 	public EventHandler getHandlerForRelease() {
 		return event -> release((MouseEvent) event);
 	}
-  */
+
 	/**
 	 * Remove everything from the flow panes, the center box, and the autorate boxes
 	 * and add info back in again for the correct session
 	 */
 	@Override
 	public void refresh() {
-		
-		
-		/*
-		 * It is printing the all the plants I've selected to the screen, so why are they not showing up when I call it in create plant flow?
-		 */
-		Iterator<Plant> plants = getSession().getExistingPlants().iterator();
-		while (plants.hasNext()) {
-			String p = plants.next().getLatinName();
-			System.out.println(p);
-		}
-		
-		/**
-		 * This doesn't do anything 
-		 */
-		TitledPane existing = new TitledPane("Existing Plants", createPlantFlow(getSession().getExistingPlants()));
+
+		existingFlow.getChildren().clear();
+		TitledPane existing = new TitledPane("Existing Plants", existingFlow);
+		createPlantFlow(getSession().getExistingPlants());
 		accArr.add(existing);
-		
-		//System.out.println(getSession().getSelectedPlants().size() + "size of selected plants : PLotdesign  \n");
-		TitledPane selected = new TitledPane("Selected Plants", createPlantFlow(getSession().getSelectedPlants()));
+
+		selectedFlow.getChildren().clear();
+		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
+		createSelectedFlow(getSession().getSelectedPlants());
 		accArr.add(selected);
-		
+
+		obstaclesFlow.getChildren().clear();
+		TitledPane obstacles = new TitledPane("Plot Objects", obstaclesFlow);
+		createObstacleFlow(getSession().getSelectedPlotObjects());
+		accArr.add(obstacles);
+
+		group.getChildren().clear();
+		createCenterBox();
+
+		for (udel.GardenProject.plotObjects.PlotObject po : getSession().getPlot()) {
+			/**
+			 * TODO: Add objects back into proper locations of the plot
+			 * 
+			 * addImage(//po.img, double x, double y); //needs a better implementation
+			 */
+		}
 		/**
-		 * TODO: remove everything from flowpanes and add back in
+		 * TODO: Remove stuff from autorate box and add back in
 		 */
-		/**
-		 * TODO: remove everything from center box and add back in
-		 */
-		/**
-		 * TODO: remove everything from autorate boxes and add back in
-		 */
+
 	}
-	
+
 }
