@@ -122,7 +122,7 @@ public class AllPlants extends Window {
 	private int maxImagesPerPage = 25;
 	
 	/**
-	 * True if the atlantic Filter was checked, false otherwise.
+	 * True if the Atlantic Filter was checked, false otherwise.
 	 */
 	private boolean atlanticFilter = false;
 	
@@ -137,7 +137,7 @@ public class AllPlants extends Window {
 	private Text moreCharacters = new Text("Please Add More Characters in Search");
 	
 	/**
-	 * The textfield for search.
+	 * The text field for search.
 	 */
 	private TextField text;
 	
@@ -332,7 +332,8 @@ public class AllPlants extends Window {
 	}
 	
 	/**
-	 * Populates an ArrayList of all the potential plants user wants from search.
+	 * Populates an ArrayList of all the potential plants user wants from 
+	 * search.
 	 * 
 	 * @param query
 	 */

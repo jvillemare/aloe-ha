@@ -112,14 +112,6 @@ public class Model {
 	}
 
 	/**
-	 * If the user is on the PlotDesign Window, it repeatedly checks the plot 
-	 * for collision errors, invasive plants, and evaluates it.
-	 */
-	public void update() {
-		// TODO: Implement for PlotDesign...
-	}
-	
-	/**
 	 * Creates the list of all Native plants
 	 */
 	public void createNativeList() {
