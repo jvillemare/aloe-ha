@@ -2,6 +2,9 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
+
 /**
  * Path way for vehicles.
  * 
@@ -28,11 +31,17 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 	 * @param y	Vertical position determined by MouseRelease event handler.
 	 * @param i Plot object's image
 	 */
-	public PlotRoad(double x, double y) {
+	public PlotRoad(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowRoad, plotRoad);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowRoad, plotRoad);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -2,6 +2,9 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
+
 /**
  * Chlorine-and-water filled of water.
  * 
@@ -25,10 +28,16 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 * @param y	Vertical position determined by MouseRelease event handler.
 	 * @param i Plot object's image.
 	 */
-	public PlotPool(double x, double y) {
+	public PlotPool(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPool, plotPool);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPool, plotPool);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

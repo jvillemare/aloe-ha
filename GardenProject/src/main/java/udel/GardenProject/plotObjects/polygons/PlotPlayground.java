@@ -2,6 +2,9 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
+
 /**
  * Playground.
  * 
@@ -21,10 +24,16 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	 */
 	private static String plotPlayground = "/viewImages/plotPlayground.png";
 	
-	public PlotPlayground(double x, double y) {
+	public PlotPlayground(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPlayground, plotPlayground);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPlayground, plotPlayground);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

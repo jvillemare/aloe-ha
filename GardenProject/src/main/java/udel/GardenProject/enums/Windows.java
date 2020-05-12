@@ -8,6 +8,7 @@ package udel.GardenProject.enums;
 public enum Windows {
 	
 	AllPlants, BluePrint, Download, ExistingPlants, PlantInfo, PlotDesign, 
-		Questionnaire, SeasonView, Tutorial, Welcome, PlantSelection;
+		PreviousSaves, Questionnaire, SeasonView, Tutorial, Welcome, 
+		PlantSelection;
 
 }

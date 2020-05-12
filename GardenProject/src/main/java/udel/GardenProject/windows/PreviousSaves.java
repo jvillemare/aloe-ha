@@ -7,23 +7,18 @@ import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
 
 /**
- * Allow the user detail the background of their plot with labels, and specify
- * characteristics for some areas of their plot.
+ * Displays a short table of where a user has recently saved Sessions on their
+ * disk.
  * 
  * @author Team 0
  */
-public class BluePrint extends Window {
+public class PreviousSaves extends Window {
 	
 	private Group root;
 	private Scene scene;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param model		Model reference.
-	 */
-	public BluePrint(Model model) {
-		super(model, "Blue Print Your Plot", Windows.BluePrint);
+	public PreviousSaves(Model model) {
+		super(model, "Past Saved Sessions", Windows.PreviousSaves);
 		// TODO Auto-generated constructor stub
 		
 		this.root = new Group();
@@ -33,6 +28,7 @@ public class BluePrint extends Window {
 
 	@Override
 	public Scene getScene() {
+		// TODO Auto-generated method stub
 		return this.scene;
 	}
 	
@@ -40,5 +36,5 @@ public class BluePrint extends Window {
 	public void refresh() {
 		
 	}
-	
+
 }

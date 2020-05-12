@@ -3,7 +3,7 @@ package udel.GardenProject.plotObjects.lines;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 
@@ -22,8 +22,9 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 * @param p			AdjustableLine that represent a line object.
 	 * @param imagePath	Plot object's path to image.
 	 */
-	public GenericLine(double x, double y, double height, AdjustableLine l, String windowPath, String plotPath) {
-		super(x, y, height, 2.0, windowPath, plotPath);
+	public GenericLine(Model model, double x, double y, double height, 
+			AdjustableLine l, String windowPath, String plotPath) {
+		super(model, x, y, height, 2.0, windowPath, plotPath);
 		// TODO Auto-generated constructor stub
     // TODO check 2.0 radius
 		this.l = l;

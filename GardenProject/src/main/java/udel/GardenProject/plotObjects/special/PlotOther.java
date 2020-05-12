@@ -2,6 +2,8 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -24,15 +26,19 @@ public class PlotOther extends PlotObject implements Serializable {
 	private static String plotPicture = "/viewImages/plotGardenBed.png";
 
 	/**
-	 * TODO: ?...
-	 * 
-	 * @param x			...
-	 * @param y			...
-	 * @param height	...
+	 * Constructor.
+	 * @param x	Horizontal position.
+	 * @param y	Vertical position.
 	 */
-	public PlotOther(double x, double y, double height, double radius) {
-		super(x, y, height, radius, windowPicture, plotPicture);
+	public PlotOther(Model model, double x, double y) {
+		super(model, x, y, 3.0, 3.0, windowPicture, plotPicture);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

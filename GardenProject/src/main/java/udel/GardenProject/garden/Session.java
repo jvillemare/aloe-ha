@@ -30,20 +30,26 @@ import udel.GardenProject.plotObjects.PlotObject;
 public class Session implements Serializable {
 
 	/**
-	 * Prevent newer version of GardenProject being loaded by older versions of save
-	 * files to prevent errors.
+	 * Prevent newer version of GardenProject being loaded by older versions of 
+	 * save files to prevent errors.
 	 * 
 	 * Should only update this if absolutely necessary.
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * When any new session is created, it has a unique ID to it as so it can be
+	 * distinguished from other saved sessions.
+	 */
+	private int id;
 
 	/**
 	 * Does this current Session need to be saved? By default, if any setter is
 	 * called, this is automatically set to true.
 	 * 
-	 * When Controller's <code>stop()</code> method is invoked, Model will check to
-	 * see if it can save this Session to lastSavedFilepath. If not, it simply
-	 * continues.
+	 * When Controller's <code>stop()</code> method is invoked, Model will check
+	 * to see if it can save this Session to lastSavedFilepath. If not, it 
+	 * simply continues.
 	 */
 	private boolean unsaved = false;
 
@@ -117,15 +123,6 @@ public class Session implements Serializable {
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
 	
 	/**
-	 * Constructor. Initializes default values for complex objects.
-	 */
-	public Session() {
-		selectedPlotObjects.add(PlotObjects.Plant);
-		seasonsUserSelected.add(Seasons.WINTER);
-		colorsUserSelected.add(Colors.ALICEBLUE);
-	}
-
-	/**
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
@@ -151,6 +148,47 @@ public class Session implements Serializable {
 	 * Plot Objects the user wants to appear in the PlotDesign left column.
 	 */
 	public ArrayList<PlotObjects> selectedPlotObjects = new ArrayList<PlotObjects>();
+	
+	/**
+	 * Constructor. Initializes default values for complex objects.
+	 */
+	public Session() {
+		selectedPlotObjects.add(PlotObjects.Plant);
+		seasonsUserSelected.add(Seasons.WINTER);
+		colorsUserSelected.add(Colors.ALICEBLUE);
+		this.id = generateID();
+	}
+	
+	/**
+	 * Generate a unique ID based on the system current time. If that fails,
+	 * default to a pseudo-random number. This method generates fairly
+	 * predictable numbers, but a user can only save so frequently. For 
+	 * collisions to occur in a user's recent saves from multiple saved
+	 * garden projects with the same id would be rare.
+	 * @return Pseudo-random time-based ID number.
+	 */
+	private int generateID() {
+		int newID = (int)(Math.random() * Integer.MAX_VALUE) - Integer.MIN_VALUE;
+		
+		try {
+			newID = Math.toIntExact(System.currentTimeMillis() % 
+					(Long.valueOf(Integer.MAX_VALUE - 1)));
+		} catch(ArithmeticException e) {
+			e.printStackTrace();
+			System.out.println("Session: Impressive if this error is ever thrown. "
+					+ "Is something wrong with the system clock?");
+		}
+		
+		return newID;
+	}
+	
+	/**
+	 * Getter.
+	 * @return Session's unique ID.
+	 */
+	public int getID() {
+		return this.id;
+	}
 
 	public ArrayList<PlotObjects> getSelectedPlotObjects() {
 		return this.selectedPlotObjects;

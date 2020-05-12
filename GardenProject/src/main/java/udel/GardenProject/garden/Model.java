@@ -11,7 +11,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
@@ -77,6 +79,13 @@ public class Model {
 	 * ArrayList<Plant> of native plants only
 	 */
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
+	
+	/**
+	 * Where on a user's computer have they recently saved sessions? Keys are
+	 * the Session's ID, and the values are the string paths where they were
+	 * saved.
+	 */
+	private HashMap<Integer, String> recentSessions = new HashMap<Integer, String>();
 	
 	/**
 	 * Local reference to Controller for sending Window change updates.
@@ -172,11 +181,30 @@ public class Model {
 		lastWindow = temp;
 		c.update(currentWindow);
 	}
+	
+	/**
+	 * Getter.
+	 * @return 	Locations of where sessions were recently saved to disk, where
+	 * 			the keys are the integer ID of the session, and values are the
+	 * 			string paths of the saves.
+	 */
+	public HashMap<Integer, String> getRecentSessions() {
+		return this.recentSessions;
+	}
+	
+	/**
+	 * Get command line arguments parsed by JavaFX.
+	 * @return	<code>--key=value</code> pairs of command line flags.
+	 */
+	public Map<String, String> getParams() {
+		return c.getParams();
+	}
 
 	/**
-	 * TODO: Later..
+	 * Get the last window that was displayed to the user. Helpful for back
+	 * buttons going to whatever the previous screen was.
 	 * 
-	 * @return
+	 * @return	Last window displayed to user.
 	 */
 	public Window getLastWindow() {
 		return this.lastWindow;
@@ -366,7 +394,8 @@ public class Model {
 			return false;
 		if (saveSession(session.getLastSavedFilepath()) == false)
 			throw new Exception(
-					"Model: Failed to save current Session where it should go at " + session.getLastSavedFilepath());
+					"Model: Failed to save current Session where it should go at " 
+					+ session.getLastSavedFilepath());
 		session = new Session();
 		return true;
 	}
@@ -497,10 +526,12 @@ public class Model {
 		windows = new Window[Windows.values().length];
 
 		windows[Windows.AllPlants.ordinal()] = new AllPlants(this);
+		windows[Windows.BluePrint.ordinal()] = new BluePrint(this);
 		windows[Windows.Download.ordinal()] = new Download(this);
 		windows[Windows.ExistingPlants.ordinal()] = new ExistingPlants(this);
 		windows[Windows.PlantInfo.ordinal()] = new PlantInfo(this);
 		windows[Windows.PlotDesign.ordinal()] = new PlotDesign(this);
+		windows[Windows.PreviousSaves.ordinal()] = new PreviousSaves(this);
 		windows[Windows.Questionnaire.ordinal()] = new Questionnaire(this);
 		windows[Windows.SeasonView.ordinal()] = new SeasonView(this);
 		windows[Windows.Tutorial.ordinal()] = new Tutorial(this);

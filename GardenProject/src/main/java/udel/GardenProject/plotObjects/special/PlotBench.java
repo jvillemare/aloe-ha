@@ -2,6 +2,8 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 
 /**
@@ -24,13 +26,18 @@ public class PlotBench extends PlotObject implements Serializable {
 	private static String plotBench = "/viewImages/plotBench.png";
 	
 	/**
-	 * TODO: ...
-	 * 
-	 * @param x			...
-	 * @param y			...
+	 * Constructor.
+	 * @param x	Horizontal position.
+	 * @param y Vertical position.
 	 */
-	public PlotBench(double x, double y) {
-		super(x, y, 2.0, 5.0, windowBench, plotBench);
+	public PlotBench(Model model, double x, double y) {
+		super(model, x, y, 2.0, 5.0, windowBench, plotBench);
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

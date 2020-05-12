@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javafx.collections.ObservableList;
 import javafx.scene.shape.Polygon;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 
@@ -30,8 +31,9 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * 					should look like.
 	 * @param imagePath	Plot object's path to image representation
 	 */
-	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String windowPath, String plotPath) {
-		super(x, y, height, 5.0, windowPath, plotPath);
+	public GenericPolygon(Model model, double x, double y, double height, 
+			AdjustablePolygon p, String windowPath, String plotPath) {
+		super(model, x, y, height, 5.0, windowPath, plotPath);
 		this.p = p;
 	}
 	

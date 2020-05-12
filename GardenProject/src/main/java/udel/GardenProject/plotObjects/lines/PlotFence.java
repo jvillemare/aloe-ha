@@ -2,7 +2,8 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
 
 /**
  * TODO: What is?...
@@ -23,10 +24,21 @@ public class PlotFence extends GenericLine implements Serializable {
 	 */
 	private static String plotFence = "/viewImages/plotFence.png";
 	
-
-	public PlotFence(double x, double y, double height) {
-		super(x, y, height, new AdjustableLine(), windowFence, plotFence);
+	/**
+	 * Constructor.
+	 * @param x	Horizontal position of first point of fence.
+	 * @param y Vertical position of first point of fence.
+	 * @param height	Height in feet of fence.
+	 */
+	public PlotFence(Model model, double x, double y, double height) {
+		super(model, x, y, height, new AdjustableLine(), windowFence, plotFence);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

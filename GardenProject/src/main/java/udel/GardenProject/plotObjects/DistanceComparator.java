@@ -2,8 +2,6 @@ package udel.GardenProject.plotObjects;
 
 import java.util.Comparator;
 
-import udel.GardenProject.plants.Plant;
-
 /**
  * 
  * 

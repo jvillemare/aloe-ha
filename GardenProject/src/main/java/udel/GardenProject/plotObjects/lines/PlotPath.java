@@ -2,7 +2,8 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
 
 /**
  * TODO: What is this? If polygon, move to polygons package and make it match
@@ -27,10 +28,15 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param x			Horizontal position of first point in plot design.
 	 * @param y			Vertical position of first point in plot design.
 	 */
-
-	public PlotPath(double x, double y) {
-		super(x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
+	public PlotPath(Model model, double x, double y) {
+		super(model, x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 
 }

@@ -23,37 +23,37 @@ public class View {
 	/**
 	 * Pink background style to be used in Welcome
 	 */
-	private static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";
+	private final static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";
 	
 	/**
 	 * Dark green background style to be used in Welcome for buttons
 	 */
-	private static String darkGreenBackgroundStyle = "-fx-background-color: #63A331;";
+	private final static String darkGreenBackgroundStyle = "-fx-background-color: #63A331;";
 	
 	/**
 	 * Light green background style to be used in Welcome for buttons
 	 */
-	private static String lightGreenBackgroundStyle = "-fx-background-color: #76C327;";
+	private final static String lightGreenBackgroundStyle = "-fx-background-color: #76C327;";
 	
 	/**
 	 * White background style
 	 */
-	private static String whiteBackgroundStyle = "-fx-background-color: #FFFFFF;";
+	private final static String whiteBackgroundStyle = "-fx-background-color: #FFFFFF;";
 	
 	/**
 	 * Black text fill for works in buttons
 	 */
-	private static String blackTextFill = "-fx-text-fill: #000000;";
+	private final static String blackTextFill = "-fx-text-fill: #000000;";
 	
 	/**
 	 * The prefered Width of buttons at the bottom of each screen
 	 */
-	private static int buttonPrefWidth = 100;
+	private final static int buttonPrefWidth = 100;
 	
 	/**
 	 * Standard button text size for all buttons at the bottom of the screen
 	 */
-	private static int buttonTextSize = 12;
+	private final static int buttonTextSize = 12;
 	
 	/**
 	 * Seam-less background for each screen
@@ -63,17 +63,29 @@ public class View {
 	/**
 	 * Text size for top messages and welcome buttons
 	 */
-	private static int textSizeForButtonsAndText = 20;
+	private final static int textSizeForButtonsAndText = 20;
 	
 	/**
 	 * The path to the background screen image
 	 */
-	private static String backgroundScreenPath = "/buttonImages/splash2.png";
+	private final static String backgroundScreenPath = "/buttonImages/splash2.png";
 	
 	/**
-	 * Local reference to stage.
+	 * Width of the buttons on the Welcome screen
 	 */
-	private Stage theStage;
+	private final static int welcomeButtonWidth = 300;
+	
+	/**
+	 * For cached images (typically HTTP web loaded), this is the default width
+	 * of the thumbnail.
+	 */
+	private final static int thumbnailWidth = 200;
+
+	/**
+	 * For cached images (typically HTTP web loaded), this is the default height
+	 * of the thumbnail.
+	 */
+	private final static int thumbnailHeight = 300;
 
 	/**
 	 * Default Scene width, can be overridden by Window objects.
@@ -84,11 +96,47 @@ public class View {
 	 * DefaDefaultutl Scene height, can be overridden by Window objects.
 	 */
 	private final static int canvasHeight = 700;
+	
+	/**
+	 * Local reference to stage.
+	 */
+	private Stage theStage;
 
 	/**
 	 * Reference to the current window object being displayed.
 	 */
 	private Window window;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param theStage JavaFX Stage instance.
+	 * @param w        The first window to be displayed.
+	 */
+
+	public View(Controller c,Stage theStage) {
+		this.c = c;
+		this.theStage = theStage;
+		// showSplashScreen();
+		update(c.getCurrentWindow());
+		this.theStage.show();
+	}
+	
+	/**
+	 * Getter.
+	 * @return	Suggested default thumbnail width.
+	 */
+	public static int getThumbnailWidth() {
+		return thumbnailWidth;
+	}
+	
+	/**
+	 * Getter.
+	 * @return	Suggested default thumbnail height.
+	 */
+	public static int getThumbnailHeight() {
+		return thumbnailHeight;
+	}
 
 	/**
 	 * Refers to the pink background style
@@ -153,12 +201,7 @@ public class View {
 	 */
 	public static int getButtonTextSize() {
 		return buttonTextSize;
-	}
-
-	/**
-	 * Width of the buttons on the Welcome screen
-	 */
-	public static int welcomeButtonWidth = 300;
+	}		
 
 	/**
 	 * @return the width of a single button on the Welcome screen
@@ -179,16 +222,16 @@ public class View {
 	}
 
 	/**
-	 * Returns the background screen
+	 * Getter. Returns the background screen.
 	 */
 	public static Background getBackgroundScreen() {
 		return backgroundScreen;
 	}
 
 	/**
-	 * Returns 20
+	 * Getter. Returns the text size for buttons and text.
 	 * 
-	 * @return the text size for messages and welcome buttons
+	 * @return the text size for messages and welcome buttons.
 	 */
 	public static int getTextSizeForButtonsAndText() {
 		return textSizeForButtonsAndText;
@@ -196,7 +239,7 @@ public class View {
 
 	/**
 	 * The string used in the getResourceAsStream function to set the font to
-	 * Hack-Bold
+	 * <code>Hack-Bold</code>.
 	 */
 	public static String hackBold = "/fonts/Hack-Bold.ttf";
 
@@ -236,21 +279,6 @@ public class View {
 	 */
 	public static String getBackgroundScreenPath() {
 		return backgroundScreenPath;
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param theStage JavaFX Stage instance.
-	 * @param w        The first window to be displayed.
-	 */
-
-	public View(Controller c,Stage theStage) {
-		this.c = c;
-		this.theStage = theStage;
-		// showSplashScreen();
-		update(c.getCurrentWindow());
-		this.theStage.show();
 	}
 
 	/**

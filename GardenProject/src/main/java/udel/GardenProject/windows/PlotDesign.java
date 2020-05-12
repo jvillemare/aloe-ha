@@ -140,7 +140,7 @@ public class PlotDesign extends Window {
 	private HashMap<ImageView, PlotPlant> plotPlants = new HashMap<ImageView, PlotPlant>();
 
 	/**
-	 * Adjustments to buttons and panes
+	 * Adjustments to buttons and panes.
 	 */
 	private int autoRateBarWidth = 200;
 	private int autoRateBarHeight = 10;
@@ -460,7 +460,7 @@ public class PlotDesign extends Window {
 			/**
 			 * TODO: implement proper drag handling
 			 */
-			plotPlants.put(imageView, new PlotPlant(p, 0, 0));
+			//plotPlants.put(imageView, new PlotPlant(p, 0, 0));
 			imageView.setOnMouseDragged(getHandlerForDrag());
 			imageView.setOnMouseReleased(getHandlerForRelease());
 
@@ -510,7 +510,7 @@ public class PlotDesign extends Window {
 			/**
 			 * TODO: implement proper drag handling
 			 */
-			plotPlants.put(imageView, new PlotPlant(p, 0, 0));
+			plotPlants.put(imageView, new PlotPlant(getModel(), p, 0, 0));
 			imageView.setOnMouseDragged(getHandlerForDrag());
 			imageView.setOnMouseReleased(getHandlerForRelease());
 
@@ -857,7 +857,6 @@ public class PlotDesign extends Window {
 	 * @param x   the X coordinate for the image
 	 * @param y   the Y coordinate for the image
 	 */
-
 	public void addImage(ImageView img, double x, double y) {
 		PlotPlant plotplant = plotPlants.get(img);
 		plotplant.setPlotX(x);

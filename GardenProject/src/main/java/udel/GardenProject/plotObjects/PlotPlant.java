@@ -2,7 +2,11 @@ package udel.GardenProject.plotObjects;
 
 import java.io.Serializable;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.Session;
 import udel.GardenProject.plants.Plant;
 
 /**
@@ -26,15 +30,16 @@ public class PlotPlant extends PlotObject implements Serializable {
 	/**
 	 * Plant that can appear on in the PlotDesign.
 	 * 
-	 * @param p	Plant that's appearing on the Plot.
-	 * @param x Horizontal position in PlotDesign.
-	 * @param y Vertical position in PlotDesign.
+	 * @param Session	T
+	 * @param p			Plant that's appearing on the Plot.
+	 * @param x 		Horizontal position in PlotDesign.
+	 * @param y 		Vertical position in PlotDesign.
 	 */
-	public PlotPlant(Plant p, double x, double y) {
+	public PlotPlant(Model model, Plant p, double x, double y) {
 		// TODO: A plant is always about a foot wide? Let's say for simplicity.
 		// Fix later. Definitely a helper method in plant that reads the 
 		// description or calculates or something
-		super(x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p));
+		super(model, x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p));
 		this.p = p;
 	}
 	
@@ -61,53 +66,69 @@ public class PlotPlant extends PlotObject implements Serializable {
 		}
 	}
 	
-	
 	/**
+	 * <b>For Out the Window View:</b>
 	 * Determines the image to be used for the window view.
-	 * @param p The plant object.
-	 * @return The correct image based on canopy level. If no canopy level if 
-	 * provided, a sunflower is used.
+	 * @param p 	The plant object.
+	 * @return 		The correct image based on canopy level. If no canopy level 
+	 * 				if provided, a sunflower is used.
 	 */
 	public static String chooseWindowImage(Plant p) {
 		if (p.getCanopy() == null) {
 			return "/viewImages/sunflower.png";
 		}
 		switch(p.getCanopy()) {
-		case FLOOR:
-			return "/viewImages/floor.png";
-		case UNDERSTORY:
-			return "/viewImages/understory.png";
-		case CANOPY:
-			return "/viewImages/canopy.png";
-		case EMERGENT:
-			return "/viewImages/emergent.png";
-		default:
-			return "/viewImages/sunflower.png";
+			case FLOOR:
+				return "/viewImages/floor.png";
+			case UNDERSTORY:
+				return "/viewImages/understory.png";
+			case CANOPY:
+				return "/viewImages/canopy.png";
+			case EMERGENT:
+				return "/viewImages/emergent.png";
+			default:
+				return "/viewImages/sunflower.png";
 		}
 	}
 	
 	/**
+	 * <b>For Plot Design:</b>
 	 * Determines the image to be used for the plot design.
-	 * @param p The plant object.
-	 * @return The correct image based on canopy level. If no canopy level if 
-	 * provided, a young tree is used.
+	 * @param p 	The plant object.
+	 * @return 		The correct image based on canopy level. If no canopy level 
+	 * 				if provided, a young tree is used.
 	 */
 	public static String choosePlotImage(Plant p) {
 		if (p.getCanopy() == null) {
 			return "/viewImages/sunflower.png";
 		}
 		switch(p.getCanopy()) {
-		case FLOOR:
-			return "/viewImages/plotFloor.png";
-		case UNDERSTORY:
-			return "/viewImages/plotUnderstory.png";
-		case CANOPY:
-			return "/viewImages/plotCanopy.png";
-		case EMERGENT:
-			return "/viewImages/plotEmergent.png";
-		default:
-			return "/viewImages/babyTree.png";
+			case FLOOR:
+				return "/viewImages/plotFloor.png";
+			case UNDERSTORY:
+				return "/viewImages/plotUnderstory.png";
+			case CANOPY:
+				return "/viewImages/plotCanopy.png";
+			case EMERGENT:
+				return "/viewImages/plotEmergent.png";
+			default:
+				return "/viewImages/babyTree.png";
 		}
+	}
+
+	@Override
+	public Node render() {
+		// fall back plant image
+		String plantImages = choosePlotImage(p);
+		
+		// choose plant image if available
+		if(this.p.getImages() != null && this.p.getImages().length != 0) {
+			plantImages = this.p.getImages()[0];
+		}
+		
+		
+		
+		return null;
 	}
 
 }

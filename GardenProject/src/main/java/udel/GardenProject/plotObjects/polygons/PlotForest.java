@@ -2,6 +2,9 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
+
 
 /**
  * TODO: What is?...
@@ -28,11 +31,17 @@ public class PlotForest extends GenericPolygon implements Serializable {
 	 * @param x	Horizontal position determined by MouseRelease event handler.
 	 * @param y	Vertical position determined by MouseRelease event handler.
 	 */
-	public PlotForest(double x, double y) {
+	public PlotForest(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowForest, plotForest);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowForest, plotForest);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
+	}
+
+	@Override
+	public ImageView render() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
