@@ -102,12 +102,12 @@ public class SeasonView extends Window {
 	/**
 	 * Final toggle the user chose for the year
 	 */
-	public int chosenYear;
+	public Year chosenYear;
 
 	/**
 	 * Final toggle the user chose for the type of view
 	 */
-	public String chosenView;
+	public GardenView chosenView;
 
 	/**
 	 * Holds the toggle options and the bottom navigation buttons
@@ -365,15 +365,7 @@ public class SeasonView extends Window {
 			toggle.setToggleGroup(yearGroup);
 			yearHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				if (y == Year.YEAR0) {
-					chosenYear = 0;
-				}
-				if (y == Year.YEAR1) {
-					chosenYear = 1;
-				}
-				if (y == Year.YEAR2) {
-					chosenYear = 2;
-				}
+				chosenYear = y;
 			});
 		}
 
@@ -388,13 +380,12 @@ public class SeasonView extends Window {
 			toggle.setToggleGroup(viewGroup);
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
+				chosenView = v;
 				if (v == GardenView.TOPVIEW) {
 					imageVBox.getChildren().set(0, square);
-					chosenView = "TOP";
 				}
 				if (v == GardenView.WINDOWVIEW) {
 					imageVBox.getChildren().set(0, canvas);
-					chosenView = "WINDOW";
 				}
 			});
 		}

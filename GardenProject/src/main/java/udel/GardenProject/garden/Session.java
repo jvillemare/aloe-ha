@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import udel.GardenProject.enums.Colors;
+import udel.GardenProject.enums.GardenView;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Year;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
 
@@ -134,13 +136,12 @@ public class Session implements Serializable {
 	/**
 	 * Year selected by user from SeasonView
 	 */
-	private int yearInput = 0;
+	private Year yearInput = Year.YEAR0;
 
 	/**
 	 * Type of view selected by user from SeasonView
 	 */
-	private String viewInput = "";
-	// TODO: Replace with enum
+	private GardenView viewInput = GardenView.TOPVIEW;
 
 	/**
 	 * The user's selection to how they want to save on the download screen
@@ -331,7 +332,7 @@ public class Session implements Serializable {
 	 * 
 	 * @return The amount of time gone from the start of the user's garden 
 	 */
-	public int getYearInput() {
+	public Year getYearInput() {
 		return yearInput;
 	}
 
@@ -339,7 +340,7 @@ public class Session implements Serializable {
 	 * Sets the amount of time gone by from the start of the user's garden in years
 	 * @param y Year from the toggles in SeasonView
 	 */
-	public void setYearInput(int y) {
+	public void setYearInput(Year y) {
 		this.yearInput = y;
 	}
 
@@ -347,7 +348,7 @@ public class Session implements Serializable {
 	 * Gets the type of view the user wants to see 
 	 * @return A string for the type of view
 	 */
-	public String getViewInput() {
+	public GardenView getViewInput() {
 		return viewInput;
 	}
 
@@ -355,7 +356,7 @@ public class Session implements Serializable {
 	 * Sets the type of view the user wants to see 
 	 * @param v View type from the toggles in SeasonView 
 	 */
-	public void setViewInput(String v) {
+	public void setViewInput(GardenView v) {
 		this.viewInput = v;
 	}
 
