@@ -397,7 +397,7 @@ public class Questionnaire extends Window {
 		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
 
 		List<Colors> colorsWanted = new ArrayList<Colors>();
-		for (Colors enumColor : Colors.values())
+		for (Colors enumColor : this.getModel().getIncludedColors())
 			colorsWanted.add(enumColor);
 
 		q8items = FXCollections.observableArrayList(); // add checkboxes to this list

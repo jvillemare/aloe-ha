@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
-import javafx.scene.image.Image;
 import javafx.scene.text.Font;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plants.PlantLoader;
@@ -79,6 +79,11 @@ public class Model {
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
 	
 	/**
+	 * HashSet containing all of the colors found in the included plants.
+	 */
+	private HashSet<Colors> colors = new HashSet<>();
+	
+	/**
 	 * Constructor, initialize everything.
 	 * 
 	 * @param width
@@ -97,6 +102,12 @@ public class Model {
 			e.printStackTrace();
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
 			System.exit(1);
+		}
+		for (Plant p : this.plants) {
+			HashSet<Colors> pColors = p.getColors();
+			if (pColors != null) {
+				this.colors.addAll(pColors);
+			}
 		}
 		Collections.sort(this.plants, new PlantNameComparator(true, false));
 
@@ -627,6 +638,14 @@ public class Model {
 	 */
 	public ArrayList<Plant> getNativePlants(){
 		return nativeOnly;
+	}
+	
+	/**
+	 * Getter for all colors included in plants.
+	 * @return
+	 */
+	public HashSet<Colors> getIncludedColors() {
+		return this.colors;
 	}
 
 }
