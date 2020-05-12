@@ -3,6 +3,7 @@ package udel.GardenProject.garden;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import udel.GardenProject.windows.Window;
 
 /**
  * Contains the start and main, ticks the application.
@@ -18,22 +19,24 @@ public class Controller extends Application {
 	public void start(Stage primaryStage) {
 		// load model then view, because view will show the stage when there's
 		// nothing there because the model is still loading.
-		model = new Model(view.getCanvasWidth(), view.getCanvasHeight());
-		view = new View(primaryStage);
-		
-		new AnimationTimer() {
-            public void handle(long currentNanoTime) {
-                model.update();
-                view.update(model.getWindow());
-                
-                // TODO: Is this how we want to handle this?
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+		model = new Model(this, view.getCanvasWidth(), view.getCanvasHeight());
+		view = new View(this, primaryStage);
+	}
+	
+	/**
+	 * Update the View with the new current window.
+	 * @param w	New current window.
+	 */
+	public void update(Window w) {
+		view.update(w);
+	}
+	
+	/**
+	 * Get the current window from Model.
+	 * @return	Current window.
+	 */
+	public Window getCurrentWindow() {
+		return model.getWindow();
 	}
 	
 	@Override

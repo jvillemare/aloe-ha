@@ -79,12 +79,18 @@ public class Model {
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
 	
 	/**
+	 * Local reference to Controller for sending Window change updates.
+	 */
+	private Controller c;
+	
+	/**
 	 * Constructor, initialize everything.
 	 * 
 	 * @param width
 	 * @param height
 	 */
-	public Model(int width, int height) {
+	public Model(Controller c, int width, int height) {
+		this.c = c;
 		this.width = width;
 		this.height = height;
 		this.session = new Session();
@@ -103,12 +109,11 @@ public class Model {
 		setupWindows();
 		printMemoryInfo();
 		createNativeList();
-		
 	}
 
 	/**
-	 * If the user is on the PlotDesign Window, it repeatedly checks the plot for
-	 * collision errors, invasive plants, and evaluates it.
+	 * If the user is on the PlotDesign Window, it repeatedly checks the plot 
+	 * for collision errors, invasive plants, and evaluates it.
 	 */
 	public void update() {
 		// TODO: Implement for PlotDesign...
@@ -152,17 +157,17 @@ public class Model {
 	}
 
 	/**
-	 * Change the current Window.
+	 * Refreshes the new current Window, then sets it.
 	 * 
 	 * @param w A Window specified by the Windows enum.
 	 */
 	public void setWindow(Windows w) {
 		System.gc();
+		windows[w.ordinal()].refresh();
 		lastWindow = currentWindow;
 		currentWindow = windows[w.ordinal()];
 		currentWindow.refresh();
-		// TODO: Refresh might need to be moved to before the switch so that the
-		// 	window has a chance to refresh before being displayed.
+		c.update(currentWindow);
 	}
 
 	/**
@@ -170,11 +175,10 @@ public class Model {
 	 */
 	public void goToLastWindow() {
 		Window temp = currentWindow;
+		lastWindow.refresh();
 		currentWindow = lastWindow;
 		lastWindow = temp;
-		currentWindow.refresh();
-		// TODO: Refresh might need to be moved to before the switch so that the
-		// 	window has a chance to refresh before being displayed.
+		c.update(currentWindow);
 	}
 
 	/**
