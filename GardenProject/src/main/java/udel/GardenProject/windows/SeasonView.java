@@ -381,11 +381,13 @@ public class SeasonView extends Window {
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chosenView = v;
-				if (v == GardenView.TOPVIEW) {
+				switch(v) {
+				case TOPVIEW:
 					imageVBox.getChildren().set(0, square);
-				}
-				if (v == GardenView.WINDOWVIEW) {
+					break;
+				case WINDOWVIEW:
 					imageVBox.getChildren().set(0, canvas);
+					break;
 				}
 			});
 		}
