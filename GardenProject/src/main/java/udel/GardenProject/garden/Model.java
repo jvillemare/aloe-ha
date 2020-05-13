@@ -15,7 +15,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import javafx.event.EventHandler;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
@@ -79,6 +82,36 @@ public class Model {
 	 * ArrayList<Plant> of native plants only
 	 */
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
+	
+	/**
+	 * Hack Bold font of size 20
+	 */
+	private Font hackBold20 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
+	
+	/**
+	 * Hack Bold Italic font of size 20
+	 */
+	private Font hackBoldItalic20 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-BoldItalic.ttf"), 20);
+	
+	/**
+	 * Hack Bold font of size 12 for buttons
+	 */
+	private Font hackBold12 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
+	
+	/**
+	 * Not hovering over the bottom buttons with keep it light green
+	 */
+	private String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
+	
+	/**
+	 * When the user is hovering over the bottom buttons
+	 */
+	private String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
 	
 	/**
 	 * Where on a user's computer have they recently saved sessions? Keys are
@@ -573,11 +606,6 @@ public class Model {
 	}
 
 	/**
-	 * Hack Bold font of size 20
-	 */
-	private Font hackBold20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
-
-	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
 	 * be used in windows
 	 * 
@@ -586,11 +614,6 @@ public class Model {
 	public Font getHackBold20() {
 		return this.hackBold20;
 	}
-
-	/**
-	 * Hack Bold Italic font of size 20
-	 */
-	private Font hackBoldItalic20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-BoldItalic.ttf"), 20);
 
 	/**
 	 * Gets the Input Stream of the HackBold Italic font from the fonts resource
@@ -603,11 +626,6 @@ public class Model {
 	}
 
 	/**
-	 * Hack Bold font of size 12 for buttons
-	 */
-	private Font hackBold12 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
-
-	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
 	 * be used in windows
 	 * 
@@ -618,12 +636,6 @@ public class Model {
 	}
 
 	/**
-	 * Not hovering over the bottom buttons with keep it light green
-	 */
-	private String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-			+ "-fx-outer-border: #63A331;";
-
-	/**
 	 * Not hovering over buttons
 	 * 
 	 * @return String of attributes for when the user is not hovering over bottom
@@ -632,12 +644,6 @@ public class Model {
 	public String getNotHover() {
 		return this.notHover;
 	}
-
-	/**
-	 * When the user is hovering over the bottom buttons
-	 */
-	private String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-			+ "-fx-outer-border: #63A331;";
 
 	/**
 	 * Hovering over buttons

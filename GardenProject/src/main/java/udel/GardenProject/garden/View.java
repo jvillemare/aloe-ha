@@ -1,14 +1,18 @@
 package udel.GardenProject.garden;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import udel.GardenProject.windows.Window;
@@ -319,6 +323,34 @@ public class View {
 	 */
 	public static int getCanvasHeight() {
 		return canvasHeight;
+	}
+	
+	/**
+	 * Setup a button as most of our buttons appear in the UI with hover and
+	 * de-hovering.
+	 * @param b	Button object.
+	 */
+	public static void setupButtonEffects(Button b) {
+		// TODO: @mpatel-2022 use this to setup buttons, as many of them do the
+		//			same effect handling setup. maybe have two more parameters
+		//			in this method to taken in different background styles
+		//			or something
+		DropShadow shadow = new DropShadow();
+		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(shadow);
+				b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
+			}
+		});
+
+		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(null);
+				b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			}
+		});
 	}
 
 	/**

@@ -3,6 +3,7 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.garden.Model;
@@ -115,20 +116,38 @@ public class PlotPlant extends PlotObject implements Serializable {
 				return "/viewImages/babyTree.png";
 		}
 	}
+	
+	public static Node render(Plant p) {
+		// fall back plant image
+		String plantImages = choosePlotImage(p);
+				
+		// choose plant image if available
+		if(p.getImages() != null && p.getImages().length != 0) {
+			plantImages = p.getImages()[0];
+		}
+				
+		/*
+		 * String[] plantImg = p.getImages();
+			Image plantImage;
+			// Get the actual image if it exists
+			if (plantImg != null && plantImg.length > 0) {
+				String path = p.getImages()[0];
+				plantImage = new Image(path, imageSize, imageSize, true, true);
+			} else {
+				// get a default image
+				plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imageSize, imageSize,
+						true, true);
+			}
+			ImageView imageView = new ImageView();
+			imageView.setImage(plantImage);
+		 */
+				
+		return null;
+	}
 
 	@Override
 	public Node render() {
-		// fall back plant image
-		String plantImages = choosePlotImage(p);
-		
-		// choose plant image if available
-		if(this.p.getImages() != null && this.p.getImages().length != 0) {
-			plantImages = this.p.getImages()[0];
-		}
-		
-		
-		
-		return null;
+		return render(this.p);
 	}
 
 }

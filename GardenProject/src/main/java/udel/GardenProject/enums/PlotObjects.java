@@ -7,7 +7,9 @@ package udel.GardenProject.enums;
  */
 public enum PlotObjects {
 
+	// TODO: Alphabetically sort
 	Plant("object", true),
+	TextLabel("object", true),
 	Fence("lines", true), 
 	Path("lines", true), 
 	Forest("polygons", false), 

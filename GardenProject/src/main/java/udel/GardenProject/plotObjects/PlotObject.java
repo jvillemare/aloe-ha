@@ -84,6 +84,25 @@ public abstract class PlotObject implements Serializable {
 	 */
 	public abstract Node render();
 	
+	public Node renderInPlot() {
+		// TODO: Rearrange me
+		// TODO: Make me abstract
+		return null;
+	}
+	
+	public Node renderInAccordion() {
+		// TODO: Rearrange me
+		// TODO: Make me abstract
+		return null;
+	}
+	
+	// TODO: Rename?
+	public Node deleteFromInterface() {
+		// TODO: Rearrange me
+		// TODO: Make me abstract
+		return null;
+	}
+	
 	/**
 	 * Helper method.
 	 * @return	Width of user's plot.
