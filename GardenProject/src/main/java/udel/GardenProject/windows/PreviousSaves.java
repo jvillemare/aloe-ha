@@ -34,7 +34,7 @@ public class PreviousSaves extends Window {
 	
 	@Override
 	public void refresh() {
-		
+		// TODO: Use getModel().getRecentSessions() and check the valueSet
 	}
 
 }
