@@ -414,9 +414,6 @@ public class PlotDesign extends Window {
 			String name = p.getLatinName();
 			Tooltip.install(plantRepresentation, new Tooltip(name));
 
-			/**
-			 * TODO: implement proper drag handling
-			 */
 			plantRepresentation.setOnMouseDragged(getHandlerForDrag());
 			plantRepresentation.setOnMouseReleased(getHandlerForRelease(PlotObjects.Plant, p));
 
