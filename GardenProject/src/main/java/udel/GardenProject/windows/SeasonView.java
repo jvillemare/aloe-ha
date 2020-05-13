@@ -1,5 +1,8 @@
 package udel.GardenProject.windows;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -158,6 +162,10 @@ public class SeasonView extends Window {
 	private int squareWidthAdjustment = 40;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
+	private int subImageX = 10;
+	private int subImageY = 35;
+	private int subImageWidth = 1260;
+	private int subImageHeight = 570;
 
 	/**
 	 * Create a SeasonView window instance.
@@ -282,6 +290,25 @@ public class SeasonView extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				getInput();
+				
+				/*
+				 * Gets bounds from screen and creates a Buffered Image to be sent to session
+				 */
+				try {
+			        Bounds bounds = root.getBoundsInLocal();
+			        Bounds screenBounds = root.localToScreen(bounds);
+			        int x = (int) screenBounds.getMinX();
+			        int y = (int) screenBounds.getMinY();
+			        int width = (int) screenBounds.getWidth();
+			        int height = (int) screenBounds.getHeight();
+			        java.awt.Rectangle screenRect = new java.awt.Rectangle(x, y, width, height);
+			        BufferedImage capture = new Robot().createScreenCapture(screenRect);
+			        capture = capture.getSubimage(subImageX, subImageY, subImageWidth, subImageHeight);
+			        getSession().setScreenShot(capture);
+			    } catch (AWTException ex) {
+			        ex.printStackTrace();
+			    }
+				
 				switchToWindow(Windows.Download);
 			}
 		});
@@ -447,7 +474,9 @@ public class SeasonView extends Window {
 	 * Refreshes the screen to clear any of the toggles chosen
 	 */
 	public void refresh() {
-		// TODO: drawCanvas() doesn't need to be called here?
+		/**
+		 * TODO: Clear screen (Plot image) and add back in from session
+		 */
 		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
 		for (ToggleGroup group : tg) {
 			if (group.getSelectedToggle() != null) {
