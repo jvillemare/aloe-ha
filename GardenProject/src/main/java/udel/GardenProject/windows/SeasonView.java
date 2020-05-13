@@ -127,20 +127,26 @@ public class SeasonView extends Window {
 	/**
 	 * Maximum depth a plot object may be placed on plot desigh
 	 */
-	private final int MAXDEPTH = View.getCanvasHeight() / 7 * 6;
+	private final int MAXDEPTH = 700;
 
 	/**
 	 * Maximum width a plot object may be placed on plot design
 	 */
-	private final int MAXWIDTH = View.getCanvasWidth() / 5 * 3;
+	private final int MAXWIDTH = 700;
 
 	/**
 	 * Factor for scaling images in the window view
 	 */
 	private double factor;
 	
+	/**
+	 * Minimum amount of particles that may be drawn for snow or leaves.
+	 */
 	private int minRandomParticles = 50;
 	
+	/**
+	 * Maximum amount of particles that may be drawn for snow or leaves.
+	 */
 	private int maxRandomParticles = 100;
 
 	private int inset5 = 5;
@@ -483,6 +489,11 @@ public class SeasonView extends Window {
 
 	}
 	
+	/**
+	 * Randomly draws leaves or snow on the window view based on season.
+	 * @param gc Graphics Context for Window View Canvas
+	 * @param image integer representing snow or leaves. 0 is snow, 1 is leaves.
+	 */
 	public void drawRandom(GraphicsContext gc, int image) {
 		int numPart = (int)(Math.random() * ((maxRandomParticles - minRandomParticles) + 1)) + minRandomParticles;
 		switch(image) {
