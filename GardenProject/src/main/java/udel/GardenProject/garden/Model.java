@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Windows;
@@ -301,30 +302,30 @@ public class Model {
 	}
 	
 	/**
-	 * Safely <i>cache</i> a file to a user's computer. Hides all exceptions and
-	 * potential errors.
+	 * Safely <i>cache</i> a file to a user's computer.
 	 * 
 	 * @param filepath Path and filename where to save the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return true if successful in caching the file, false if not.
+	 * @throws IOException 
 	 * @see {@link #loadCacheFile(String) loadCacheFile}
 	 */
 	public boolean saveCacheFile(Object o, String filepath) {
 		String realFilepath = calculateFilepath(filepath);
+		
+		System.out.println(realFilepath);
+		File tmp = new File(realFilepath);
 		try {
-			System.out.println(realFilepath);
-			File tmp = new File(realFilepath);
 			tmp.createNewFile();
 			FileOutputStream file = new FileOutputStream(tmp);
 			ObjectOutputStream out = new ObjectOutputStream(file);
-
+	
 			out.writeObject(o);
-
+	
 			out.close();
 			file.close();
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.println("Model: Failed to save cache file at " + realFilepath);
+		} catch(IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -341,30 +342,52 @@ public class Model {
 	 * @param filepath Path and filename where to load the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return file object
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @see {@link #saveCacheFile(String) saveCacheFile}
 	 */
-	public Object loadCacheFile(String filepath) {
+	public Object loadCacheFile(String filepath) throws ClassNotFoundException, IOException {
 		String realFilepath = calculateFilepath(filepath);
-		// TODO: Change, how to return input stream but also close it before
-		// returning it??
+		Object o;
+		
+		FileInputStream file = new FileInputStream(realFilepath);
+		ObjectInputStream in = new ObjectInputStream(file);
+
+		o = in.readObject();
+
+		in.close();
+		file.close();
+
+		return o;
+	}
+	
+	/**
+	 * 
+	 * @param imagePath
+	 * @return
+	 */
+	public Image thumbnailProcessImage(String imagePath) {
+		String realImagePath = 
+			imagePath.replace("/", "").replace(":", "").replace(".", "").replace("-", "").replace("_", "");
+		   
+		// check if cache file exists
+		Image i;
+		      
 		try {
-			FileInputStream file = new FileInputStream(realFilepath);
-			ObjectInputStream in = new ObjectInputStream(file);
-
-			this.session = (Session) in.readObject();
-
-			in.close();
-			file.close();
-
-			System.out.println("Model: Loaded Session from " + realFilepath);
-		} catch (IOException ex) {
-			System.out.println("Model: IOException is caught, failed to load file from " + realFilepath);
-			return false;
-		} catch (ClassNotFoundException ex) {
-			System.out.println("Model: ClassNotFoundException is caught, invalid file at " + realFilepath);
-			return false;
+			i = (Image)loadCacheFile(realImagePath);
+		} catch (IOException e) {
+			// file does not exist, cache it
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
+			saveCacheFile(i, realImagePath); // TODO: check true/false later
+			return i;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("INVESTIGATE ME"); // TODO: come back later
+		} finally {
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
 		}
-		return true;
+		
+		return i;
 	}
 
 	/**
