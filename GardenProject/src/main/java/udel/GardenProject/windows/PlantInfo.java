@@ -91,6 +91,11 @@ public class PlantInfo extends Window {
 	private int scrollPrefHeight = View.getCanvasHeight() - 100;
 	private int screenWidthAdjustment = 30;
 	
+	/**
+	 * Default image sized to scale.
+	 */
+	private Image defaultImg = View.getDefaultImage(imgWidthAndHeight, imgWidthAndHeight);
+	
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: ", Windows.PlantInfo);
 
@@ -163,8 +168,7 @@ public class PlantInfo extends Window {
 			url.setFont(getModel().getHackBoldItalic20());
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidthAndHeight,
-					imgWidthAndHeight, true, true);
+			plantImage = defaultImg;
 			url = makeText("");
 		}
 

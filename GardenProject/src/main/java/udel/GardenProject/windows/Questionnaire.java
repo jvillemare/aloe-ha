@@ -178,7 +178,7 @@ public class Questionnaire extends Window {
 		tilePane = new TilePane();
 
 		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below.\n");
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());

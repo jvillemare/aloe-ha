@@ -1,8 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
@@ -14,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -459,7 +456,20 @@ public class AllPlants extends Window {
 
 		Text latinName = new Text(p.getLatinName());
 
-		Button addPlant = new Button("Add Plant");
+		Button addPlant;
+		if (getSession().getSelectedPlants().contains(p)) {
+			addPlant = new Button("Remove");
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setContrast(0.4);
+			colorAdjust.setHue(-0.05);
+			colorAdjust.setBrightness(0.9);
+			colorAdjust.setSaturation(0.8);
+			imageView.setEffect(colorAdjust);
+			
+		}else {
+			addPlant = new Button("Add Plant");
+		}
+		
 		addPlant.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 
