@@ -2,6 +2,8 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -300,7 +302,7 @@ public class Questionnaire extends Window {
 	 * Question asking user if their garden is near a road or forest
 	 */
 	public void createQ3() {
-
+		int numberOfItems = 0;
 		createText("3) Are any of the following items near/in your plot? (Please select all that apply)");
 
 		// list of items that appear NEAR a plot
@@ -313,10 +315,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
 			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems));
 		vbox.getChildren().addAll(q2ListView);
 
 	}
@@ -368,7 +372,7 @@ public class Questionnaire extends Window {
 	 * Question asking about when the user wants their flowers to bloom
 	 */
 	public void createQ7() {
-
+		int numberOfItems = 0;
 		createText("7) When would you like to see your garden bloom? (Please select all that apply?");
 
 		List<Seasons> seasonsWanted = new ArrayList<Seasons>();
@@ -380,10 +384,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(seasonEnum.getSeason());
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q7ListView = new ListView<>();
 		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q7ListView.prefHeightProperty().bind(Bindings.size(q7items).multiply(numberOfItems * 5));
 		vbox.getChildren().addAll(q7ListView);
 
 	}

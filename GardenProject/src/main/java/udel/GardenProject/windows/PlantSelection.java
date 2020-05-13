@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -349,13 +350,15 @@ public class PlantSelection extends Window {
 		//Get the actual image if it exists
 		if (plantImg != null) {
 			String path = p.getImages()[0];
-			plantImage = new Image(path, imgWidth, imgHeight, true, true);
+			plantImage = new Image(path, imgWidth, imgHeight, true, true, true);
 		} else {
 			// get a default image
 			plantImage = defaultImg;
 		}
-		ImageView imageView = new ImageView();
-		imageView.setImage(plantImage);
+		
+		ImageView imageView = new ImageView(plantImage);
+		imageView.setCache(true);
+		imageView.setCacheHint(CacheHint.SPEED);
 		
 		Button infoButton = new Button("Info");
 		infoButton.setOnAction(new EventHandler<ActionEvent>() {

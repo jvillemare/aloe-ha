@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -440,19 +441,21 @@ public class AllPlants extends Window {
 	 * @param Plant
 	 */
 	public void createBox(Plant p) {
-		Image pages = defaultImg;
+		Image plantImg = defaultImg;
 		
-		String[] plantImg = p.getImages();
-		if (plantImg != null) {
+		String[] plantImgPath = p.getImages();
+		if (plantImgPath != null) {
 			try {
-				pages = new Image(plantImg[0], imageHeight, imageWidth, true, true);
+				plantImg = new Image(plantImgPath[0], 350, 100, true, true, true);
 			}catch(ArrayIndexOutOfBoundsException Exception){
-				pages = defaultImg;
+				plantImg = defaultImg;
 			}
 			
 		}
 
-		ImageView imageView = new ImageView(pages);
+		ImageView imageView = new ImageView(plantImg);
+		imageView.setCache(true);
+		imageView.setCacheHint(CacheHint.SPEED);
 
 		Text latinName = new Text(p.getLatinName());
 
