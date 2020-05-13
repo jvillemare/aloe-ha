@@ -152,6 +152,8 @@ public class AllPlants extends Window {
 	private int flowPrefWidthAdjustment = 30;
 	private int scrollHeightAdjustment = 150;
 	private int backgroundScreenWidthAndHeight = 100;
+	private int imageHeight = 350;
+	private int imageWidth = 100;
 	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
@@ -436,16 +438,14 @@ public class AllPlants extends Window {
 	 * @param Plant
 	 */
 	public void createBox(Plant p) {
-		Image pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-				350, 100, true, true);
+		Image pages = View.getDefaultImage(imageHeight, imageWidth);
 		
 		String[] plantImg = p.getImages();
 		if (plantImg != null) {
 			try {
-				pages = new Image(plantImg[0], 350, 100, true, true);
+				pages = new Image(plantImg[0], imageHeight, imageWidth, true, true);
 			}catch(ArrayIndexOutOfBoundsException Exception){
-				pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-						350, 100, true, true);
+				pages = View.getDefaultImage(imageHeight, imageWidth);
 			}
 			
 		}

@@ -347,8 +347,7 @@ public class PlantSelection extends Window {
 			plantImage = new Image(path, imgWidth, imgHeight, true, true);
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidth,
-					imgHeight, true, true);
+			plantImage = View.getDefaultImage(imgWidth, imgHeight);
 		}
 		ImageView imageView = new ImageView();
 		imageView.setImage(plantImage);

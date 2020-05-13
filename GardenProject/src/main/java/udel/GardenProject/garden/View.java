@@ -21,6 +21,19 @@ import udel.GardenProject.windows.Window;
 public class View {
 	
 	/**
+	 * Default Image when a Plant has no images.
+	 */
+	private static String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * Returns the set Default Image used.
+	 * @return defaultImage
+	 */
+	public static Image getDefaultImage(int height, int width) {
+		return new Image(defaultImage, height, width, true, true);
+	}
+	
+	/**
 	 * Pink background style to be used in Welcome
 	 */
 	private static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";

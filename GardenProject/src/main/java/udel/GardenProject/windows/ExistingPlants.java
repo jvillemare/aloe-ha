@@ -353,14 +353,14 @@ public class ExistingPlants extends Window {
 								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
 										true);
 							}catch(NullPointerException Exception) {
-								plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-										tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true, true);
+								plantImage = View.getDefaultImage(
+										tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
 							}
 							
 						} else {
 							// get a default image
-							plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-									tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true, true);
+							plantImage = View.getDefaultImage(
+									tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
 						}
 
 						Tooltip tooltipPick = new Tooltip();
