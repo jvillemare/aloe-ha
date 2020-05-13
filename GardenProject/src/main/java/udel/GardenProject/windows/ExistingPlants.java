@@ -142,7 +142,7 @@ public class ExistingPlants extends Window {
 	/**
 	 * Default Image to size.
 	 */
-	private Image defaultImg = View.getDefaultImage(
+	private Image defaultImg = getModel().getDefaultImage(
 			tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
 
 

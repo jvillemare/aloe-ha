@@ -112,7 +112,7 @@ public class PlantSelection extends Window {
 	/**
 	 * Default Image with appropriate sizing
 	 */
-	private Image defaultImg = View.getDefaultImage(imgWidth, imgHeight);
+	private Image defaultImg = getModel().getDefaultImage(imgWidth, imgHeight);
 	
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);

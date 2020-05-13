@@ -94,7 +94,7 @@ public class PlantInfo extends Window {
 	/**
 	 * Default image sized to scale.
 	 */
-	private Image defaultImg = View.getDefaultImage(imgWidthAndHeight, imgWidthAndHeight);
+	private Image defaultImg = getModel().getDefaultImage(imgWidthAndHeight, imgWidthAndHeight);
 	
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: ", Windows.PlantInfo);

@@ -155,7 +155,7 @@ public class AllPlants extends Window {
 	/**
 	 * Default Image with according sizing
 	 */
-	private Image defaultImg = View.getDefaultImage(imageHeight, imageWidth);
+	private Image defaultImg = getModel().getDefaultImage(imageHeight, imageWidth);
 	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Windows;
@@ -82,6 +83,19 @@ public class Model {
 	 * HashSet containing all of the colors found in the included plants.
 	 */
 	private HashSet<Colors> colors = new HashSet<>();
+	
+	/**
+	 * Default Image when a Plant has no images.
+	 */
+	private String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * Returns the set Default Image used.
+	 * @return defaultImage
+	 */
+	public Image getDefaultImage(int height, int width) {
+		return new Image(defaultImage, height, width, true, true);
+	}
 	
 	/**
 	 * Constructor, initialize everything.
