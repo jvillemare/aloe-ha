@@ -197,7 +197,7 @@ public class SeasonView extends Window {
 		viewWidth = View.getCanvasWidth() - squareWidthAdjustment;
 		canvas = new Canvas(viewWidth, viewDepth);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		Image sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+		Image sky = new Image(getClass().getResourceAsStream("/viewImages/blueSky.png"));
 		Image grass = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.drawImage(grass, 0, canvas.getHeight() / 3 * 2, canvas.getWidth(), canvas.getHeight() / 3);
@@ -338,6 +338,7 @@ public class SeasonView extends Window {
 				chooseSeason=s;
 				Image sky, ground;
 				GraphicsContext gc = canvas.getGraphicsContext2D();
+				gc.clearRect(0, 0, viewWidth, viewDepth);
 				switch(s) {
 				case WINTER:
 					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
@@ -348,7 +349,7 @@ public class SeasonView extends Window {
 					drawRandom(gc, 0);
 					break;
 				case FALL:
-					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
+					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
@@ -356,7 +357,7 @@ public class SeasonView extends Window {
 					drawRandom(gc, 1);
 					break;
 				default:
-					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
+					sky = new Image(getClass().getResourceAsStream("/viewImages/blueSky.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
@@ -461,7 +462,7 @@ public class SeasonView extends Window {
 	 * @param gc GraphicsContext that corresponds to window view canvas
 	 */
 	public void drawCanvas(GraphicsContext gc) {
-		gc.setFill(Color.rgb(140, 140, 140, .25));
+		gc.setFill(Color.rgb(140, 140, 140, .2));
 		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		Collections.sort(plot, new YDistanceComparator());
 		DropShadow shadow = new DropShadow();
