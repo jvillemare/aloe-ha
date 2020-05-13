@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.GardenView;
+import udel.GardenProject.enums.Particle;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.enums.Year;
@@ -346,7 +347,7 @@ public class SeasonView extends Window {
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
-					drawRandom(gc, 0);
+					drawRandom(gc, Particle.SNOW);
 					break;
 				case FALL:
 					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
@@ -354,7 +355,7 @@ public class SeasonView extends Window {
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
-					drawRandom(gc, 1);
+					drawRandom(gc, Particle.LEAVES);
 					break;
 				default:
 					sky = new Image(getClass().getResourceAsStream("/viewImages/blueSky.png"));
@@ -495,16 +496,16 @@ public class SeasonView extends Window {
 	 * @param gc Graphics Context for Window View Canvas
 	 * @param image integer representing snow or leaves. 0 is snow, 1 is leaves.
 	 */
-	public void drawRandom(GraphicsContext gc, int image) {
+	public void drawRandom(GraphicsContext gc, Particle image) {
 		int numPart = (int)(Math.random() * ((maxRandomParticles - minRandomParticles) + 1)) + minRandomParticles;
 		switch(image) {
-		case 0:
+		case SNOW:
 			for(int i = 0; i < numPart; i++) {
 				gc.setFill(Color.rgb(255,255,255,Math.random()));
 				gc.fillOval((Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)), 4, 4);
 			}
 			break;
-		case 1:
+		case LEAVES:
 			Image[] leaves = {new Image(getClass().getResourceAsStream("/viewImages/fallLeaf1.png"), 50, 50, true, false),
 			new Image(getClass().getResourceAsStream("/viewImages/fallLeaf2.png"), 20, 20, true, false)};
 			for(int i = 0; i < numPart; i++) {
