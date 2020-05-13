@@ -23,12 +23,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -116,7 +116,8 @@ public class ExistingPlants extends Window {
 	 * Text that appears if more characters need to be added.
 	 */
 	private String moreCharacters = "Please Add More Characters in Search";
-
+	
+	
 	/**
 	 * Used for the user to type in the search box
 	 */
@@ -137,6 +138,13 @@ public class ExistingPlants extends Window {
 	private int containerScrollPrefHeight = (View.getCanvasHeight() - 50);
 	private int selectedPlantWrappingWidth = View.getCanvasWidth() / 9 * 5;
 	private int containerScrollPrefWidth = (View.getCanvasWidth() / 3 - 10);
+	
+	/**
+	 * Default Image to size.
+	 */
+	private Image defaultImg = View.getDefaultImage(
+			tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
+
 
 	/**
 	 * Create an ExistingPlants window instance.
@@ -353,19 +361,18 @@ public class ExistingPlants extends Window {
 								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
 										true);
 							}catch(NullPointerException Exception) {
-								plantImage = View.getDefaultImage(
-										tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
+								plantImage = defaultImg;
 							}
 							
 						} else {
 							// get a default image
-							plantImage = View.getDefaultImage(
-									tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
+							plantImage = defaultImg;
 						}
 
 						Tooltip tooltipPick = new Tooltip();
 						label.setTooltip(tooltipPick); // tooltip set on the name of plant from the selected list
 						tooltipPick.setGraphic(new ImageView(plantImage));
+						//TODO: tooltipPick.setShowDelay(Duration.seconds(2));
 					}
 				});
 

@@ -155,6 +155,11 @@ public class AllPlants extends Window {
 	private int imageHeight = 350;
 	private int imageWidth = 100;
 	
+	/**
+	 * Default Image with according sizing
+	 */
+	private Image defaultImg = View.getDefaultImage(imageHeight, imageWidth);
+	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
 		
@@ -438,14 +443,14 @@ public class AllPlants extends Window {
 	 * @param Plant
 	 */
 	public void createBox(Plant p) {
-		Image pages = View.getDefaultImage(imageHeight, imageWidth);
+		Image pages = defaultImg;
 		
 		String[] plantImg = p.getImages();
 		if (plantImg != null) {
 			try {
 				pages = new Image(plantImg[0], imageHeight, imageWidth, true, true);
 			}catch(ArrayIndexOutOfBoundsException Exception){
-				pages = View.getDefaultImage(imageHeight, imageWidth);
+				pages = defaultImg;
 			}
 			
 		}
