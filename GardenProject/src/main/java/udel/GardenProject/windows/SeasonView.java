@@ -127,17 +127,21 @@ public class SeasonView extends Window {
 	/**
 	 * Maximum depth a plot object may be placed on plot desigh
 	 */
-	private final int MAXDEPTH = 550;
+	private final int MAXDEPTH = View.getCanvasHeight() / 7 * 6;
 
 	/**
 	 * Maximum width a plot object may be placed on plot design
 	 */
-	private final int MAXWIDTH = 620;
+	private final int MAXWIDTH = View.getCanvasWidth() / 5 * 3;
 
 	/**
 	 * Factor for scaling images in the window view
 	 */
 	private double factor;
+	
+	private int minRandomParticles = 50;
+	
+	private int maxRandomParticles = 100;
 
 	private int inset5 = 5;
 	private int inset10 = 10;
@@ -335,6 +339,7 @@ public class SeasonView extends Window {
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
+					drawRandom(gc, 0);
 					break;
 				case FALL:
 					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
@@ -342,6 +347,7 @@ public class SeasonView extends Window {
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
 					drawCanvas(gc);
+					drawRandom(gc, 1);
 					break;
 				default:
 					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
@@ -476,4 +482,24 @@ public class SeasonView extends Window {
 		}
 
 	}
+	
+	public void drawRandom(GraphicsContext gc, int image) {
+		int numPart = (int)(Math.random() * ((maxRandomParticles - minRandomParticles) + 1)) + minRandomParticles;
+		switch(image) {
+		case 0:
+			for(int i = 0; i < numPart; i++) {
+				gc.setFill(Color.rgb(255,255,255,Math.random()));
+				gc.fillOval((Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)), 4, 4);
+			}
+			break;
+		case 1:
+			Image[] leaves = {new Image(getClass().getResourceAsStream("/viewImages/fallLeaf1.png"), 50, 50, true, false),
+			new Image(getClass().getResourceAsStream("/viewImages/fallLeaf2.png"), 20, 20, true, false)};
+			for(int i = 0; i < numPart; i++) {
+				gc.drawImage(leaves[(int)(Math.random()*2)], (Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)));
+			}
+			break;
+		}
+	}
+	
 }
