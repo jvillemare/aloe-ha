@@ -1,23 +1,11 @@
 package udel.GardenProject.windows;
 
 import java.awt.AWTException;
-import java.awt.Dimension;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import com.sun.javafx.scene.CameraHelper;
-import com.sun.javafx.scene.NodeHelper;
-import com.sun.javafx.scene.SceneHelper;
-import com.sun.javafx.scene.SceneUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,14 +13,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
-import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.SubScene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -40,8 +23,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -170,7 +151,7 @@ public class SeasonView extends Window {
 	private int textWrapAdjustment = 20;
 	private int subImageX = 10;
 	private int subImageY = 35;
-	private int subImageWidth = 1265;
+	private int subImageWidth = 1260;
 	private int subImageHeight = 570;
 
 	/**
@@ -484,7 +465,9 @@ public class SeasonView extends Window {
 	 * Refreshes the screen to clear any of the toggles chosen
 	 */
 	public void refresh() {
-		// TODO: drawCanvas() doesn't need to be called here?
+		/**
+		 * TODO: Clear screen (Plot image) and add back in from session
+		 */
 		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
 		for (ToggleGroup group : tg) {
 			if (group.getSelectedToggle() != null) {
