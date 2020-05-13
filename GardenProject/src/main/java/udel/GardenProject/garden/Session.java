@@ -1,8 +1,11 @@
 package udel.GardenProject.garden;
 
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import javafx.scene.image.WritableImage;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
@@ -382,6 +385,27 @@ public class Session implements Serializable {
 	 */
 	public HashSet<Plant> getSelectedPlants() {
 		return selectedPlants;
+	}
+	
+	/**
+	 * Screen shot from SeasonView
+	 */
+	private BufferedImage screenShot = null;
+	
+	/**
+	 * Getter for the screenshot in SeasonView
+	 * @return BufferedImage
+	 */
+	public BufferedImage getScreenShot() {
+		return screenShot;
+	}
+
+	/**
+	 * Setter for the screenshot in SeasonView
+	 * @param capture A screen capture of the user's screen
+	 */
+	public void setScreenShot(BufferedImage capture) {
+		this.screenShot = capture;
 	}
 	
 }

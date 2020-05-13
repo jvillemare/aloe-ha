@@ -1,8 +1,12 @@
 package udel.GardenProject.windows;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,12 +18,14 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -86,16 +92,31 @@ public class Download extends Window {
 	private String saveOption;
 
 	/**
+	 * Converts a Buffered Image to A Writable Image to be converted to Image View
+	 */
+	private WritableImage writableImage;
+
+	/**
+	 * Holds the center download image
+	 */
+	private VBox imageHolder;
+
+	/**
+	 * The Center Image of the plot
+	 */
+	private ImageView imView;
+
+	/**
 	 * Adjustments of size for insets, texts, the center square, buttons, and
 	 * background
 	 */
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
+	private int imageBoxWidth = 1260;
+	private int imageBoxHeight = 570;
 	private int gapBetweenButtons = 100;
-	private int squareWidthAdjustment = 20;
 	private int topTextWidthAdjustment = 20;
-	private int squareHightAdjustment = 130;
 	private int backgroundScreenWidthAndHeight = 100;
 	private String mouseEnterBottomButton = View.getWhiteBackgroundStyle() + View.getBlackTextFill();
 	private String mouseExitBottomButton = View.getLightGreenBackgroundStyle() + View.getBlackTextFill();
@@ -123,19 +144,12 @@ public class Download extends Window {
 		vbox.setAlignment(Pos.CENTER);
 
 		saveGroup = new ToggleGroup();
-		pngSave = new ToggleButton("PNG");
+		pngSave = new ToggleButton("Save Image");
 		pngSave.setToggleGroup(saveGroup);
 		saveOptions.setAlignment(Pos.CENTER);
 		saveOptions.getChildren().add(pngSave);
 
 		createAndHandleButtons();
-
-		square = new Rectangle();
-		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight()
-				- squareHightAdjustment);
-		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
-		square.setStroke(Color.BLACK);
-		square.setFill(null);
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
@@ -152,11 +166,40 @@ public class Download extends Window {
 		borderPane.setPadding(new Insets(inset10, inset10, inset20, inset10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
-		borderPane.setCenter(square);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+
+	/**
+	 * Saves the type of image the user wants according to their button click
+	 * 
+	 * @param option
+	 */
+	public void savingImage(String option) {
+
+		/**
+		 * TODO: Figure out how the user will save the different types.
+		 */
+		FileChooser imageSaver = new FileChooser();
+
+		imageSaver.setTitle("Save 'Aloe-Ha' Image");
+		imageSaver.setInitialFileName(getSession().getPlotName());
+		imageSaver.getExtensionFilters()
+				.addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+		File f1 = imageSaver.showSaveDialog(null);
+
+		try {
+			String name = f1.getName();
+			System.out.println(name);
+			String extension = name.substring(1 + getSession().getPlotName().lastIndexOf(".")).toLowerCase();
+			ImageIO.write(getSession().getScreenShot(), extension, f1);
+		}
+
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -167,8 +210,8 @@ public class Download extends Window {
 
 		formatToggleButton(pngSave);
 		pngSave.setOnAction((ActionEvent e) -> {
-			saveOption = "PNG";
-
+			saveOption = "png";
+			savingImage(saveOption);
 		});
 
 		back = new Button("Go Back");
@@ -207,8 +250,6 @@ public class Download extends Window {
 
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-
-					System.out.println(getModel().saveSession(file.getAbsolutePath()));
 					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
@@ -353,10 +394,23 @@ public class Download extends Window {
 	 * options in SeasonView
 	 */
 	public void refresh() {
-		/**
-		 * TODO: remove the previous image in the center box and replace with new image
-		 * from session
-		 */
+
+		writableImage = new WritableImage(getSession().getScreenShot().getWidth(),
+				getSession().getScreenShot().getHeight());
+
+		PixelWriter pw = writableImage.getPixelWriter();
+		for (int x = 0; x < getSession().getScreenShot().getWidth(); x++) {
+			for (int y = 0; y < getSession().getScreenShot().getHeight(); y++) {
+				pw.setArgb(x, y, getSession().getScreenShot().getRGB(x, y));
+			}
+		}
+		imageHolder = new VBox();
+		imageHolder.setPrefSize(imageBoxWidth, imageBoxHeight);
+		imView = new ImageView(writableImage);
+		imView.setFitWidth(imageBoxWidth);
+		imView.setFitHeight(imageBoxHeight);
+		imageHolder.getChildren().add(imView);
+		borderPane.setCenter(imageHolder);
 	}
 
 }

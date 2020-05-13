@@ -1,17 +1,38 @@
 package udel.GardenProject.windows;
 
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import com.sun.javafx.scene.CameraHelper;
+import com.sun.javafx.scene.NodeHelper;
+import com.sun.javafx.scene.SceneHelper;
+import com.sun.javafx.scene.SceneUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.SubScene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -19,6 +40,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -145,6 +168,10 @@ public class SeasonView extends Window {
 	private int squareWidthAdjustment = 40;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int textWrapAdjustment = 20;
+	private int subImageX = 10;
+	private int subImageY = 35;
+	private int subImageWidth = 1265;
+	private int subImageHeight = 570;
 
 	/**
 	 * Create a SeasonView window instance.
@@ -269,6 +296,25 @@ public class SeasonView extends Window {
 			@Override
 			public void handle(ActionEvent event) {
 				getInput();
+				
+				/*
+				 * Gets bounds from screen and creates a Buffered Image to be sent to session
+				 */
+				try {
+			        Bounds bounds = root.getBoundsInLocal();
+			        Bounds screenBounds = root.localToScreen(bounds);
+			        int x = (int) screenBounds.getMinX();
+			        int y = (int) screenBounds.getMinY();
+			        int width = (int) screenBounds.getWidth();
+			        int height = (int) screenBounds.getHeight();
+			        java.awt.Rectangle screenRect = new java.awt.Rectangle(x, y, width, height);
+			        BufferedImage capture = new Robot().createScreenCapture(screenRect);
+			        capture = capture.getSubimage(subImageX, subImageY, subImageWidth, subImageHeight);
+			        getSession().setScreenShot(capture);
+			    } catch (AWTException ex) {
+			        ex.printStackTrace();
+			    }
+				
 				switchToWindow(Windows.Download);
 			}
 		});
