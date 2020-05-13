@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -339,7 +340,7 @@ public class ExistingPlants extends Window {
 						 * for the images it could include var. ...
 						 */
 						try {
-							plantImageLinks = dropDownPlants.get(Plant.trimToLatinName(label.getText())).getImages();
+							plantImageLinks = p.getImages();
 						}catch(NullPointerException Exception) {
 							plantImageLinks = null;
 						}
@@ -365,7 +366,11 @@ public class ExistingPlants extends Window {
 
 						Tooltip tooltipPick = new Tooltip();
 						label.setTooltip(tooltipPick); // tooltip set on the name of plant from the selected list
-						tooltipPick.setGraphic(new ImageView(plantImage));
+						
+						ImageView imageView = new ImageView(plantImage);
+						imageView.setCache(true);
+						imageView.setCacheHint(CacheHint.SPEED);
+						tooltipPick.setGraphic(imageView);
 					}
 				});
 
