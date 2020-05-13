@@ -1,6 +1,6 @@
 package udel.GardenProject.windows;
 
-import java.io.File;
+import java.io.File; 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ import udel.GardenProject.enums.ImageFileType;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
+import javafx.embed.swing.SwingFXUtils;
 
 /**
  * Where the user can export their plot as a PNG/JPEG, save it as a
@@ -393,17 +394,10 @@ public class Download extends Window {
 
 		writableImage = new WritableImage(getSession().getScreenShot().getWidth(),
 				getSession().getScreenShot().getHeight());
-		
-		PixelWriter pw = writableImage.getPixelWriter();
-		for (int x = 0; x < getSession().getScreenShot().getWidth(); x++) {
-			for (int y = 0; y < getSession().getScreenShot().getHeight(); y++) {
-				pw.setArgb(x, y, getSession().getScreenShot().getRGB(x, y));
-			}
-		}
-		
+		Image i = SwingFXUtils.toFXImage(getSession().getScreenShot(), writableImage);
 		imageHolder = new VBox();
 		imageHolder.setPrefSize(imageBoxWidth, imageBoxHeight);
-		imView = new ImageView(writableImage);
+		imView = new ImageView(i);
 		imView.setFitWidth(imageBoxWidth);
 		imView.setFitHeight(imageBoxHeight);
 		imageHolder.getChildren().add(imView);
