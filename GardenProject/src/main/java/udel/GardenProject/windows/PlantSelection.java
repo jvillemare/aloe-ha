@@ -28,6 +28,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
@@ -207,6 +208,12 @@ public class PlantSelection extends Window {
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 		
+		if(plantSelEmpty) {
+			Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
+			warning.show();
+			warningStage.setAlwaysOnTop(true);
+			warningStage.toFront();
+		}
 	}
 
 	/**
@@ -234,10 +241,6 @@ public class PlantSelection extends Window {
 		for(Canopy c : Canopy.values()) {
 			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
 			accArr.add(tile);
-		}
-		
-		if(plantSelEmpty) {
-			warning.show();
 		}
 		
 	}
