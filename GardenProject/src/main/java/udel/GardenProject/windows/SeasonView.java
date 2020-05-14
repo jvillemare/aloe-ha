@@ -21,7 +21,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -153,6 +155,11 @@ public class SeasonView extends Window {
 	 * Maximum amount of particles that may be drawn for snow or leaves.
 	 */
 	private int maxRandomParticles = 100;
+	
+	/**
+	 * Effect that will be used on plants to show change in season.
+	 */
+	private Effect effect;
 
 	private int inset5 = 5;
 	private int inset10 = 10;
@@ -367,8 +374,11 @@ public class SeasonView extends Window {
 				Image sky, ground;
 				GraphicsContext gc = canvas.getGraphicsContext2D();
 				gc.clearRect(0, 0, viewWidth, viewDepth);
+				ColorAdjust hue = new ColorAdjust();
 				switch(s) {
 				case WINTER:
+					hue.setHue(-.4);
+					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
@@ -377,6 +387,8 @@ public class SeasonView extends Window {
 					drawRandom(gc, Particle.SNOW);
 					break;
 				case FALL:
+					hue.setHue(-.2);
+					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
@@ -385,6 +397,8 @@ public class SeasonView extends Window {
 					drawRandom(gc, Particle.LEAVES);
 					break;
 				default:
+					hue.setHue(0);
+					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/blueSky.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
@@ -512,11 +526,12 @@ public class SeasonView extends Window {
 				factor = po.getPlotY() / MAXDEPTH;
 			}
 			Image i = new Image(po.getWindowImage());
-			gc.setEffect(shadow);
+			gc.setEffect(this.effect);
 			gc.drawImage(i, po.getPlotX() / MAXWIDTH * viewWidth - (i.getWidth() / 2 * factor),
-					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() * factor) + viewDepth / 3 * 2,
+					po.getPlotY() / MAXDEPTH * (viewDepth / 3) - (i.getHeight() * factor) + viewDepth / 3 * 2 + inset10,
 					i.getWidth() * factor, i.getHeight() * factor);
 		}
+		gc.setEffect(null);
 
 	}
 	
