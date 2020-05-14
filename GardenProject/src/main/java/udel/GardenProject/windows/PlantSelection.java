@@ -322,7 +322,7 @@ public class PlantSelection extends Window {
 	public boolean checkColors(Plant p, ArrayList<Colors> selected) {
 		HashSet<Colors> colors = p.getColors();
 		for (Colors color : colors) {
-			if (selected.contains(color)) {
+			if (selected.contains(Colors.ANYCOLOR) || selected.contains(color)) {
 				return true;
 			}
 		}

@@ -63,5 +63,9 @@ public enum PlotObjects {
 	public boolean isTypicallyInGarden() {
 		return this.typicallyInGarden;
 	}
+	
+	public PlotObject create(Model m, double x, double y, Object... objects) {
+		
+	}
 
 }
