@@ -12,6 +12,8 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
@@ -92,6 +94,16 @@ public class PlantSelection extends Window {
 	 * of plants
 	 */
 	private HBox centerBox;
+	
+	/**
+	 * Native Plants database from Model.
+	 */
+	private ArrayList<Plant> nativePlants = getModel().getNativePlants();
+	
+	/**
+	 * Sends a warning that there are no plants
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
 
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
@@ -113,11 +125,8 @@ public class PlantSelection extends Window {
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
-		try {
-			displaySelection();
-		}catch(Exception e) {
-			System.out.println("Wrong size of a plants year Boolean Array");
-		}
+		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
+				+ "\nPlease either go back to Questionnaire and change your answers or go to Plant Database in the next screen.");
 		
 	}
 	
@@ -238,14 +247,11 @@ public class PlantSelection extends Window {
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
 		
-		ArrayList<Plant> nativePlants = getModel().getNativePlants();
+		boolean isEmpty = true;
 		
 		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
-		Iterator<Plant> itr = nativePlants.iterator();
-		
-		while (itr.hasNext()) {
-			Plant p = itr.next();
+		for (Plant p : nativePlants) {
 			
 			boolean fits = false;
 			
@@ -274,9 +280,14 @@ public class PlantSelection extends Window {
 			}
 			
 			if(fits) {
+				isEmpty = false;
 				flowCanopy.getChildren().add(createPlantBox(p));
 			}
 			
+		}
+		
+		if(isEmpty) {
+			warning.show();
 		}
 
 		return flowCanopy;
