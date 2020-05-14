@@ -2,7 +2,6 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -104,7 +103,12 @@ public class PlantSelection extends Window {
 	 * Sends a warning that there are no plants
 	 */
 	private Alert warning = new Alert(AlertType.WARNING);
-
+	
+	/**
+	 * True if there are no plants to choose from, false otherwise.
+	 */
+	private boolean plantSelEmpty = true;
+	
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
@@ -202,6 +206,7 @@ public class PlantSelection extends Window {
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+		
 	}
 
 	/**
@@ -230,6 +235,11 @@ public class PlantSelection extends Window {
 			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
 			accArr.add(tile);
 		}
+		
+		if(plantSelEmpty) {
+			warning.show();
+		}
+		
 	}
 
 	/**
@@ -246,8 +256,6 @@ public class PlantSelection extends Window {
 		Moisture m = getSession().getMoistureOfPlot();
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
-		
-		boolean isEmpty = true;
 		
 		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
@@ -280,14 +288,10 @@ public class PlantSelection extends Window {
 			}
 			
 			if(fits) {
-				isEmpty = false;
+				plantSelEmpty = false;
 				flowCanopy.getChildren().add(createPlantBox(p));
 			}
 			
-		}
-		
-		if(isEmpty) {
-			warning.show();
 		}
 
 		return flowCanopy;
@@ -485,6 +489,7 @@ public class PlantSelection extends Window {
 	}
 	
 	public void refresh() {
+		plantSelEmpty = true;
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
