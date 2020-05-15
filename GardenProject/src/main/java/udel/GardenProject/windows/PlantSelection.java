@@ -128,6 +128,11 @@ public class PlantSelection extends Window {
 	private int scrollSelectedHeight = View.getCanvasHeight() / 5 * 4;
 	private int selectedPlantBoxMinHeight = View.getCanvasHeight() / 5 * 4;
 	
+	/**
+	 * Default Image with appropriate sizing
+	 */
+	private Image defaultImg = getModel().getDefaultImage(imgWidth, imgHeight);
+	
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
@@ -367,8 +372,7 @@ public class PlantSelection extends Window {
 			plantImage = new Image(path, imgWidth, imgHeight, true, true, true);
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidth,
-					imgHeight, true, true);
+			plantImage = defaultImg;
 		}
 		
 		ImageView imageView = new ImageView(plantImage);

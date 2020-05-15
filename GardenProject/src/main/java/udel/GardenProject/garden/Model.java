@@ -141,6 +141,19 @@ public class Model {
 	private HashSet<Colors> colors = new HashSet<>();
 
 	/**
+	 * Default Image when a Plant has no images.
+	 */
+	private String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * Returns the set Default Image used.
+	 * @return defaultImage
+	 */
+	public Image getDefaultImage(int height, int width) {
+		return new Image(defaultImage, height, width, true, true);
+	}
+	
+	/**
 	 * Constructor, initialize everything.
 	 * 
 	 * @param width

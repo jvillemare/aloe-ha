@@ -1,8 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
@@ -15,7 +13,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -154,6 +151,13 @@ public class AllPlants extends Window {
 	private int flowPrefWidthAdjustment = 30;
 	private int scrollHeightAdjustment = 150;
 	private int backgroundScreenWidthAndHeight = 100;
+	private int imageHeight = 350;
+	private int imageWidth = 100;
+	
+	/**
+	 * Default Image with according sizing
+	 */
+	private Image defaultImg = getModel().getDefaultImage(imageHeight, imageWidth);
 	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
@@ -439,16 +443,14 @@ public class AllPlants extends Window {
 	 * @param Plant
 	 */
 	public void createBox(Plant p) {
-		Image plantImg = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-				350, 100, true, true);
+		Image plantImg = defaultImg;
 		
 		String[] plantImgPath = p.getImages();
 		if (plantImgPath != null) {
 			try {
 				plantImg = new Image(plantImgPath[0], 350, 100, true, true, true);
 			}catch(ArrayIndexOutOfBoundsException Exception){
-				plantImg = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-						350, 100, true, true);
+				plantImg = defaultImg;
 			}
 			
 		}
@@ -459,7 +461,20 @@ public class AllPlants extends Window {
 
 		Text latinName = new Text(p.getLatinName());
 
-		Button addPlant = new Button("Add Plant");
+		Button addPlant;
+		if (getSession().getSelectedPlants().contains(p)) {
+			addPlant = new Button("Remove");
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setContrast(0.4);
+			colorAdjust.setHue(-0.05);
+			colorAdjust.setBrightness(0.9);
+			colorAdjust.setSaturation(0.8);
+			imageView.setEffect(colorAdjust);
+			
+		}else {
+			addPlant = new Button("Add Plant");
+		}
+		
 		addPlant.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 
