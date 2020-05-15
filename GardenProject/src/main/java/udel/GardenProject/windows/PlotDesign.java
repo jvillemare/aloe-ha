@@ -398,6 +398,8 @@ public class PlotDesign extends Window {
 			VBox imageAndNameHolder = new VBox(plantRepresentation, new Text(name));
 			flow.getChildren().add(imageAndNameHolder);
 		}
+		//if(plants.size() == 0)
+			//
 		return flow;
 	}
 
