@@ -387,12 +387,14 @@ public class SeasonView extends Window {
 					drawRandom(gc, Particle.SNOW);
 					break;
 				case FALL:
-					hue.setHue(-.2);
+					hue.setHue(-.1);
 					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
 					gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
+					gc.setEffect(hue);
 					gc.drawImage(ground, 0, canvas.getHeight()/3*2, canvas.getWidth(), canvas.getHeight()/3);
+					hue.setHue(-.2);
 					drawCanvas(gc);
 					drawRandom(gc, Particle.LEAVES);
 					break;
