@@ -2,6 +2,8 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -91,7 +95,12 @@ public class Questionnaire extends Window {
 	 * Standard String to check if user wants any moisture values.
 	 */
 	private String moistureAny = "My plot has different moisture";
-
+	
+	/**
+	 * Alert to clarify users mistake
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
+	
 	/**
 	 * Used for single answers
 	 */
@@ -179,7 +188,7 @@ public class Questionnaire extends Window {
 		tilePane = new TilePane();
 
 		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below.\n");
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
@@ -302,7 +311,7 @@ public class Questionnaire extends Window {
 	 * Question asking user if their garden is near a road or forest
 	 */
 	public void createQ3() {
-
+		int numberOfItems = 0;
 		createText("3) Are any of the following items near/in your plot? (Please select all that apply)");
 
 		// list of items that appear NEAR a plot
@@ -315,10 +324,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(plotObjectEnum.toString());
 			q2items.add(c); // added to this list to view
 			nearPlot.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems));
 		vbox.getChildren().addAll(q2ListView);
 
 	}
@@ -370,7 +381,7 @@ public class Questionnaire extends Window {
 	 * Question asking about when the user wants their flowers to bloom
 	 */
 	public void createQ7() {
-
+		int numberOfItems = 0;
 		createText("7) When would you like to see your garden bloom? (Please select all that apply?");
 
 		List<Seasons> seasonsWanted = new ArrayList<Seasons>();
@@ -382,10 +393,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(seasonEnum.getSeason());
 			q7items.add(c); // added to this list to view
 			seasonWant.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q7ListView = new ListView<>();
 		q7ListView.setItems(q7items); // add the items in the observable array to the listView
 		q7ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q7ListView.prefHeightProperty().bind(Bindings.size(q7items).multiply(numberOfItems * 5));
 		vbox.getChildren().addAll(q7ListView);
 
 	}
@@ -399,7 +412,7 @@ public class Questionnaire extends Window {
 		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
 
 		List<Colors> colorsWanted = new ArrayList<Colors>();
-		for (Colors enumColor : Colors.values())
+		for (Colors enumColor : this.getModel().getIncludedColors())
 			colorsWanted.add(enumColor);
 
 		q8items = FXCollections.observableArrayList(); // add checkboxes to this list
@@ -460,6 +473,8 @@ public class Questionnaire extends Window {
 				// answer all questions.
 
 				// handles if user doesn't type anything in for the plot name
+				boolean noError = true;
+				
 				if (textField.getText().isEmpty()) {
 					getSession().setPlotName("My Garden");
 				} else {
@@ -478,14 +493,18 @@ public class Questionnaire extends Window {
 				} else if (checkNumberValidation(widthUserInput)) {
 					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 				} else {
-					Alert.display("ERROR", "Please enter a valid width for Question 2");
+					noError = false;
+					warning.setContentText("Please enter a valid width for Question 2");
+					warning.show();
 				}
 				if (lengthUserInput.isEmpty()) {
 					getSession().setLengthOfUserPlot(25);
 				} else if (checkNumberValidation(lengthUserInput)) {
 					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
 				} else {
-					Alert.display("ERROR", "Please enter a valid length for Question 2");
+					noError = false;
+					warning.setContentText("Please enter a valid length for Question 2");
+					warning.show();
 				}
 
 				checkSelectedPlot(nearPlot);
@@ -508,8 +527,11 @@ public class Questionnaire extends Window {
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
-
-				switchToWindow(Windows.PlantSelection);
+				
+				if(noError) {
+					switchToWindow(Windows.PlantSelection);
+				}
+				
 			}
 		});
 
@@ -706,51 +728,6 @@ public class Questionnaire extends Window {
 			if (c.isSelected()) {
 				c.setSelected(false);
 			}
-		}
-	}
-
-	/**
-	 * Sets up an alert Box that sends a message to the user on a smaller pop up
-	 * screen
-	 * 
-	 * @author Team 11-0
-	 *
-	 */
-	public static class Alert {
-
-		/**
-		 * Create the display screen for the error messages used when a user has invalid
-		 * input in question 2
-		 * 
-		 * @param title   The title of the new pop up screen
-		 * @param message The message that shows up in the center of the box
-		 */
-		public static void display(String title, String message) {
-			Stage displayWindow = new Stage();
-			displayWindow.initModality(Modality.APPLICATION_MODAL);
-			displayWindow.setTitle(title);
-			displayWindow.setWidth(alertScreenWidth);
-			displayWindow.setHeight(alertScreenHeight);
-
-			Label label = new Label();
-			label.setText(message);
-			label.setFont(Font.font("Verdana", FontWeight.BOLD, messageFontSize));
-
-			Button closeButton = new Button("Close");
-			closeButton.setOnAction(e -> displayWindow.close());
-			closeButton.setStyle("-fx-base: #EFF0F1;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-					+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
-
-			VBox layout = new VBox(inset10);
-			layout.setStyle(View.getWhiteBackgroundStyle() + "-fx-font-weight: bold;" + "-fx-border-color: #C10C13;"
-					+ "-fx-border-insets: 5;" + "-fx-border-width: 3;" + "-fx-border-style: solid;");
-			layout.getChildren().addAll(label, closeButton);
-			layout.setAlignment(Pos.CENTER);
-
-			Scene scene = new Scene(layout);
-			displayWindow.setScene(scene);
-			displayWindow.showAndWait();
-
 		}
 	}
 

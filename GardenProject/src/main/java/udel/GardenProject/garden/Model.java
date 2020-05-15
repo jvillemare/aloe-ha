@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
@@ -20,6 +19,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plants.PlantLoader;
@@ -93,6 +93,7 @@ public class Model {
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
 	
 	/**
+
 	 * Hack Bold font of size 20
 	 */
 	private Font hackBold20 = Font.loadFont(
@@ -133,7 +134,12 @@ public class Model {
 	 * Local reference to Controller for sending Window change updates.
 	 */
 	private Controller c;
-	
+
+  /**
+	 * HashSet containing all of the colors found in the included plants.
+	 */
+	private HashSet<Colors> colors = new HashSet<>();
+
 	/**
 	 * Constructor, initialize everything.
 	 * 
@@ -154,6 +160,12 @@ public class Model {
 			e.printStackTrace();
 			System.out.println("ERROR: Problem with reading Plant data JSON files...");
 			System.exit(1);
+		}
+		for (Plant p : this.plants) {
+			HashSet<Colors> pColors = p.getColors();
+			if (pColors != null) {
+				this.colors.addAll(pColors);
+			}
 		}
 		Collections.sort(this.plants, new PlantNameComparator(true, false));
 
@@ -355,30 +367,30 @@ public class Model {
 	}
 	
 	/**
-	 * Safely <i>cache</i> a file to a user's computer. Hides all exceptions and
-	 * potential errors.
+	 * Safely <i>cache</i> a file to a user's computer.
 	 * 
 	 * @param filepath Path and filename where to save the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return true if successful in caching the file, false if not.
+	 * @throws IOException 
 	 * @see {@link #loadCacheFile(String) loadCacheFile}
 	 */
 	public boolean saveCacheFile(Object o, String filepath) {
 		String realFilepath = calculateFilepath(filepath);
+		
+		System.out.println(realFilepath);
+		File tmp = new File(realFilepath);
 		try {
-			System.out.println(realFilepath);
-			File tmp = new File(realFilepath);
 			tmp.createNewFile();
 			FileOutputStream file = new FileOutputStream(tmp);
 			ObjectOutputStream out = new ObjectOutputStream(file);
-
+	
 			out.writeObject(o);
-
+	
 			out.close();
 			file.close();
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.println("Model: Failed to save cache file at " + realFilepath);
+		} catch(IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -395,20 +407,22 @@ public class Model {
 	 * @param filepath Path and filename where to load the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return file object
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @see {@link #saveCacheFile(String) saveCacheFile}
 	 */
-	public Object loadCacheFile(String filepath) {
+	public Object loadCacheFile(String filepath) throws ClassNotFoundException, IOException {
 		String realFilepath = calculateFilepath(filepath);
-		// TODO: Change, how to return input stream but also close it before
-		// returning it??
-		try {
-			FileInputStream file = new FileInputStream(realFilepath);
-			ObjectInputStream in = new ObjectInputStream(file);
+		Object o;
+		
+    try {
+		  FileInputStream file = new FileInputStream(realFilepath);
+		  ObjectInputStream in = new ObjectInputStream(file);
 
-			this.session = (Session) in.readObject();
+		  o = in.readObject();
 
-			in.close();
-			file.close();
+		  in.close();
+		  file.close();
 
 			System.out.println("Model: Loaded Session from " + realFilepath);
 		} catch (IOException ex) {
@@ -419,8 +433,36 @@ public class Model {
 			ex.printStackTrace();
 			System.out.println("Model: ClassNotFoundException is caught, invalid file at " + realFilepath);
 			return false;
+		return o;
+	}
+	
+	/**
+	 * 
+	 * @param imagePath
+	 * @return
+	 */
+	public Image thumbnailProcessImage(String imagePath) {
+		String realImagePath = 
+			imagePath.replace("/", "").replace(":", "").replace(".", "").replace("-", "").replace("_", "");
+		   
+		// check if cache file exists
+		Image i;
+		      
+		try {
+			i = (Image)loadCacheFile(realImagePath);
+		} catch (IOException e) {
+			// file does not exist, cache it
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
+			saveCacheFile(i, realImagePath); // TODO: check true/false later
+			return i;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("INVESTIGATE ME"); // TODO: come back later
+		} finally {
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
 		}
-		return true;
+		
+		return i;
 	}
 
 	/**
@@ -694,6 +736,14 @@ public class Model {
 	 */
 	public ArrayList<Plant> getNativePlants(){
 		return nativeOnly;
+	}
+	
+	/**
+	 * Getter for all colors included in plants.
+	 * @return
+	 */
+	public HashSet<Colors> getIncludedColors() {
+		return this.colors;
 	}
 
 }

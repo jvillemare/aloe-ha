@@ -26,6 +26,32 @@ import udel.GardenProject.windows.Window;
 public class View {
 	
 	/**
+	 * Width of a thumbnail
+	 */
+	private static int thumbnailWidth = 200;
+	
+	/**
+	 * Getter for thumbnail Width
+	 * @return int of thumbnail width
+	 */
+	public static int getThumbnailWidth() {
+		return thumbnailWidth;
+	}
+	
+	/**
+	 * Height of a thumbnail
+	 */
+	private static int thumbnailHeight = 200;
+	
+	/**
+	 * Getter for thumbnail height
+	 * @return int of thumbnail height
+	 */
+	public static int getThumbnailHeight() {
+		return thumbnailHeight;
+	}
+	
+	/**
 	 * Pink background style to be used in Welcome
 	 */
 	private final static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";

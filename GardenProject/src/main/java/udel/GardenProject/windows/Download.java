@@ -1,8 +1,11 @@
 package udel.GardenProject.windows;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,15 +17,17 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import udel.GardenProject.enums.ImageFileType;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -71,20 +76,29 @@ public class Download extends Window {
 	private ToggleGroup saveGroup;
 
 	/**
-	 * Toggles between how the user wants to save. User will be able to save one
-	 * type of file at a time
+	 * Toggle to allow user to save image of plot
 	 */
-	private ToggleButton pngSave;
-
-	/**
-	 * Used to show which image they will be saving
-	 */
-	private Rectangle square;
+	private ToggleButton saveImage;
 
 	/**
 	 * The option of saving the user has chosen
 	 */
 	private String saveOption;
+
+	/**
+	 * Converts a Buffered Image to A Writable Image to be converted to Image View
+	 */
+	private WritableImage writableImage;
+
+	/**
+	 * Holds the center download image
+	 */
+	private VBox imageHolder;
+
+	/**
+	 * The Center Image of the plot
+	 */
+	private ImageView imView;
 
 	/**
 	 * Adjustments of size for insets, texts, the center square, buttons, and
@@ -93,10 +107,10 @@ public class Download extends Window {
 	private int inset5 = 5;
 	private int inset10 = 10;
 	private int inset20 = 20;
+	private int imageBoxWidth = 1260;
+	private int imageBoxHeight = 570;
 	private int gapBetweenButtons = 100;
-	private int squareWidthAdjustment = 20;
 	private int topTextWidthAdjustment = 20;
-	private int squareHightAdjustment = 130;
 	private int backgroundScreenWidthAndHeight = 100;
 	private String mouseEnterBottomButton = View.getWhiteBackgroundStyle() + View.getBlackTextFill();
 	private String mouseExitBottomButton = View.getLightGreenBackgroundStyle() + View.getBlackTextFill();
@@ -124,19 +138,12 @@ public class Download extends Window {
 		vbox.setAlignment(Pos.CENTER);
 
 		saveGroup = new ToggleGroup();
-		pngSave = new ToggleButton("PNG");
-		pngSave.setToggleGroup(saveGroup);
+		saveImage = new ToggleButton("Save Image");
+		saveImage.setToggleGroup(saveGroup);
 		saveOptions.setAlignment(Pos.CENTER);
-		saveOptions.getChildren().add(pngSave);
+		saveOptions.getChildren().add(saveImage);
 
 		createAndHandleButtons();
-
-		square = new Rectangle();
-		square.setHeight(View.getCanvasHeight() - tilePane.getHeight() - vbox.getHeight() - saveOptions.getHeight()
-				- squareHightAdjustment);
-		square.setWidth(View.getCanvasWidth() - squareWidthAdjustment);
-		square.setStroke(Color.BLACK);
-		square.setFill(null);
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
@@ -153,11 +160,44 @@ public class Download extends Window {
 		borderPane.setPadding(new Insets(inset10, inset10, inset20, inset10));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(bottomBoxes);
-		borderPane.setCenter(square);
 
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+
+	/**
+	 * Opens a file chooser to allow user to save the image of their plot. 
+	 * 
+	 * @param option
+	 */
+	public void savingImage() {
+
+		FileChooser imageSaver = new FileChooser();
+		imageSaver.setTitle("Save 'Aloe-Ha' Image");
+		imageSaver.setInitialFileName(getSession().getPlotName());
+
+		/*
+		 * Allows user to select different file types for saving images
+		 */
+		ImageFileType[] fileTypes = ImageFileType.values();
+		for (ImageFileType type : fileTypes) {
+			imageSaver.getExtensionFilters()
+					.addAll(new FileChooser.ExtensionFilter(type.toString(), type.getImageFileType()));
+		}
+		
+		/*
+		 * Shows file chooser and allows user to save screenshot of their plot 
+		 */
+		try {
+			File f1 = imageSaver.showSaveDialog(null);
+			if(f1 != null){
+				imageSaver.setInitialDirectory(f1.getParentFile());
+	            ImageIO.write(getSession().getScreenShot(), "png", f1);
+	        }
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -166,10 +206,9 @@ public class Download extends Window {
 	 */
 	public void createAndHandleButtons() {
 
-		formatToggleButton(pngSave);
-		pngSave.setOnAction((ActionEvent e) -> {
-			saveOption = "PNG";
-
+		formatToggleButton(saveImage);
+		saveImage.setOnAction((ActionEvent e) -> {
+			savingImage();
 		});
 
 		back = new Button("Go Back");
@@ -197,7 +236,7 @@ public class Download extends Window {
 			public void handle(ActionEvent event) {
 				getInput();
 				/*
-				 * Opens the file chooser and allows the user to save the file to thier computer
+				 * Opens the file chooser and allows the user to save the file to their computer
 				 */
 				javafx.stage.Window scene2 = null;
 				FileChooser fileChooser = new FileChooser();
@@ -208,8 +247,6 @@ public class Download extends Window {
 
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-
-					System.out.println(getModel().saveSession(file.getAbsolutePath()));
 					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
@@ -354,10 +391,24 @@ public class Download extends Window {
 	 * options in SeasonView
 	 */
 	public void refresh() {
-		/**
-		 * TODO: remove the previous image in the center box and replace with new image
-		 * from session
-		 */
+
+		writableImage = new WritableImage(getSession().getScreenShot().getWidth(),
+				getSession().getScreenShot().getHeight());
+		
+		PixelWriter pw = writableImage.getPixelWriter();
+		for (int x = 0; x < getSession().getScreenShot().getWidth(); x++) {
+			for (int y = 0; y < getSession().getScreenShot().getHeight(); y++) {
+				pw.setArgb(x, y, getSession().getScreenShot().getRGB(x, y));
+			}
+		}
+		
+		imageHolder = new VBox();
+		imageHolder.setPrefSize(imageBoxWidth, imageBoxHeight);
+		imView = new ImageView(writableImage);
+		imView.setFitWidth(imageBoxWidth);
+		imView.setFitHeight(imageBoxHeight);
+		imageHolder.getChildren().add(imView);
+		borderPane.setCenter(imageHolder);
 	}
 
 }
