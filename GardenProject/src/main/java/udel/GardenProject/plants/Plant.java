@@ -132,9 +132,11 @@ public class Plant implements Serializable {
 	
 	/**
 	 * How does this plant appear in an accordion or any other UI container?
+	 * @param 	width	Width of a user's plot, critical for scaling.
+	 * @param	length	Height of a user's plot, critical for scaling.
 	 * @return	Image, text, associated ToolTip for Plant.
 	 */
-	public Node renderInAccordion() {
+	public Node renderInAccordion(int width, int length) {
 		return null;
 	}
 

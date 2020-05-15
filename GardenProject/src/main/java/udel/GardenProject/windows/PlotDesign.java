@@ -382,7 +382,9 @@ public class PlotDesign extends Window {
 		System.out.println("after creating iterator  ");
 		while (plantIter.hasNext()) {
 			Plant p = plantIter.next();
-			Node plantRepresentation = p.renderInAccordion();
+			Node plantRepresentation = p.renderInAccordion(
+					getSession().getWidthOfUserPlot(), 
+					getSession().getLengthOfUserPlot());
 
 			String name = p.getLatinName();
 			Tooltip.install(plantRepresentation, new Tooltip(name));
