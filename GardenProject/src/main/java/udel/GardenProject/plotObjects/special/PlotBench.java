@@ -14,7 +14,7 @@ import udel.GardenProject.plotObjects.PlotObject;
  * @author Team 0
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class PlotBench extends PlotObject implements Serializable {
+public class PlotBench extends GenericSpecial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,11 +35,6 @@ public class PlotBench extends PlotObject implements Serializable {
 	 */
 	public PlotBench(Model model, double x, double y) {
 		super(model, x, y, 2.0, 5.0, windowBench, plotBench);
-	}
-	
-	@Override
-	public Node render() {
-		return null;
 	}
 	
 	@Override

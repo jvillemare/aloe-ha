@@ -14,7 +14,7 @@ import udel.GardenProject.plotObjects.PlotObject;
  * @author Team 0
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class PlotBirdBath extends PlotObject implements Serializable {
+public class PlotBirdBath extends GenericSpecial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,11 +35,6 @@ public class PlotBirdBath extends PlotObject implements Serializable {
 	 */
 	public PlotBirdBath(Model model, double x, double y) {
 		super(model, x, y, 2.0, 1.5, windowBirdBath, plotBirdBath); // a bird bath is about 4 feet tall right? 
-	}
-	
-	@Override
-	public Node render() {
-		return null;
 	}
 
 	@Override
