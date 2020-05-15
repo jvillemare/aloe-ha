@@ -248,7 +248,7 @@ public class PlantSelection extends Window {
 	public void populateTiles(List<TitledPane> accArr){
 		
 		for(Canopy c : Canopy.values()) {
-			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
+			TitledPane tile = new TitledPane(c.getContains(), createFlowPane(c));
 			accArr.add(tile);
 		}
 		
