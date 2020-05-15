@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import udel.GardenProject.enums.Canopy;
+import udel.GardenProject.garden.Controller;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
 
 public class PlotPlantTest {
@@ -12,8 +14,10 @@ public class PlotPlantTest {
 
 	@Test
 	public void testGetPlant() {
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Plant p=new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, false, false, null, null);
-		PlotPlant plot=new PlotPlant(p,1,2);
+		PlotPlant plot = new PlotPlant(m, p, 1, 2);
 		assertTrue(plot.getPlant().equals(p));
 	}
 

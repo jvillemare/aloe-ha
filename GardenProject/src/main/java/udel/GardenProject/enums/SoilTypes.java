@@ -2,17 +2,19 @@ package udel.GardenProject.enums;
 
 /**
  * SoilTypes from 
- * https://learn.eartheasy.com/articles/know-your-garden-soil-how-to-make-the-most-of-your-soil-type/
- * 
+ * <a href="https://learn.eartheasy.com/articles/know-your-garden-soil-how-to-make-the-most-of-your-soil-type/">EarthEasy.com</a>
+ * <br><br>
  * Acidity Levels from:
- * https://en.wikipedia.org/wiki/Soil_pH
- * https://greenharvest.com.au/GreenGardenNotes/UnderstandingSoilpH.html
- * https://learn.eartheasy.com/articles/know-your-garden-soil-how-to-make-the-most-of-your-soil-type/
- * https://www.rhs.org.uk/advice/profile?pid=762
+ * <ul>
+ * <li><a href="https://en.wikipedia.org/wiki/Soil_pH">Wikipedia</a></li>
+ * <li><a href="https://greenharvest.com.au/GreenGardenNotes/UnderstandingSoilpH.html">GreenHarvest.com.au</a></li>
+ * <li><a href="https://learn.eartheasy.com/articles/know-your-garden-soil-how-to-make-the-most-of-your-soil-type/">EarthEasy.com</a></li>
+ * <li><a href="https://www.rhs.org.uk/advice/profile?pid=762">RHS.org.uk</a></li>
+ * </ul>
  *
- * Contains different Soil Types 
- * Used in Questionnaire and Plant Info
+ * Contains different Soil Types, used in Questionnaire and Plant Info.
  *
+ * @version 1.0
  * @author Team 0
  */
 public enum SoilTypes {

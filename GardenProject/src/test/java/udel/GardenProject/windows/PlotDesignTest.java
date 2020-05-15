@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import udel.GardenProject.garden.Controller;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.windows.PlotDesign;
@@ -12,7 +13,8 @@ public class PlotDesignTest {
 
 	@Test
 	public void plotDesignTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		PlotDesign p = new PlotDesign(m);
 		System.out.println(p.getTitle());
 		assertTrue(p.getTitle().equals("Plot Designer"));

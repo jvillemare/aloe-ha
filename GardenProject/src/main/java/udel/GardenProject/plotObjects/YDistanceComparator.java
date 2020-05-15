@@ -5,10 +5,12 @@ import java.util.Comparator;
 import udel.GardenProject.plotObjects.polygons.PlotPool;
 
 /**
- * Compare PlotObjects by Y-position, sorting from farthest to closest by default.
+ * Compare PlotObjects by Y-position, sorting from farthest to closest by 
+ * default.
  * 
+ * @version 1.0
  * @author Team 0
- *
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class YDistanceComparator implements Comparator<PlotObject>{
 	

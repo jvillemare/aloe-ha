@@ -20,10 +20,12 @@ import javafx.scene.paint.Color;
  * 
  * May hardship rain upon Oracle for making me do this.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public enum Colors {
 	
+	ANYCOLOR(null, "Any Color"),
 	ALICEBLUE(Color.ALICEBLUE, "Alice Blue"),
 	ANTIQUEWHITE(Color.ANTIQUEWHITE, "Antique White"),
 	AQUA(Color.AQUA, "Aqua"),

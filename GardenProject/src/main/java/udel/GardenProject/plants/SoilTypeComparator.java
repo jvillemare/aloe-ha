@@ -5,6 +5,7 @@ import java.util.Comparator;
 /**
  * Sort plants by SoilType, by default pH descending.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class SoilTypeComparator implements Comparator<Plant>{

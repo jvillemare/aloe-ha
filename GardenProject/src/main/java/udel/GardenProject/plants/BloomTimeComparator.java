@@ -5,6 +5,7 @@ import java.util.Comparator;
 /**
  * Sort a list of plants by bloom time, assuming descending default.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class BloomTimeComparator implements Comparator<Plant> {

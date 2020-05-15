@@ -12,7 +12,8 @@ public class AllPlantsTest {
 
 	@Test
 	public void test() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		AllPlants w = new AllPlants(m);
 		System.out.println(w.getTitle());
 		assertTrue(w.getTitle().contentEquals("Plant Database"));

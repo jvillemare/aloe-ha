@@ -1,12 +1,23 @@
 package udel.GardenProject.plotObjects;
 
+import java.io.Serializable;
+
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import udel.GardenProject.enums.PlotObjects;
+import udel.GardenProject.garden.Model;
+import udel.GardenProject.garden.Session;
+
 /**
  * An object that can appear in PlotDesign must implement this interface.
  * 
+ * @version 1.0
  * @author Team 0
  */
-public abstract class PlotObject {
-	
+public abstract class PlotObject implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Horizontal position of object in plot design. May have a different 
 	 * definition in each subpackage.
@@ -38,26 +49,78 @@ public abstract class PlotObject {
 	 * Path of image for plot design.
 	 */
 	private String plotImage;
+	
+	/**
+	 * Local reference to model to get the current session. The current session
+	 * is used for getting the current width and height of the plot, and other 
+	 * relevant factors for rendering Plot Objects.
+	 */
+	private transient Model model;
   
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
 	 * calculating plant transition, shade, etc.
 	 * 
+	 * @param 
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
-   * @param radius  Radius in feet of plot object.
+	 * @param radius  Radius in feet of plot object.
 	 * @param imagePath	String of path to window view image.
 	 * @param plotPath	String of path to plot design image.
 	 */
-	public PlotObject(double x, double y, double height, double radius, String imagePath, String plotPath) {
+	public PlotObject(Model model, double x, double y, 
+			double height, double radius, String imagePath, String plotPath) {
+		this.model = model;
 		this.x = x;
 		this.y = y;
 		this.height = height;
-    this.radius = radius;
+		this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
+	}
+	
+	/**
+	 * Abstract. All Plot Objects must specify how they will appear on a plot.
+	 * @return	Node object
+	 */
+	public abstract Node render();
+	
+	/**
+	 * Abstract. All Plot Objects must specify how wide they will be in the UI.
+	 * @return	Width of a plot object as it appears in a scene.
+	 */
+	public abstract double getRenderWidth();
+	
+	/**
+	 * Abstract. All Plot Objects must specify how tall they will appear in the 
+	 * UI.
+	 * @return	Length of a plot object as it appears in a scene.
+	 */
+	public abstract double getRenderHeight();
+	
+	// TODO: Rename?
+	public Node deleteFromInterface() {
+		// TODO: Rearrange me
+		// TODO: Make me abstract
+		return null;
+	}
+	
+	/**
+	 * Helper method.
+	 * @return	Width of user's plot.
+	 */
+	public final int getPlotWidth() {
+		return this.model.getSession().getWidthOfUserPlot();
+	}
+	
+	/**
+	 * Helper method.
+	 * @return	Length of user's plot.
+	 */
+	public final int getPlotLength() {
+		return this.model.getSession().getLengthOfUserPlot();
 	}
 	
 	/**
@@ -90,9 +153,9 @@ public abstract class PlotObject {
 	 */
 	public final double getRadius() {
 		return this.radius;
-  }
+	}
     
-  /**
+	/**
 	 * Setter.
 	 * @param x
 	 */
@@ -109,7 +172,7 @@ public abstract class PlotObject {
 	}
 
   /**
-	 * Getter
+	 * Getter.
 	 * @return Path to image of plot object for window view.
 	 */
 	public final String getWindowImage() {
@@ -117,7 +180,7 @@ public abstract class PlotObject {
 	}
 	
 	/**
-	 * Getter
+	 * Getter.
 	 * @return Path to image of plot object for plot design.
 	 */
 	public final String getPlotImage() {

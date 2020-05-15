@@ -2,10 +2,16 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
+
 /**
- * TODO: What is?...
+ * Paved outdoor area adjoining a house.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class PlotPatio extends GenericPolygon implements Serializable {
 
@@ -27,11 +33,23 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	 * @param x	Horizontal position determined by MouseRelease event handler.
 	 * @param y	Vertical position determined by MouseRelease event handler.
 	 */
-	public PlotPatio(double x, double y) {
+	public PlotPatio(Model model, double x, double y) {
 		// TODO: A patio is always 25.0 feet tall?
-		super(x, y, 25.0, new AdjustablePolygon(null, null, 0, 0), windowPatio, plotPatio);
+		super(model, x, y, 25.0, new AdjustablePolygon(null, null, 0, 0), windowPatio, plotPatio);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
+	}
+
+	@Override
+	public double getRenderWidth() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
+
+	@Override
+	public double getRenderHeight() {
+		// TODO Auto-generated method stub
+		return 40.0;
 	}
 
 }

@@ -48,6 +48,7 @@ import udel.GardenProject.plotObjects.PlotObject;
 /**
  * Basic questions about a user's plots that informs what plants are selected.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class Questionnaire extends Window {
@@ -164,7 +165,7 @@ public class Questionnaire extends Window {
 	private int buttonPrefWidth = 100;
 	private int borderSideMargins = 230;
 	private int questionWrapWidth = 800;
-	private int scrollWidthAdjustment = 150;
+	private int scrollWidthAdjustment = 175;
 	private int scrollHeightAdjustment = 115;
 	private int borderTopAndBottonMargin = 40;
 	private int backgroundWidthAndHeight = 100;
@@ -173,7 +174,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Adjustments for the Alert class: for the pop up screen
 	 */
-	private static int inset10 = 10;
+	private static int inset10 = 20;
 	private static int messageFontSize = 15;
 	private static int alertScreenWidth = 400;
 	private static int alertScreenHeight = 150;
@@ -196,6 +197,7 @@ public class Questionnaire extends Window {
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
 		vbox.setPadding(new Insets(inset10));
+		//vbox.setMinWidth(100);
 
 		populateQuestionnaire();
 		createButtons();

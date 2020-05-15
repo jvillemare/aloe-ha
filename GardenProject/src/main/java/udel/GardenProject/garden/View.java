@@ -1,14 +1,18 @@
 package udel.GardenProject.garden;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import udel.GardenProject.windows.Window;
@@ -16,40 +20,126 @@ import udel.GardenProject.windows.Window;
 /**
  * Creates the stage: Loads graphics, images, and defines what the user sees.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class View {
 	
 	/**
-	 * Width of a thumbnail
+	 * Width of a thumbnail, typically for an image that was HTTP loaded.
 	 */
 	private static int thumbnailWidth = 200;
 	
 	/**
-	 * Getter for thumbnail Width
-	 * @return int of thumbnail width
+	 * Height of a thumbnail, typically for an image that was HTTP loaded.
+	 */
+	private static int thumbnailHeight = 300;
+	
+	/**
+	 * Pink background style to be used in Welcome
+	 */
+	private final static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";
+	
+	/**
+	 * Dark green background style to be used in Welcome for buttons
+	 */
+	private final static String darkGreenBackgroundStyle = "-fx-background-color: #63A331;";
+	
+	/**
+	 * Light green background style to be used in Welcome for buttons
+	 */
+	private final static String lightGreenBackgroundStyle = "-fx-background-color: #76C327;";
+	
+	/**
+	 * White background style
+	 */
+	private final static String whiteBackgroundStyle = "-fx-background-color: #FFFFFF;";
+	
+	/**
+	 * Black text fill for works in buttons
+	 */
+	private final static String blackTextFill = "-fx-text-fill: #000000;";
+	
+	/**
+	 * The prefered Width of buttons at the bottom of each screen
+	 */
+	private final static int buttonPrefWidth = 100;
+	
+	/**
+	 * Standard button text size for all buttons at the bottom of the screen
+	 */
+	private final static int buttonTextSize = 12;
+	
+	/**
+	 * Seam-less background for each screen
+	 */
+	private static Background backgroundScreen;
+	
+	/**
+	 * Text size for top messages and welcome buttons
+	 */
+	private final static int textSizeForButtonsAndText = 20;
+	
+	/**
+	 * The path to the background screen image
+	 */
+	private final static String backgroundScreenPath = "/buttonImages/splash2.png";
+	
+	/**
+	 * Width of the buttons on the Welcome screen
+	 */
+	private final static int welcomeButtonWidth = 300;
+
+	/**
+	 * Default Scene width, can be overridden by Window objects.
+	 */
+	private final static int canvasWidth = 1300;
+
+	/**
+	 * DefaDefaultutl Scene height, can be overridden by Window objects.
+	 */
+	private final static int canvasHeight = 700;
+	
+	/**
+	 * Local reference to stage.
+	 */
+	private Stage theStage;
+
+	/**
+	 * Reference to the current window object being displayed.
+	 */
+	private Window window;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param theStage JavaFX Stage instance.
+	 * @param w        The first window to be displayed.
+	 */
+
+	public View(Controller c,Stage theStage) {
+		this.c = c;
+		this.theStage = theStage;
+		// showSplashScreen();
+		update(c.getCurrentWindow());
+		this.theStage.show();
+	}
+	
+	/**
+	 * Getter.
+	 * @return	Suggested default thumbnail width.
 	 */
 	public static int getThumbnailWidth() {
 		return thumbnailWidth;
 	}
 	
 	/**
-	 * Height of a thumbnail
-	 */
-	private static int thumbnailHeight = 200;
-	
-	/**
-	 * Getter for thumbnail height
-	 * @return int of thumbnail height
+	 * Getter.
+	 * @return	Suggested default thumbnail height.
 	 */
 	public static int getThumbnailHeight() {
 		return thumbnailHeight;
 	}
-	
-	/**
-	 * Pink background style to be used in Welcome
-	 */
-	private static String pinkBackgroundStyle = "-fx-background-color: #F6E8E8;";
 
 	/**
 	 * Refers to the pink background style
@@ -59,11 +149,6 @@ public class View {
 	public static String getPinkBackgroundStyle() {
 		return pinkBackgroundStyle;
 	}
-
-	/**
-	 * Dark green background style to be used in Welcome for buttons
-	 */
-	private static String darkGreenBackgroundStyle = "-fx-background-color: #63A331;";
 
 	/**
 	 * Refers to the dark green background style
@@ -76,11 +161,6 @@ public class View {
 	}
 
 	/**
-	 * Light green background style to be used in Welcome for buttons
-	 */
-	private static String lightGreenBackgroundStyle = "-fx-background-color: #76C327;";
-
-	/**
 	 * Refers to the light green background style
 	 * 
 	 * @return The string used in the .getStyle method to turn the background light
@@ -89,11 +169,6 @@ public class View {
 	public static String getLightGreenBackgroundStyle() {
 		return lightGreenBackgroundStyle;
 	}
-
-	/**
-	 * White background style
-	 */
-	private static String whiteBackgroundStyle = "-fx-background-color: #FFFFFF;";
 
 	/**
 	 * Refers to the White background style
@@ -105,11 +180,6 @@ public class View {
 	}
 
 	/**
-	 * Black text fill for works in buttons
-	 */
-	private static String blackTextFill = "-fx-text-fill: #000000;";
-
-	/**
 	 * Black Text Fill
 	 * 
 	 * @return the string used to format text to be black
@@ -117,11 +187,6 @@ public class View {
 	public static String getBlackTextFill() {
 		return blackTextFill;
 	}
-
-	/**
-	 * The prefered Width of buttons at the bottom of each screen
-	 */
-	private static int buttonPrefWidth = 100;
 
 	/**
 	 * Button Preferred width
@@ -133,23 +198,13 @@ public class View {
 	}
 
 	/**
-	 * Standard button text size for all buttons at the bottom of the screen
-	 */
-	private static int buttonTextSize = 12;
-
-	/**
 	 * Standard text size
 	 * 
 	 * @return the button text size for all buttons except Welcome buttons
 	 */
 	public static int getButtonTextSize() {
 		return buttonTextSize;
-	}
-
-	/**
-	 * Width of the buttons on the Welcome screen
-	 */
-	public static int welcomeButtonWidth = 300;
+	}		
 
 	/**
 	 * @return the width of a single button on the Welcome screen
@@ -157,11 +212,6 @@ public class View {
 	public static int getWelcomeButtonWidth() {
 		return welcomeButtonWidth;
 	}
-
-	/**
-	 * Seamless background for each screen
-	 */
-	private static Background backgroundScreen;
 
 	/**
 	 * Sets the background screen depending on the width and height
@@ -175,21 +225,16 @@ public class View {
 	}
 
 	/**
-	 * Returns the background screen
+	 * Getter. Returns the background screen.
 	 */
 	public static Background getBackgroundScreen() {
 		return backgroundScreen;
 	}
 
 	/**
-	 * Text size for top messages and welcome buttons
-	 */
-	private static int textSizeForButtonsAndText = 20;
-
-	/**
-	 * Returns 20
+	 * Getter. Returns the text size for buttons and text.
 	 * 
-	 * @return the text size for messages and welcome buttons
+	 * @return the text size for messages and welcome buttons.
 	 */
 	public static int getTextSizeForButtonsAndText() {
 		return textSizeForButtonsAndText;
@@ -197,7 +242,7 @@ public class View {
 
 	/**
 	 * The string used in the getResourceAsStream function to set the font to
-	 * Hack-Bold
+	 * <code>Hack-Bold</code>.
 	 */
 	public static String hackBold = "/fonts/Hack-Bold.ttf";
 
@@ -215,6 +260,11 @@ public class View {
 	 * Hack-Italic
 	 */
 	public static String hackItalic = "/fonts/Hack-Italic.ttf";
+	
+	/**
+	 * Local reference to Controller for Model communication.
+	 */
+	private Controller c;
 
 	/**
 	 * Gets the HackItalic font string
@@ -226,50 +276,12 @@ public class View {
 	}
 
 	/**
-	 * The path to the background screen image
-	 */
-	private static String backgroundScreenPath = "/buttonImages/splash2.png";
-
-	/**
 	 * Gets the background screen path for the image to be in each of the screens
 	 * 
 	 * @return
 	 */
 	public static String getBackgroundScreenPath() {
 		return backgroundScreenPath;
-	}
-
-	/**
-	 * Local reference to stage.
-	 */
-	private Stage theStage;
-
-	/**
-	 * Default Scene width, can be overridden by Window objects.
-	 */
-	private final static int canvasWidth = 1300;
-
-	/**
-	 * DefaDefaultutl Scene height, can be overridden by Window objects.
-	 */
-	private final static int canvasHeight = 700;
-
-	/**
-	 * Reference to the current window object being displayed.
-	 */
-	private Window window;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param theStage JavaFX Stage instance.
-	 * @param w        The first window to be displayed.
-	 */
-
-	public View(Stage theStage) {
-		this.theStage = theStage;
-		// showSplashScreen();
-		this.theStage.show();
 	}
 
 	/**
@@ -311,10 +323,39 @@ public class View {
 	public static int getCanvasHeight() {
 		return canvasHeight;
 	}
+	
+	/**
+	 * Setup a button as most of our buttons appear in the UI with hover and
+	 * de-hovering.
+	 * @param b	Button object.
+	 */
+	public static void setupButtonEffects(Button b) {
+		// TODO: @mpatel-2022 use this to setup buttons, as many of them do the
+		//			same effect handling setup. maybe have two more parameters
+		//			in this method to taken in different background styles
+		//			or something
+		DropShadow shadow = new DropShadow();
+		b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(shadow);
+				b.setStyle(View.getWhiteBackgroundStyle() + View.getBlackTextFill());
+			}
+		});
+
+		b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				b.setEffect(null);
+				b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
+			}
+		});
+	}
 
 	/**
-	 * Splash screen that appears to the user right as the application is started.
-	 * Only displays until the Model finishes loading in its constructor.
+	 * Splash screen that appears to the user right as the application is 
+	 * started. Only displays until the Model finishes loading in its 
+	 * constructor.
 	 */
 	private void showSplashScreen() {
 		// TODO: Doesn't display, fix

@@ -36,6 +36,7 @@ import udel.GardenProject.garden.View;
  * Where the user can export their plot as a PNG/JPEG, save it as a
  * <code>.gardenproject</code> file, load a saved project, or exit.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class Download extends Window {

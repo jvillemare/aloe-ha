@@ -3,7 +3,9 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.shape.Polygon;
+import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 
@@ -11,7 +13,9 @@ import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
  * All PlotPolygons need to specify the Polygon and Anchors that will appear on
  * the Plot Design window.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public abstract class GenericPolygon extends PlotObject implements Serializable {
 
@@ -30,9 +34,17 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * 					should look like.
 	 * @param imagePath	Plot object's path to image representation
 	 */
-	public GenericPolygon(double x, double y, double height, AdjustablePolygon p, String windowPath, String plotPath) {
-		super(x, y, height, 5.0, windowPath, plotPath);
+	public GenericPolygon(Model model, double x, double y, double height, 
+			AdjustablePolygon p, String windowPath, String plotPath) {
+		super(model, x, y, height, 5.0, windowPath, plotPath);
 		this.p = p;
+	}
+	
+	@Override
+	public Node render() {
+		// All polygons that don't override this method will be rendered in the
+		//		plot as such:
+		return null;
 	}
 	
 	/**

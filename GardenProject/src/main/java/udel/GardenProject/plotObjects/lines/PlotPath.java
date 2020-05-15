@@ -2,13 +2,16 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import udel.GardenProject.garden.Model;
 
 /**
- * TODO: What is this? If polygon, move to polygons package and make it match
- * the other polygons.
+ * A fence that typically goes around a user's plot.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class PlotPath extends GenericLine implements Serializable {
 
@@ -27,10 +30,26 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param x			Horizontal position of first point in plot design.
 	 * @param y			Vertical position of first point in plot design.
 	 */
-
-	public PlotPath(double x, double y) {
-		super(x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
+	public PlotPath(Model model, double x, double y) {
+		super(model, x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
 		// TODO Auto-generated constructor stub
-	}	
+	}
+
+	@Override
+	public Node render() {
+		return render();
+	}
+
+	@Override
+	public double getRenderWidth() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
+
+	@Override
+	public double getRenderHeight() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
 
 }

@@ -38,6 +38,7 @@ import udel.GardenProject.plants.Plant;
 /**
  * Where a user can specify what plants already exist in their garden.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class ExistingPlants extends Window {

@@ -42,6 +42,7 @@ import udel.GardenProject.plants.Plant;
 /**
  * To display all the information of a Plant to the user.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class PlantSelection extends Window {
@@ -341,7 +342,7 @@ public class PlantSelection extends Window {
 	public boolean checkColors(Plant p, ArrayList<Colors> selected) {
 		HashSet<Colors> colors = p.getColors();
 		for (Colors color : colors) {
-			if (selected.contains(color)) {
+			if (selected.contains(Colors.ANYCOLOR) || selected.contains(color)) {
 				return true;
 			}
 		}

@@ -28,6 +28,7 @@ import udel.GardenProject.garden.View;
  * Presently: Basic text description run down of all the features of the program
  * and how to use them.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class Tutorial extends Window {

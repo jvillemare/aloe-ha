@@ -9,6 +9,7 @@ package udel.GardenProject.enums;
  * https://observant.zendesk.com/hc/en-us/article_attachments/203343303/Mgmt_Line_diagram_2.png
  * or also google
  * 
+ * @version 1.0
  * @author Team 0
  */
 public enum Moisture {

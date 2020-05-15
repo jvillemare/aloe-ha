@@ -5,6 +5,7 @@ import java.util.Comparator;
 /**
  * Sort plants by Moisture, by default descending.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class MoistureComparator implements Comparator<Plant> {
