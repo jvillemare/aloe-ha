@@ -218,8 +218,8 @@ public class Model {
 	 */
 	public void setWindow(Windows w) {
 		System.gc();
-		windows[w.ordinal()].refresh();
 		lastWindow = currentWindow;
+		windows[w.ordinal()].refresh();
 		currentWindow = windows[w.ordinal()];
 		c.update(currentWindow);
 	}

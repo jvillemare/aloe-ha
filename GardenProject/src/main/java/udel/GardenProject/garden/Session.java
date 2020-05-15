@@ -96,7 +96,7 @@ public class Session implements Serializable {
 	/**
 	 * Users sunlight of their plot. Decimal percentage (from 0.0 to 1.0).
 	 */
-	private double sunlightOfPlot = 0.0;
+	private double sunlightOfPlot = -1.0;
 
 	/**
 	 * Existing plants already in users plot.<br>
@@ -161,7 +161,7 @@ public class Session implements Serializable {
 	public Session() {
 		selectedPlotObjects.add(PlotObjects.Flamingo);
 		seasonsUserSelected.add(Seasons.WINTER);
-		colorsUserSelected.add(Colors.ALICEBLUE);
+		colorsUserSelected.add(Colors.BLUE);
 		this.id = generateID();
 	}
 	

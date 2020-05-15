@@ -497,13 +497,17 @@ public class PlantSelection extends Window {
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
+				System.out.println("I was called");
 				displaySelection();
+				selectedPlantsBox.getChildren().clear();
+				addSelected();
+			} else {
+				System.out.println(getModel().getLastWindow().getEnum().name());
+				System.out.println("I was NOT called");
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			System.out.println("Wrong size of a plants year Boolean Array");
 		}
-		selectedPlantsBox.getChildren().clear();
-		addSelected();
 	}
 
 	@Override
