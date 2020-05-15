@@ -133,7 +133,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 			plantImage = new Image(path, 40.0, 40.0, true, true);
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 40.0, 40.0,
+			plantImage = new Image(getClass().getResourceAsStream(choosePlotImage(p)), 40.0, 40.0,
 					true, true);
 		}
 		

@@ -14,7 +14,7 @@ import udel.GardenProject.plotObjects.PlotObject;
  * @author Team 0
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class PlotFlamingo extends PlotObject implements Serializable {
+public class PlotFlamingo extends GenericSpecial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,11 +36,6 @@ public class PlotFlamingo extends PlotObject implements Serializable {
 	public PlotFlamingo(Model model, double x, double y) {
 		super(model, x, y, 2.0, 1.0, windowFlamingo, plotFlamingo);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public Node render() {
-		return null;
 	}
 
 	@Override

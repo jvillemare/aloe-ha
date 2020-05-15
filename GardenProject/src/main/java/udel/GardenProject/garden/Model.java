@@ -209,7 +209,6 @@ public class Model {
 		windows[w.ordinal()].refresh();
 		lastWindow = currentWindow;
 		currentWindow = windows[w.ordinal()];
-		currentWindow.refresh();
 		c.update(currentWindow);
 	}
 
@@ -413,9 +412,11 @@ public class Model {
 
 			System.out.println("Model: Loaded Session from " + realFilepath);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: IOException is caught, failed to load file from " + realFilepath);
 			return false;
 		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: ClassNotFoundException is caught, invalid file at " + realFilepath);
 			return false;
 		}
@@ -498,6 +499,7 @@ public class Model {
 
 			System.out.println("Model: Saved Session at " + filepath);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: IOException is caught, failed to save file");
 			return false;
 		}

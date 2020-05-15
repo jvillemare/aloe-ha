@@ -14,7 +14,7 @@ import udel.GardenProject.plotObjects.PlotObject;
  * @author Team 0
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class PlotGnome extends PlotObject implements Serializable {
+public class PlotGnome extends GenericSpecial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,11 +36,6 @@ public class PlotGnome extends PlotObject implements Serializable {
 	public PlotGnome(Model model, double x, double y) {
 		super(model, x, y, 1, 1.0, windowGnome, plotGnome);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public Node render() {
-		return null;
 	}
 
 	@Override

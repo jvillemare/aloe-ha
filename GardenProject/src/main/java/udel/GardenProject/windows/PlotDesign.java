@@ -311,6 +311,7 @@ public class PlotDesign extends Window {
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
+		System.out.println("POPULATE TILES CALLED");
 		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants());
 		TitledPane existing = new TitledPane("Existing Plants", existingFlow);
 		accArr.add(existing);
@@ -371,7 +372,8 @@ public class PlotDesign extends Window {
 	 * @return FlowPane
 	 */
 	public FlowPane createPlantFlow(HashSet<Plant> plants) {
-		System.out.println("starting ");
+		Thread.currentThread().getStackTrace();
+		System.out.println("starting with plants.size=" + plants.size());
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -379,9 +381,10 @@ public class PlotDesign extends Window {
 		flow.setHgap(inset10);
 
 		Iterator<Plant> plantIter = plants.iterator();
-		System.out.println("after creating iterator  ");
+		System.out.println("after creating iterator");
 		while (plantIter.hasNext()) {
 			Plant p = plantIter.next();
+			System.out.println("PlotDesign.createPlantFlow: adding " + p.getLatinName());
 			Node plantRepresentation = p.renderInAccordion(
 					getSession().getWidthOfUserPlot(), 
 					getSession().getLengthOfUserPlot());
@@ -812,59 +815,63 @@ public class PlotDesign extends Window {
 		double newY = tmp.getLayoutY() - vbox.getLayoutBounds().getHeight();
 		if (group.contains(newX, newY)) {
 			PlotObject plotObjectToAdd;
-			switch(po) {
-				case Bench:
-					plotObjectToAdd = new PlotBench(getModel(), newX, newY);
-					break;
-				case BirdBath:
-					plotObjectToAdd = new PlotBirdBath(getModel(), newX, newY);
-					break;
-				case Fence: // assume 6.0 foot high fence
-					plotObjectToAdd = new PlotFence(getModel(), newX, newY, 6.0);
-					break;
-				case Flamingo:
-					plotObjectToAdd = new PlotFlamingo(getModel(), newX, newY);
-					break;
-				case Forest:
-					plotObjectToAdd = new PlotForest(getModel(), newX, newY);
-					break;
-				case Gnome:
-					plotObjectToAdd = new PlotGnome(getModel(), newX, newY);
-					break;
-				case Other:
-					plotObjectToAdd = new PlotOther(getModel(), newX, newY);
-					break;
-				case Path:
-					plotObjectToAdd = new PlotPath(getModel(), newX, newY);
-					break;
-				case Patio:
-					plotObjectToAdd = new PlotPatio(getModel(), newX, newY);
-					break;
-				case Playground:
-					plotObjectToAdd = new PlotPlayground(getModel(), newX, newY);
-					break;
-				case Pool:
-					plotObjectToAdd = new PlotPool(getModel(), newX, newY);
-					break;
-				case Road:
-					plotObjectToAdd = new PlotRoad(getModel(), newX, newY);
-					break;
-				case Rock:
-					plotObjectToAdd = new PlotRock(getModel(), newX, newY);
-					break;
-				case Shed:
-					plotObjectToAdd = new PlotShed(getModel(), newX, newY);
-					break;
-				case TextLabel:
-					// TODO: Prompt a user with a textbox in a separate stage
-					//			window asking what they would like the text
-					//			label to say
-					plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
-					break;
-				default:
-					plotObjectToAdd = new PlotPlant(getModel(), getModel().getPlotDesignDraggingPlant(), newX, newY);
-					getModel().setPlotDesignDraggingPlant(null);
-					break;
+			if(po == null) {
+				plotObjectToAdd = new PlotPlant(getModel(), getModel().getPlotDesignDraggingPlant(), newX, newY);
+				getModel().setPlotDesignDraggingPlant(null);
+			} else {
+				switch(po) {
+					case Bench:
+						plotObjectToAdd = new PlotBench(getModel(), newX, newY);
+						break;
+					case BirdBath:
+						plotObjectToAdd = new PlotBirdBath(getModel(), newX, newY);
+						break;
+					case Fence: // assume 6.0 foot high fence
+						plotObjectToAdd = new PlotFence(getModel(), newX, newY, 6.0);
+						break;
+					case Flamingo:
+						plotObjectToAdd = new PlotFlamingo(getModel(), newX, newY);
+						break;
+					case Forest:
+						plotObjectToAdd = new PlotForest(getModel(), newX, newY);
+						break;
+					case Gnome:
+						plotObjectToAdd = new PlotGnome(getModel(), newX, newY);
+						break;
+					case Other:
+						plotObjectToAdd = new PlotOther(getModel(), newX, newY);
+						break;
+					case Path:
+						plotObjectToAdd = new PlotPath(getModel(), newX, newY);
+						break;
+					case Patio:
+						plotObjectToAdd = new PlotPatio(getModel(), newX, newY);
+						break;
+					case Playground:
+						plotObjectToAdd = new PlotPlayground(getModel(), newX, newY);
+						break;
+					case Pool:
+						plotObjectToAdd = new PlotPool(getModel(), newX, newY);
+						break;
+					case Road:
+						plotObjectToAdd = new PlotRoad(getModel(), newX, newY);
+						break;
+					case Rock:
+						plotObjectToAdd = new PlotRock(getModel(), newX, newY);
+						break;
+					case Shed:
+						plotObjectToAdd = new PlotShed(getModel(), newX, newY);
+						break;
+					case TextLabel:
+						// TODO: Prompt a user with a textbox in a separate stage
+						//			window asking what they would like the text
+						//			label to say
+						plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
+						break;
+					default:
+						plotObjectToAdd = new PlotOther(getModel(), newX, newY);
+						break;
+				}
 			}
 			getSession().getPlot().add(plotObjectToAdd);
 			addPlotObjectToInterface(plotObjectToAdd, newX, newY);
@@ -888,7 +895,14 @@ public class PlotDesign extends Window {
 	 */
 	@Override
 	public void refresh() {
+		accArr.clear();
+		choicesAccordian.getPanes().clear();
 		populateTiles(accArr);
+		
+		for (TitledPane t : accArr) {
+			t.setFont(getModel().getHackBold20());
+			choicesAccordian.getPanes().add(t);
+		}
 
 		group.getChildren().clear();
 		createCenterBox();
@@ -897,7 +911,7 @@ public class PlotDesign extends Window {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
 		
-		//TODO: Remove stuff from auto rate box and add back in
+		// TODO: Remove stuff from auto rate box and add back in
 	}
 
 }

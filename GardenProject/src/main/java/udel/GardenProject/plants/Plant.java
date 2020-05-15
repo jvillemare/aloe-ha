@@ -7,6 +7,8 @@ import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
 
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.Serializable;
 import udel.GardenProject.enums.Canopy;
@@ -14,6 +16,7 @@ import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.plotObjects.PlotPlant;
 
 /**
  * For every plant, there is a corresponding Plant object that contains as much
@@ -137,13 +140,30 @@ public class Plant implements Serializable {
 	 * @return	Image, text, associated ToolTip for Plant.
 	 */
 	public Node renderInAccordion(int width, int length) {
-		return null;
+		// TODO: take into account width and length of a users plot
+		String[] plantImg = this.getImages();
+		Image plantImage;
+		
+		// Get the actual image if it exists
+		if (plantImg != null && plantImg.length > 0) {
+			String path = this.getImages()[0];
+			plantImage = new Image(path, 40.0, 40.0, true, true);
+		} else {
+			// get a default image
+			plantImage = new Image(getClass().getResourceAsStream(PlotPlant.choosePlotImage(this)), 40.0, 40.0,
+					true, true);
+		}
+		
+		ImageView imageView = new ImageView();
+		imageView.setImage(plantImage);
+				
+		return imageView;
 	}
 
 	/**
 	 * Getter.
 	 * 
-	 * @return All the common names for a plant. Not guranteed to be unique.
+	 * @return All the common names for a plant. Not guaranteed to be unique.
 	 */
 	public String[] getCommonNames() {
 		return commonNames;
@@ -152,8 +172,8 @@ public class Plant implements Serializable {
 	/**
 	 * Getter.
 	 * 
-	 * @return A plant's unique latin name with genus capitalized and species all
-	 *         lower case in traditional Linnaeus classifcation. Example:
+	 * @return A plant's unique Latin name with genus capitalized and species all
+	 *         lower case in traditional Linnaeus classification. Example:
 	 *         <code>Pinus pine</code>.
 	 */
 	public String getLatinName() {

@@ -14,7 +14,7 @@ import udel.GardenProject.plotObjects.PlotObject;
  * @author Team 0 
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class PlotOther extends PlotObject implements Serializable {
+public class PlotOther extends GenericSpecial implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,11 +36,6 @@ public class PlotOther extends PlotObject implements Serializable {
 	public PlotOther(Model model, double x, double y) {
 		super(model, x, y, 3.0, 3.0, windowPicture, plotPicture);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public Node render() {
-		return null;
 	}
 
 	@Override

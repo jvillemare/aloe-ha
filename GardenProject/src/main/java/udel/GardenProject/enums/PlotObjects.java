@@ -18,21 +18,21 @@ import udel.GardenProject.plants.Plant;
 public enum PlotObjects {
 
 	// TODO: Alphabetically sort
-	TextLabel("object", "/plotObjects/textLabel.png", true, true),
-	Fence("lines", "/plotObjects/fence.png", true, false), 
-	Path("lines", "/plotObjects/path.png", true, true), 
-	Forest("polygons", "/plotObjects/forest.png", false, true), 
-	Patio("polygons", "/plotObjects/patio.png", true, false), 
-	Playground("polygons", "/plotObjects/playground.png", true, false), 
-	Pool("polygons", "/plotObjects/pool.png", true, false), 
-	Road("polygons", "/plotObjects/road.png", false, true), 
-	Rock("polygons", "/plotObjects/rock.png", true, false), 
-	Shed("polygons", "/plotObjects/shed.png", true, false), 
-	BirdBath("special", "/plotObjects/birdBath.png", true, false), 
-	Bench("special", "/plotObjects/bench.png", true, false),
-	Flamingo("special", "/plotObjects/flamingo.png", true, false), 
-	Gnome("special", "/plotObjects/gnome.png", true, false),
-	Other("special", "/plotObjects/other.png", true, false);
+	TextLabel("object", "/plotObjects/textLabel.png", "", true, true),
+	Fence("lines", "/plotObjects/fence.png", "", true, false), 
+	Path("lines", "/plotObjects/path.png", "", true, true), 
+	Forest("polygons", "/plotObjects/forest.png", "", false, true), 
+	Patio("polygons", "/plotObjects/patio.png", "", true, false), 
+	Playground("polygons", "/plotObjects/playground.png", "", true, false), 
+	Pool("polygons", "/plotObjects/pool.png", "", true, false), 
+	Road("polygons", "/plotObjects/road.png", "", false, true), 
+	Rock("polygons", "/plotObjects/rock.png", "", true, false), 
+	Shed("polygons", "/plotObjects/shed.png", "", true, false), 
+	BirdBath("special", "/plotObjects/birdBath.png", "Where birds come to rest", true, false), 
+	Bench("special", "/plotObjects/bench.png", "Sitting utensil", true, false),
+	Flamingo("special", "/plotObjects/flamingo.png", "Lawn ornament", true, false), 
+	Gnome("special", "/plotObjects/gnome.png", "Wards off evil spirits", true, false),
+	Other("special", "/plotObjects/other.png", "", true, false);
 	
 	/**
 	 * What package is this PlotObject found in (for categorization).
@@ -43,6 +43,11 @@ public enum PlotObjects {
 	 * Path to the image that represents this PlotObjects in an accordion.
 	 */
 	private String imageFilePath;
+	
+	/**
+	 * The text that appears in the tool tip for this PlotObject.
+	 */
+	private String description;
 	
 	/**
 	 * Does this PlotObject commonly show up in a garden (true), or near it?
@@ -58,15 +63,20 @@ public enum PlotObjects {
 	/**
 	 * Internal Constructor.
 	 * @param type					What package this PlotObject is in.
+	 * @param imageFilePath			Where in the resources directory is the 
+	 * 								image representing this PlotObject. 
+	 * @param description			The text that appears in the tool tip for
+	 * 								this PlotObject.
 	 * @param typicallyInGarden		Does this PlotObject usually show up in a
 	 * 								garden?
 	 * @param bluePrintSpecific		Is this Plot Object supposed to show up in
 	 * 								the BluePrint window?
 	 */
-	private PlotObjects(String type, String imageFilePath, 
+	private PlotObjects(String type, String imageFilePath, String description,
 			boolean typicallyInGarden, boolean bluePrintSpecific) {
 		this.type = type;
 		this.imageFilePath = imageFilePath;
+		this.description = description;
 		this.typicallyInGarden = typicallyInGarden;
 		this.bluePrintSpecific = bluePrintSpecific;
 	}
@@ -85,6 +95,14 @@ public enum PlotObjects {
 	 */
 	public String getImageFilePath() {
 		return this.imageFilePath;
+	}
+	
+	/**
+	 * Getter.
+	 * @return	The text that should appear in a tool tip for this plot object.
+	 */
+	public String getDescription() {
+		return this.description;
 	}
 	
 	/**

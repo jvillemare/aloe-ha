@@ -55,7 +55,7 @@ public abstract class PlotObject implements Serializable {
 	 * is used for getting the current width and height of the plot, and other 
 	 * relevant factors for rendering Plot Objects.
 	 */
-	private Model model;
+	private transient Model model;
   
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
