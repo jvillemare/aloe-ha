@@ -415,7 +415,7 @@ public class Model {
 		String realFilepath = calculateFilepath(filepath);
 		Object o;
 		
-    try {
+		try {
 		  FileInputStream file = new FileInputStream(realFilepath);
 		  ObjectInputStream in = new ObjectInputStream(file);
 
@@ -433,6 +433,7 @@ public class Model {
 			ex.printStackTrace();
 			System.out.println("Model: ClassNotFoundException is caught, invalid file at " + realFilepath);
 			return false;
+		}
 		return o;
 	}
 	

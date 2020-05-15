@@ -26,30 +26,14 @@ import udel.GardenProject.windows.Window;
 public class View {
 	
 	/**
-	 * Width of a thumbnail
+	 * Width of a thumbnail, typically for an image that was HTTP loaded.
 	 */
 	private static int thumbnailWidth = 200;
 	
 	/**
-	 * Getter for thumbnail Width
-	 * @return int of thumbnail width
+	 * Height of a thumbnail, typically for an image that was HTTP loaded.
 	 */
-	public static int getThumbnailWidth() {
-		return thumbnailWidth;
-	}
-	
-	/**
-	 * Height of a thumbnail
-	 */
-	private static int thumbnailHeight = 200;
-	
-	/**
-	 * Getter for thumbnail height
-	 * @return int of thumbnail height
-	 */
-	public static int getThumbnailHeight() {
-		return thumbnailHeight;
-	}
+	private static int thumbnailHeight = 300;
 	
 	/**
 	 * Pink background style to be used in Welcome
@@ -105,18 +89,6 @@ public class View {
 	 * Width of the buttons on the Welcome screen
 	 */
 	private final static int welcomeButtonWidth = 300;
-	
-	/**
-	 * For cached images (typically HTTP web loaded), this is the default width
-	 * of the thumbnail.
-	 */
-	private final static int thumbnailWidth = 200;
-
-	/**
-	 * For cached images (typically HTTP web loaded), this is the default height
-	 * of the thumbnail.
-	 */
-	private final static int thumbnailHeight = 300;
 
 	/**
 	 * Default Scene width, can be overridden by Window objects.
