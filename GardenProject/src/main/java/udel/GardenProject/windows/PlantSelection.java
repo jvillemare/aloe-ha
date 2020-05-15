@@ -2,7 +2,6 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +11,8 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
@@ -27,6 +28,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
@@ -92,7 +94,22 @@ public class PlantSelection extends Window {
 	 * of plants
 	 */
 	private HBox centerBox;
-
+	
+	/**
+	 * Native Plants database from Model.
+	 */
+	private ArrayList<Plant> nativePlants = getModel().getNativePlants();
+	
+	/**
+	 * Sends a warning that there are no plants
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
+	
+	/**
+	 * True if there are no plants to choose from, false otherwise.
+	 */
+	private boolean plantSelEmpty = true;
+	
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
@@ -113,11 +130,8 @@ public class PlantSelection extends Window {
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
-		try {
-			displaySelection();
-		}catch(Exception e) {
-			System.out.println("Wrong size of a plants year Boolean Array");
-		}
+		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
+				+ "\nPlease either go back to Questionnaire and change your answers or go to Plant Database in the next screen.");
 		
 	}
 	
@@ -193,6 +207,13 @@ public class PlantSelection extends Window {
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+		
+		if(plantSelEmpty) {
+			Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
+			warning.show();
+			warningStage.setAlwaysOnTop(true);
+			warningStage.toFront();
+		}
 	}
 
 	/**
@@ -221,6 +242,7 @@ public class PlantSelection extends Window {
 			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
 			accArr.add(tile);
 		}
+		
 	}
 
 	/**
@@ -238,14 +260,9 @@ public class PlantSelection extends Window {
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
 		
-		ArrayList<Plant> nativePlants = getModel().getNativePlants();
-		
 		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
-		Iterator<Plant> itr = nativePlants.iterator();
-		
-		while (itr.hasNext()) {
-			Plant p = itr.next();
+		for (Plant p : nativePlants) {
 			
 			boolean fits = false;
 			
@@ -274,6 +291,7 @@ public class PlantSelection extends Window {
 			}
 			
 			if(fits) {
+				plantSelEmpty = false;
 				flowCanopy.getChildren().add(createPlantBox(p));
 			}
 			
@@ -474,6 +492,7 @@ public class PlantSelection extends Window {
 	}
 	
 	public void refresh() {
+		plantSelEmpty = true;
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
