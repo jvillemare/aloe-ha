@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
@@ -106,6 +109,23 @@ public abstract class PlotObject implements Serializable {
 		// TODO: Make me abstract
 		return null;
 	}
+	
+	/**
+	 * 
+	 * Abstract. All Plot Objects must specify how they will be drawn on the
+	 * season view canvas.
+	 * 
+	 * @param gc Graphics Context for drawing images/objects on canvas.
+	 * @param gb Blur effect for shade beneath plants.
+	 * @param minScale minimum scale amount for objects based on depth.
+	 * @param maxDepth Depth of plot design window.
+	 * @param maxWidth Width of plot design window.
+	 * @param viewDepth Depth of gc's canvas.
+	 * @param viewWidth Width of gc's Canvas.
+	 * @param yearScale Scaling amount based on year.
+	 * @param e Effect to be added to plants.
+	 */
+	public abstract void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth, double viewDepth, double viewWidth, double yearScale, Effect e);
 	
 	/**
 	 * Helper method.

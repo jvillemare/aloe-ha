@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
@@ -145,6 +148,13 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0;
+	}
+
+	@Override
+	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth,
+			double viewDepth, double viewWidth, double yearScale, Effect e) {
+		return;
+		
 	}
 
 }
