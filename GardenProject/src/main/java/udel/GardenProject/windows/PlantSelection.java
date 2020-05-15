@@ -102,11 +102,6 @@ public class PlantSelection extends Window {
 	private ArrayList<Plant> nativePlants = getModel().getNativePlants();
 	
 	/**
-	 * Sends a warning that there are no plants
-	 */
-	private Alert warning = new Alert(AlertType.WARNING);
-	
-	/**
 	 * True if there are no plants to choose from, false otherwise.
 	 */
 	private boolean plantSelEmpty = true;
@@ -141,9 +136,6 @@ public class PlantSelection extends Window {
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
-		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
-				+ "\nPlease either go back to Questionnaire and change your answers or go to Plant Database in the next screen.");
-		
 	}
 	
 	/**
@@ -151,7 +143,12 @@ public class PlantSelection extends Window {
 	 * renew the new desired traits for each plant in the left hand side.
 	 * @throws Exception 
 	 */
-	public void displaySelection() throws Exception {
+	public void displaySelection() {
+		
+		Alert warning = new Alert(AlertType.WARNING);
+		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
+				+ "\nPlease either go back to Questionnaire and change your answers or go to Plant Database in the next screen.");
+		
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -220,6 +217,7 @@ public class PlantSelection extends Window {
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 		
 		if(plantSelEmpty) {
+			System.out.println("I was called");
 			Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
 			warning.show();
 			warningStage.setAlwaysOnTop(true);
@@ -247,7 +245,7 @@ public class PlantSelection extends Window {
 	 * @param List<TiledPane>
 	 * @throws Exception 
 	 */
-	public void populateTiles(List<TitledPane> accArr) throws Exception {
+	public void populateTiles(List<TitledPane> accArr){
 		
 		for(Canopy c : Canopy.values()) {
 			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
@@ -263,7 +261,7 @@ public class PlantSelection extends Window {
 	 * @param canopy --> Takes in a canopy
 	 * @throws Exception 
 	 */
-	public FlowPane createFlowPane(Canopy canopy) throws Exception {
+	public FlowPane createFlowPane(Canopy canopy){
 
 		FlowPane flowCanopy = new FlowPane();
 		
@@ -309,13 +307,14 @@ public class PlantSelection extends Window {
 				if(plantAddedNum == capPlant) {
 					break;
 				}else {
+					System.out.println("Hi");
 					plantAddedNum++;
 					flowCanopy.getChildren().add(createPlantBox(p));
 				}
 			}
 			
 		}
-
+		
 		return flowCanopy;
 
 	}
@@ -327,7 +326,7 @@ public class PlantSelection extends Window {
 	 * @return boolean
 	 * @throws Exception 
 	 */
-	public boolean checkSeason(Plant p) throws Exception {
+	public boolean checkSeason(Plant p){
 		ArrayList<Seasons> seasonFilter = getSession().getSeasonsUserSelected();
 		
 		boolean[] year = p.getBloomTime();
@@ -529,20 +528,16 @@ public class PlantSelection extends Window {
 	
 	public void refresh() {
 		plantSelEmpty = true;
-		try {
-			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
-					getModel().getLastWindow().getEnum() == Windows.PlotDesign
-					|| getModel().getLastWindow().getEnum() == Windows.PlantSelection) {
-				System.out.println("I was called");
-				displaySelection();
-				selectedPlantsBox.getChildren().clear();
-				addSelected();
-			} else {
-				System.out.println(getModel().getLastWindow().getEnum().name());
-				System.out.println("I was NOT called");
-			}
-		} catch(Exception e) {
-			System.out.println("Wrong size of a plants year Boolean Array");
+
+		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
+				getModel().getLastWindow().getEnum() == Windows.PlotDesign
+				|| getModel().getLastWindow().getEnum() == Windows.PlantSelection) {
+			displaySelection();
+			selectedPlantsBox.getChildren().clear();
+			addSelected();
+		} else {
+			System.out.println(getModel().getLastWindow().getEnum().name());
+			System.out.println("I was NOT called");
 		}
 	}
 
