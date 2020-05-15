@@ -73,7 +73,7 @@ public class PlantSelection extends Window {
 	/**
 	 * Navigation buttons at the bottom of the screen
 	 */
-	private Button back, mainMenu, next;
+	private Button back, mainMenu, next, ease;
 
 	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
@@ -466,7 +466,17 @@ public class PlantSelection extends Window {
 				switchToWindow(Windows.PlotDesign);
 			}
 		});
+		
+		ease = new Button("Ease") ;
+		ease.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				switchToWindow(Windows.PlantSelection);
+				
+			}
+		});
+		
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
 		buttons.add(mainMenu);
@@ -500,7 +510,8 @@ public class PlantSelection extends Window {
 		plantSelEmpty = true;
 		try {
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
-					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
+					getModel().getLastWindow().getEnum() == Windows.PlotDesign
+					|| getModel().getLastWindow().getEnum() == Windows.PlantSelection) {
 				System.out.println("I was called");
 				displaySelection();
 				selectedPlantsBox.getChildren().clear();
