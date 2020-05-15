@@ -5,6 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang3.StringUtils;
+
+import javafx.scene.Node;
+
 import java.io.Serializable;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Colors;
@@ -14,12 +17,13 @@ import udel.GardenProject.enums.SoilTypes;
 
 /**
  * For every plant, there is a corresponding Plant object that contains as much
- * information that can be loaded by PlantLoader.
+ * information that can be loaded by PlantLoader.<br><br>
  * 
  * Plant data was gathered from public domain sources using Python scripts, and
  * the plant data is stored as <code>.json</code> files in
  * <code>main.udel.plants.data</code>
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Plant implements Serializable {
@@ -124,6 +128,14 @@ public class Plant implements Serializable {
 		this.invasive = invasive;
 		this.source = source;
 		this.images = images;
+	}
+	
+	/**
+	 * How does this plant appear in an accordion or any other UI container?
+	 * @return	Image, text, associated ToolTip for Plant.
+	 */
+	public Node renderInAccordion() {
+		return null;
 	}
 
 	/**

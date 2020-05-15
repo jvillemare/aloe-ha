@@ -20,6 +20,7 @@ package udel.GardenProject.garden;
  * 
  * I wasted 20 hours on this. Do not touch it.
  * 
+ * @version 1.0
  * @author Team 0
  * @see <a href="https://stackoverflow.com/a/57691362/13158722">What made me
  * finally see the light</a>

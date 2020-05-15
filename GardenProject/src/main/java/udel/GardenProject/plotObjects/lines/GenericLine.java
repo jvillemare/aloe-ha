@@ -7,6 +7,14 @@ import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 
+/**
+ * A generic line object like a fence or a path that is a flat line with 
+ * multiple points.
+ * 
+ * @version 1.0
+ * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
+ */
 public abstract class GenericLine extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;

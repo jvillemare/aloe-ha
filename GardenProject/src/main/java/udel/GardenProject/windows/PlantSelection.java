@@ -39,6 +39,7 @@ import udel.GardenProject.plants.Plant;
 /**
  * To display all the information of a Plant to the user.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class PlantSelection extends Window {

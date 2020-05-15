@@ -43,6 +43,7 @@ import udel.GardenProject.plants.Plant;
  * A searchable database of all the plants a user can add to the their plot.
  * They can also add plants that were not initially in their selection.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class AllPlants extends Window {

@@ -2,13 +2,16 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
 
 /**
  * Playground.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class PlotPlayground extends GenericPolygon implements Serializable {
 
@@ -31,9 +34,15 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	}
 
 	@Override
-	public ImageView render() {
+	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return null;
+		return 40.0;
+	}
+
+	@Override
+	public double getRenderHeight() {
+		// TODO Auto-generated method stub
+		return 40.0;
 	}
 	
 }

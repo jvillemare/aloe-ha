@@ -2,6 +2,7 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -9,7 +10,9 @@ import udel.GardenProject.plotObjects.PlotObject;
 /**
  * Place to sit.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class PlotBench extends PlotObject implements Serializable {
 
@@ -33,11 +36,22 @@ public class PlotBench extends PlotObject implements Serializable {
 	public PlotBench(Model model, double x, double y) {
 		super(model, x, y, 2.0, 5.0, windowBench, plotBench);
 	}
+	
+	@Override
+	public Node render() {
+		return null;
+	}
+	
+	@Override
+	public double getRenderWidth() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
 
 	@Override
-	public ImageView render() {
+	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return null;
+		return 40.0;
 	}
 
 }

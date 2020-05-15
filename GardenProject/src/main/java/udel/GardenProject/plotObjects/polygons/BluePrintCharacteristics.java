@@ -2,6 +2,7 @@ package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
 
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
@@ -13,7 +14,9 @@ import udel.GardenProject.garden.Model;
  * For the BluePrint Window, allow the user to specify the characteristics in
  * specific areas of their plot.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class BluePrintCharacteristics extends GenericPolygon implements 
 	Serializable {
@@ -128,9 +131,20 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 	}
 
 	@Override
-	public ImageView render() {
-		// TODO Auto-generated method stub
+	public Node render() {
 		return null;
+	}
+
+	@Override
+	public double getRenderWidth() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
+
+	@Override
+	public double getRenderHeight() {
+		// TODO Auto-generated method stub
+		return 40.0;
 	}
 
 }

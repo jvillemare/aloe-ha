@@ -10,8 +10,10 @@ import udel.GardenProject.enums.Windows;
 import udel.GardenProject.windows.Window;
 
 /**
- * Contains the start and real main, setups different components of app.
+ * Contains the start and real main, setups different components of the 
+ * application.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Controller extends Application {

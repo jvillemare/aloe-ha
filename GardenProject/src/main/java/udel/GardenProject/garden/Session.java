@@ -23,8 +23,10 @@ import udel.GardenProject.plotObjects.PlotObject;
  * All attributes should be adequately javadoc'd for future reference.<br>
  * <br>
  * 
- * NOTE: All attributes should be initialized to a default value.
+ * <b>NOTE:</b> All attributes should be initialized to a default value, either
+ * in their attribute or the Session constructor.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Session implements Serializable {
@@ -153,7 +155,7 @@ public class Session implements Serializable {
 	 * Constructor. Initializes default values for complex objects.
 	 */
 	public Session() {
-		selectedPlotObjects.add(PlotObjects.Plant);
+		selectedPlotObjects.add(PlotObjects.Flamingo);
 		seasonsUserSelected.add(Seasons.WINTER);
 		colorsUserSelected.add(Colors.ALICEBLUE);
 		this.id = generateID();

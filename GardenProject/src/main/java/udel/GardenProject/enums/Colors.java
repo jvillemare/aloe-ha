@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
  * 
  * May hardship rain upon Oracle for making me do this.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public enum Colors {

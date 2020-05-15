@@ -9,6 +9,7 @@ import udel.GardenProject.garden.Session;
 /**
  * A window that can be displayed to the user.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public abstract class Window {

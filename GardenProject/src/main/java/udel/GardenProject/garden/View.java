@@ -20,6 +20,7 @@ import udel.GardenProject.windows.Window;
 /**
  * Creates the stage: Loads graphics, images, and defines what the user sees.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class View {

@@ -10,6 +10,7 @@ import udel.GardenProject.garden.View;
  * Allow the user detail the background of their plot with labels, and specify
  * characteristics for some areas of their plot.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class BluePrint extends Window {

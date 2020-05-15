@@ -22,7 +22,9 @@ import javafx.scene.shape.StrokeType;
 /**
  * Arbitrary polygon that can be moved around within a Scene.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class AdjustablePolygon implements Serializable {
 	

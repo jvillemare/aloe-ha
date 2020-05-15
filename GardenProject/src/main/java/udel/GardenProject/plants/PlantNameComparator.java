@@ -3,10 +3,11 @@ package udel.GardenProject.plants;
 import java.util.Comparator;
 
 /**
- * Compare Plants by latin or common names, sorting by common names from A to Z by default.
+ * Compare Plants by Latin or common names, sorting by common names from A to Z 
+ * by default.
  * 
+ * @version 1.0
  * @author Team 0
- *
  */
 public class PlantNameComparator implements Comparator<Plant> {
 

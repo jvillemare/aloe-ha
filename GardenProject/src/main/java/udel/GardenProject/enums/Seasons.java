@@ -3,9 +3,10 @@ package udel.GardenProject.enums;
 import java.util.ArrayList;
 
 /**
- * General season descriptions, and combinations thereof.
- * Used in Questionnaire and Plant Info
+ * General season descriptions, and combinations thereof. Used in Questionnaire 
+ * and Plant Info.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public enum Seasons {

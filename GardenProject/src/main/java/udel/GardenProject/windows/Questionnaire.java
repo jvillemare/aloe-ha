@@ -44,6 +44,7 @@ import udel.GardenProject.plotObjects.PlotObject;
 /**
  * Basic questions about a user's plots that informs what plants are selected.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class Questionnaire extends Window {

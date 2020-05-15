@@ -29,6 +29,7 @@ import udel.GardenProject.windows.*;
 /**
  * Updates the stage: Contains logic and data.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Model {
@@ -72,6 +73,14 @@ public class Model {
 	 * The plant to be shown in the PlantInfo window.
 	 */
 	private Plant plantInfoPlant;
+	
+	/**
+	 * The plant that is currently being dragged in the PlotDesign window, null]
+	 * if there is no plant being dragged, a reference to a Plant object if it
+	 * is being dragged. Used between the drag and release handlers of
+	 * PlotDesign.
+	 */
+	private Plant plotDesignDraggingPlant;
 
 	/**
 	 * Where all the user data is collected and stored.
@@ -524,7 +533,30 @@ public class Model {
 		}
 		return true;
 	}
+	
+	/**
+	 * Getter.
+	 * @return	Current reference to the plant being dragged in PlotDesign.
+	 */
+	public Plant getPlotDesignDraggingPlant() {
+		return this.plotDesignDraggingPlant;
+	}
+	
+	/**
+	 * Setter.
+	 * @param plotDesignDraggingPlant	New dragging plant reference to be 
+	 * 									saved.
+	 */
+	public void setPlotDesignDraggingPlant(Plant plotDesignDraggingPlant) {
+		this.plotDesignDraggingPlant = plotDesignDraggingPlant;
+	}
 
+	/**
+	 * Calculate the file path of where a file to be cached should go.
+	 * @param filepath	Typically just the filename itself.
+	 * @return	Full file path of where in the app data directory of a user's
+	 * 			system should a file be saved.
+	 */
 	private String calculateFilepath(String filepath) {
 		return this.appDataDirectory + filepath;
 	}

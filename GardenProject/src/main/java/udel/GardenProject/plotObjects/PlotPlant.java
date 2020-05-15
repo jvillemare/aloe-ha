@@ -14,14 +14,20 @@ import udel.GardenProject.plants.Plant;
  * Plant that can appear on the plot in PlotDesign.<br><br>
  * 
  * Special object that stays in the root of the 
- * <code>udel.GardenProject.plotObjects</code> package.
+ * <code>udel.GardenProject.plotObjects</code> package.<br><br>
  * 
+ * This PlotObject is unique in that it does not have an accompanying 
+ * PlotObjects enum constant, as the how a plant appears in an accordion is
+ * handled by the Plant class, and how it is rendered in the plot is defined by
+ * this PlotPlant's <code>render()</code> method, as all other PlotObject have.
+ * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class PlotPlant extends PlotObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
 	
 	/**
 	 * The plant this PlotPlant is representing.
@@ -117,37 +123,41 @@ public class PlotPlant extends PlotObject implements Serializable {
 		}
 	}
 	
-	public static Node render(Plant p) {
-		// fall back plant image
-		String plantImages = choosePlotImage(p);
-				
-		// choose plant image if available
-		if(p.getImages() != null && p.getImages().length != 0) {
-			plantImages = p.getImages()[0];
+	public Node render(Plant p) {
+		String[] plantImg = p.getImages();
+		Image plantImage;
+		
+		// Get the actual image if it exists
+		if (plantImg != null && plantImg.length > 0) {
+			String path = p.getImages()[0];
+			plantImage = new Image(path, 40.0, 40.0, true, true);
+		} else {
+			// get a default image
+			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 40.0, 40.0,
+					true, true);
 		}
+		
+		ImageView imageView = new ImageView();
+		imageView.setImage(plantImage);
 				
-		/*
-		 * String[] plantImg = p.getImages();
-			Image plantImage;
-			// Get the actual image if it exists
-			if (plantImg != null && plantImg.length > 0) {
-				String path = p.getImages()[0];
-				plantImage = new Image(path, imageSize, imageSize, true, true);
-			} else {
-				// get a default image
-				plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imageSize, imageSize,
-						true, true);
-			}
-			ImageView imageView = new ImageView();
-			imageView.setImage(plantImage);
-		 */
-				
-		return null;
+		return imageView;
 	}
 
 	@Override
 	public Node render() {
 		return render(this.p);
+	}
+
+	@Override
+	public double getRenderWidth() {
+		// TODO Auto-generated method stub
+		return 40.0;
+	}
+
+	@Override
+	public double getRenderHeight() {
+		// TODO Auto-generated method stub
+		return 40.0;
 	}
 
 }

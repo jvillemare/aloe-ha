@@ -1,5 +1,12 @@
 package udel.GardenProject.enums;
 
+/**
+ * Specifies where the data for a Plant originated from, and a friendly name of
+ * that database.
+ * 
+ * @version 1.0
+ * @author Team 0
+ */
 public enum PlantDataSource {
 	
 	UDEL("University of Delaware Flora Database"), 

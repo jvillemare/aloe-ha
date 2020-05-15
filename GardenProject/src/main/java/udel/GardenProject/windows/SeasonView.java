@@ -38,6 +38,7 @@ import udel.GardenProject.plotObjects.YDistanceComparator;
  * Preview the garden as it will appear in every season and 1, 2, and 3 years
  * down the line.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class SeasonView extends Window {
@@ -227,24 +228,20 @@ public class SeasonView extends Window {
 	 * Sends input from user to the session after user clicks NEXT
 	 */
 	public void getInput() {
-
 		getSession().setSeasonInput(chooseSeason);
 		getSession().setYearInput(chosenYear);
 		getSession().setViewInput(chosenView);
-
 	}
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return this.scene;
 	}
 
 	/**
-	 * Buttons for navigation are created and handled
+	 * Buttons for navigation are created and handled.
 	 */
 	public void createButtons() {
-
 		back = new Button("Go Back");
 		back.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -301,11 +298,10 @@ public class SeasonView extends Window {
 			});
 
 		}
-
 	}
 
 	/**
-	 * Creates the toggles for season, year, and view with handling
+	 * Creates the toggles for season, year, and view with handling.
 	 */
 	public void createToggleGroups() {
 		seasonHBox = new HBox();
@@ -435,7 +431,7 @@ public class SeasonView extends Window {
 	}
 
 	/**
-	 * Refreshes the screen to clear any of the toggles chosen
+	 * Refreshes the screen to clear any of the toggles chosen.
 	 */
 	public void refresh() {
 		// TODO: drawCanvas() doesn't need to be called here?
@@ -458,6 +454,7 @@ public class SeasonView extends Window {
 		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		Collections.sort(plot, new YDistanceComparator());
 		DropShadow shadow = new DropShadow();
+		// TODO: Delete one of these for loops?
 		for (PlotObject po : plot) {
 			factor = .3;
 			if (po.getPlotY() / MAXDEPTH > factor) {

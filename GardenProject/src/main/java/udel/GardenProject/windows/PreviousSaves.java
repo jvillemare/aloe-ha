@@ -10,6 +10,7 @@ import udel.GardenProject.garden.View;
  * Displays a short table of where a user has recently saved Sessions on their
  * disk.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class PreviousSaves extends Window {

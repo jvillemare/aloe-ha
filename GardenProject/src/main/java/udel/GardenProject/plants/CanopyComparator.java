@@ -5,6 +5,7 @@ import java.util.Comparator;
 /**
  * Compare plants by Canopy level, by default descending.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class CanopyComparator implements Comparator<Plant> {

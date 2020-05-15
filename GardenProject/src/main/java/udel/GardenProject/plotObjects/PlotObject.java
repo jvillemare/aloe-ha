@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
 
 /**
  * An object that can appear in PlotDesign must implement this interface.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public abstract class PlotObject implements Serializable {
@@ -60,6 +62,7 @@ public abstract class PlotObject implements Serializable {
 	 * position determined from a MouseRelease event, and a height for
 	 * calculating plant transition, shade, etc.
 	 * 
+	 * @param 
 	 * @param x			Horizontal position in plot.
 	 * @param y			Vertical position in plot.
 	 * @param height	Height in feet of plot object.
@@ -67,8 +70,8 @@ public abstract class PlotObject implements Serializable {
 	 * @param imagePath	String of path to window view image.
 	 * @param plotPath	String of path to plot design image.
 	 */
-	public PlotObject(Model model, double x, double y, double height, 
-			double radius, String imagePath, String plotPath) {
+	public PlotObject(Model model, double x, double y, 
+			double height, double radius, String imagePath, String plotPath) {
 		this.model = model;
 		this.x = x;
 		this.y = y;
@@ -79,22 +82,23 @@ public abstract class PlotObject implements Serializable {
 	}
 	
 	/**
-	 * Abstract. All Plot Objects must specify how they will appear in the UI.
+	 * Abstract. All Plot Objects must specify how they will appear on a plot.
 	 * @return	Node object
 	 */
 	public abstract Node render();
 	
-	public Node renderInPlot() {
-		// TODO: Rearrange me
-		// TODO: Make me abstract
-		return null;
-	}
+	/**
+	 * Abstract. All Plot Objects must specify how wide they will be in the UI.
+	 * @return	Width of a plot object as it appears in a scene.
+	 */
+	public abstract double getRenderWidth();
 	
-	public Node renderInAccordion() {
-		// TODO: Rearrange me
-		// TODO: Make me abstract
-		return null;
-	}
+	/**
+	 * Abstract. All Plot Objects must specify how tall they will appear in the 
+	 * UI.
+	 * @return	Length of a plot object as it appears in a scene.
+	 */
+	public abstract double getRenderHeight();
 	
 	// TODO: Rename?
 	public Node deleteFromInterface() {
