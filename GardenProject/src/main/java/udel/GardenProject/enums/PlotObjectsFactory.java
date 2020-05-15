@@ -1,7 +1,9 @@
 package udel.GardenProject.enums;
 
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Facilitates the manufacturing of PlotObjects JavaFX Nodes, as they can 
@@ -26,25 +28,16 @@ public class PlotObjectsFactory {
 		Image objectImage;
 
 		// The following line just holds images of trees
-		objectImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), 
+		objectImage = new Image(getClass().getResourceAsStream(po.getImageFilePath()), 
 				150, 150, true, true);
 		// = new Image(p.getImage(), 70, 70, true, true);
-		//ImageView imageView = new ImageView();
-		//imageView.setImage(objectImage);
+		ImageView imageView = new ImageView();
+		imageView.setImage(objectImage);
 
-		//String name = p.toString();
-		//Tooltip.install(imageView, new Tooltip(name));
-		//*/
-		
-		/**
-		 * TODO: IMPLEMENT DRAG FOR PLOT OBJECTS
-		 */
-		/*
-		 * plotPlants.put(imageView, new PlotPlant(p,0,0));
-		 * imageView.setOnMouseDragged(getHandlerForDrag());
-		 * imageView.setOnMouseReleased(getHandlerForRelease());
-		 */
-		return null;
+		if(po.getDescription().isEmpty() == false)
+			Tooltip.install(imageView, new Tooltip(po.getDescription()));
+
+		return imageView;
 	}
 
 }

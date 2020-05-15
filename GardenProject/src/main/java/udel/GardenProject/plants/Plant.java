@@ -143,7 +143,7 @@ public class Plant implements Serializable {
 	/**
 	 * Getter.
 	 * 
-	 * @return All the common names for a plant. Not guranteed to be unique.
+	 * @return All the common names for a plant. Not guaranteed to be unique.
 	 */
 	public String[] getCommonNames() {
 		return commonNames;
@@ -152,8 +152,8 @@ public class Plant implements Serializable {
 	/**
 	 * Getter.
 	 * 
-	 * @return A plant's unique latin name with genus capitalized and species all
-	 *         lower case in traditional Linnaeus classifcation. Example:
+	 * @return A plant's unique Latin name with genus capitalized and species all
+	 *         lower case in traditional Linnaeus classification. Example:
 	 *         <code>Pinus pine</code>.
 	 */
 	public String getLatinName() {
