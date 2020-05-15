@@ -112,6 +112,11 @@ public class PlantSelection extends Window {
 	private boolean plantSelEmpty = true;
 	
 	/**
+	 * Cap-size for each canopy level
+	 */
+	private int capPlant = 100;
+	
+	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
 	 */
 	private int inset10 = 10;
@@ -197,7 +202,7 @@ public class PlantSelection extends Window {
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, mainMenu, next);
+		tilePane.getChildren().addAll(back, ease, mainMenu, next);
 
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
@@ -262,6 +267,8 @@ public class PlantSelection extends Window {
 
 		FlowPane flowCanopy = new FlowPane();
 		
+		int plantAddedNum = 0;
+		
 		Moisture m = getSession().getMoistureOfPlot();
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
@@ -298,7 +305,13 @@ public class PlantSelection extends Window {
 			
 			if(fits) {
 				plantSelEmpty = false;
-				flowCanopy.getChildren().add(createPlantBox(p));
+				
+				if(plantAddedNum == capPlant) {
+					break;
+				}else {
+					plantAddedNum++;
+					flowCanopy.getChildren().add(createPlantBox(p));
+				}
 			}
 			
 		}
@@ -472,6 +485,13 @@ public class PlantSelection extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
+				getSession().setSunlightOfPlot(-1.0);
+				ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
+				updatedSeason.add(Seasons.SUMMER);
+				getSession().setSeasonsUserSelected(updatedSeason);
+				ArrayList<Colors> updatedColor = getSession().getColorsUserSelected();
+				updatedColor.add(Colors.BLUE);
+				getSession().setColorsUserWants(updatedColor);
 				switchToWindow(Windows.PlantSelection);
 				
 			}
@@ -479,6 +499,7 @@ public class PlantSelection extends Window {
 		
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
+		buttons.add(ease);
 		buttons.add(mainMenu);
 		buttons.add(next);
 
