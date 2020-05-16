@@ -292,15 +292,13 @@ public class PlantSelection extends Window {
 	}
 	
 	/**
-	 * Populates each canopy level with plants that match from the users desires in Questionnaire.
+	 * Populates a canopy level with plants that match from the users desires in Questionnaire.
 	 * 
 	 * @param List<TiledPane>
 	 * @throws Exception 
 	 */
 	public void populateTile(TitledPane t, int pageNum){
-		System.out.println("I was called " + pageNum);
 		createFlowPane(t, pageNum);
-		
 	}
 	
 	/**
@@ -349,11 +347,10 @@ public class PlantSelection extends Window {
 	}
 
 	/**
-	 * Function creates a flow pane (with Scroll) for the type of canopy selected.
-	 * Filters the plants to match those desired.
-	 * 
-	 * @param canopy --> Takes in a canopy
-	 * @throws Exception 
+	 * Populates a tiltedPane in the accordion to match what plants fit in that canopy
+	 * also produces buttons and pages to limit the amount of plants show-cased.
+	 * @param TitledPane
+	 * @param page
 	 */
 	public void createFlowPane(TitledPane t, int page){
 		VBox show = new VBox();
