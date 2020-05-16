@@ -111,5 +111,13 @@ public enum Canopy {
 	public String getContains() {
 		return contains;
 	}
-
+	
+	public static Canopy getCanopyByContains(String name) {
+		for(Canopy c : Canopy.values()) {
+			if(c.getContains().equals(name)){
+				return c;
+			}
+		}
+		return Canopy.FLOOR;
+	}
 }
