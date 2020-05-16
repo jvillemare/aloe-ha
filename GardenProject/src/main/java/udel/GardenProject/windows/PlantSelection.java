@@ -3,6 +3,8 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -236,15 +238,13 @@ public class PlantSelection extends Window {
 	 * Creates an Alarm if there are not plants that suit the given answers.
 	 */
 	public void setAlarm() {
-		ButtonType automatic = new ButtonType("Easy Plant", ButtonData.APPLY);
-		ButtonType cont = new ButtonType("Ok", ButtonData.OK_DONE);
-		ButtonType question = new ButtonType("Back", ButtonData.APPLY);
+		ButtonType automatic = new ButtonType("Easy Plant");
+		ButtonType cont = new ButtonType("Ok");
 		Alert warning = new Alert(AlertType.WARNING, "No Plant Options",cont, automatic);
 		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
 				+ "\n\nPlease either:"
 				+ "\n\t- Click Ok to continue anyways"
-				//+ "\n\t- Click Back to update your responses"
-				+ "\n\t- Click Easy Plant Button to automatically ease \n\t   the results");
+				+ "\n\t- Click Easy Plant Button to automatically ease \n\t   the inputs");
 		
 		if(plantSelEmpty) {
 			warning.showAndWait().ifPresent(response -> {
@@ -253,7 +253,6 @@ public class PlantSelection extends Window {
 			     }
 			 });
 		}
-		
 	}
 	
 	/**
@@ -549,6 +548,9 @@ public class PlantSelection extends Window {
 		}
 	}
 	
+	/**
+	 * Automatic addition to make plants appear in plant selection.
+	 */
 	public void easeSelection() {
 		getSession().setSunlightOfPlot(-1.0);
 		ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
