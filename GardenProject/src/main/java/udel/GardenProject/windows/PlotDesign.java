@@ -150,7 +150,7 @@ public class PlotDesign extends Window {
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
 	private int scrollPrefWidth = View.getCanvasWidth() / 5 + 30;
 	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
-	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 10;
+	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9;
 	private int allPlantsButtonFontSize = 17;
 	private int tilePaneWidthAdjustment = 20;
 	private int allPlantsButtonWidth = 170;
@@ -290,7 +290,7 @@ public class PlotDesign extends Window {
 	public void scrollPaneFormat(ScrollPane scroll) {
 		scroll.setMaxWidth(scrollPrefWidth);
 		scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scroll.setStyle(View.getWhiteBackgroundStyle() + "-fx-border-color: #F6AAA4;" + "-fx-border-insets: 5;"
 				+ "-fx-border-width: 3;" + "-fx-border-style: solid;");
 	}
@@ -324,7 +324,7 @@ public class PlotDesign extends Window {
 
 		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects(),
 				"Go back to the Questionnaire to add Plot Objects here");
-		TitledPane obstacles = new TitledPane("Plot Objects", obstaclesFlow);
+		TitledPane obstacles = new TitledPane("Garden Objects", obstaclesFlow);
 		accArr.add(obstacles);
 	}
 
@@ -884,6 +884,7 @@ public class PlotDesign extends Window {
 						plotObjectToAdd = new PlotOther(getModel(), newX, newY);
 						break;
 				}
+				
 			}
 			getSession().getPlot().add(plotObjectToAdd);
 			addPlotObjectToInterface(plotObjectToAdd, newX, newY);
