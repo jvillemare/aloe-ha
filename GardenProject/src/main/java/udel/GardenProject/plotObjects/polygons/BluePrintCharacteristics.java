@@ -150,11 +150,4 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 		return 40.0;
 	}
 
-	@Override
-	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth,
-			double viewDepth, double viewWidth, double yearScale, Effect e) {
-		return;
-		
-	}
-
 }

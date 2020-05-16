@@ -57,17 +57,4 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 		return 40.0;
 	}
 
-	@Override
-	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth,
-			double viewDepth, double viewWidth, double yearScale, Effect e) {
-		if (this.getPlotY() / maxDepth > minScale) {
-			minScale = this.getPlotY() / maxDepth;
-		}
-		Image i = new Image(this.getWindowImage());
-		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
-				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
-				i.getWidth() * minScale, i.getHeight() * minScale);
-		
-	}
-
 }
