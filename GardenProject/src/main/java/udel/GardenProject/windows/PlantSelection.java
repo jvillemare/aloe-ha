@@ -14,6 +14,8 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -195,7 +197,6 @@ public class PlantSelection extends Window {
 	 * @throws Exception 
 	 */
 	public void displaySelection() {
-		System.out.println("DISPLAY CALLED");
 		accArr = new ArrayList<TitledPane>();
 		
 		populateTiles(accArr);
@@ -229,26 +230,28 @@ public class PlantSelection extends Window {
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 		
-		setAlarm();
-		
 	}
 
 	/**
 	 * Creates an Alarm if there are not plants that suit the given answers.
 	 */
 	public void setAlarm() {
-		Alert warning = new Alert(AlertType.WARNING);
+		ButtonType automatic = new ButtonType("Easy Plant", ButtonData.APPLY);
+		ButtonType cont = new ButtonType("Ok", ButtonData.OK_DONE);
+		ButtonType question = new ButtonType("Back", ButtonData.APPLY);
+		Alert warning = new Alert(AlertType.WARNING, "No Plant Options",cont, automatic);
 		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
 				+ "\n\nPlease either:"
-				+ "\n\t- go back to Questionnaire and change your\n\t   answers"
-				+ "\n\t-go to Plant Database in the next screen"
-				+ "\n\t-Press the Easy Plant Button to ease the results");
+				+ "\n\t- Click Ok to continue anyways"
+				//+ "\n\t- Click Back to update your responses"
+				+ "\n\t- Click Easy Plant Button to automatically ease \n\t   the results");
 		
 		if(plantSelEmpty) {
-			Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
-			warning.show();
-			warningStage.setAlwaysOnTop(true);
-			warningStage.toFront();
+			warning.showAndWait().ifPresent(response -> {
+			     if (response == automatic) {
+			         easeSelection();
+			     }
+			 });
 		}
 		
 	}
@@ -512,16 +515,7 @@ public class PlantSelection extends Window {
 		ease.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				getSession().setSunlightOfPlot(-1.0);
-				ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
-				updatedSeason.add(Seasons.SUMMER);
-				getSession().setSeasonsUserSelected(updatedSeason);
-				HashSet<Colors> updatedColor = getSession().getColorsUserSelected();
-				updatedColor.add(Colors.BLUE);
-				getSession().setColorsUserWants(updatedColor);
-				switchToWindow(Windows.PlotDesign);
-				switchToWindow(Windows.PlantSelection);
-				
+				easeSelection();
 			}
 		});
 		
@@ -555,19 +549,33 @@ public class PlantSelection extends Window {
 		}
 	}
 	
+	public void easeSelection() {
+		getSession().setSunlightOfPlot(-1.0);
+		ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
+		updatedSeason.add(Seasons.SUMMER);
+		getSession().setSeasonsUserSelected(updatedSeason);
+		HashSet<Colors> updatedColor = getSession().getColorsUserSelected();
+		updatedColor.add(Colors.BLUE);
+		getSession().setColorsUserWants(updatedColor);
+		switchToWindow(Windows.PlotDesign);
+		switchToWindow(Windows.PlantSelection);
+	}
+	
 	public void refresh() {
 		System.out.println(getModel().getLastWindow().getEnum().name());
 		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 				getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
 			plantSelEmpty = true;
 			try {
-				System.out.println("MADE TRY BLOCK");
 				displaySelection();
 			}catch(Exception e) {
 				e.getMessage();
 			}
 			selectedPlantsBox.getChildren().clear();
 			addSelected();
+			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
+				setAlarm();
+			}
 		} else {
 			System.out.println(getModel().getLastWindow().getEnum().name());
 			System.out.println("I was NOT called");
