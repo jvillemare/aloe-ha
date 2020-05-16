@@ -35,7 +35,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import udel.GardenProject.enums.GardenView;
-import udel.GardenProject.enums.Particle;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.enums.Year;
@@ -109,9 +108,9 @@ public class SeasonView extends Window {
 	private GraphicsContext gc;
 
 	/**
-	 * Final toggle the user chose for season
+	 * Final toggle the user chose for season. Defaults to Summer.
 	 */
-	public Seasons chooseSeason;
+	public Seasons chooseSeason = Seasons.SUMMER;
 
 	/**
 	 * Final toggle the user chose for the year
@@ -147,11 +146,6 @@ public class SeasonView extends Window {
 	 * Maximum width a plot object may be placed on plot design
 	 */
 	private final int MAXWIDTH = 700;
-
-	/**
-	 * Factor for scaling images in the window view
-	 */
-	private double factor;
 	
 	/**
 	 * Minimum amount of particles that may be drawn for snow or leaves.
@@ -217,6 +211,11 @@ public class SeasonView extends Window {
 	 * Image that will be used for ground in window view.
 	 */
 	private Image ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
+	
+	/**
+	 * ColorAdjust specifically for the background images.
+	 */
+	ColorAdjust bgAdjust = new ColorAdjust();
 
 	private int inset5 = 5;
 	private int inset10 = 10;
@@ -420,7 +419,6 @@ public class SeasonView extends Window {
 			seasonHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chooseSeason=s;
-				gc.clearRect(0, 0, viewWidth, viewDepth);
 				ColorAdjust hue = new ColorAdjust();
 				switch(s) {
 				case WINTER:
@@ -428,30 +426,24 @@ public class SeasonView extends Window {
 					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/overcast.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/snow.png"));
-					drawBackground();
-					drawCanvas();
-					drawRandom(Particle.SNOW);
+					this.bgAdjust.setHue(0);
 					break;
 				case FALL:
-					hue.setHue(-.1);
+					hue.setHue(-.2);
 					this.effect = hue;
-					gc.setEffect(hue);
 					sky = new Image(getClass().getResourceAsStream("/viewImages/clouds.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
-					drawBackground();
-					hue.setHue(-.2);
-					drawCanvas();
-					drawRandom(Particle.LEAVES);
+					this.bgAdjust.setHue(-.1);
 					break;
 				default:
 					hue.setHue(0);
 					this.effect = hue;
 					sky = new Image(getClass().getResourceAsStream("/viewImages/blueSky.png"));
 					ground = new Image(getClass().getResourceAsStream("/viewImages/grass.png"));
-					drawBackground();
-					drawCanvas();
+					this.bgAdjust.setHue(0);
 					break;
 				}
+				drawCanvas();
 			});
 		}
 
@@ -467,42 +459,18 @@ public class SeasonView extends Window {
 			yearHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
 				chosenYear = y;
-				gc.clearRect(0, 0, viewWidth, viewDepth);
 				switch(chosenYear) {
 				case YEAR0:
 					this.curYearScale = scale0;
-					drawBackground();
-					drawCanvas();
-					if (chooseSeason == Seasons.FALL) {
-						drawRandom(Particle.LEAVES);
-					}
-					if (chooseSeason == Seasons.WINTER) {
-						drawRandom(Particle.SNOW);
-					}
 					break;
 				case YEAR1:
 					this.curYearScale = scale1;
-					drawBackground();
-					drawCanvas();
-					if (chooseSeason == Seasons.FALL) {
-						drawRandom(Particle.LEAVES);
-					}
-					if (chooseSeason == Seasons.WINTER) {
-						drawRandom(Particle.SNOW);
-					}
 					break;
 				case YEAR2:
 					this.curYearScale = scale2;
-					drawBackground();
-					drawCanvas();
-					if (chooseSeason == Seasons.FALL) {
-						drawRandom(Particle.LEAVES);
-					}
-					if (chooseSeason == Seasons.WINTER) {
-						drawRandom(Particle.SNOW);
-					}
 					break;
 				}
+				drawCanvas();
 			});
 		}
 
@@ -585,7 +553,7 @@ public class SeasonView extends Window {
 	/**
 	 * Draws all the plot objects on the canvas for the window view.
 	 */
-	public void drawCanvas() {
+	public void drawObjects() {
 		gc.setFill(Color.rgb(140, 140, 140, .2));
 		ArrayList<PlotObject> plot = this.getModel().getSession().getPlot();
 		Collections.sort(plot, new YDistanceComparator());
@@ -603,32 +571,50 @@ public class SeasonView extends Window {
 	 * Draws ground and sky for the window view.
 	 */
 	public void drawBackground() {
+		gc.setEffect(this.bgAdjust);
 		gc.drawImage(sky, 0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.drawImage(ground, 0, canvas.getHeight() / 3 * 2, canvas.getWidth(), canvas.getHeight() / 3);
+		gc.setEffect(this.effect);
 	}
 	
 	/**
 	 * Randomly draws leaves or snow on the window view based on season.
-	 * @param gc Graphics Context for Window View Canvas
-	 * @param image integer representing snow or leaves. 0 is snow, 1 is leaves.
 	 */
-	public void drawRandom(Particle image) {
-		int numPart = (int)(Math.random() * ((maxRandomParticles - minRandomParticles) + 1)) + minRandomParticles;
-		switch(image) {
-		case SNOW:
-			for(int i = 0; i < numPart; i++) {
-				gc.setFill(Color.rgb(255,255,255,Math.random()));
-				gc.fillOval((Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)), snowSize, snowSize);
+	public void drawRandom() {
+		int numPart = (int) (Math.random() * ((maxRandomParticles - minRandomParticles) + 1)) + minRandomParticles;
+		switch (this.chooseSeason) {
+		case FALL:
+			Image[] leaves = {
+					new Image(getClass().getResourceAsStream("/viewImages/fallLeaf1.png"), leafSize1, leafSize1, true,
+							false),
+					new Image(getClass().getResourceAsStream("/viewImages/fallLeaf2.png"), leafSize2, leafSize2, true,
+							false) };
+			for (int i = 0; i < numPart; i++) {
+				gc.drawImage(leaves[(int) (Math.random() * 2)], (Math.random() * ((viewWidth) + 1)),
+						(Math.random() * ((viewDepth) + 1)));
 			}
-			break;
-		case LEAVES:
-			Image[] leaves = {new Image(getClass().getResourceAsStream("/viewImages/fallLeaf1.png"), leafSize1, leafSize1, true, false),
-			new Image(getClass().getResourceAsStream("/viewImages/fallLeaf2.png"), leafSize2, leafSize2, true, false)};
-			for(int i = 0; i < numPart; i++) {
-				gc.drawImage(leaves[(int)(Math.random()*2)], (Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)));
+			return;
+		case WINTER:
+			for (int i = 0; i < numPart; i++) {
+				gc.setFill(Color.rgb(255, 255, 255, Math.random()));
+				gc.fillOval((Math.random() * ((viewWidth) + 1)), (Math.random() * ((viewDepth) + 1)), snowSize,
+						snowSize);
 			}
-			break;
+			return;
+		default:
+			return;
 		}
+	}
+	
+	/**
+	 * Combines all of the drawing methods into a single method.
+	 * Clears Canvas and then redraws it.
+	 */
+	public void drawCanvas() {
+		gc.clearRect(0, 0, viewWidth, viewDepth);
+		drawBackground();
+		drawObjects();
+		drawRandom();
 	}
 	
 }

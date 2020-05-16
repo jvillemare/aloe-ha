@@ -81,6 +81,7 @@ public class PlotPath extends GenericLine implements Serializable {
 		if (this.getPlotY() / maxDepth > minScale) {
 			minScale = this.getPlotY() / maxDepth;
 		}
+		gc.setEffect(null);
 		Image i = new Image(this.getWindowImage());
 		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
