@@ -246,7 +246,7 @@ public class SeasonView extends Window {
 		toggleOptionsTilePane = new TilePane();
 		tilePane = new TilePane();
 
-		text = new Text("Select the season, year, and view you would like to see your Garden in!");
+		text = new Text("Select different seasons and years for your garden. Click 'Next' to go to the download screen.");
 		text.setFont(getModel().getHackBold20());
 		text.setWrappingWidth(View.getCanvasWidth() - textWrapAdjustment);
 		vbox.setAlignment(Pos.CENTER);
