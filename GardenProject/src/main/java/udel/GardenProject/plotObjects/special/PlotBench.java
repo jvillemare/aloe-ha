@@ -28,6 +28,16 @@ public class PlotBench extends GenericSpecial implements Serializable {
 	 */
 	private static String plotBench = "/viewImages/plotBench.png";
 	
+
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
@@ -40,13 +50,13 @@ public class PlotBench extends GenericSpecial implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 
 }

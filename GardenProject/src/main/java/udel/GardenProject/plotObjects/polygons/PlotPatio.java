@@ -30,7 +30,17 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	 * Path to an image of patio furniture for plot design.
 	 */
 	private static String plotPatio = "/viewImages/plotPatio.png";
-
+	
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -39,7 +49,8 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	 */
 	public PlotPatio(Model model, double x, double y) {
 		// TODO: A patio is always 25.0 feet tall?
-		super(model, x, y, 25.0, new AdjustablePolygon(null, null, 0, 0), windowPatio, plotPatio);
+		super(model, x, y, 25.0, new AdjustablePolygon(null, null, 0, 0, height, width),
+				windowPatio, plotPatio);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 	}
@@ -47,13 +58,13 @@ public class PlotPatio extends GenericPolygon implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 
 }

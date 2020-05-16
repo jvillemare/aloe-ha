@@ -2,12 +2,14 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import udel.GardenProject.garden.Model;
 
 /**
@@ -30,6 +32,16 @@ public class PlotFence extends GenericLine implements Serializable {
 	 * Path of image of a fence for plot design.
 	 */
 	private static String plotFence = "/viewImages/plotFence.png";
+
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
 	
 	/**
 	 * Constructor.
@@ -37,26 +49,30 @@ public class PlotFence extends GenericLine implements Serializable {
 	 * @param y Vertical position of first point of fence.
 	 * @param height	Height in feet of fence.
 	 */
-	public PlotFence(Model model, double x, double y, double height) {
-		super(model, x, y, height, new AdjustableLine(), windowFence, plotFence);
+	public PlotFence(Model model, double x, double y, double h) {
+		super(model, x, y, h, new AdjustableLine(Color.RED, height, width), 
+				windowFence, plotFence);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Node render() {
-		return null;
+		Group n=new Group();
+		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
+		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
+		return n;
 	}
 
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 	
 	@Override

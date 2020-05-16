@@ -760,22 +760,27 @@ public class PlotDesign extends Window {
 		Node plotObjectRepresentation = po.render();
 		plotObjectRepresentation.setTranslateX(x);
 		plotObjectRepresentation.setTranslateY(y);
-		plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				double newX = plotObjectRepresentation.getTranslateX() + event.getX();
-				double newY = plotObjectRepresentation.getTranslateY() + event.getY();
-				if (newX > 0 && newX < group.getLayoutBounds().getWidth() - po.getRenderWidth()) {
-					plotObjectRepresentation.setTranslateX(newX);
-					po.setPlotX(newX);
+		if(!po.getUseDefaultDragHandler()){
+			plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					double newX = plotObjectRepresentation.getTranslateX() + event.getX();
+					double newY = plotObjectRepresentation.getTranslateY() + event.getY();
+					if (newX > 0 && newX < group.getLayoutBounds().getWidth() - po.getRenderWidth()) {
+						plotObjectRepresentation.setTranslateX(newX);
+						po.setPlotX(newX);
+					}
+					if (newY > 0 && newY < group.getLayoutBounds().getHeight() - po.getRenderHeight()) {
+						plotObjectRepresentation.setTranslateY(newY);
+						po.setPlotY(newY);
+					}
 				}
-				if (newY > 0 && newY < group.getLayoutBounds().getHeight() - po.getRenderHeight()) {
-					plotObjectRepresentation.setTranslateY(newY);
-					po.setPlotY(newY);
-				}
-			}
-		});
-		group.getChildren().add(plotObjectRepresentation);
+			});
+			group.getChildren().add(plotObjectRepresentation);
+		}
+		else {
+			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
+		}
 	}
 
 	/**

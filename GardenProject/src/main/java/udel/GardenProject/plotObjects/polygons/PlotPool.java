@@ -26,7 +26,21 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 */
 	private static String windowPool = "/viewImages/pool.png";
 	
+	/**
+	 * Path of an image of a pool for plot design.
+	 */
 	private static String plotPool = "/viewImages/plotPool.png";
+	
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
+	
 	
 	/**
 	 * Constructor.
@@ -37,20 +51,21 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 */
 	public PlotPool(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPool, plotPool);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width),
+				windowPool, plotPool);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 
 }
