@@ -312,15 +312,18 @@ public class PlotDesign extends Window {
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
 		System.out.println("POPULATE TILES CALLED");
-		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants());
+		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(),
+				"Go back to the Existing Plants window to add plants here");
 		TitledPane existing = new TitledPane("Existing Plants", existingFlow);
 		accArr.add(existing);
 
-		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants());
+		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants(),
+				"Go to the Plant Database to add plants here");
 		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
 		accArr.add(selected);
 
-		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects());
+		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects(),
+				"Go back to the Questionnaire to add Plot Objects here");
 		TitledPane obstacles = new TitledPane("Plot Objects", obstaclesFlow);
 		accArr.add(obstacles);
 	}
@@ -342,10 +345,13 @@ public class PlotDesign extends Window {
 	 * Creates the flow pane for the PlotObjects (non-PlotPlants) the user 
 	 * chose.
 	 * 
-	 * @param obj ArrayList of Plot Objects.
+	 * @param obj 			ArrayList of Plot Objects.
+	 * @param fallbackText	Text that appears in the FlowPane if the obj 
+	 * 						ArrayList is empty.
 	 * @return Flow Pane.
 	 */
-	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj) {
+	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj, 
+			String fallBackText) {
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -362,16 +368,20 @@ public class PlotDesign extends Window {
 
 			flow.getChildren().add(renderedPlotObject);
 		}
+		if(obj.size() == 0)
+			flow.getChildren().add(new Text(fallBackText));
 		return flow;
 	}
 
 	/**
 	 * Creates Flow Pane for a HashSet of Plants.
 	 * 
-	 * @param plants HashSet of Plants.
-	 * @return FlowPane
+	 * @param plants 		HashSet of Plants.
+	 * @param fallBackText	What appears if plants is empty.
+	 * @return FlowPane		What's supposed to show up in the accordion of
+	 * 						PlotDesign.
 	 */
-	public FlowPane createPlantFlow(HashSet<Plant> plants) {
+	public FlowPane createPlantFlow(HashSet<Plant> plants, String fallBackText) {
 		Thread.currentThread().getStackTrace();
 		System.out.println("starting with plants.size=" + plants.size());
 		FlowPane flow = new FlowPane();
@@ -398,8 +408,8 @@ public class PlotDesign extends Window {
 			VBox imageAndNameHolder = new VBox(plantRepresentation, new Text(name));
 			flow.getChildren().add(imageAndNameHolder);
 		}
-		//if(plants.size() == 0)
-			//
+		if(plants.size() == 0)
+			flow.getChildren().add(new Text(fallBackText));
 		return flow;
 	}
 

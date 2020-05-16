@@ -63,7 +63,7 @@ public class Controller extends Application {
 	 * Update the View with the new current window.
 	 * @param w	New current window.
 	 */
-	public void update(Window w) {
+	protected void update(Window w) {
 		view.update(w);
 	}
 	
@@ -72,7 +72,7 @@ public class Controller extends Application {
 	 * constructor.
 	 * @return	Current window.
 	 */
-	public Window getCurrentWindow() {
+	protected Window getCurrentWindow() {
 		return model.getWindow();
 	}
 	
@@ -80,7 +80,7 @@ public class Controller extends Application {
 	 * Get the launch parameters passed by JavaFX.
 	 * @return <code>--key=value</code> pairs of command line flags.
 	 */
-	public Map<String, String> getParams() {
+	protected Map<String, String> getParams() {
 		return this.params;
 	}
 	
