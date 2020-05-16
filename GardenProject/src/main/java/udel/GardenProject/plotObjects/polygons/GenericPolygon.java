@@ -3,6 +3,7 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
@@ -46,7 +47,10 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	
 	@Override
 	public Node render() {
-		return this.getPolygon();
+		Group n=new Group();
+		n.getChildren().addAll(this.p.getAnchors());
+		n.getChildren().add(this.p.getPolygon());
+		return n;
 	}
 	
 	/**
