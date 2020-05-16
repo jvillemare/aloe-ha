@@ -3,8 +3,10 @@ package udel.GardenProject.plotObjects.lines;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
+import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon.Anchor;
 
 /**
@@ -40,12 +42,12 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	
 	/**
 	 * Getter.
-	 * @return 	The Polygon that should represent this object in the PlotDesign
+	 * @return 	The AdjustablePolygon that should represent this object in the PlotDesign
 	 * 			Window.
 	 */
-	public final Object getPolygon() {
+	public final AdjustablePolygon getAdjustablePolygon() {
 		// TODO: Implement and change return type
-		return null;
+		return l.getLine();
 	}
 	
 	/**

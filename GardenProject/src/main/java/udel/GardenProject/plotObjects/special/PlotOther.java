@@ -29,6 +29,15 @@ public class PlotOther extends GenericSpecial implements Serializable {
 	private static String plotPicture = "/viewImages/plotGardenBed.png";
 
 	/**
+	 * Render Width of the object
+	 */
+	private static double Width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double Height=40.0;
+	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
 	 * @param y	Vertical position.
@@ -41,13 +50,13 @@ public class PlotOther extends GenericSpecial implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Height;
 	}
 
 }

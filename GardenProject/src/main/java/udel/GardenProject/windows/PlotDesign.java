@@ -760,6 +760,7 @@ public class PlotDesign extends Window {
 		Node plotObjectRepresentation = po.render();
 		plotObjectRepresentation.setTranslateX(x);
 		plotObjectRepresentation.setTranslateY(y);
+		if(!(plotObjectRepresentation instanceof Group)){
 		plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -776,6 +777,10 @@ public class PlotDesign extends Window {
 			}
 		});
 		group.getChildren().add(plotObjectRepresentation);
+		}
+		else {
+			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
+		}
 	}
 
 	/**

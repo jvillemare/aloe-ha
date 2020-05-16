@@ -2,8 +2,10 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import udel.GardenProject.garden.Model;
 
 /**
@@ -22,8 +24,21 @@ public class PlotPath extends GenericLine implements Serializable {
 	 */
 	private static String windowPath = "/viewImages/path.png";
 	
+	/**
+	 * Image of a path for plot design.
+	 */
 	private static String plotPath = "/viewImages/plotPath.png";
-
+	
+	/**
+	 * Render Width of the object
+	 */
+	private static double Width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double Height=40.0;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -31,25 +46,28 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 	public PlotPath(Model model, double x, double y) {
-		super(model, x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
+		super(model, x, y, 1.0, new AdjustableLine(Color.RED, Width, Height), windowPath, plotPath);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Node render() {
-		return render();
+		Group n=new Group();
+		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
+		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
+		return n;
 	}
 
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Height;
 	}
 
 }

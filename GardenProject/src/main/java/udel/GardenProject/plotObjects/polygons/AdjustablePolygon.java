@@ -42,8 +42,12 @@ public class AdjustablePolygon implements Serializable {
 	 * @param anchorColor	Color of the anchors.
 	 * @param startx		Starting horizontal position.
 	 * @param starty		Starting vertical position.
+	 * @param height		Height of the polygon
+	 * @param width			Width of the polygon
 	 */
-	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty) {
+	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty,
+			double height, double width) {
+		b = new Button();
 		polygon=new Polygon();
 		//set stroke color to black
 		polygon.setStroke(Color.BLACK);
@@ -57,13 +61,13 @@ public class AdjustablePolygon implements Serializable {
 		//initial a polygon
 		polygon.getPoints().addAll(new Double[] {
         	    0.0, 0.0,
-        	    0.0, 25.0,
-        	    0.0, 50.0,
-        	    50.0, 50.0,
-        	    100.0, 50.0,
-        	    100.0, 25.0,
-        	    100.0, 0.0,
-        	    50.0, 0.0
+        	    0.0, height/2,
+        	    0.0, height,
+        	    width/2, height,
+        	    width, height,
+        	    width, height/2,
+        	    width, 0.0,
+        	    width/2, 0.0
         	    });
 		polygon.setLayoutX(startx);
 		polygon.setLayoutY(starty);
@@ -141,7 +145,7 @@ public class AdjustablePolygon implements Serializable {
 	 * @return Button object.
 	 */
 	public Button genButton() {
-		b = new Button();
+
 		b.setText("Stop Editing");
 		b.setOnAction(new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
@@ -262,7 +266,7 @@ public class AdjustablePolygon implements Serializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     double newX = mouseEvent.getX() + dragDelta.x;
-                    System.out.println(getLayoutX()+newX+" ");
+                    //System.out.println(getLayoutX()+newX+" ");
                     if (	getLayoutX() + newX >= 0 && 
                     		newX < getParent().getScene().getWidth()) {
                         setCenterX(newX);

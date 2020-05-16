@@ -2,8 +2,10 @@ package udel.GardenProject.plotObjects.lines;
 
 import java.io.Serializable;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import udel.GardenProject.garden.Model;
 
 /**
@@ -26,6 +28,16 @@ public class PlotFence extends GenericLine implements Serializable {
 	 * Path of image of a fence for plot design.
 	 */
 	private static String plotFence = "/viewImages/plotFence.png";
+
+	/**
+	 * Render Width of the object
+	 */
+	private static double Width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double Height=40.0;
 	
 	/**
 	 * Constructor.
@@ -34,25 +46,28 @@ public class PlotFence extends GenericLine implements Serializable {
 	 * @param height	Height in feet of fence.
 	 */
 	public PlotFence(Model model, double x, double y, double height) {
-		super(model, x, y, height, new AdjustableLine(), windowFence, plotFence);
+		super(model, x, y, height, new AdjustableLine(Color.RED,Width,Height), windowFence, plotFence);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Node render() {
-		return null;
+		Group n=new Group();
+		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
+		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
+		return n;
 	}
 
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return Height;
 	}
 
 }
