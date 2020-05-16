@@ -420,6 +420,10 @@ public class PlantSelection extends Window {
 		}
 	}
 	
+	/**
+	 * Formats to match the UI look with color, shadow, etc.
+	 * @param button
+	 */
 	public void formatButton(Button b) {
 		b.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getButtonTextSize()));
 		b.setStyle(View.getLightGreenBackgroundStyle() + View.getBlackTextFill());
