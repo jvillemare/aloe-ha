@@ -76,6 +76,14 @@
             <artifactId>javafx-fxml</artifactId>
             <version>11</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-swing</artifactId>
+		    <version>11</version>
+		</dependency>
+        
 		<dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-junit</artifactId>
