@@ -24,7 +24,7 @@ public class PlotRock extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of a rock for window view.
 	 */
-	private static String windowRock = "/plantImages/rock.png";
+	private static String windowRock = "/viewImages/rock.png";
 	
 	/**
 	 * Path to an image of a rock for plot design.

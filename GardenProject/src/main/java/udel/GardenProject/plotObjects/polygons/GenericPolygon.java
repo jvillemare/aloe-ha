@@ -42,9 +42,7 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	
 	@Override
 	public Node render() {
-		// All polygons that don't override this method will be rendered in the
-		//		plot as such:
-		return null;
+		return this.getPolygon();
 	}
 	
 	/**
