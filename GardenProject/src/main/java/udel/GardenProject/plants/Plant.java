@@ -94,6 +94,8 @@ public class Plant implements Serializable {
 	 * Strings of HTTP links to images of this plant.
 	 */
 	private String[] images;
+	
+	private double imageInAccordionWidthAndHeight = 140;
 
 	/**
 	 * Constructor.
@@ -147,10 +149,10 @@ public class Plant implements Serializable {
 		// Get the actual image if it exists
 		if (plantImg != null && plantImg.length > 0) {
 			String path = this.getImages()[0];
-			plantImage = new Image(path, 40.0, 40.0, true, true);
+			plantImage = new Image(path, imageInAccordionWidthAndHeight, imageInAccordionWidthAndHeight, true, true);
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream(PlotPlant.choosePlotImage(this)), 40.0, 40.0,
+			plantImage = new Image(getClass().getResourceAsStream(PlotPlant.choosePlotImage(this)), imageInAccordionWidthAndHeight, imageInAccordionWidthAndHeight,
 					true, true);
 		}
 		
