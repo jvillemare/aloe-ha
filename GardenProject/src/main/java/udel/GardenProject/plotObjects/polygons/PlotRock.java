@@ -3,6 +3,10 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
 
@@ -20,7 +24,7 @@ public class PlotRock extends GenericPolygon implements Serializable {
 	/**
 	 * Path to an image of a rock for window view.
 	 */
-	private static String windowRock = "/plantImages/rock.png";
+	private static String windowRock = "/viewImages/rock.png";
 	
 	/**
 	 * Path to an image of a rock for plot design.

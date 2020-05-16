@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
@@ -158,6 +161,28 @@ public class PlotPlant extends PlotObject implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0;
+	}
+	
+	@Override
+	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth, double viewDepth, double viewWidth, double yearScale, Effect e) {
+		if (this.getPlotY() / maxDepth > minScale) {
+			minScale = this.getPlotY() / maxDepth;
+		}
+		Image i = new Image(this.getWindowImage());
+		double origDepth = i.getHeight() * minScale;//Height/Width based on depth
+		double origWidth = i.getWidth() * minScale;
+		double actDepth = i.getHeight() * minScale * yearScale;//Height/Width based on age
+		double actWidth = i.getWidth() * minScale * yearScale;
+		double addDepth = origDepth - actDepth;
+		double addWidth = origWidth - actWidth;
+		gc.setEffect(gb);
+		gc.fillOval(this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale) + addWidth / 2,
+				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() / 3 * minScale * yearScale) + viewDepth / 3 * 2 + 10,
+				i.getWidth() * minScale * yearScale, i.getHeight() / 2 * minScale * yearScale);
+		gc.setEffect(e);
+		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale) + addWidth/2,
+				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2 + addDepth + 10,
+				i.getWidth() * minScale * yearScale, i.getHeight() * minScale * yearScale);
 	}
 
 }
