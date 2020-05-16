@@ -22,6 +22,7 @@ import udel.GardenProject.enums.SoilTypes;
 /**
  * Load all the plants from local file databases.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class PlantLoader {

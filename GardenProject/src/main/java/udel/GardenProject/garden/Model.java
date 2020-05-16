@@ -12,7 +12,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
+import javafx.event.EventHandler;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Windows;
@@ -24,6 +29,7 @@ import udel.GardenProject.windows.*;
 /**
  * Updates the stage: Contains logic and data.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Model {
@@ -67,6 +73,14 @@ public class Model {
 	 * The plant to be shown in the PlantInfo window.
 	 */
 	private Plant plantInfoPlant;
+	
+	/**
+	 * The plant that is currently being dragged in the PlotDesign window, null]
+	 * if there is no plant being dragged, a reference to a Plant object if it
+	 * is being dragged. Used between the drag and release handlers of
+	 * PlotDesign.
+	 */
+	private Plant plotDesignDraggingPlant;
 
 	/**
 	 * Where all the user data is collected and stored.
@@ -79,9 +93,65 @@ public class Model {
 	private ArrayList<Plant> nativeOnly = new ArrayList<Plant>();
 	
 	/**
+
+	 * Hack Bold font of size 20
+	 */
+	private Font hackBold20 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
+	
+	/**
+	 * Hack Bold Italic font of size 20
+	 */
+	private Font hackBoldItalic20 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-BoldItalic.ttf"), 20);
+	
+	/**
+	 * Hack Bold font of size 12 for buttons
+	 */
+	private Font hackBold12 = Font.loadFont(
+			getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
+	
+	/**
+	 * Not hovering over the bottom buttons with keep it light green
+	 */
+	private String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
+	
+	/**
+	 * When the user is hovering over the bottom buttons
+	 */
+	private String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
+			+ "-fx-outer-border: #63A331;";
+	
+	/**
+	 * Where on a user's computer have they recently saved sessions? Keys are
+	 * the Session's ID, and the values are the string paths where they were
+	 * saved.
+	 */
+	private HashMap<Integer, String> recentSessions = new HashMap<Integer, String>();
+	
+	/**
+	 * Local reference to Controller for sending Window change updates.
+	 */
+	private Controller c;
+
+  /**
 	 * HashSet containing all of the colors found in the included plants.
 	 */
 	private HashSet<Colors> colors = new HashSet<>();
+
+	/**
+	 * Default Image when a Plant has no images.
+	 */
+	private String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * Returns the set Default Image used.
+	 * @return defaultImage
+	 */
+	public Image getDefaultImage(int height, int width) {
+		return new Image(defaultImage, height, width, true, true);
+	}
 	
 	/**
 	 * Constructor, initialize everything.
@@ -89,7 +159,8 @@ public class Model {
 	 * @param width
 	 * @param height
 	 */
-	public Model(int width, int height) {
+	public Model(Controller c, int width, int height) {
+		this.c = c;
 		this.width = width;
 		this.height = height;
 		this.session = new Session();
@@ -114,17 +185,8 @@ public class Model {
 		setupWindows();
 		printMemoryInfo();
 		createNativeList();
-		
 	}
 
-	/**
-	 * If the user is on the PlotDesign Window, it repeatedly checks the plot for
-	 * collision errors, invasive plants, and evaluates it.
-	 */
-	public void update() {
-		// TODO: Implement for PlotDesign...
-	}
-	
 	/**
 	 * Creates the list of all Native plants
 	 */
@@ -163,17 +225,16 @@ public class Model {
 	}
 
 	/**
-	 * Change the current Window.
+	 * Refreshes the new current Window, then sets it.
 	 * 
 	 * @param w A Window specified by the Windows enum.
 	 */
 	public void setWindow(Windows w) {
 		System.gc();
 		lastWindow = currentWindow;
+		windows[w.ordinal()].refresh();
 		currentWindow = windows[w.ordinal()];
-		currentWindow.refresh();
-		// TODO: Refresh might need to be moved to before the switch so that the
-		// 	window has a chance to refresh before being displayed.
+		c.update(currentWindow);
 	}
 
 	/**
@@ -181,17 +242,35 @@ public class Model {
 	 */
 	public void goToLastWindow() {
 		Window temp = currentWindow;
+		lastWindow.refresh();
 		currentWindow = lastWindow;
 		lastWindow = temp;
-		currentWindow.refresh();
-		// TODO: Refresh might need to be moved to before the switch so that the
-		// 	window has a chance to refresh before being displayed.
+		c.update(currentWindow);
+	}
+	
+	/**
+	 * Getter.
+	 * @return 	Locations of where sessions were recently saved to disk, where
+	 * 			the keys are the integer ID of the session, and values are the
+	 * 			string paths of the saves.
+	 */
+	public HashMap<Integer, String> getRecentSessions() {
+		return this.recentSessions;
+	}
+	
+	/**
+	 * Get command line arguments parsed by JavaFX.
+	 * @return	<code>--key=value</code> pairs of command line flags.
+	 */
+	public Map<String, String> getParams() {
+		return c.getParams();
 	}
 
 	/**
-	 * TODO: Later..
+	 * Get the last window that was displayed to the user. Helpful for back
+	 * buttons going to whatever the previous screen was.
 	 * 
-	 * @return
+	 * @return	Last window displayed to user.
 	 */
 	public Window getLastWindow() {
 		return this.lastWindow;
@@ -301,30 +380,30 @@ public class Model {
 	}
 	
 	/**
-	 * Safely <i>cache</i> a file to a user's computer. Hides all exceptions and
-	 * potential errors.
+	 * Safely <i>cache</i> a file to a user's computer.
 	 * 
 	 * @param filepath Path and filename where to save the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return true if successful in caching the file, false if not.
+	 * @throws IOException 
 	 * @see {@link #loadCacheFile(String) loadCacheFile}
 	 */
 	public boolean saveCacheFile(Object o, String filepath) {
 		String realFilepath = calculateFilepath(filepath);
+		
+		System.out.println(realFilepath);
+		File tmp = new File(realFilepath);
 		try {
-			System.out.println(realFilepath);
-			File tmp = new File(realFilepath);
 			tmp.createNewFile();
 			FileOutputStream file = new FileOutputStream(tmp);
 			ObjectOutputStream out = new ObjectOutputStream(file);
-
+	
 			out.writeObject(o);
-
+	
 			out.close();
 			file.close();
-		} catch (IOException e) {
-			System.out.println(e);
-			System.out.println("Model: Failed to save cache file at " + realFilepath);
+		} catch(IOException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -341,30 +420,63 @@ public class Model {
 	 * @param filepath Path and filename where to load the file in the user's
 	 *                 <code>appDataDirectory</code>.
 	 * @return file object
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @see {@link #saveCacheFile(String) saveCacheFile}
 	 */
-	public Object loadCacheFile(String filepath) {
+	public Object loadCacheFile(String filepath) throws ClassNotFoundException, IOException {
 		String realFilepath = calculateFilepath(filepath);
-		// TODO: Change, how to return input stream but also close it before
-		// returning it??
+		Object o;
+		
 		try {
-			FileInputStream file = new FileInputStream(realFilepath);
-			ObjectInputStream in = new ObjectInputStream(file);
+		  FileInputStream file = new FileInputStream(realFilepath);
+		  ObjectInputStream in = new ObjectInputStream(file);
 
-			this.session = (Session) in.readObject();
+		  o = in.readObject();
 
-			in.close();
-			file.close();
+		  in.close();
+		  file.close();
 
 			System.out.println("Model: Loaded Session from " + realFilepath);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: IOException is caught, failed to load file from " + realFilepath);
 			return false;
 		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: ClassNotFoundException is caught, invalid file at " + realFilepath);
 			return false;
 		}
-		return true;
+		return o;
+	}
+	
+	/**
+	 * 
+	 * @param imagePath
+	 * @return
+	 */
+	public Image thumbnailProcessImage(String imagePath) {
+		String realImagePath = 
+			imagePath.replace("/", "").replace(":", "").replace(".", "").replace("-", "").replace("_", "");
+		   
+		// check if cache file exists
+		Image i;
+		      
+		try {
+			i = (Image)loadCacheFile(realImagePath);
+		} catch (IOException e) {
+			// file does not exist, cache it
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
+			saveCacheFile(i, realImagePath); // TODO: check true/false later
+			return i;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("INVESTIGATE ME"); // TODO: come back later
+		} finally {
+			i = new Image(imagePath, View.getThumbnailWidth(), View.getThumbnailHeight(), true, true);
+		}
+		
+		return i;
 	}
 
 	/**
@@ -381,7 +493,8 @@ public class Model {
 			return false;
 		if (saveSession(session.getLastSavedFilepath()) == false)
 			throw new Exception(
-					"Model: Failed to save current Session where it should go at " + session.getLastSavedFilepath());
+					"Model: Failed to save current Session where it should go at " 
+					+ session.getLastSavedFilepath());
 		session = new Session();
 		return true;
 	}
@@ -442,6 +555,7 @@ public class Model {
 
 			System.out.println("Model: Saved Session at " + filepath);
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			System.out.println("Model: IOException is caught, failed to save file");
 			return false;
 		}
@@ -477,7 +591,30 @@ public class Model {
 		}
 		return true;
 	}
+	
+	/**
+	 * Getter.
+	 * @return	Current reference to the plant being dragged in PlotDesign.
+	 */
+	public Plant getPlotDesignDraggingPlant() {
+		return this.plotDesignDraggingPlant;
+	}
+	
+	/**
+	 * Setter.
+	 * @param plotDesignDraggingPlant	New dragging plant reference to be 
+	 * 									saved.
+	 */
+	public void setPlotDesignDraggingPlant(Plant plotDesignDraggingPlant) {
+		this.plotDesignDraggingPlant = plotDesignDraggingPlant;
+	}
 
+	/**
+	 * Calculate the file path of where a file to be cached should go.
+	 * @param filepath	Typically just the filename itself.
+	 * @return	Full file path of where in the app data directory of a user's
+	 * 			system should a file be saved.
+	 */
 	private String calculateFilepath(String filepath) {
 		return this.appDataDirectory + filepath;
 	}
@@ -512,10 +649,12 @@ public class Model {
 		windows = new Window[Windows.values().length];
 
 		windows[Windows.AllPlants.ordinal()] = new AllPlants(this);
+		windows[Windows.BluePrint.ordinal()] = new BluePrint(this);
 		windows[Windows.Download.ordinal()] = new Download(this);
 		windows[Windows.ExistingPlants.ordinal()] = new ExistingPlants(this);
 		windows[Windows.PlantInfo.ordinal()] = new PlantInfo(this);
 		windows[Windows.PlotDesign.ordinal()] = new PlotDesign(this);
+		windows[Windows.PreviousSaves.ordinal()] = new PreviousSaves(this);
 		windows[Windows.Questionnaire.ordinal()] = new Questionnaire(this);
 		windows[Windows.SeasonView.ordinal()] = new SeasonView(this);
 		windows[Windows.Tutorial.ordinal()] = new Tutorial(this);
@@ -557,11 +696,6 @@ public class Model {
 	}
 
 	/**
-	 * Hack Bold font of size 20
-	 */
-	private Font hackBold20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 20);
-
-	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
 	 * be used in windows
 	 * 
@@ -570,11 +704,6 @@ public class Model {
 	public Font getHackBold20() {
 		return this.hackBold20;
 	}
-
-	/**
-	 * Hack Bold Italic font of size 20
-	 */
-	private Font hackBoldItalic20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-BoldItalic.ttf"), 20);
 
 	/**
 	 * Gets the Input Stream of the HackBold Italic font from the fonts resource
@@ -587,11 +716,6 @@ public class Model {
 	}
 
 	/**
-	 * Hack Bold font of size 12 for buttons
-	 */
-	private Font hackBold12 = Font.loadFont(getClass().getResourceAsStream("/fonts/Hack-Bold.ttf"), 12);
-
-	/**
 	 * Gets the Input Stream of the HackBold font from the fonts resource package to
 	 * be used in windows
 	 * 
@@ -602,12 +726,6 @@ public class Model {
 	}
 
 	/**
-	 * Not hovering over the bottom buttons with keep it light green
-	 */
-	private String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-			+ "-fx-outer-border: #63A331;";
-
-	/**
 	 * Not hovering over buttons
 	 * 
 	 * @return String of attributes for when the user is not hovering over bottom
@@ -616,12 +734,6 @@ public class Model {
 	public String getNotHover() {
 		return this.notHover;
 	}
-
-	/**
-	 * When the user is hovering over the bottom buttons
-	 */
-	private String hover = "-fx-base: white;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-			+ "-fx-outer-border: #63A331;";
 
 	/**
 	 * Hovering over buttons

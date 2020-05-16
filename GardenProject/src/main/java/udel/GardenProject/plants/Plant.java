@@ -5,21 +5,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang3.StringUtils;
+
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.Serializable;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlantDataSource;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.plotObjects.PlotPlant;
 
 /**
  * For every plant, there is a corresponding Plant object that contains as much
- * information that can be loaded by PlantLoader.
+ * information that can be loaded by PlantLoader.<br><br>
  * 
  * Plant data was gathered from public domain sources using Python scripts, and
  * the plant data is stored as <code>.json</code> files in
  * <code>main.udel.plants.data</code>
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Plant implements Serializable {
@@ -125,11 +132,38 @@ public class Plant implements Serializable {
 		this.source = source;
 		this.images = images;
 	}
+	
+	/**
+	 * How does this plant appear in an accordion or any other UI container?
+	 * @param 	width	Width of a user's plot, critical for scaling.
+	 * @param	length	Height of a user's plot, critical for scaling.
+	 * @return	Image, text, associated ToolTip for Plant.
+	 */
+	public Node renderInAccordion(int width, int length) {
+		// TODO: take into account width and length of a users plot
+		String[] plantImg = this.getImages();
+		Image plantImage;
+		
+		// Get the actual image if it exists
+		if (plantImg != null && plantImg.length > 0) {
+			String path = this.getImages()[0];
+			plantImage = new Image(path, 40.0, 40.0, true, true);
+		} else {
+			// get a default image
+			plantImage = new Image(getClass().getResourceAsStream(PlotPlant.choosePlotImage(this)), 40.0, 40.0,
+					true, true);
+		}
+		
+		ImageView imageView = new ImageView();
+		imageView.setImage(plantImage);
+				
+		return imageView;
+	}
 
 	/**
 	 * Getter.
 	 * 
-	 * @return All the common names for a plant. Not guranteed to be unique.
+	 * @return All the common names for a plant. Not guaranteed to be unique.
 	 */
 	public String[] getCommonNames() {
 		return commonNames;
@@ -138,8 +172,8 @@ public class Plant implements Serializable {
 	/**
 	 * Getter.
 	 * 
-	 * @return A plant's unique latin name with genus capitalized and species all
-	 *         lower case in traditional Linnaeus classifcation. Example:
+	 * @return A plant's unique Latin name with genus capitalized and species all
+	 *         lower case in traditional Linnaeus classification. Example:
 	 *         <code>Pinus pine</code>.
 	 */
 	public String getLatinName() {

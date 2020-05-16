@@ -1,8 +1,6 @@
 package udel.GardenProject.windows;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
@@ -11,10 +9,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -43,6 +41,7 @@ import udel.GardenProject.plants.Plant;
  * A searchable database of all the plants a user can add to the their plot.
  * They can also add plants that were not initially in their selection.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class AllPlants extends Window {
@@ -122,7 +121,7 @@ public class AllPlants extends Window {
 	private int maxImagesPerPage = 25;
 	
 	/**
-	 * True if the atlantic Filter was checked, false otherwise.
+	 * True if the Atlantic Filter was checked, false otherwise.
 	 */
 	private boolean atlanticFilter = false;
 	
@@ -137,7 +136,7 @@ public class AllPlants extends Window {
 	private Text moreCharacters = new Text("Please Add More Characters in Search");
 	
 	/**
-	 * The textfield for search.
+	 * The text field for search.
 	 */
 	private TextField text;
 	
@@ -152,6 +151,13 @@ public class AllPlants extends Window {
 	private int flowPrefWidthAdjustment = 30;
 	private int scrollHeightAdjustment = 150;
 	private int backgroundScreenWidthAndHeight = 100;
+	private int imageHeight = 350;
+	private int imageWidth = 100;
+	
+	/**
+	 * Default Image with according sizing
+	 */
+	private Image defaultImg = getModel().getDefaultImage(imageHeight, imageWidth);
 	
 	public AllPlants(Model m) {
 		super(m, "Plant Database", Windows.AllPlants);
@@ -332,7 +338,8 @@ public class AllPlants extends Window {
 	}
 	
 	/**
-	 * Populates an ArrayList of all the potential plants user wants from search.
+	 * Populates an ArrayList of all the potential plants user wants from 
+	 * search.
 	 * 
 	 * @param query
 	 */
@@ -436,25 +443,38 @@ public class AllPlants extends Window {
 	 * @param Plant
 	 */
 	public void createBox(Plant p) {
-		Image pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-				350, 100, true, true);
+		Image plantImg = defaultImg;
 		
-		String[] plantImg = p.getImages();
-		if (plantImg != null) {
+		String[] plantImgPath = p.getImages();
+		if (plantImgPath != null) {
 			try {
-				pages = new Image(plantImg[0], 350, 100, true, true);
+				plantImg = new Image(plantImgPath[0], 350, 100, true, true, true);
 			}catch(ArrayIndexOutOfBoundsException Exception){
-				pages = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"),
-						350, 100, true, true);
+				plantImg = defaultImg;
 			}
 			
 		}
 
-		ImageView imageView = new ImageView(pages);
+		ImageView imageView = new ImageView(plantImg);
+		imageView.setCache(true);
+		imageView.setCacheHint(CacheHint.SPEED);
 
 		Text latinName = new Text(p.getLatinName());
 
-		Button addPlant = new Button("Add Plant");
+		Button addPlant;
+		if (getSession().getSelectedPlants().contains(p)) {
+			addPlant = new Button("Remove");
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setContrast(0.4);
+			colorAdjust.setHue(-0.05);
+			colorAdjust.setBrightness(0.9);
+			colorAdjust.setSaturation(0.8);
+			imageView.setEffect(colorAdjust);
+			
+		}else {
+			addPlant = new Button("Add Plant");
+		}
+		
 		addPlant.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import udel.GardenProject.garden.Controller;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.windows.AllPlants;
 import udel.GardenProject.windows.Download;
@@ -13,14 +14,16 @@ public class DownloadTest {
 
 	@Test
 	public void Downloadtest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Download w = new Download(m);
 		assertTrue(w.getTitle().equals("Load or Save Your Plot"));
 	}
 	
 	@Test
 	public void savePNGTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Download w = new Download(m);
 		w.savePNG(null);
 		assertTrue(w.savePNG(null));
@@ -28,7 +31,8 @@ public class DownloadTest {
 
 	@Test
 	public void saveTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Download w = new Download(m);
 		w.save(null);
 		assertTrue(w.save(null));
@@ -36,7 +40,8 @@ public class DownloadTest {
 	
 	@Test
 	public void loadTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Download w = new Download(m);
 		w.load("fake.gardenproject"); // TODO: Generate real GardenProject save
 		// -file when we have the save/load functionality working
@@ -45,7 +50,8 @@ public class DownloadTest {
 	
 	@Test
 	public void exitTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		Download w = new Download(m);
 		w.exit();
 	}

@@ -2,12 +2,12 @@ package udel.GardenProject.plotObjects;
 
 import java.util.Comparator;
 
-import udel.GardenProject.plants.Plant;
-
 /**
+ * Sort PlotObjects by their distance to a reference position.
  * 
- * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class DistanceComparator implements Comparator<PlotObject> {
 

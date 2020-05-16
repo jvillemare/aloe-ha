@@ -9,19 +9,29 @@ import udel.GardenProject.garden.Session;
 /**
  * A window that can be displayed to the user.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public abstract class Window {
 
+	/**
+	 * Title of the window that appears for the stage.
+	 */
 	private String title;
+	
+	/**
+	 * Local reference to Model for accessing plants and other helper methods.
+	 */
 	private Model model;
 
-	private Scene scene;
-
 	/**
-	 * Used for all the screens to set a standard width and height
+	 * Used for all the screens to set a standard width.
 	 */
 	private double windowWidth;
+	
+	/**
+	 * Used for all the screens to set a standard width.
+	 */
 	private double windowHeight;
 
 	public double getWindowWidth() {

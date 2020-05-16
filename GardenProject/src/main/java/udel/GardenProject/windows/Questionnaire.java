@@ -12,6 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -29,10 +31,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
@@ -46,6 +45,7 @@ import udel.GardenProject.plotObjects.PlotObject;
 /**
  * Basic questions about a user's plots that informs what plants are selected.
  *
+ * @version 1.0
  * @author Team 0
  */
 public class Questionnaire extends Window {
@@ -92,7 +92,12 @@ public class Questionnaire extends Window {
 	 * Standard String to check if user wants any moisture values.
 	 */
 	private String moistureAny = "My plot has different moisture";
-
+	
+	/**
+	 * Alert to clarify users mistake
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
+	
 	/**
 	 * Used for single answers
 	 */
@@ -157,7 +162,7 @@ public class Questionnaire extends Window {
 	private int buttonPrefWidth = 100;
 	private int borderSideMargins = 230;
 	private int questionWrapWidth = 800;
-	private int scrollWidthAdjustment = 150;
+	private int scrollWidthAdjustment = 175;
 	private int scrollHeightAdjustment = 115;
 	private int borderTopAndBottonMargin = 40;
 	private int backgroundWidthAndHeight = 100;
@@ -166,7 +171,7 @@ public class Questionnaire extends Window {
 	/**
 	 * Adjustments for the Alert class: for the pop up screen
 	 */
-	private static int inset10 = 10;
+	private static int inset10 = 20;
 	private static int messageFontSize = 15;
 	private static int alertScreenWidth = 400;
 	private static int alertScreenHeight = 150;
@@ -180,7 +185,7 @@ public class Questionnaire extends Window {
 		tilePane = new TilePane();
 
 		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below. Remember, you must answer all of the questions to continue.\n");
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below.\n");
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
@@ -189,6 +194,7 @@ public class Questionnaire extends Window {
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
 		vbox.setPadding(new Insets(inset10));
+		//vbox.setMinWidth(100);
 
 		populateQuestionnaire();
 		createButtons();
@@ -464,6 +470,8 @@ public class Questionnaire extends Window {
 				// answer all questions.
 
 				// handles if user doesn't type anything in for the plot name
+				boolean noError = true;
+				
 				if (textField.getText().isEmpty()) {
 					getSession().setPlotName("My Garden");
 				} else {
@@ -482,14 +490,18 @@ public class Questionnaire extends Window {
 				} else if (checkNumberValidation(widthUserInput)) {
 					getSession().setWidthOfUserPlot(Integer.parseInt(q1textField1.getText()));
 				} else {
-					Alert.display("ERROR", "Please enter a valid width for Question 2");
+					noError = false;
+					warning.setContentText("Please enter a valid width for Question 2");
+					warning.show();
 				}
 				if (lengthUserInput.isEmpty()) {
 					getSession().setLengthOfUserPlot(25);
 				} else if (checkNumberValidation(lengthUserInput)) {
 					getSession().setLengthOfUserPlot(Integer.parseInt(q1textField2.getText()));
 				} else {
-					Alert.display("ERROR", "Please enter a valid length for Question 2");
+					noError = false;
+					warning.setContentText("Please enter a valid length for Question 2");
+					warning.show();
 				}
 
 				checkSelectedPlot(nearPlot);
@@ -512,8 +524,11 @@ public class Questionnaire extends Window {
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
-
-				switchToWindow(Windows.PlantSelection);
+				
+				if(noError) {
+					switchToWindow(Windows.PlantSelection);
+				}
+				
 			}
 		});
 
@@ -710,51 +725,6 @@ public class Questionnaire extends Window {
 			if (c.isSelected()) {
 				c.setSelected(false);
 			}
-		}
-	}
-
-	/**
-	 * Sets up an alert Box that sends a message to the user on a smaller pop up
-	 * screen
-	 * 
-	 * @author Team 11-0
-	 *
-	 */
-	public static class Alert {
-
-		/**
-		 * Create the display screen for the error messages used when a user has invalid
-		 * input in question 2
-		 * 
-		 * @param title   The title of the new pop up screen
-		 * @param message The message that shows up in the center of the box
-		 */
-		public static void display(String title, String message) {
-			Stage displayWindow = new Stage();
-			displayWindow.initModality(Modality.APPLICATION_MODAL);
-			displayWindow.setTitle(title);
-			displayWindow.setWidth(alertScreenWidth);
-			displayWindow.setHeight(alertScreenHeight);
-
-			Label label = new Label();
-			label.setText(message);
-			label.setFont(Font.font("Verdana", FontWeight.BOLD, messageFontSize));
-
-			Button closeButton = new Button("Close");
-			closeButton.setOnAction(e -> displayWindow.close());
-			closeButton.setStyle("-fx-base: #EFF0F1;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
-					+ "-fx-border-width: 1;" + "-fx-border-color: #000000;");
-
-			VBox layout = new VBox(inset10);
-			layout.setStyle(View.getWhiteBackgroundStyle() + "-fx-font-weight: bold;" + "-fx-border-color: #C10C13;"
-					+ "-fx-border-insets: 5;" + "-fx-border-width: 3;" + "-fx-border-style: solid;");
-			layout.getChildren().addAll(label, closeButton);
-			layout.setAlignment(Pos.CENTER);
-
-			Scene scene = new Scene(layout);
-			displayWindow.setScene(scene);
-			displayWindow.showAndWait();
-
 		}
 	}
 

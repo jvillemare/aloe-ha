@@ -7,6 +7,8 @@
  * abstract class and give it an AdjustablePolygon, specifying its color, anchor
  * color, and more.
  * 
+ * @version 1.0
  * @author Team 0
+ * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 package udel.GardenProject.plotObjects.polygons;

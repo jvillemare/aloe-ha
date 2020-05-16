@@ -29,6 +29,7 @@ import udel.GardenProject.plants.Plant;
 /**
  * To display all the information of a Plant to the user.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class PlantInfo extends Window {
@@ -90,6 +91,11 @@ public class PlantInfo extends Window {
 	private int infoMinHeight = View.getCanvasHeight() - 100;
 	private int scrollPrefHeight = View.getCanvasHeight() - 100;
 	private int screenWidthAdjustment = 30;
+	
+	/**
+	 * Default image sized to scale.
+	 */
+	private Image defaultImg = getModel().getDefaultImage(imgWidthAndHeight, imgWidthAndHeight);
 	
 	public PlantInfo(Model m) {
 		super(m, "Plant Info: ", Windows.PlantInfo);
@@ -163,8 +169,7 @@ public class PlantInfo extends Window {
 			url.setFont(getModel().getHackBoldItalic20());
 		} else {
 			// get a default image
-			plantImage = new Image(getClass().getResourceAsStream("/buttonImages/tree.png"), imgWidthAndHeight,
-					imgWidthAndHeight, true, true);
+			plantImage = defaultImg;
 			url = makeText("");
 		}
 

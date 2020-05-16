@@ -29,6 +29,7 @@ import udel.GardenProject.garden.View;
 /**
  * Welcome screen that first appears when the user starts the program.
  * 
+ * @version 1.0
  * @author Team 0
  */
 public class Welcome extends Window {

@@ -4,7 +4,7 @@ package udel.GardenProject.enums;
  * Contains the different sunlight and shade levels. Used in Questionnaire and 
  * Plant Info.
  * 
- * 
+ * @version 1.0
  * @author Team 0
  */
 public enum Sunlight {

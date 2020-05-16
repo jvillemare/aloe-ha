@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+import udel.GardenProject.garden.Controller;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.Session;
 import udel.GardenProject.plants.Plant;
@@ -15,7 +16,8 @@ public class ExistingPlantsTest {
 
 	@Test
 	public void existingPlantsTest() {
-		Model m = new Model(0, 1);
+		Controller c = new Controller();
+		Model m = new Model(c, 0, 1);
 		ExistingPlants w = new ExistingPlants(m);
 		System.out.println(w.getTitle());
 		assertTrue(w.getTitle().equals("ExistingPlants"));
