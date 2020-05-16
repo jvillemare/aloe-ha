@@ -48,5 +48,10 @@ public class PlotPool extends GenericPolygon implements Serializable {
 		// TODO Auto-generated method stub
 		return 40.0;
 	}
+	
+	@Override
+	public String getName() {
+		return "Pool"; 
+	}
 
 }

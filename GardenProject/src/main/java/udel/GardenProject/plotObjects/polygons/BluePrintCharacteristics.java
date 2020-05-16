@@ -146,5 +146,10 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 		// TODO Auto-generated method stub
 		return 40.0;
 	}
+	
+	@Override
+	public String getName() {
+		return ""; 
+	}
 
 }

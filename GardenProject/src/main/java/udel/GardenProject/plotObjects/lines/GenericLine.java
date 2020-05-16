@@ -32,7 +32,7 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 */
 	public GenericLine(Model model, double x, double y, double height, 
 			AdjustableLine l, String windowPath, String plotPath) {
-		super(model, x, y, height, 2.0, windowPath, plotPath);
+		super(model, x, y, height, 2.0, windowPath, plotPath, "");
 		// TODO Auto-generated constructor stub
     // TODO check 2.0 radius
 		this.l = l;

@@ -45,4 +45,9 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 		return 40.0;
 	}
 	
+	@Override
+	public String getName() {
+		return "Playground"; 
+	}
+	
 }

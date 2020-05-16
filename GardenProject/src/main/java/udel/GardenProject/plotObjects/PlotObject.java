@@ -56,6 +56,11 @@ public abstract class PlotObject implements Serializable {
 	 * relevant factors for rendering Plot Objects.
 	 */
 	private transient Model model;
+	
+	/**
+	 * The name of the plot object
+	 */
+	private String name = "";
   
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
@@ -71,7 +76,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param plotPath	String of path to plot design image.
 	 */
 	public PlotObject(Model model, double x, double y, 
-			double height, double radius, String imagePath, String plotPath) {
+			double height, double radius, String imagePath, String plotPath, String name) {
 		this.model = model;
 		this.x = x;
 		this.y = y;
@@ -79,6 +84,7 @@ public abstract class PlotObject implements Serializable {
 		this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
+		this.name = name;
 	}
 	
 	/**
@@ -186,5 +192,11 @@ public abstract class PlotObject implements Serializable {
 	public final String getPlotImage() {
 		return this.plotImage;
 	}
+	
+	/**
+	 * Abstract. All objects must be specified to what they are 
+	 * @return	Name of object
+	 */
+	public abstract String getName();
 
 }

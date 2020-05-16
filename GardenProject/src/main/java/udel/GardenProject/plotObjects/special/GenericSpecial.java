@@ -21,7 +21,7 @@ public class GenericSpecial extends PlotObject implements Serializable {
 
 	public GenericSpecial(Model model, double x, double y, double height, double radius, String imagePath,
 			String plotPath) {
-		super(model, x, y, height, radius, imagePath, plotPath);
+		super(model, x, y, height, radius, imagePath, plotPath, "");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -50,6 +50,11 @@ public class GenericSpecial extends PlotObject implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public String getName() {
+		return "Special"; 
 	}
 
 }

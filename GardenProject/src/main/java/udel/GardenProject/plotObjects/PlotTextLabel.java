@@ -27,7 +27,7 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param y Vertical position.
 	 */
 	public PlotTextLabel(Model model, double x, double y) {
-		super(model, x, y, 0.0, 0.0, "", "");
+		super(model, x, y, 0.0, 0.0, "", "", "");
 		this.text = promptUserForLabelText();
 	}
 
@@ -39,7 +39,7 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param text	Text to display
 	 */
 	public PlotTextLabel(Model model, double x, double y, String text) {
-		super(model, x, y, 0.0, 0.0, "", "");
+		super(model, x, y, 0.0, 0.0, "", "", "");
 		this.text = text;
 	}
 	
@@ -72,6 +72,11 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0; // calculate height to be font size whatever.
+	}
+	
+	@Override
+	public String getName() {
+		return "Text"; 
 	}
 
 }

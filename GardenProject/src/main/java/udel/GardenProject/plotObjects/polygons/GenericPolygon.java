@@ -36,7 +36,7 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 */
 	public GenericPolygon(Model model, double x, double y, double height, 
 			AdjustablePolygon p, String windowPath, String plotPath) {
-		super(model, x, y, height, 5.0, windowPath, plotPath);
+		super(model, x, y, height, 5.0, windowPath, plotPath, "");
 		this.p = p;
 	}
 	
