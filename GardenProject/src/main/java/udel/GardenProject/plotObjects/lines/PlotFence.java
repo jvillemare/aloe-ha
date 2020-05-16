@@ -27,6 +27,8 @@ public class PlotFence extends GenericLine implements Serializable {
 	 */
 	private static String plotFence = "/viewImages/plotFence.png";
 	
+	private static String name = "Fence";
+	
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position of first point of fence.
@@ -34,7 +36,7 @@ public class PlotFence extends GenericLine implements Serializable {
 	 * @param height	Height in feet of fence.
 	 */
 	public PlotFence(Model model, double x, double y, double height) {
-		super(model, x, y, height, new AdjustableLine(), windowFence, plotFence);
+		super(model, x, y, height, new AdjustableLine(), windowFence, plotFence, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -55,9 +57,4 @@ public class PlotFence extends GenericLine implements Serializable {
 		return 40.0;
 	}
 	
-	@Override
-	public String getName() {
-		return "Fence"; 
-	}
-
 }

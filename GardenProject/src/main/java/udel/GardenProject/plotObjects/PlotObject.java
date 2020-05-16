@@ -194,9 +194,11 @@ public abstract class PlotObject implements Serializable {
 	}
 	
 	/**
-	 * Abstract. All objects must be specified to what they are 
+	 * All objects must be specified to what they are 
 	 * @return	Name of object
 	 */
-	public abstract String getName();
+	public String getName() {
+		return this.name;
+	}
 
 }

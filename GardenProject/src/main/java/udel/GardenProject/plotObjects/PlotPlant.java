@@ -46,7 +46,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// TODO: A plant is always about a foot wide? Let's say for simplicity.
 		// Fix later. Definitely a helper method in plant that reads the 
 		// description or calculates or something
-		super(model, x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p), "");
+		super(model, x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p), p.getLatinName());
 		this.p = p;
 	}
 	
@@ -158,11 +158,6 @@ public class PlotPlant extends PlotObject implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0;
-	}
-	
-	@Override
-	public String getName() {
-		return p.getLatinName(); 
 	}
 
 }

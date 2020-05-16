@@ -23,6 +23,8 @@ public class PlotPath extends GenericLine implements Serializable {
 	private static String windowPath = "/viewImages/path.png";
 	
 	private static String plotPath = "/viewImages/plotPath.png";
+	
+	private static String name = "Path";
 
 	/**
 	 * Constructor.
@@ -31,7 +33,7 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 	public PlotPath(Model model, double x, double y) {
-		super(model, x, y, 1.0, new AdjustableLine(), windowPath, plotPath);
+		super(model, x, y, 1.0, new AdjustableLine(), windowPath, plotPath, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -50,11 +52,6 @@ public class PlotPath extends GenericLine implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0;
-	}
-	
-	@Override
-	public String getName() {
-		return "Path"; 
 	}
 
 }

@@ -22,6 +22,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	private static final long serialVersionUID = 1L;
 	private AdjustablePolygon p;
 	
+	private static String name = "";
+	
 	/**
 	 * Constructor. Every GenericPolygon is a PlotObject (x, y, height), but
 	 * must also specify its changing bounds which is reprsented on the plot as
@@ -35,8 +37,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * @param imagePath	Plot object's path to image representation
 	 */
 	public GenericPolygon(Model model, double x, double y, double height, 
-			AdjustablePolygon p, String windowPath, String plotPath) {
-		super(model, x, y, height, 5.0, windowPath, plotPath, "");
+			AdjustablePolygon p, String windowPath, String plotPath, String name) {
+		super(model, x, y, height, 5.0, windowPath, plotPath, name);
 		this.p = p;
 	}
 	

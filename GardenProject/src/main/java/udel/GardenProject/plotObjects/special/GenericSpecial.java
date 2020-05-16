@@ -18,10 +18,15 @@ import udel.GardenProject.plotObjects.PlotPlant;
 public class GenericSpecial extends PlotObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * The name of the plot object
+	 */
+	private String name = "";
 
 	public GenericSpecial(Model model, double x, double y, double height, double radius, String imagePath,
-			String plotPath) {
-		super(model, x, y, height, radius, imagePath, plotPath, "");
+			String plotPath, String name) {
+		super(model, x, y, height, radius, imagePath, plotPath, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -50,11 +55,6 @@ public class GenericSpecial extends PlotObject implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-	
-	@Override
-	public String getName() {
-		return "Special"; 
 	}
 
 }

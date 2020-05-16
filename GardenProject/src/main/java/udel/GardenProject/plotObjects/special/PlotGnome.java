@@ -29,12 +29,17 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 	private static String plotGnome = "/viewImages/plotGnome.png";
 	
 	/**
+	 * Name of object
+	 */
+	private static String name = "Gnome";
+	
+	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
 	 * @param y Vertical position.
 	 */
 	public PlotGnome(Model model, double x, double y) {
-		super(model, x, y, 1, 1.0, windowGnome, plotGnome);
+		super(model, x, y, 1, 1.0, windowGnome, plotGnome, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -48,11 +53,6 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
 		return 40.0;
-	}
-	
-	@Override
-	public String getName() {
-		return "Gnome"; 
 	}
 
 }
