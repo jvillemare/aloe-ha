@@ -230,7 +230,7 @@ public class AdjustablePolygon implements Serializable {
     	private final DoubleProperty x, y;
 
         Anchor(Color color, DoubleProperty x, DoubleProperty y) {
-            super(x.get(), y.get(), 5);
+            super(x.get(), y.get(), 8);
             setFill(color.deriveColor(1, 1, 1, 0.5));
             setStroke(color);
             setStrokeWidth(2);

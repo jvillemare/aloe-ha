@@ -32,12 +32,12 @@ public class PlotPath extends GenericLine implements Serializable {
 	/**
 	 * Render Width of the object
 	 */
-	private static double Width=40.0;
+	private static double width=40.0;
 	
 	/**
 	 * Render Height of the object
 	 */
-	private static double Height=40.0;
+	private static double height=40.0;
 	
 	/**
 	 * Constructor.
@@ -46,7 +46,8 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 	public PlotPath(Model model, double x, double y) {
-		super(model, x, y, 1.0, new AdjustableLine(Color.RED, Width, Height), windowPath, plotPath);
+		super(model, x, y, 1.0, new AdjustableLine(Color.RED, height, width),
+				windowPath, plotPath);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -61,13 +62,13 @@ public class PlotPath extends GenericLine implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return Width;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return Height;
+		return height;
 	}
 
 }

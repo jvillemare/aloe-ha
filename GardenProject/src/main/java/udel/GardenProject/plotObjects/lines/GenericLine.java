@@ -38,6 +38,7 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 		// TODO Auto-generated constructor stub
     // TODO check 2.0 radius
 		this.l = l;
+		this.setUseDefaultDragHandler(true);
 	}
 	
 	/**

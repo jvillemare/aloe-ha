@@ -31,12 +31,12 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 	/**
 	 * Render Width of the object
 	 */
-	private static double Width=40.0;
+	private static double width=40.0;
 	
 	/**
 	 * Render Height of the object
 	 */
-	private static double Height=40.0;
+	private static double height=40.0;
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
@@ -46,17 +46,17 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 		super(model, x, y, 1, 1.0, windowGnome, plotGnome);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return Width;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return Height;
+		return height;
 	}
 
 }

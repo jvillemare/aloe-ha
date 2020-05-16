@@ -30,16 +30,16 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	/**
 	 * Render Width of the object
 	 */
-	private static double Width=40.0;
+	private static double width=40.0;
 	
 	/**
 	 * Render Height of the object
 	 */
-	private static double Height=40.0;
+	private static double height=40.0;
 	
 	public PlotPlayground(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, Height, Width),
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width),
 				windowPlayground, plotPlayground);
 		// TODO Auto-generated constructor stub
 	}
@@ -47,13 +47,13 @@ public class PlotPlayground extends GenericPolygon implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return Width;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return Height;
+		return height;
 	}
 	
 }

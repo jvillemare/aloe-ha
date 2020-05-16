@@ -12,8 +12,9 @@ import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
 public class AdjustableLine {
+	
 	/**
-	 * 
+	 * The adjustablepolygon object which make the adjustable line.
 	 */
 	private AdjustablePolygon Line;
 	/**
