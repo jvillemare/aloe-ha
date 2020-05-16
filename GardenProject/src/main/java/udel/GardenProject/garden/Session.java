@@ -122,7 +122,7 @@ public class Session implements Serializable {
 	/**
 	 * User's selected colors for flowers
 	 */
-	private ArrayList<Colors> colorsUserSelected = new ArrayList<Colors>();
+	private HashSet<Colors> colorsUserSelected = new HashSet<Colors>();
 
 	/**
 	 * Objects actually in the plot, to be displayed in PlotDesign.
@@ -343,7 +343,7 @@ public class Session implements Serializable {
 	 * Sets the colors the user chose in Q8 of the Questionnaire 
 	 * @param color An ArrayList of Colors (colors from the Colors Enum) 
 	 */
-	public void setColorsUserWants(ArrayList<Colors> color) {
+	public void setColorsUserWants(HashSet<Colors> color) {
 		this.colorsUserSelected = color;
 	}
 
@@ -351,7 +351,7 @@ public class Session implements Serializable {
 	 * Gets the user's selected Colors from Q8 of the questionnaire 
 	 * @return An ArrayList of Colors 
 	 */
-	public ArrayList<Colors> getColorsUserSelected() {
+	public HashSet<Colors> getColorsUserSelected() {
 		return colorsUserSelected;
 	}
 
