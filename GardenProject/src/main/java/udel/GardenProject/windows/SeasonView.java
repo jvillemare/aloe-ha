@@ -140,12 +140,12 @@ public class SeasonView extends Window {
 	/**
 	 * Maximum depth a plot object may be placed on plot desigh
 	 */
-	private final int MAXDEPTH = 700;
+	private final int MAXDEPTH = 600;
 
 	/**
 	 * Maximum width a plot object may be placed on plot design
 	 */
-	private final int MAXWIDTH = 700;
+	private final int MAXWIDTH = 750;
 	
 	/**
 	 * Minimum amount of particles that may be drawn for snow or leaves.

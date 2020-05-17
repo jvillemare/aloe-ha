@@ -2,10 +2,7 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Another Critical object. Wards off the evil spirits.
@@ -27,21 +24,11 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 	 * Path to an image of a garden gnome for plot design.
 	 */
 	private static String plotGnome = "/viewImages/plotGnome.png";
-
-	/**
-	 * Render Width of the object
-	 */
-	private static double width=40.0;
 	
 	/**
 	 * Name of object
 	 */
 	private static String name = "Gnome";
-	
-  /**
-	 * Render Height of the object
-	 */
-	private static double height=40.0;
 
 	/**
 	 * Constructor.
@@ -53,16 +40,4 @@ public class PlotGnome extends GenericSpecial implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return width;
-	}
-
-	@Override
-	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return height;
-	}
-
 }

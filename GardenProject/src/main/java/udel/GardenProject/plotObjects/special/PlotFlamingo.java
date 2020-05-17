@@ -2,10 +2,7 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Critical object. Wards off the evil spirits.
@@ -32,16 +29,6 @@ public class PlotFlamingo extends GenericSpecial implements Serializable {
 	 * Name of object
 	 */
 	private static String name = "Flamingo";
-
-  /**
-	 * Render Width of the object
-	 */
-	private static double width=40.0;
-	
-	/**
-	 * Render Height of the object
-	 */
-	private static double height=40.0;
 	
 	/**
 	 * Constructor.
@@ -51,18 +38,6 @@ public class PlotFlamingo extends GenericSpecial implements Serializable {
 	public PlotFlamingo(Model model, double x, double y) {
 		super(model, x, y, 2.0, 1.0, windowFlamingo, plotFlamingo, name);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return width;
-	}
-
-	@Override
-	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return height;
 	}
 	
 }

@@ -8,9 +8,9 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.garden.Session;
 import udel.GardenProject.plants.Plant;
 
 /**
@@ -133,7 +133,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// Get the actual image if it exists
 		if (plantImg != null && plantImg.length > 0) {
 			String path = p.getImages()[0];
-			plantImage = new Image(path, 40.0, 40.0, true, true);
+			plantImage = new Image(path, getRenderWidth(), getRenderHeight(), true, true);
 		} else {
 			// get a default image
 			plantImage = new Image(getClass().getResourceAsStream(choosePlotImage(p)), 40.0, 40.0,
@@ -141,6 +141,8 @@ public class PlotPlant extends PlotObject implements Serializable {
 		}
 		
 		ImageView imageView = new ImageView();
+		Circle clip = new Circle(plantImage.getWidth() / 2, plantImage.getHeight() / 2, Math.min(plantImage.getWidth(), plantImage.getHeight()) / 2);
+		imageView.setClip(clip);
 		imageView.setImage(plantImage);
 				
 		return imageView;
@@ -153,14 +155,20 @@ public class PlotPlant extends PlotObject implements Serializable {
 
 	@Override
 	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return 40.0;
+		int min = 20;
+		double width = Math.min(this.getHeight() / 8, min);
+		return width/this.getModel().getSession().getWidthOfUserPlot() * this.getModel().getPlotDesignWidth();
 	}
 
 	@Override
 	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return 40.0;
+		int min = 20;
+		double width = Math.min(this.getHeight() / 8, min);
+		return width/this.getModel().getSession().getLengthOfUserPlot() * this.getModel().getPlotDesignHeight();
+		
+//		int min = 40;
+//		double width = Math.max(min, this.getHeight() * 2);
+//		return width * (this.getModel().getSession().getLengthOfUserPlot() / 50);
 	}
 	
 	@Override

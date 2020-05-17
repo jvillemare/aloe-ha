@@ -43,6 +43,16 @@ public class Model {
 	 * Suggested height of stage for Window objects.
 	 */
 	private int height;
+	
+	/**
+	 * Pixel width of garden in plot design.
+	 */
+	private int plotDesignWidth = 750;
+	
+	/**
+	 * Pixel height of garden in plot design.
+	 */
+	private int plotDesignHeight = 600;
 
 	/**
 	 * Where on the user's OS can we save Application
@@ -292,6 +302,22 @@ public class Model {
 	 */
 	public int getHeight() {
 		return this.height;
+	}
+	
+	/**
+	 * Getter.
+	 * @return Pixel width of garden in plot design.
+	 */
+	public int getPlotDesignWidth() {
+		return this.plotDesignWidth;
+	}
+	
+	/**
+	 * Getter
+	 * @return Pixel height of garden in plot design.
+	 */
+	public int getPlotDesignHeight() {
+		return this.plotDesignHeight;
 	}
 
 	/**
