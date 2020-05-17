@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -29,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.PlotObjectsFactory;
@@ -132,6 +134,11 @@ public class PlotDesign extends Window {
 	 * Used to add in Titled Panes to accordion.
 	 */
 	private List<TitledPane> accArr;
+	
+	/**
+	 * House Placement Text
+	 */
+	private Text houseText;
 
 	/**
 	 * Adjustments to buttons and panes.
@@ -148,6 +155,8 @@ public class PlotDesign extends Window {
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
 	private int scrollPrefWidth = View.getCanvasWidth() / 5 + 30;
 	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
+	private int houseTextXPlacement = View.getCanvasWidth()/2 - 300;
+	private int houseTextYPlacement = View.getCanvasHeight() - 105;
 	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9;
 	private int allPlantsButtonFontSize = 17;
 	private int tilePaneWidthAdjustment = 20;
@@ -299,7 +308,11 @@ public class PlotDesign extends Window {
 		box = new Rectangle(rectWidth, rectHeight);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
-		group.getChildren().add(box);
+		
+		houseText = new Text("Your House is Here");
+		houseText.setLayoutX(houseTextXPlacement);
+		houseText.setLayoutY(houseTextYPlacement);
+		group.getChildren().addAll(box, houseText);
 	}
 
 	/**
@@ -309,7 +322,6 @@ public class PlotDesign extends Window {
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		System.out.println("POPULATE TILES CALLED");
 		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(), 
 				"No plants were selected \nfrom the Existing Plants screen.");
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
