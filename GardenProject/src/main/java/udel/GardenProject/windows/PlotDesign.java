@@ -172,12 +172,12 @@ public class PlotDesign extends Window {
 		createCenterBox();
 
 		text = new Text(
-				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
+				"Drag and Drop your plants and objects from the drop-downs on the left to build your garden. Click next to see your garden in a different season, age, and view, or you can save your garden project here.");
 		text.setWrappingWidth(View.getCanvasWidth());
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
-		vbox.setPadding(new Insets(0, 0, inset20, inset5));
+		vbox.setPadding(new Insets(0, 0, 0, inset5));
 		vbox.getChildren().addAll(text);
 
 		animalsFedTxt = new Text("Animals Fed");
@@ -266,7 +266,7 @@ public class PlotDesign extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(box,
-				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
+				new Insets(0, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
 		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
@@ -308,7 +308,6 @@ public class PlotDesign extends Window {
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		System.out.println("POPULATE TILES CALLED");
 		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants());
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
 		accArr.add(existing);
@@ -374,7 +373,6 @@ public class PlotDesign extends Window {
 	 */
 	public FlowPane createPlantFlow(HashSet<Plant> plants) {
 		Thread.currentThread().getStackTrace();
-		System.out.println("starting with plants.size=" + plants.size());
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -382,10 +380,8 @@ public class PlotDesign extends Window {
 		flow.setHgap(inset10);
 
 		Iterator<Plant> plantIter = plants.iterator();
-		System.out.println("after creating iterator");
 		while (plantIter.hasNext()) {
 			Plant p = plantIter.next();
-			System.out.println("PlotDesign.createPlantFlow: adding " + p.getLatinName());
 			Node plantRepresentation = p.renderInAccordion(
 					getSession().getWidthOfUserPlot(), 
 					getSession().getLengthOfUserPlot());
@@ -438,8 +434,6 @@ public class PlotDesign extends Window {
 
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-
-					System.out.println(getModel().saveSession(file.getAbsolutePath()));
 					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
