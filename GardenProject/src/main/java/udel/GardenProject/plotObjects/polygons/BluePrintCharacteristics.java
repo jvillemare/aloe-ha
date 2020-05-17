@@ -58,7 +58,7 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 	public BluePrintCharacteristics(Model model, double x, double y, 
 			AdjustablePolygon p, String windowPath,
 			String plotPath) {
-		super(model, x, y, 0.0, p, windowPath, plotPath);
+		super(model, x, y, 0.0, p, windowPath, plotPath, "");
 		// TODO Auto-generated constructor stub
 	}
 	

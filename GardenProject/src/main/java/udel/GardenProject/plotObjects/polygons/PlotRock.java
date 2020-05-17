@@ -32,6 +32,12 @@ public class PlotRock extends GenericPolygon implements Serializable {
 	private static String plotRock = "/viewImages/plotRock.png";
 	
 	/**
+
+	 * Name of object
+	 */
+	private static String name = "Rock";
+
+  /**
 	 * Render Width of the object
 	 */
 	private static double width=40.0;
@@ -50,7 +56,7 @@ public class PlotRock extends GenericPolygon implements Serializable {
 	public PlotRock(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
 		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width), 
-				windowRock, plotRock);
+				windowRock, plotRock, name);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 	}

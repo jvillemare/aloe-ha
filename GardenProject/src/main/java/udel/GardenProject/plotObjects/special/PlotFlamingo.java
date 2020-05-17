@@ -29,6 +29,11 @@ public class PlotFlamingo extends GenericSpecial implements Serializable {
 	private static String plotFlamingo = "/viewImages/plotFlamingo.png";
 
 	/**
+	 * Name of object
+	 */
+	private static String name = "Flamingo";
+
+  /**
 	 * Render Width of the object
 	 */
 	private static double width=40.0;
@@ -44,7 +49,7 @@ public class PlotFlamingo extends GenericSpecial implements Serializable {
 	 * @param y Vertical position.
 	 */
 	public PlotFlamingo(Model model, double x, double y) {
-		super(model, x, y, 2.0, 1.0, windowFlamingo, plotFlamingo);
+		super(model, x, y, 2.0, 1.0, windowFlamingo, plotFlamingo, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -59,5 +64,5 @@ public class PlotFlamingo extends GenericSpecial implements Serializable {
 		// TODO Auto-generated method stub
 		return height;
 	}
-
+	
 }

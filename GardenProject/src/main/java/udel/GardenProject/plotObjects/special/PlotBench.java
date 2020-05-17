@@ -28,6 +28,10 @@ public class PlotBench extends GenericSpecial implements Serializable {
 	 */
 	private static String plotBench = "/viewImages/plotBench.png";
 	
+  /**
+   * TODO: ?
+   */
+	private static String name = "Bench";
 
 	/**
 	 * Render Width of the object
@@ -38,13 +42,14 @@ public class PlotBench extends GenericSpecial implements Serializable {
 	 * Render Height of the object
 	 */
 	private static double height=40.0;
+
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
 	 * @param y Vertical position.
 	 */
 	public PlotBench(Model model, double x, double y) {
-		super(model, x, y, 2.0, 5.0, windowBench, plotBench);
+		super(model, x, y, 2.0, 5.0, windowBench, plotBench, name);
 	}
 	
 	@Override
