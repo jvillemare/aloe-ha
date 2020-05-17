@@ -43,6 +43,11 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 	private static double height=40.0;
 	
 	/**
+	 * Name of object
+	 */
+	private static String name = "Road";
+	
+	/**
 	 * Constructor.
 	 * 
 	 * @param x	Horizontal position determined by MouseRelease event handler.
@@ -52,7 +57,7 @@ public class PlotRoad extends GenericPolygon implements Serializable {
 	public PlotRoad(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
 		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width),
-				windowRoad, plotRoad);
+				windowRoad, plotRoad, name);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 	}

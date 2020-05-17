@@ -43,15 +43,17 @@ public class PlotFence extends GenericLine implements Serializable {
 	 */
 	private static double height=40.0;
 	
+	private static String name = "Fence";
+	
 	/**
 	 * Constructor.
+   * @param Model TODO: ?
 	 * @param x	Horizontal position of first point of fence.
 	 * @param y Vertical position of first point of fence.
 	 * @param height	Height in feet of fence.
 	 */
-	public PlotFence(Model model, double x, double y, double h) {
-		super(model, x, y, h, new AdjustableLine(Color.RED, height, width), 
-				windowFence, plotFence);
+	public PlotFence(Model model, double x, double y, double height) {
+		super(model, x, y, height, new AdjustableLine(Color.RED, height, width), windowFence, plotFence, name);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -86,5 +88,5 @@ public class PlotFence extends GenericLine implements Serializable {
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
 				i.getWidth() * minScale, i.getHeight() * minScale);
 	}
-
+	
 }

@@ -17,22 +17,21 @@ import udel.GardenProject.plants.Plant;
  */
 public enum PlotObjects {
 
-	// TODO: Alphabetically sort
-	TextLabel("object", "/plotObjects/textLabel.png", "", true, true),
-	Fence("lines", "/plotObjects/fence.png", "", true, false), 
-	Path("lines", "/plotObjects/path.png", "", true, true), 
-	Forest("polygons", "/plotObjects/forest.png", "", false, true), 
-	Patio("polygons", "/plotObjects/patio.png", "", true, false), 
-	Playground("polygons", "/plotObjects/playground.png", "", true, false), 
-	Pool("polygons", "/plotObjects/pool.png", "", true, false), 
-	Road("polygons", "/plotObjects/road.png", "", false, true), 
-	Rock("polygons", "/plotObjects/rock.png", "", true, false), 
-	Shed("polygons", "/plotObjects/shed.png", "", true, false), 
-	BirdBath("special", "/plotObjects/birdBath.png", "Where birds come to rest", true, false), 
 	Bench("special", "/plotObjects/bench.png", "Sitting utensil", true, false),
+	BirdBath("special", "/plotObjects/birdBath.png", "Where birds come to rest", true, false),
+	Fence("lines", "/plotObjects/fence.png", "", true, false), 
 	Flamingo("special", "/plotObjects/flamingo.png", "Lawn ornament", true, false), 
+	Forest("polygons", "/plotObjects/forest.png", "", false, true), 
 	Gnome("special", "/plotObjects/gnome.png", "Wards off evil spirits", true, false),
-	Other("special", "/plotObjects/other.png", "", true, false);
+	Path("lines", "/plotObjects/path.png", "Walkway for people", true, true),
+	Patio("polygons", "/plotObjects/patio.png", "A place to relax", true, false), 
+	Playground("polygons", "/plotObjects/playground.png", "Where the kids can play", true, false), 
+	Pool("polygons", "/plotObjects/pool.png", "Swimming is fun", true, false), 
+	Road("polygons", "/plotObjects/road.png", "Only for vehicles", false, true), 
+	Rock("polygons", "/plotObjects/rock.png", "A geologic resource", true, false),
+	Shed("polygons", "/plotObjects/shed.png", "A place to store tools", true, false),
+	TextLabel("object", "/plotObjects/textLabel.png", "", true, true),
+	Other("special", "/plotObjects/other.png", "Other", true, false);
 	
 	/**
 	 * What package is this PlotObject found in (for categorization).

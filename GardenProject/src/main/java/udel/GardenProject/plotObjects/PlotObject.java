@@ -61,9 +61,15 @@ public abstract class PlotObject implements Serializable {
 	private transient Model model;
 	
 	/**
+	 * The name of the plot object
+	 */
+	private String name = "";
+  
+	/**
 	 * Boolean value to determine if the plotobject use its own dragHandler
 	 */
 	private boolean useDefaultDragHandler;
+  
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
@@ -78,7 +84,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param plotPath	String of path to plot design image.
 	 */
 	public PlotObject(Model model, double x, double y, 
-			double height, double radius, String imagePath, String plotPath) {
+			double height, double radius, String imagePath, String plotPath, String name) {
 		this.model = model;
 		this.x = x;
 		this.y = y;
@@ -86,7 +92,8 @@ public abstract class PlotObject implements Serializable {
 		this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
-		this.useDefaultDragHandler=false;
+		this.name = name;
+		this.useDefaultDragHandler = false;
 	}
 	
 	/**
@@ -213,6 +220,14 @@ public abstract class PlotObject implements Serializable {
 	}
 	
 	/**
+	 * All objects must be specified to what they are 
+	 * @return	Name of object
+	 */
+	public final String getName() {
+		return this.name;
+	}
+
+	/**
 	 * Getter.
 	 * @return Boolean value of useDefaultDragHandler;
 	 */
@@ -225,7 +240,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param useDefault
 	 */
 	public void setUseDefaultDragHandler(boolean useDefault) {
-		useDefaultDragHandler=useDefault;
+		useDefaultDragHandler = useDefault;
 	}
 
 }

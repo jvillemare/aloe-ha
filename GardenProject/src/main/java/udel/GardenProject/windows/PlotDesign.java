@@ -2,7 +2,6 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +41,6 @@ import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.PlotTextLabel;
 import udel.GardenProject.plotObjects.lines.PlotFence;
 import udel.GardenProject.plotObjects.lines.PlotPath;
-import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 import udel.GardenProject.plotObjects.polygons.PlotForest;
 import udel.GardenProject.plotObjects.polygons.PlotPatio;
 import udel.GardenProject.plotObjects.polygons.PlotPlayground;
@@ -154,7 +152,6 @@ public class PlotDesign extends Window {
 	private int allPlantsButtonFontSize = 17;
 	private int tilePaneWidthAdjustment = 20;
 	private int allPlantsButtonWidth = 170;
-	private int imageSize = 100;
 	private int inset10 = 10;
 	private int inset20 = 20;
 	private int inset5 = 5;
@@ -356,11 +353,15 @@ public class PlotDesign extends Window {
 
 		for (PlotObjects p : obj) {
 			Node renderedPlotObject = pof.renderInAccordion(p);
+			
+			String name = p.name();
+			Tooltip.install(renderedPlotObject, new Tooltip(name));
 
 			renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
 			renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
 
-			flow.getChildren().add(renderedPlotObject);
+			VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
+			flow.getChildren().add(renderedPlotObjectVBox);
 		}
 		return flow;
 	}
@@ -776,7 +777,13 @@ public class PlotDesign extends Window {
 					}
 				}
 			});
-			group.getChildren().add(plotObjectRepresentation);
+			plotObjectRepresentation.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			  @Override
+		  	public void handle(MouseEvent event) {
+				  Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
+			  }
+		  });
+		  group.getChildren().add(plotObjectRepresentation);
 		}
 		else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());

@@ -32,6 +32,11 @@ public class PlotShed extends GenericPolygon implements Serializable {
 	private static String plotShed = "/viewImages/plotShed.png";
 	
 	/**
+	 * Name of object
+	 */
+	private static String name = "Shed";
+
+  /**
 	 * Render Width of the object
 	 */
 	private static double width=40.0;
@@ -50,7 +55,7 @@ public class PlotShed extends GenericPolygon implements Serializable {
 	public PlotShed(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
 		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width),
-				windowShed, plotShed);
+				windowShed, plotShed, name);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 		//this.p = new AdjustablePolygon(null, null, 0, 0);
