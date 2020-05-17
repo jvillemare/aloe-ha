@@ -8,7 +8,6 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -43,7 +42,6 @@ public class GenericSpecial extends PlotObject implements Serializable {
 						this.getPlotImage()), this.getRenderWidth(), this.getRenderHeight(),true, true);
 		ImageView imageView = new ImageView();
 		Circle clip = new Circle(genericSpecialImage.getWidth() / 2, genericSpecialImage.getHeight() / 2, Math.max(genericSpecialImage.getWidth(), genericSpecialImage.getHeight()) / 2);
-		clip.setStroke(Color.BLACK);
 		imageView.setImage(genericSpecialImage);
 		imageView.setClip(clip);		
 		return imageView;

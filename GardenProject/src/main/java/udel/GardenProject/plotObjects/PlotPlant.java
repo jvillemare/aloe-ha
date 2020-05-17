@@ -38,6 +38,13 @@ public class PlotPlant extends PlotObject implements Serializable {
 	private Plant p;
 	
 	/**
+	 * Base scale for plot design placement.
+	 */
+	private final double BASE = 3;
+	
+	private final double SMALL = 20;
+	
+	/**
 	 * Plant that can appear on in the PlotDesign.
 	 * 
 	 * @param Session	T
@@ -155,20 +162,12 @@ public class PlotPlant extends PlotObject implements Serializable {
 
 	@Override
 	public double getRenderWidth() {
-		int min = 20;
-		double width = Math.min(this.getHeight() / 8, min);
-		return width/this.getModel().getSession().getWidthOfUserPlot() * this.getModel().getPlotDesignWidth();
+		return Math.max(BASE/this.getModel().getSession().getWidthOfUserPlot() * this.getModel().getPlotDesignWidth(), SMALL);
 	}
 
 	@Override
 	public double getRenderHeight() {
-		int min = 20;
-		double width = Math.min(this.getHeight() / 8, min);
-		return width/this.getModel().getSession().getLengthOfUserPlot() * this.getModel().getPlotDesignHeight();
-		
-//		int min = 40;
-//		double width = Math.max(min, this.getHeight() * 2);
-//		return width * (this.getModel().getSession().getLengthOfUserPlot() / 50);
+		return Math.max(BASE/this.getModel().getSession().getLengthOfUserPlot() * this.getModel().getPlotDesignWidth(), SMALL);
 	}
 	
 	@Override
