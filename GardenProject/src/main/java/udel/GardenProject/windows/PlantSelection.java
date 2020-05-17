@@ -147,6 +147,7 @@ public class PlantSelection extends Window {
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
 	private int borderTopMargin = 15;
+	private int butSpacingForButtons = 110;
 	private int borderBottomMargin = 20;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
@@ -416,6 +417,7 @@ public class PlantSelection extends Window {
 					backBut.setVisible(true);
 				}
 				
+				but.setSpacing(butSpacingForButtons);
 				but.getChildren().addAll(backBut, nextBut);
 				show.getChildren().addAll(canopyFlow, but);
 				t.setContent(show);
