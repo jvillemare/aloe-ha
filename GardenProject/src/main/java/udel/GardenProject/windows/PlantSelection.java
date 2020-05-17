@@ -40,6 +40,7 @@ import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -309,18 +310,17 @@ public class PlantSelection extends Window {
 		
 		Moisture m = getSession().getMoistureOfPlot();
 		SoilTypes s = getSession().getSoilTypeOfPlot();
-		double l = getSession().getSunlightOfPlot();
+		Sunlight sun = getSession().getSunlightOfPlot();
 		
 		HashSet<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
 		for (Plant p : nativePlants) {
 			boolean fits = false;
 			
+			Sunlight pSun = Sunlight.getSunlightByDouble(p.getLight());
 			if(p.getMoisture() == m || p.getMoisture() == null || m == null) {
 				if(p.getSoilType() == s || p.getSoilType() == SoilTypes.ANY || s == SoilTypes.ANY) {
-					if(p.getLight() == l || 
-							(p.getLight() < (l + 0.2) && p.getLight() >= l ) 
-							|| p.getLight() == -1.0 || l == -1.0) {
+					if(sun == Sunlight.ANY || pSun == sun) { 
 						fits = true;
 					}
 				} 
@@ -652,7 +652,7 @@ public class PlantSelection extends Window {
 	 * Automatic addition to make plants appear in plant selection.
 	 */
 	public void easeSelection() {
-		getSession().setSunlightOfPlot(-1.0);
+		getSession().setSunlightOfPlot(Sunlight.ANY);
 		ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
 		updatedSeason.add(Seasons.SUMMER);
 		getSession().setSeasonsUserSelected(updatedSeason);
