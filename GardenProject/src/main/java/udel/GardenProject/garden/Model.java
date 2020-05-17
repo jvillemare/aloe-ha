@@ -781,5 +781,13 @@ public class Model {
 	public void setImg(ImageView img) {
 		this.img=img;
 	}
+	
+	/**
+	 * Refresh the window w.
+	 * @param w
+	 */
+	public void refreshWindow(Windows w) { 
+		windows[w.ordinal()].refresh();
+	}
 
 }

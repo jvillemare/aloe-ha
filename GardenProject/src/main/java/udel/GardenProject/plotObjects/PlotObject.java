@@ -96,6 +96,10 @@ public abstract class PlotObject implements Serializable {
 		this.useDefaultDragHandler = false;
 	}
 	
+	/**
+	 * Abstract。 Set the visible value for object related to adjustable polygon.
+	 * @param vis
+	 */
 	public abstract void setVisible(boolean vis);
 	
 	/**
