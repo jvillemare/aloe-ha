@@ -256,7 +256,7 @@ public class BluePrint extends Window {
 		po.setPlotX(x);
 		po.setPlotY(y);
 		Node plotObjectRepresentation = po.render();
-		plotObjectRepresentation.setTranslateX(100);
+		plotObjectRepresentation.setTranslateX(x);
 		plotObjectRepresentation.setTranslateY(y);
 		if (!po.getUseDefaultDragHandler()) {
 			plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
