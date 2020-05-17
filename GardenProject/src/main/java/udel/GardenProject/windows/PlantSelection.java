@@ -297,7 +297,7 @@ public class PlantSelection extends Window {
 		SoilTypes desiredSoil = getSession().getSoilTypeOfPlot();
 		Sunlight desiredSun = getSession().getSunlightOfPlot();
 		
-		HashSet<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		HashSet<Colors> selectedColors = this.getModel().getSession().getColorsUserSelected();
 		
 		for (Plant p : nativePlants) {
 			boolean fits = false;
@@ -320,7 +320,7 @@ public class PlantSelection extends Window {
 			}
 			
 			if (fits) {
-				fits = checkColors(p, selected);
+				fits = checkColors(p, selectedColors);
 			}
 			
 			if(fits) {
@@ -351,16 +351,16 @@ public class PlantSelection extends Window {
 		}else {
 			int forward = page + 1;
 			int backward = page - 1;
-			Button backBut = new Button("Previous");
-			backBut.setOnAction(new EventHandler<ActionEvent>() {
+			Button backButton = new Button("Previous");
+			backButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					populateTiles(t, backward);
 				}
 			});
-			Button nextBut = new Button("More Plants");
-			nextBut.setOnAction(new EventHandler<ActionEvent>() {
+			Button nextButton = new Button("More Plants");
+			nextButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
@@ -368,8 +368,8 @@ public class PlantSelection extends Window {
 				}
 			});
 		
-			formatButton(backBut);
-			formatButton(nextBut);
+			formatButton(backButton);
+			formatButton(nextButton);
 					
 			canopyPlant.clear();
 			for(Plant p : filter) {
@@ -379,25 +379,25 @@ public class PlantSelection extends Window {
 			}
 			
 			if(canopyPlant.isEmpty()) {
-				nextBut.setVisible(false);
+				nextButton.setVisible(false);
 			}else {
 				int startpage = page * maxPlantsPerPage;
 				for(int i = startpage; i < startpage + maxPlantsPerPage && i < canopyPlant.size(); i++) {
 					canopyFlow.getChildren().add(createPlantBox(canopyPlant.get(i)));
 					if(i == canopyPlant.size() - 1) {
-						nextBut.setVisible(false);
+						nextButton.setVisible(false);
 					}else {
-						nextBut.setVisible(true);
+						nextButton.setVisible(true);
 					}
 				}
 				
 				if(page == 0) {
-					backBut.setVisible(false);
+					backButton.setVisible(false);
 				}else {
-					backBut.setVisible(true);
+					backButton.setVisible(true);
 				}
 				
-				buttonBox.getChildren().addAll(backBut, nextBut);
+				buttonBox.getChildren().addAll(backButton, nextButton);
 				showBox.getChildren().addAll(canopyFlow, buttonBox);
 				t.setContent(showBox);
 			}
