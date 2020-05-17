@@ -55,7 +55,7 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 	public PlotPath(Model model, double x, double y) {
-		super(model, x, y, 1.0, newAdjustableLine(Color.RED, height, width, 0, 0), windowPath, plotPath, name);
+		super(model, x, y, 1.0, new AdjustableLine(Color.RED, height, width), windowPath, plotPath, name);
 		// TODO Auto-generated constructor stub
 	}
 

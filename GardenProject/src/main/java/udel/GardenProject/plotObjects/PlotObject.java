@@ -65,6 +65,7 @@ public abstract class PlotObject implements Serializable {
 	 */
 	private String name = "";
   
+	/**
 	 * Boolean value to determine if the plotobject use its own dragHandler
 	 */
 	private boolean useDefaultDragHandler;
@@ -224,8 +225,9 @@ public abstract class PlotObject implements Serializable {
 	 */
 	public final String getName() {
 		return this.name;
+	}
 
-  /**
+	/**
 	 * Getter.
 	 * @return Boolean value of useDefaultDragHandler;
 	 */

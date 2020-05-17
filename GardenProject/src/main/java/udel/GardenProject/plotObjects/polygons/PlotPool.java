@@ -53,9 +53,7 @@ public class PlotPool extends GenericPolygon implements Serializable {
 	 */
 	public PlotPool(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0), windowPool, plotPool, name);
-		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width),
-				windowPool, plotPool, name);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, x, y), windowPool, plotPool, name);
 		// TODO Auto-generated constructor stub
 	}
 
