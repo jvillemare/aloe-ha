@@ -62,14 +62,4 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 		return null;
 	}
 
-	/**
-	 * All objects must be specified to what they are
-	 * 
-	 * @return Name of object
-	 */
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
 }
