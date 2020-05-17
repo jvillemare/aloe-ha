@@ -35,7 +35,7 @@ public enum Seasons {
 	 * @return ArrayList<Seasons>
 	 * @throws Exception 
 	 */
-	public static ArrayList<Seasons> getFilterSeason(boolean[] year) throws Exception{
+	public static ArrayList<Seasons> getFilterSeason(boolean[] year){
 		ArrayList<Seasons> filter = new ArrayList<Seasons>();
 		int size = year.length;
 		
@@ -56,7 +56,8 @@ public enum Seasons {
 				filter.add(FALL);
 			}
 		}else {
-			throw new Exception("Wrong year size in Filtering Seasons");
+			filter.add(YEARROUND);
+			
 		}
 		
 		return filter;

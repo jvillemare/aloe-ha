@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
@@ -62,6 +65,10 @@ public abstract class PlotObject implements Serializable {
 	 */
 	private String name = "";
   
+	 * Boolean value to determine if the plotobject use its own dragHandler
+	 */
+	private boolean useDefaultDragHandler;
+  
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
@@ -85,6 +92,7 @@ public abstract class PlotObject implements Serializable {
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
 		this.name = name;
+		this.useDefaultDragHandler = false;
 	}
 	
 	/**
@@ -112,6 +120,23 @@ public abstract class PlotObject implements Serializable {
 		// TODO: Make me abstract
 		return null;
 	}
+	
+	/**
+	 * 
+	 * Abstract. All Plot Objects must specify how they will be drawn on the
+	 * season view canvas.
+	 * 
+	 * @param gc Graphics Context for drawing images/objects on canvas.
+	 * @param gb Blur effect for shade beneath plants.
+	 * @param minScale minimum scale amount for objects based on depth.
+	 * @param maxDepth Depth of plot design window.
+	 * @param maxWidth Width of plot design window.
+	 * @param viewDepth Depth of gc's canvas.
+	 * @param viewWidth Width of gc's Canvas.
+	 * @param yearScale Scaling amount based on year.
+	 * @param e Effect to be added to plants.
+	 */
+	public abstract void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth, double viewDepth, double viewWidth, double yearScale, Effect e);
 	
 	/**
 	 * Helper method.
@@ -199,6 +224,21 @@ public abstract class PlotObject implements Serializable {
 	 */
 	public final String getName() {
 		return this.name;
+
+  /**
+	 * Getter.
+	 * @return Boolean value of useDefaultDragHandler;
+	 */
+	public boolean getUseDefaultDragHandler() {
+		return useDefaultDragHandler;
+	}
+	
+	/**
+	 * Setter
+	 * @param useDefault
+	 */
+	public void setUseDefaultDragHandler(boolean useDefault) {
+		useDefaultDragHandler = useDefault;
 	}
 
 }

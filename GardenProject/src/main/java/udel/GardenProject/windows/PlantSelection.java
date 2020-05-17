@@ -3,6 +3,8 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,8 +16,11 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -73,7 +78,7 @@ public class PlantSelection extends Window {
 	/**
 	 * Navigation buttons at the bottom of the screen
 	 */
-	private Button back, mainMenu, next;
+	private Button back, mainMenu, next, ease;
 
 	/**
 	 * ScrollPane for the FlowPane where user's selections of plants are placed w
@@ -102,14 +107,24 @@ public class PlantSelection extends Window {
 	private ArrayList<Plant> nativePlants = getModel().getNativePlants();
 	
 	/**
-	 * Sends a warning that there are no plants
-	 */
-	private Alert warning = new Alert(AlertType.WARNING);
-	
-	/**
 	 * True if there are no plants to choose from, false otherwise.
 	 */
 	private boolean plantSelEmpty = true;
+	
+	/**
+	 * Cap-size for each canopy level
+	 */
+	private int capPlant = 100;
+	
+	/**
+	 * List holding each tilepane for each layer of the accordion.
+	 */
+	private List<TitledPane> accArr;
+	
+	/**
+	 * Accordion holding all plant options in canopy order.
+	 */
+	private Accordion canopySelection;
 	
 	/**
 	 * Adjustments to size for margins, text, buttons, and scrollPane for the main.
@@ -136,17 +151,6 @@ public class PlantSelection extends Window {
 	public PlantSelection(Model m) {
 		super(m, "Plant Selection", Windows.PlantSelection);
 		
-		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
-				+ "\nPlease either go back to Questionnaire and change your answers or go to Plant Database in the next screen.");
-		
-	}
-	
-	/**
-	 * Similar to PlantInfo, allows this method to be called in Refresh and thus
-	 * renew the new desired traits for each plant in the left hand side.
-	 * @throws Exception 
-	 */
-	public void displaySelection() throws Exception {
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		tilePane = new TilePane();
@@ -158,46 +162,27 @@ public class PlantSelection extends Window {
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 		vbox.getChildren().addAll(text);
 
-		createButtons();
-
 		centerBox = new HBox();
 
-		Accordion canopySelection = new Accordion();
-		
-		List<TitledPane> accArr = new ArrayList<TitledPane>();
-		
-		populateTiles(accArr);
-
-		for (TitledPane t : accArr) {
-			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
-					View.getTextSizeForButtonsAndText()));
-			canopySelection.getPanes().add(t);
-		}
-
-		scrollCanopies = new ScrollPane();
-		scrollPaneFormat(scrollCanopies);
-		scrollCanopies.setPrefSize(prefScrollWidth, prefScrollHeight);
-		scrollCanopies.setContent(canopySelection);
+		canopySelection = new Accordion();
 
 		selectedPlantsBox = new FlowPane();
 		selectedPlantsBox.setHgap(inset10);
 		selectedPlantsBox.setVgap(inset10);
 		selectedPlantsBox.setMinWidth(selectedPlantBoxMinWidth);
 		selectedPlantsBox.setMinHeight(selectedPlantBoxMinHeight);
-		
-		addSelected();
 
 		scrollSelected = new ScrollPane();
 		scrollPaneFormat(scrollSelected);
+		
+		scrollCanopies = new ScrollPane();
+		scrollPaneFormat(scrollCanopies);
+		scrollCanopies.setPrefSize(prefScrollWidth, prefScrollHeight);
 
 		scrollSelected.setPrefSize(scrollSelectedWidth, scrollSelectedHeight);
-		scrollSelected.setContent(selectedPlantsBox);
-
-		centerBox.getChildren().addAll(scrollCanopies, scrollSelected);
 
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(back, mainMenu, next);
 
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
 		View.setBackgroundScreen(image, backgroundScreenWidthAndHeight, backgroundScreenWidthAndHeight);
@@ -205,23 +190,71 @@ public class PlantSelection extends Window {
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(centerBox,
 				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
+				
+	}
+	
+	/**
+	 * Similar to PlantInfo, allows this method to be called in Refresh and thus
+	 * renew the new desired traits for each plant in the left hand side.
+	 * @throws Exception 
+	 */
+	public void displaySelection() {
+		accArr = new ArrayList<TitledPane>();
+		
+		populateTiles(accArr);
+
+		canopySelection.getPanes().clear();
+		for (TitledPane t : accArr) {
+			t.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()),
+					View.getTextSizeForButtonsAndText()));
+			canopySelection.getPanes().add(t);
+		}
+
+		scrollCanopies.setContent(canopySelection);
+		
+		addSelected();
+		
+		scrollSelected.setContent(selectedPlantsBox);
+		
+		centerBox.getChildren().clear();
+		centerBox.getChildren().addAll(scrollCanopies, scrollSelected);
+		
+		createButtons();
+		tilePane.getChildren().clear();
+		tilePane.getChildren().addAll(back, ease, mainMenu, next);
+		
 		borderPane.setPadding(new Insets(5));
 		borderPane.setTop(vbox);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(centerBox);
-
+		
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 		
-		if(plantSelEmpty) {
-			Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
-			warning.show();
-			warningStage.setAlwaysOnTop(true);
-			warningStage.toFront();
-		}
 	}
 
+	/**
+	 * Creates an Alarm if there are not plants that suit the given answers.
+	 */
+	public void setAlarm() {
+		ButtonType automatic = new ButtonType("Easy Plant");
+		ButtonType cont = new ButtonType("Ok");
+		Alert warning = new Alert(AlertType.WARNING, "No Plant Options",cont, automatic);
+		warning.setContentText("Your specifications in Questionnaire do not match any of our current plants!"
+				+ "\n\nPlease either:"
+				+ "\n\t- Click Ok to continue anyways"
+				+ "\n\t- Click Easy Plant Button to automatically ease \n\t   the inputs");
+		
+		if(plantSelEmpty) {
+			warning.showAndWait().ifPresent(response -> {
+			     if (response == automatic) {
+			         easeSelection();
+			     }
+			 });
+		}
+	}
+	
 	/**
 	 * Formats the ScrollPane to the desired width, height, and padding.
 	 * 
@@ -242,10 +275,9 @@ public class PlantSelection extends Window {
 	 * @param List<TiledPane>
 	 * @throws Exception 
 	 */
-	public void populateTiles(List<TitledPane> accArr) throws Exception {
-		
+	public void populateTiles(List<TitledPane> accArr){
 		for(Canopy c : Canopy.values()) {
-			TitledPane tile = new TitledPane(c.name().substring(0, 1) + c.name().substring(1).toLowerCase(), createFlowPane(c));
+			TitledPane tile = new TitledPane(c.getContains(), createFlowPane(c));
 			accArr.add(tile);
 		}
 		
@@ -258,15 +290,17 @@ public class PlantSelection extends Window {
 	 * @param canopy --> Takes in a canopy
 	 * @throws Exception 
 	 */
-	public FlowPane createFlowPane(Canopy canopy) throws Exception {
+	public FlowPane createFlowPane(Canopy canopy){
 
 		FlowPane flowCanopy = new FlowPane();
+		
+		int plantAddedNum = 0;
 		
 		Moisture m = getSession().getMoistureOfPlot();
 		SoilTypes s = getSession().getSoilTypeOfPlot();
 		double l = getSession().getSunlightOfPlot();
 		
-		ArrayList<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		HashSet<Colors> selected = this.getModel().getSession().getColorsUserSelected();
 		
 		for (Plant p : nativePlants) {
 			
@@ -298,11 +332,17 @@ public class PlantSelection extends Window {
 			
 			if(fits) {
 				plantSelEmpty = false;
-				flowCanopy.getChildren().add(createPlantBox(p));
+				
+				if(plantAddedNum == capPlant) {
+					break;
+				}else {
+					plantAddedNum++;
+					flowCanopy.getChildren().add(createPlantBox(p));
+				}
 			}
 			
 		}
-
+		
 		return flowCanopy;
 
 	}
@@ -314,7 +354,7 @@ public class PlantSelection extends Window {
 	 * @return boolean
 	 * @throws Exception 
 	 */
-	public boolean checkSeason(Plant p) throws Exception {
+	public boolean checkSeason(Plant p){
 		ArrayList<Seasons> seasonFilter = getSession().getSeasonsUserSelected();
 		
 		boolean[] year = p.getBloomTime();
@@ -344,7 +384,7 @@ public class PlantSelection extends Window {
 	 * @param selected 	Colors to compare plant colors to.
 	 * @return 			Boolean on if the plant contains any of the selected colors.
 	 */
-	public boolean checkColors(Plant p, ArrayList<Colors> selected) {
+	public boolean checkColors(Plant p, HashSet<Colors> selected) {
 		HashSet<Colors> colors = p.getColors();
 		for (Colors color : colors) {
 			if (selected.contains(Colors.ANYCOLOR) || selected.contains(color)) {
@@ -466,9 +506,21 @@ public class PlantSelection extends Window {
 				switchToWindow(Windows.PlotDesign);
 			}
 		});
-
+		
+		ease = new Button("Easy Plant") ;
+		Tooltip easeToolTip = new Tooltip(
+				"Ease the Questionnaire Inputs to Add More Plant Options.");
+		ease.setTooltip(easeToolTip);
+		ease.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				easeSelection();
+			}
+		});
+		
 		List<Button> buttons = new ArrayList<Button>();
 		buttons.add(back);
+		buttons.add(ease);
 		buttons.add(mainMenu);
 		buttons.add(next);
 
@@ -496,21 +548,39 @@ public class PlantSelection extends Window {
 		}
 	}
 	
+	/**
+	 * Automatic addition to make plants appear in plant selection.
+	 */
+	public void easeSelection() {
+		getSession().setSunlightOfPlot(-1.0);
+		ArrayList<Seasons> updatedSeason = getSession().getSeasonsUserSelected();
+		updatedSeason.add(Seasons.SUMMER);
+		getSession().setSeasonsUserSelected(updatedSeason);
+		HashSet<Colors> updatedColor = getSession().getColorsUserSelected();
+		updatedColor.add(Colors.BLUE);
+		getSession().setColorsUserWants(updatedColor);
+		switchToWindow(Windows.PlotDesign);
+		switchToWindow(Windows.PlantSelection);
+	}
+	
 	public void refresh() {
-		plantSelEmpty = true;
-		try {
-			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
-					getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
-				System.out.println("I was called");
+		System.out.println(getModel().getLastWindow().getEnum().name());
+		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
+				getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
+			plantSelEmpty = true;
+			try {
 				displaySelection();
-				selectedPlantsBox.getChildren().clear();
-				addSelected();
-			} else {
-				System.out.println(getModel().getLastWindow().getEnum().name());
-				System.out.println("I was NOT called");
+			}catch(Exception e) {
+				e.getMessage();
 			}
-		} catch(Exception e) {
-			System.out.println("Wrong size of a plants year Boolean Array");
+			selectedPlantsBox.getChildren().clear();
+			addSelected();
+			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
+				setAlarm();
+			}
+		} else {
+			System.out.println(getModel().getLastWindow().getEnum().name());
+			System.out.println("I was NOT called");
 		}
 	}
 

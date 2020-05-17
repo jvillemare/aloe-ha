@@ -10,10 +10,10 @@ package udel.GardenProject.enums;
  */
 public enum Canopy {
 	
-	FLOOR(15, "Floor"), 
-	UNDERSTORY(55, "Understory"), 
-	CANOPY(95, "Canopy"), 
-	EMERGENT(125, "Emergent");
+	FLOOR(15, "Floor", "Plants and Srubs"), 
+	UNDERSTORY(55, "Understory", "Small Trees"), 
+	CANOPY(95, "Canopy", "Medium-size Trees"), 
+	EMERGENT(125, "Emergent", "Largest Trees");
 	
 	/**
 	 * Maximum height of a canopy layer in Imperial feet
@@ -25,9 +25,15 @@ public enum Canopy {
 	 */
 	private String name;
 	
-	Canopy(int max, String name) {
+	/**
+	 * String containing what plant is in each.
+	 */
+	private String contains;
+	
+	Canopy(int max, String name, String contains) {
 		this.maximumHeight = max;
 		this.name = name;
+		this.contains = contains;
 	}
 	
 	/**
@@ -98,5 +104,12 @@ public enum Canopy {
 		return name;
 	}
 	
+	/**
+	 * Getter.
+	 * @return String of plants this canopy can contain
+	 */
+	public String getContains() {
+		return contains;
+	}
 
 }

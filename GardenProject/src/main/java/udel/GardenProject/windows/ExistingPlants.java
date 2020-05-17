@@ -1,10 +1,12 @@
 package udel.GardenProject.windows;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
@@ -119,6 +122,11 @@ public class ExistingPlants extends Window {
 	 */
 	private String moreCharacters = "Please Add More Characters in Search";
 	
+	/**
+	 * Warning for invasive plants.
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
+	
 	
 	/**
 	 * Used for the user to type in the search box
@@ -155,7 +163,7 @@ public class ExistingPlants extends Window {
 	 */
 	public ExistingPlants(Model m) {
 		super(m, "What Plants are in your Garden?", Windows.ExistingPlants);
-
+		
 		borderPane = new BorderPane();
 		vbox = new VBox();
 		container = new GridPane();
@@ -400,6 +408,15 @@ public class ExistingPlants extends Window {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle(boldFontWeight);
 								if (getModel().getSession().getExistingPlants().add(p)) {
+									if (p.getInvasive()) {
+										warning.setContentText(p.getLatinName() +" is an invasive plant." 
+												+ System.lineSeparator() + 
+												"If possible, please remove it from your actual garden.");
+										Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
+										warning.show();
+										warningStage.setAlwaysOnTop(true);
+										warningStage.toFront();
+									}
 									populateRightBox(p);
 								}
 							}
