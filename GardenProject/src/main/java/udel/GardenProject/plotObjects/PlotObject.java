@@ -94,6 +94,12 @@ public abstract class PlotObject implements Serializable {
 	}
 	
 	/**
+	 * Abstract。 Set the visible value for object related to adjustable polygon.
+	 * @param vis
+	 */
+	public abstract void setVisible(boolean vis);
+	
+	/**
 	 * Abstract. All Plot Objects must specify how they will appear on a plot.
 	 * @return	Node object
 	 */

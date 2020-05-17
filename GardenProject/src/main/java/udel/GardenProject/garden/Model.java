@@ -17,6 +17,7 @@ import java.util.Map;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Colors;
@@ -154,6 +155,11 @@ public class Model {
 	 * Default Image when a Plant has no images.
 	 */
 	private String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * SnapShot of the node from blueprint.
+	 */
+	private ImageView img;
 	
 	/**
 	 * Returns the set Default Image used.
@@ -784,6 +790,30 @@ public class Model {
 	 */
 	public HashSet<Colors> getIncludedColors() {
 		return this.colors;
+	}
+	
+	/**
+	 * Get the image of blueprint
+	 * @return img
+	 */
+	public ImageView getImg() {
+		return img;
+	}
+	
+	/**
+	 * Sets the image of the blueprint to given ImageView.
+	 * @param img
+	 */
+	public void setImg(ImageView img) {
+		this.img=img;
+	}
+	
+	/**
+	 * Refresh the window w.
+	 * @param w
+	 */
+	public void refreshWindow(Windows w) { 
+		windows[w.ordinal()].refresh();
 	}
 
 }

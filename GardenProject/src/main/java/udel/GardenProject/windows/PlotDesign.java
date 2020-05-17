@@ -79,8 +79,7 @@ public class PlotDesign extends Window {
 	private VBox vbox, autoRateVBox;
 
 	/**
-	 * TODO: What is this? Change the variable name to something other than text
-	 * since it's not that helpful.
+	 * Title text for the window.
 	 */
 	private Text text;
 
@@ -443,7 +442,7 @@ public class PlotDesign extends Window {
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				switchToWindow(Windows.PlantSelection);
+				switchToWindow(Windows.BluePrint);
 			}
 		});
 
@@ -781,6 +780,7 @@ public class PlotDesign extends Window {
 	 * @param po PlotObject being added to the plot.
 	 * @param x  Horizontal coordinate for the image.
 	 * @param y  Vertical coordinate for the image.
+	 * @param background If this is a background object.
 	 */
 	public void addPlotObjectToInterface(PlotObject po, double x, double y) {
 		po.setPlotX(x);
@@ -805,16 +805,18 @@ public class PlotDesign extends Window {
 				}
 			});
 			plotObjectRepresentation.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			  @Override
-		  	public void handle(MouseEvent event) {
-				  Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
-			  }
-		  });
+				@Override
+				public void handle(MouseEvent event) {
+					Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
+				}
+			});
 		  group.getChildren().add(plotObjectRepresentation);
 		}
 		else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
 		}
+		
+		 
 	}
 
 	/**
@@ -930,7 +932,6 @@ public class PlotDesign extends Window {
 	 * TODO: ...?
 	 * 
 	 * @param po
-	 * @param principal
 	 * @return
 	 */
 	public EventHandler getHandlerForRelease(PlotObjects po) {
@@ -955,9 +956,18 @@ public class PlotDesign extends Window {
 		group.getChildren().clear();
 		createCenterBox();
 
+		if(getModel().getImg()!=null) {
+			ImageView img=getModel().getImg();
+			img.setOpacity(0.4);
+			group.getChildren().add(img);
+		}
 		for (PlotObject po : getSession().getPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
+		/*for (PlotObject po : getSession().getBluePrintPlot()) {
+			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY(),true);
+		}*/
+	
 
 		// TODO: Remove stuff from auto rate box and add back in
 	}

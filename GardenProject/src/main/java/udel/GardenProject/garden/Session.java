@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.GardenView;
 import udel.GardenProject.enums.Moisture;
@@ -130,6 +131,12 @@ public class Session implements Serializable {
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
 	
 	/**
+	 * Objects in the plot from blueprint, to be displayed in PlotDesign.
+	 */
+	private ArrayList<PlotObject> bluePrintPlot = new ArrayList<PlotObject>();
+	
+	
+	/**
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
@@ -232,12 +239,26 @@ public class Session implements Serializable {
 		unsaved = true;
 		this.plotName = plotName;
 	}
-
+	
+	/**
+	 * Get the plot arraylist which contains all the plotObject in the plot design.
+	 * @return plot
+	 */
 	public ArrayList<PlotObject> getPlot() {
 		unsaved = true;
 		return plot;
 	}
-
+	
+	/**
+	 * Get the bluePrintPlot arraylist which contains all the plotObject in the blueprint.
+	 * @return bluePrintPlot
+	 */
+	public ArrayList<PlotObject> getBluePrintPlot() {
+		unsaved = true;
+		return bluePrintPlot;
+	}
+	
+	
 	public void setPlot(ArrayList<PlotObject> plot) {
 		unsaved = true;
 		this.plot = plot;

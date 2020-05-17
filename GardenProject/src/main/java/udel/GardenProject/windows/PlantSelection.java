@@ -588,7 +588,7 @@ public class PlantSelection extends Window {
 
 			@Override
 			public void handle(ActionEvent event) {
-				switchToWindow(Windows.PlotDesign);
+				switchToWindow(Windows.BluePrint);
 			}
 		});
 		

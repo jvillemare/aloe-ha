@@ -75,4 +75,10 @@ public class GenericSpecial extends PlotObject implements Serializable {
 		
 	}
 
+	@Override
+	public void setVisible(boolean vis) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

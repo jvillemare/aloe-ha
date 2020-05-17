@@ -84,4 +84,10 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 		gc.fillText(this.text, this.getPlotX() / maxWidth * viewWidth - (this.getRenderWidth() / 2), this.getPlotY() / maxDepth * viewDepth - (this.getRenderHeight() / 2));
 	}
 
+	@Override
+	public void setVisible(boolean vis) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -192,4 +192,10 @@ public class PlotPlant extends PlotObject implements Serializable {
 				i.getWidth() * minScale * yearScale, i.getHeight() * minScale * yearScale);
 	}
 
+	@Override
+	public void setVisible(boolean vis) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
