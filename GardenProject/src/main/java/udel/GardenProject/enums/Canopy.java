@@ -125,5 +125,18 @@ public enum Canopy {
 	public String getContains() {
 		return contains;
 	}
-
+	
+	/**
+	 * Returns the desired canopy level by matching it with the contains name
+	 * @param name
+	 * @return Canopy level
+	 */
+	public static Canopy getCanopyByContains(String name) {
+		for(Canopy c : Canopy.values()) {
+			if(c.getContains().equals(name)){
+				return c;
+			}
+		}
+		return Canopy.FLOOR;
+	}
 }

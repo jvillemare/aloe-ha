@@ -12,6 +12,7 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Year;
 import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -96,7 +97,7 @@ public class Session implements Serializable {
 	/**
 	 * Users sunlight of their plot. Decimal percentage (from 0.0 to 1.0).
 	 */
-	private double sunlightOfPlot = -1.0;
+	private Sunlight sunlightOfPlot = Sunlight.ANY;
 
 	/**
 	 * Existing plants already in users plot.<br>
@@ -311,7 +312,7 @@ public class Session implements Serializable {
 	 * Getst the sunlight of the user's plot 
 	 * @return The string input of the users plot 
 	 */
-	public double getSunlightOfPlot() {
+	public Sunlight getSunlightOfPlot() {
 		return sunlightOfPlot;
 	}
 
@@ -319,7 +320,7 @@ public class Session implements Serializable {
 	 * Sets the sunlight of the user's plot as per Q6 of the Questionnaire 
 	 * @param sun String input from the Questionnaire 
 	 */
-	public void setSunlightOfPlot(double sun) {
+	public void setSunlightOfPlot(Sunlight sun) {
 		this.sunlightOfPlot = sun;
 	}
 

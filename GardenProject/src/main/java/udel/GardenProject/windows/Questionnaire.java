@@ -37,6 +37,7 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -368,12 +369,10 @@ public class Questionnaire extends Window {
 		createText(
 				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
-		for (double s = 0.0; s <= 1.0; s += 0.2) {
-			double rounded1 = Math.round(s * 10) / 10.0;
-			q6ChoiceBox.getItems().add(Double.toString(rounded1));
+		for (Sunlight s : Sunlight.values()) {
+			q6ChoiceBox.getItems().add(s.getSunlight());
 		}
-		q6ChoiceBox.getItems().add("My plot receives different levels of sunlight");
-		q6ChoiceBox.setValue("0.0");
+		q6ChoiceBox.setValue(Sunlight.FULLSUN.getSunlight());
 		vbox.getChildren().addAll(q6ChoiceBox);
 	}
 
@@ -523,9 +522,9 @@ public class Questionnaire extends Window {
 					getSession().setSoilTypeOfPlot(SoilTypes.ANY);
 				}
 				try {
-					getSession().setSunlightOfPlot(Double.parseDouble(getChoice(q6ChoiceBox)));
-				} catch (NumberFormatException e) {
-					getSession().setSunlightOfPlot(-1.0);
+					getSession().setSunlightOfPlot(Sunlight.valueOf(getChoice(q6ChoiceBox).replace(" ", "").toUpperCase()));
+				} catch (IllegalArgumentException e) {
+					getSession().setSunlightOfPlot(Sunlight.ANY);
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
@@ -696,7 +695,7 @@ public class Questionnaire extends Window {
 		q5ChoiceBox.setValue(getSession().getSoilTypeOfPlot().getName());
 
 		// Sunlight
-		q6ChoiceBox.setValue(String.valueOf(getSession().getSunlightOfPlot()));
+		q6ChoiceBox.setValue(getSession().getSunlightOfPlot().getSunlight());
 
 		// Seasons Selected
 		clearCheckBoxes(q7items);
