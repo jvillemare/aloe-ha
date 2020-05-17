@@ -2,10 +2,7 @@ package udel.GardenProject.plotObjects.special;
 
 import java.io.Serializable;
 
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.plotObjects.PlotObject;
 
 /**
  * Any other object in a garden.
@@ -32,16 +29,7 @@ public class PlotOther extends GenericSpecial implements Serializable {
 	 * Name of object
 	 */
 	private static String name = "Other";
-
-	/**
-	 * Render Width of the object
-	 */
-	private static double width=40.0;
 	
-	/**
-	 * Render Height of the object
-	 */
-	private static double height=40.0;
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
@@ -50,18 +38,6 @@ public class PlotOther extends GenericSpecial implements Serializable {
 	public PlotOther(Model model, double x, double y) {
 		super(model, x, y, 3.0, 3.0, windowPicture, plotPicture, name);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return width;
-	}
-
-	@Override
-	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return height;
 	}
 
 }

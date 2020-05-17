@@ -6,10 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.ImageView;
-import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.garden.Session;
 
 /**
  * An object that can appear in PlotDesign must implement this interface.
@@ -58,7 +55,7 @@ public abstract class PlotObject implements Serializable {
 	 * is used for getting the current width and height of the plot, and other 
 	 * relevant factors for rendering Plot Objects.
 	 */
-	private transient Model model;
+	transient Model model;
 	
 	/**
 	 * The name of the plot object
@@ -185,6 +182,14 @@ public abstract class PlotObject implements Serializable {
 	 */
 	public final double getRadius() {
 		return this.radius;
+	}
+	
+	/**
+	 * Getter.
+	 * @return Model of current session.
+	 */
+	public final Model getModel() {
+		return this.model;
 	}
     
 	/**

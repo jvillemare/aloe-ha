@@ -8,9 +8,9 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.PlotPlant;
 
 /**
  * All other miscellaneous plot objects descend from GenericSpecial.
@@ -35,29 +35,30 @@ public class GenericSpecial extends PlotObject implements Serializable {
 
 	@Override
 	public Node render() {
-		// TODO Auto-generated method stub
 		Image genericSpecialImage;
 		
 		genericSpecialImage = new Image(
 				getClass().getResourceAsStream(
-						this.getPlotImage()), 40.0, 40.0,true, true);
-		
+						this.getPlotImage()), this.getRenderWidth(), this.getRenderHeight(),true, true);
 		ImageView imageView = new ImageView();
+		Circle clip = new Circle(genericSpecialImage.getWidth() / 2, genericSpecialImage.getHeight() / 2, Math.max(genericSpecialImage.getWidth(), genericSpecialImage.getHeight()) / 2);
 		imageView.setImage(genericSpecialImage);
-				
+		imageView.setClip(clip);		
 		return imageView;
 	}
 
 	@Override
 	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		int min = 20;
+		double width = Math.min(this.getHeight(), min);
+		return width/this.getModel().getSession().getWidthOfUserPlot() * this.getModel().getPlotDesignWidth();
 	}
 
 	@Override
 	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		int min = 20;
+		double width = Math.min(this.getHeight(), min);
+		return width/this.getModel().getSession().getLengthOfUserPlot() * this.getModel().getPlotDesignHeight();
 	}
 
 	@Override
