@@ -1,5 +1,7 @@
 package udel.GardenProject.plotObjects.lines;
 
+import java.io.Serializable;
+
 import javafx.scene.paint.Color;
 import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
@@ -11,7 +13,7 @@ import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
  * @author Team 0
  * @see {@link udel.GardenProject.plotObjects.PlotObject}
  */
-public class AdjustableLine {
+public class AdjustableLine implements Serializable{
 	
 	/**
 	 * The adjustablepolygon object which make the adjustable line.

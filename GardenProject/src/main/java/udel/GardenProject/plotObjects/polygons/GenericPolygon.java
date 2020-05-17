@@ -51,15 +51,25 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	@Override
 	public Node render() {
 		Group n=new Group();
+		if(this.p.getAnchors()==null) {
+			this.p.regen();
+		}
+
 		n.getChildren().addAll(this.p.getAnchors());
 		n.getChildren().add(this.p.getPolygon());
 		return n;
 	}
+	public void setX(double x) {
+		this.p.setX(x);
+	}
+	public void setY(double y) {
+		this.p.setY(y);
+	}
 	/**
 	 * Trigger the hide and show of the anchor.
 	 */
-	public void triggerAnchor() {
-		this.p.triggerAnchor();
+	public void setVisible(boolean vis) {
+		this.p.setVisible(vis);
 	}
 	
 	/**

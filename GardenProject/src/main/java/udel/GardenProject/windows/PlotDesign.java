@@ -939,13 +939,18 @@ public class PlotDesign extends Window {
 		group.getChildren().clear();
 		createCenterBox();
 
+		if(getModel().getImg()!=null) {
+			ImageView img=getModel().getImg();
+			//img.toFront();
+			group.getChildren().add(img);
+		}
 		for (PlotObject po : getSession().getPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
 		/*for (PlotObject po : getSession().getBluePrintPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY(),true);
 		}*/
-		group.getChildren().add(new ImageView(getSession().getImg()));
+	
 
 		// TODO: Remove stuff from auto rate box and add back in
 	}

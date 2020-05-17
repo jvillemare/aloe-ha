@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.GardenView;
 import udel.GardenProject.enums.Moisture;
@@ -135,10 +135,6 @@ public class Session implements Serializable {
 	 */
 	private ArrayList<PlotObject> bluePrintPlot = new ArrayList<PlotObject>();
 	
-	/**
-	 * SnapShot of the node from blueprint.
-	 */
-	private WritableImage img;
 	
 	/**
 	 * Season selected by user from SeasonView
@@ -262,21 +258,7 @@ public class Session implements Serializable {
 		return bluePrintPlot;
 	}
 	
-	/**
-	 * Get the image of blueprint
-	 * @return img
-	 */
-	public WritableImage getImg() {
-		return img;
-	}
 	
-	/**
-	 * Sets the image of the blueprint to given writableimage.
-	 * @param img
-	 */
-	public void setImg(WritableImage img) {
-		this.img=img;
-	}
 	public void setPlot(ArrayList<PlotObject> plot) {
 		unsaved = true;
 		this.plot = plot;

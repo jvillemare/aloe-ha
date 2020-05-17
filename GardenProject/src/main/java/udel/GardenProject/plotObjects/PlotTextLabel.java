@@ -85,7 +85,7 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	}
 
 	@Override
-	public void triggerAnchor() {
+	public void setVisible(boolean vis) {
 		// TODO Auto-generated method stub
 		
 	}

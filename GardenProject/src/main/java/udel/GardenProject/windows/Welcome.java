@@ -161,7 +161,7 @@ public class Welcome extends Window {
 
 				if (file != null) {
 					getModel().loadSession(file.getAbsolutePath());
-					switchToWindow(Windows.PlotDesign);
+					switchToWindow(Windows.BluePrint);
 				}
 
 			}

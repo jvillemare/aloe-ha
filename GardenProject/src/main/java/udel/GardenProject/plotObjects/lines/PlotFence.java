@@ -60,6 +60,9 @@ public class PlotFence extends GenericLine implements Serializable {
 	@Override
 	public Node render() {
 		Group n=new Group();
+		if(this.getAdjustablePolygon().getAnchors()==null) {
+			this.getAdjustablePolygon().regen();
+		}
 		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
 		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
 		return n;
@@ -90,8 +93,8 @@ public class PlotFence extends GenericLine implements Serializable {
 	}
 
 	@Override
-	public void triggerAnchor() {
-		this.getAdjustablePolygon().triggerAnchor();
+	public void setVisible(boolean vis) {
+		this.getAdjustablePolygon().setVisible(vis);
 		
 	}
 	

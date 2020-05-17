@@ -1,6 +1,5 @@
 package udel.GardenProject.windows;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -29,29 +27,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.PlotObjectsFactory;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
-import udel.GardenProject.plants.Plant;
 import udel.GardenProject.plotObjects.PlotObject;
-import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.PlotTextLabel;
-import udel.GardenProject.plotObjects.lines.PlotFence;
-import udel.GardenProject.plotObjects.lines.PlotPath;
+import udel.GardenProject.plotObjects.polygons.GenericPolygon;
 import udel.GardenProject.plotObjects.polygons.PlotForest;
-import udel.GardenProject.plotObjects.polygons.PlotPatio;
-import udel.GardenProject.plotObjects.polygons.PlotPlayground;
-import udel.GardenProject.plotObjects.polygons.PlotPool;
 import udel.GardenProject.plotObjects.polygons.PlotRoad;
-import udel.GardenProject.plotObjects.polygons.PlotRock;
-import udel.GardenProject.plotObjects.polygons.PlotShed;
-import udel.GardenProject.plotObjects.special.PlotBench;
-import udel.GardenProject.plotObjects.special.PlotBirdBath;
-import udel.GardenProject.plotObjects.special.PlotFlamingo;
-import udel.GardenProject.plotObjects.special.PlotGnome;
 import udel.GardenProject.plotObjects.special.PlotOther;
 
 /**
@@ -116,7 +101,7 @@ public class BluePrint extends Window {
 	public BluePrint(Model m) {
 		super(m, "Blue Print Your Plot", Windows.BluePrint);
 		// TODO Auto-generated constructor stub
-		text=new Text("Drag and Drop your plants and objects from the drop-downs on the left to build "
+		text=new Text("Drag and Drop the given garden objects from the left pane to build "
 				+ "a blue print for your garden."
 				+ " Click on the next to start design your gradan.");
 		text.setWrappingWidth(View.getCanvasWidth());
@@ -271,7 +256,7 @@ public class BluePrint extends Window {
 		po.setPlotX(x);
 		po.setPlotY(y);
 		Node plotObjectRepresentation = po.render();
-		plotObjectRepresentation.setTranslateX(x);
+		plotObjectRepresentation.setTranslateX(100);
 		plotObjectRepresentation.setTranslateY(y);
 		if (!po.getUseDefaultDragHandler()) {
 			plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -299,6 +284,9 @@ public class BluePrint extends Window {
 		}
 		else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
+			((GenericPolygon)po).setX(x);
+			((GenericPolygon)po).setX(y);
+
 		}
 	}
 	/**
@@ -315,7 +303,7 @@ public class BluePrint extends Window {
 		double newY = tmp.getLayoutY() - vbox.getLayoutBounds().getHeight();
 		if (group.contains(newX, newY)) {
 			PlotObject plotObjectToAdd;
-			plotObjectToAdd = new PlotOther(getModel(), newX, newY);
+			//plotObjectToAdd = new PlotOther(getModel(), newX, newY);
 			switch (po) {
 			case Forest:
 				plotObjectToAdd = new PlotForest(getModel(), newX, newY);
@@ -328,6 +316,9 @@ public class BluePrint extends Window {
 				// window asking what they would like the text
 				// label to say
 				plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
+				break;
+			default:
+				plotObjectToAdd = new PlotOther(getModel(), newX, newY);
 				break;
 			}
 
@@ -369,11 +360,12 @@ public class BluePrint extends Window {
 	public void takeSnapShot() {
 		for (PlotObject po : getSession().getBluePrintPlot()) {
 			if(po.getUseDefaultDragHandler()) {
-				po.triggerAnchor();
+				po.setVisible(false);
 			}
 		}
-		WritableImage image=group.snapshot(new SnapshotParameters(), null);
-		getSession().setImg(image);
+		WritableImage writableimage=group.snapshot(new SnapshotParameters(), null);
+		ImageView image=new ImageView(writableimage);
+		getModel().setImg(image);
 	}
 
 	@Override
@@ -388,9 +380,12 @@ public class BluePrint extends Window {
 		for (PlotObject po : getSession().getBluePrintPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 			if(po.getUseDefaultDragHandler()) {
-				po.triggerAnchor();
+				po.setVisible(true);
 			}
 		}
+		WritableImage writableimage=group.snapshot(new SnapshotParameters(), null);
+		ImageView image=new ImageView(writableimage);
+		getModel().setImg(image);
 	}
 	
 }
