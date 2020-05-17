@@ -168,14 +168,7 @@ public class Questionnaire extends Window {
 	private int borderTopAndBottonMargin = 40;
 	private int backgroundWidthAndHeight = 100;
 	private int textWrapWidth = View.getCanvasWidth() / 2;
-
-	/**
-	 * Adjustments for the Alert class: for the pop up screen
-	 */
-	private static int inset10 = 20;
-	private static int messageFontSize = 15;
-	private static int alertScreenWidth = 400;
-	private static int alertScreenHeight = 150;
+	private static int inset20 = 20;
 
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...", Windows.Questionnaire);
@@ -193,18 +186,18 @@ public class Questionnaire extends Window {
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
-		topBox.setPadding(new Insets(inset10));
+		topBox.setPadding(new Insets(inset20));
 
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
-		vbox.setPadding(new Insets(inset10));
+		vbox.setPadding(new Insets(inset20));
 		//vbox.setMinWidth(100);
 
 		populateQuestionnaire();
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(0, inset5, inset10, inset5));
+		tilePane.setPadding(new Insets(0, inset5, inset20, inset5));
 		tilePane.setHgap(buttonGap);
 		tilePane.getChildren().addAll(backToExistingPlants, mainMenu, toPlotDesign);
 
@@ -276,7 +269,7 @@ public class Questionnaire extends Window {
 		textField.setPromptText("My Garden");
 		hbname = new HBox();
 		hbname.getChildren().addAll(gardenLabel, textField);
-		hbname.setSpacing(inset10);
+		hbname.setSpacing(inset20);
 		vbox.getChildren().addAll(hbname);
 	}
 
@@ -303,7 +296,7 @@ public class Questionnaire extends Window {
 		setHBoxAttributes.add(hbLength);
 
 		for (HBox hb : setHBoxAttributes) {
-			hb.setSpacing(inset10);
+			hb.setSpacing(inset20);
 		}
 		vbox.getChildren().addAll(hbWidth, hbLength);
 	}

@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -29,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.PlotObjectsFactory;
@@ -131,6 +133,11 @@ public class PlotDesign extends Window {
 	 * Used to add in Titled Panes to accordion.
 	 */
 	private List<TitledPane> accArr;
+	
+	/**
+	 * House Placement Text
+	 */
+	private Text houseText;
 
 	/**
 	 * Adjustments to buttons and panes.
@@ -147,6 +154,8 @@ public class PlotDesign extends Window {
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
 	private int scrollPrefWidth = View.getCanvasWidth() / 5 + 30;
 	private int scrollPrefHeight = View.getCanvasHeight() / 5 * 4;
+	private int houseTextXPlacement = View.getCanvasWidth()/2 - 300;
+	private int houseTextYPlacement = View.getCanvasHeight() - 105;
 	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9;
 	private int allPlantsButtonFontSize = 17;
 	private int tilePaneWidthAdjustment = 20;
@@ -154,6 +163,8 @@ public class PlotDesign extends Window {
 	private int inset10 = 10;
 	private int inset20 = 20;
 	private int inset5 = 5;
+	double tmpWidth = 0;
+	double tmpHeight = 0;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -298,7 +309,11 @@ public class PlotDesign extends Window {
 		box = new Rectangle(rectWidth, rectHeight);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
-		group.getChildren().add(box);
+		
+		houseText = new Text("Your House is Here");
+		houseText.setLayoutX(houseTextXPlacement);
+		houseText.setLayoutY(houseTextYPlacement);
+		group.getChildren().addAll(box, houseText);
 	}
 
 	/**
@@ -308,7 +323,6 @@ public class PlotDesign extends Window {
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		System.out.println("POPULATE TILES CALLED");
 		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(), 
 				"No plants were selected \nfrom the Existing Plants screen.");
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
@@ -815,13 +829,16 @@ public class PlotDesign extends Window {
 			getModel().setPlotDesignDraggingPlant(p);
 
 		ImageView n = (ImageView) event.getSource();
+		
 		if (create) {
+			tmpWidth = n.getImage().getWidth()/2;
+			tmpHeight = n.getImage().getHeight()/2;
 			tmp = new ImageView(n.getImage());
 			root.getChildren().add(tmp);
 			create = false;
 		}
-		tmp.setLayoutX(n.getLayoutX() + event.getX());
-		tmp.setLayoutY(n.getLayoutY() + event.getY());
+		tmp.setLayoutX(n.getLayoutX() + event.getSceneX() - tmpWidth);
+		tmp.setLayoutY(n.getLayoutY() + event.getSceneY() - tmpHeight);
 	}
 
 	public EventHandler getHandlerForDrag() {
@@ -842,8 +859,8 @@ public class PlotDesign extends Window {
 	public void releaseTemporaryImage(MouseEvent event, PlotObjects po) {
 		ImageView n = (ImageView) event.getSource();
 		create = true;
-		double newX = tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth();
-		double newY = tmp.getLayoutY() - vbox.getLayoutBounds().getHeight();
+		double newX = tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth() * 2;
+		double newY = tmp.getLayoutY();
 		if (group.contains(newX, newY)) {
 			PlotObject plotObjectToAdd;
 			if (po == null) {
