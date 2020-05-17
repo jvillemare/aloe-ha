@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javafx.scene.image.WritableImage;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.GardenView;
 import udel.GardenProject.enums.Moisture;
