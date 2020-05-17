@@ -27,27 +27,41 @@ public class PlotOther extends GenericSpecial implements Serializable {
 	 * Path to an image of a raised garden bed for plot design.
 	 */
 	private static String plotPicture = "/viewImages/plotGardenBed.png";
+	
+	/**
+	 * Name of object
+	 */
+	private static String name = "Other";
 
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
+	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
 	 * @param y	Vertical position.
 	 */
 	public PlotOther(Model model, double x, double y) {
-		super(model, x, y, 3.0, 3.0, windowPicture, plotPicture);
+		super(model, x, y, 3.0, 3.0, windowPicture, plotPicture, name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 
 }

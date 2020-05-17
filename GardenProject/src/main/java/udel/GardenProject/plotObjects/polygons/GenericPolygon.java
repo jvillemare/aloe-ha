@@ -3,7 +3,12 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Polygon;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.plotObjects.PlotObject;
@@ -22,6 +27,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	private static final long serialVersionUID = 1L;
 	private AdjustablePolygon p;
 	
+	private static String name = "";
+	
 	/**
 	 * Constructor. Every GenericPolygon is a PlotObject (x, y, height), but
 	 * must also specify its changing bounds which is reprsented on the plot as
@@ -35,16 +42,17 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * @param imagePath	Plot object's path to image representation
 	 */
 	public GenericPolygon(Model model, double x, double y, double height, 
-			AdjustablePolygon p, String windowPath, String plotPath) {
-		super(model, x, y, height, 5.0, windowPath, plotPath);
+			AdjustablePolygon p, String windowPath, String plotPath, String name) {
+		super(model, x, y, height, 5.0, windowPath, plotPath, name);
 		this.p = p;
 	}
 	
 	@Override
 	public Node render() {
-		// All polygons that don't override this method will be rendered in the
-		//		plot as such:
-		return null;
+		Group n=new Group();
+		n.getChildren().addAll(this.p.getAnchors());
+		n.getChildren().add(this.p.getPolygon());
+		return n;
 	}
 	
 	/**
@@ -63,6 +71,19 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 */
 	public final ObservableList<Anchor> getAnchors() {
 		return this.p.getAnchors();
+	}
+	
+	@Override
+	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth,
+			double viewDepth, double viewWidth, double yearScale, Effect e) {
+		if (this.getPlotY() / maxDepth > minScale) {
+			minScale = this.getPlotY() / maxDepth;
+		}
+		gc.setEffect(null);
+		Image i = new Image(this.getWindowImage());
+		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
+				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
+				i.getWidth() * minScale, i.getHeight() * minScale);
 	}
 
 }

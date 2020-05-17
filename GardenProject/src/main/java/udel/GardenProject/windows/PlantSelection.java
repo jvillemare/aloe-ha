@@ -146,7 +146,8 @@ public class PlantSelection extends Window {
 	private int imgHeight = 100;
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
-	private int borderTopAndBottonMargin = 40;
+	private int borderTopMargin = 15;
+	private int borderBottomMargin = 20;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
 	private int prefScrollHeight = View.getCanvasHeight() / 5 * 4;
@@ -167,7 +168,7 @@ public class PlantSelection extends Window {
 		vbox = new VBox();
 		tilePane = new TilePane();
 
-		text = new Text("Please select the plants you'd like to have in your Garden");
+		text = new Text("Please select the plants you'd like to have in your Garden. Selecting plants from each category will give you the best chance for a thriving garden because each category of plants requires a different amount of sunlight. Once you have selected your plant, click 'Next' to start building your garden!");
 		text.setWrappingWidth(View.getCanvasWidth());
 
 		text.setFont(
@@ -183,6 +184,8 @@ public class PlantSelection extends Window {
 		for(Canopy c : Canopy.values()) {
 			TitledPane tile = new TitledPane();
 			tile.setText(c.getContains());
+      Tooltip tooltipSearch = new Tooltip(c.getDescription());
+			tile.setTooltip(tooltipSearch);
 			accArr.add(tile);
 		}
 
@@ -216,7 +219,7 @@ public class PlantSelection extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(centerBox,
-				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
+				new Insets(borderTopMargin, borderSideMargins, borderBottomMargin, borderSideMargins));
 				
 	}
 	
@@ -664,7 +667,6 @@ public class PlantSelection extends Window {
 	}
 	
 	public void refresh() {
-		System.out.println(getModel().getLastWindow().getEnum().name());
 		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 				getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
 			plantSelEmpty = true;
@@ -679,8 +681,7 @@ public class PlantSelection extends Window {
 				setAlarm();
 			}
 		} else {
-			System.out.println(getModel().getLastWindow().getEnum().name());
-			System.out.println("I was NOT called");
+			System.out.println("File not called: " + getModel().getLastWindow().getEnum().name());
 		}
 	}
 

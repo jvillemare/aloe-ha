@@ -2,7 +2,6 @@ package udel.GardenProject.windows;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +41,6 @@ import udel.GardenProject.plotObjects.PlotPlant;
 import udel.GardenProject.plotObjects.PlotTextLabel;
 import udel.GardenProject.plotObjects.lines.PlotFence;
 import udel.GardenProject.plotObjects.lines.PlotPath;
-import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 import udel.GardenProject.plotObjects.polygons.PlotForest;
 import udel.GardenProject.plotObjects.polygons.PlotPatio;
 import udel.GardenProject.plotObjects.polygons.PlotPlayground;
@@ -154,7 +152,6 @@ public class PlotDesign extends Window {
 	private int allPlantsButtonFontSize = 17;
 	private int tilePaneWidthAdjustment = 20;
 	private int allPlantsButtonWidth = 170;
-	private int imageSize = 100;
 	private int inset10 = 10;
 	private int inset20 = 20;
 	private int inset5 = 5;
@@ -175,12 +172,12 @@ public class PlotDesign extends Window {
 		createCenterBox();
 
 		text = new Text(
-				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
+				"Drag and Drop your plants and objects from the drop-downs on the left to build your garden. Click next to see your garden in a different season, age, and view, or you can save your garden project here.");
 		text.setWrappingWidth(View.getCanvasWidth());
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
-		vbox.setPadding(new Insets(0, 0, inset20, inset5));
+		vbox.setPadding(new Insets(0, 0, 0, inset5));
 		vbox.getChildren().addAll(text);
 
 		animalsFedTxt = new Text("Animals Fed");
@@ -269,7 +266,7 @@ public class PlotDesign extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(box,
-				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
+				new Insets(0, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
 		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
@@ -311,7 +308,6 @@ public class PlotDesign extends Window {
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		System.out.println("POPULATE TILES CALLED");
 		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants());
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
 		accArr.add(existing);
@@ -356,11 +352,15 @@ public class PlotDesign extends Window {
 
 		for (PlotObjects p : obj) {
 			Node renderedPlotObject = pof.renderInAccordion(p);
+			
+			String name = p.name();
+			Tooltip.install(renderedPlotObject, new Tooltip(name));
 
 			renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
 			renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
 
-			flow.getChildren().add(renderedPlotObject);
+			VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
+			flow.getChildren().add(renderedPlotObjectVBox);
 		}
 		return flow;
 	}
@@ -373,7 +373,6 @@ public class PlotDesign extends Window {
 	 */
 	public FlowPane createPlantFlow(HashSet<Plant> plants) {
 		Thread.currentThread().getStackTrace();
-		System.out.println("starting with plants.size=" + plants.size());
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -381,10 +380,8 @@ public class PlotDesign extends Window {
 		flow.setHgap(inset10);
 
 		Iterator<Plant> plantIter = plants.iterator();
-		System.out.println("after creating iterator");
 		while (plantIter.hasNext()) {
 			Plant p = plantIter.next();
-			System.out.println("PlotDesign.createPlantFlow: adding " + p.getLatinName());
 			Node plantRepresentation = p.renderInAccordion(
 					getSession().getWidthOfUserPlot(), 
 					getSession().getLengthOfUserPlot());
@@ -437,8 +434,6 @@ public class PlotDesign extends Window {
 
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-
-					System.out.println(getModel().saveSession(file.getAbsolutePath()));
 					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
@@ -760,22 +755,33 @@ public class PlotDesign extends Window {
 		Node plotObjectRepresentation = po.render();
 		plotObjectRepresentation.setTranslateX(x);
 		plotObjectRepresentation.setTranslateY(y);
-		plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				double newX = plotObjectRepresentation.getTranslateX() + event.getX();
-				double newY = plotObjectRepresentation.getTranslateY() + event.getY();
-				if (newX > 0 && newX < group.getLayoutBounds().getWidth() - po.getRenderWidth()) {
-					plotObjectRepresentation.setTranslateX(newX);
-					po.setPlotX(newX);
+		if(!po.getUseDefaultDragHandler()){
+			plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					double newX = plotObjectRepresentation.getTranslateX() + event.getX();
+					double newY = plotObjectRepresentation.getTranslateY() + event.getY();
+					if (newX > 0 && newX < group.getLayoutBounds().getWidth() - po.getRenderWidth()) {
+						plotObjectRepresentation.setTranslateX(newX);
+						po.setPlotX(newX);
+					}
+					if (newY > 0 && newY < group.getLayoutBounds().getHeight() - po.getRenderHeight()) {
+						plotObjectRepresentation.setTranslateY(newY);
+						po.setPlotY(newY);
+					}
 				}
-				if (newY > 0 && newY < group.getLayoutBounds().getHeight() - po.getRenderHeight()) {
-					plotObjectRepresentation.setTranslateY(newY);
-					po.setPlotY(newY);
-				}
-			}
-		});
-		group.getChildren().add(plotObjectRepresentation);
+			});
+			plotObjectRepresentation.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			  @Override
+		  	public void handle(MouseEvent event) {
+				  Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
+			  }
+		  });
+		  group.getChildren().add(plotObjectRepresentation);
+		}
+		else {
+			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
+		}
 	}
 
 	/**

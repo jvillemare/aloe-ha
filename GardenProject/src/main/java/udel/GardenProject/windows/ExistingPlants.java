@@ -1,10 +1,12 @@
 package udel.GardenProject.windows;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
@@ -103,23 +106,27 @@ public class ExistingPlants extends Window {
 	 * Hashmap with the name of the plant as the key and the plant as the value
 	 */
 	private HashMap<String, Plant> dropDownPlants;
-	
+
 	/**
 	 * TODO: What is?...
 	 */
 	private String[] plantImageLinks;
-	
+
 	/**
 	 * Text that appears if no no plants fit the description.
 	 */
 	private String noPlants = "No Such Plants";
-	
+
 	/**
 	 * Text that appears if more characters need to be added.
 	 */
 	private String moreCharacters = "Please Add More Characters in Search";
-	
-	
+
+	/**
+	 * Warning for invasive plants.
+	 */
+	private Alert warning = new Alert(AlertType.WARNING);
+
 	/**
 	 * Used for the user to type in the search box
 	 */
@@ -128,7 +135,7 @@ public class ExistingPlants extends Window {
 	private int inset8 = 8;
 	private int inset20 = 20;
 	private int buttonGap = 100;
-	private int wrapTextAdjustment = 170;
+	private int wrapTextAdjustment = 860;
 	private int selectedPlantHBoxSize = 50;
 	private int selectedPlantFontSize = 15;
 	private int scrollWidthAdjustment = 12;
@@ -140,13 +147,11 @@ public class ExistingPlants extends Window {
 	private int containerScrollPrefHeight = (View.getCanvasHeight() - 50);
 	private int selectedPlantWrappingWidth = View.getCanvasWidth() / 9 * 5;
 	private int containerScrollPrefWidth = (View.getCanvasWidth() / 3 - 10);
-	
+
 	/**
 	 * Default Image to size.
 	 */
-	private Image defaultImg = getModel().getDefaultImage(
-			tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
-
+	private Image defaultImg = getModel().getDefaultImage(tooltipImageWidthAndHeight, tooltipImageWidthAndHeight);
 
 	/**
 	 * Create an ExistingPlants window instance.
@@ -167,9 +172,14 @@ public class ExistingPlants extends Window {
 		selection.setPadding(new Insets(inset5));
 		selection.setStyle(View.getPinkBackgroundStyle());
 
-		text1 = new Text("Which plants are already in your Garden?");
+		text1 = new Text(
+				"Please type the name of the plant(s) you have in your garden in the" + 
+				" search box on the left by its Latin OR common name. Once you " +
+				"have found your plant, click on its name to add it to your list of" + 
+				" existing plants. If you don't have any existing plants in your garden," + 
+				" click 'Next' to continue.");
 
-		text1.setWrappingWidth(View.getCanvasWidth() - selection.getWidth() - wrapTextAdjustment);
+		text1.setWrappingWidth(wrapTextAdjustment);
 		text1.setFont(getModel().getHackBold20());
 		vbox.setStyle(View.getPinkBackgroundStyle());
 		vbox.getChildren().addAll(text1);
@@ -229,7 +239,6 @@ public class ExistingPlants extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//System.out.println(getS
 				switchToWindow(Windows.Questionnaire);
 			}
 		});
@@ -350,7 +359,7 @@ public class ExistingPlants extends Window {
 						 */
 						try {
 							plantImageLinks = p.getImages();
-						}catch(NullPointerException Exception) {
+						} catch (NullPointerException Exception) {
 							plantImageLinks = null;
 						}
 
@@ -360,12 +369,12 @@ public class ExistingPlants extends Window {
 						if (plantImageLinks != null) {
 							try {
 								String path = plantImageLinks[0];
-								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight, true,
-										true);
-							}catch(NullPointerException Exception) {
+								plantImage = new Image(path, tooltipImageWidthAndHeight, tooltipImageWidthAndHeight,
+										true, true);
+							} catch (NullPointerException Exception) {
 								plantImage = defaultImg;
 							}
-							
+
 						} else {
 							// get a default image
 							plantImage = defaultImg;
@@ -378,7 +387,7 @@ public class ExistingPlants extends Window {
 						imageView.setCache(true);
 						imageView.setCacheHint(CacheHint.SPEED);
 						tooltipPick.setGraphic(imageView);
-            //TODO: tooltipPick.setShowDelay(Duration.seconds(2));
+						// TODO: tooltipPick.setShowDelay(Duration.seconds(2));
 					}
 				});
 
@@ -400,6 +409,15 @@ public class ExistingPlants extends Window {
 							if (mouseEvent.getClickCount() == 1) {
 								label.setStyle(boldFontWeight);
 								if (getModel().getSession().getExistingPlants().add(p)) {
+									if (p.getInvasive()) {
+										warning.setContentText(
+												p.getLatinName() + " is an invasive plant." + System.lineSeparator()
+														+ "If possible, please remove it from your actual garden.");
+										Stage warningStage = (Stage) warning.getDialogPane().getScene().getWindow();
+										warning.show();
+										warningStage.setAlwaysOnTop(true);
+										warningStage.toFront();
+									}
 									populateRightBox(p);
 								}
 							}
@@ -408,12 +426,12 @@ public class ExistingPlants extends Window {
 				});
 				dropDownMenu.getChildren().add(label);
 			}
-		}else {
-			if(text.getText().length() < 3) {
+		} else {
+			if (text.getText().length() < 3) {
 				Label label = new Label(moreCharacters);
 				label.setMaxWidth(containerScroll.getWidth());
 				dropDownMenu.getChildren().add(label);
-			}else {
+			} else {
 				Label label = new Label(noPlants);
 				label.setMaxWidth(containerScroll.getWidth());
 				dropDownMenu.getChildren().add(label);
@@ -487,7 +505,6 @@ public class ExistingPlants extends Window {
 	 */
 	public void refresh() {
 		selection.getChildren().clear();
-		System.out.println(getSession().getExistingPlants().size() + "size of existing plants in existing plants");
 		Iterator<Plant> pItr = getSession().getExistingPlants().iterator();
 		while (pItr.hasNext()) {
 			populateRightBox(pItr.next());

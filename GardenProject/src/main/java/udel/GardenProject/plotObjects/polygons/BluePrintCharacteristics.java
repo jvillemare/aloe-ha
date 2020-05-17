@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects.polygons;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Moisture;
@@ -55,7 +58,7 @@ public class BluePrintCharacteristics extends GenericPolygon implements
 	public BluePrintCharacteristics(Model model, double x, double y, 
 			AdjustablePolygon p, String windowPath,
 			String plotPath) {
-		super(model, x, y, 0.0, p, windowPath, plotPath);
+		super(model, x, y, 0.0, p, windowPath, plotPath, "");
 		// TODO Auto-generated constructor stub
 	}
 	

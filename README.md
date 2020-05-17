@@ -36,7 +36,7 @@ Coronavirus or not, this project is being accomplished.
 
 ### Specifics
 
- - Pure Java 8 and JavaFX 2 implementation.
+ - Pure Java 11 and JavaFX 11 implementation.
 	- Desktop/Laptop app.
  - Group ID: `udel`, Artifact ID: `GardenProject`.
  - Team 0 Name: The Nulls.

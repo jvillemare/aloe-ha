@@ -3,6 +3,9 @@ package udel.GardenProject.plotObjects;
 import java.io.Serializable;
 
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
@@ -56,6 +59,16 @@ public abstract class PlotObject implements Serializable {
 	 * relevant factors for rendering Plot Objects.
 	 */
 	private transient Model model;
+	
+	/**
+	 * The name of the plot object
+	 */
+	private String name = "";
+  
+	/**
+	 * Boolean value to determine if the plotobject use its own dragHandler
+	 */
+	private boolean useDefaultDragHandler;
   
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
@@ -71,7 +84,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param plotPath	String of path to plot design image.
 	 */
 	public PlotObject(Model model, double x, double y, 
-			double height, double radius, String imagePath, String plotPath) {
+			double height, double radius, String imagePath, String plotPath, String name) {
 		this.model = model;
 		this.x = x;
 		this.y = y;
@@ -79,6 +92,8 @@ public abstract class PlotObject implements Serializable {
 		this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
+		this.name = name;
+		this.useDefaultDragHandler = false;
 	}
 	
 	/**
@@ -106,6 +121,23 @@ public abstract class PlotObject implements Serializable {
 		// TODO: Make me abstract
 		return null;
 	}
+	
+	/**
+	 * 
+	 * Abstract. All Plot Objects must specify how they will be drawn on the
+	 * season view canvas.
+	 * 
+	 * @param gc Graphics Context for drawing images/objects on canvas.
+	 * @param gb Blur effect for shade beneath plants.
+	 * @param minScale minimum scale amount for objects based on depth.
+	 * @param maxDepth Depth of plot design window.
+	 * @param maxWidth Width of plot design window.
+	 * @param viewDepth Depth of gc's canvas.
+	 * @param viewWidth Width of gc's Canvas.
+	 * @param yearScale Scaling amount based on year.
+	 * @param e Effect to be added to plants.
+	 */
+	public abstract void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth, double viewDepth, double viewWidth, double yearScale, Effect e);
 	
 	/**
 	 * Helper method.
@@ -185,6 +217,30 @@ public abstract class PlotObject implements Serializable {
 	 */
 	public final String getPlotImage() {
 		return this.plotImage;
+	}
+	
+	/**
+	 * All objects must be specified to what they are 
+	 * @return	Name of object
+	 */
+	public final String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Getter.
+	 * @return Boolean value of useDefaultDragHandler;
+	 */
+	public boolean getUseDefaultDragHandler() {
+		return useDefaultDragHandler;
+	}
+	
+	/**
+	 * Setter
+	 * @param useDefault
+	 */
+	public void setUseDefaultDragHandler(boolean useDefault) {
+		useDefaultDragHandler = useDefault;
 	}
 
 }

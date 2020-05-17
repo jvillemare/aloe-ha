@@ -186,7 +186,10 @@ public class Questionnaire extends Window {
 		tilePane = new TilePane();
 
 		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below.\n");
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions " + 
+				"below for better suggestions on which plants would be best suited for your " +
+				"garden and for your preferences. You can always come back to this page if " +
+				"you need to make any changes. Click 'Next' to see the your plant suggestions!");
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
@@ -327,7 +330,7 @@ public class Questionnaire extends Window {
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems));
+		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems * 2 - 6));
 		vbox.getChildren().addAll(q2ListView);
 
 	}
@@ -404,7 +407,7 @@ public class Questionnaire extends Window {
 	 * garden
 	 */
 	public void createQ8() {
-
+		int numberOfItems = 0;
 		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
 
 		List<Colors> colorsWanted = new ArrayList<Colors>();
@@ -416,10 +419,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(colorEnum.getFriendlyName());
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q8ListView = new ListView<>();
 		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q8ListView.prefHeightProperty().bind(Bindings.size(q7items).multiply(numberOfItems * 5 - 5));
 		vbox.getChildren().addAll(q8ListView);
 
 	}

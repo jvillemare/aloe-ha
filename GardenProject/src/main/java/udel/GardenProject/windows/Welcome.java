@@ -220,7 +220,7 @@ public class Welcome extends Window {
 	 * refresh on initial startup
 	 */
 	public void refresh() {
-		System.out.println("refreshing in welcome");
+		
 	}
 
 }
