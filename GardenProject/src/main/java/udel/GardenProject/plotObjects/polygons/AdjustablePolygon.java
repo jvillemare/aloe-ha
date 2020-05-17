@@ -91,13 +91,7 @@ public class AdjustablePolygon implements Serializable {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() > 1) {
-                	visible = !visible;
-                	for(Anchor a:anchors)
-                		a.setVisible(visible);
-                	if(visible) 
-                		b.setText("Stop Editing");
-                	else
-                		b.setText("Resume Edit");
+                	triggerAnchor();
                 }
             }
         });
@@ -121,6 +115,18 @@ public class AdjustablePolygon implements Serializable {
 		return false;
 	}
 	
+	/**
+	 * Trigger the hide and show of the anchor.
+	 */
+	public void triggerAnchor() {
+		visible = !visible;
+    	for(Anchor a:anchors)
+    		a.setVisible(visible);
+    	if(visible) 
+    		b.setText("Stop Editing");
+    	else
+    		b.setText("Resume Edit");
+	}
 	/**
 	 * Getter.
 	 * @return The polygon.
@@ -150,14 +156,7 @@ public class AdjustablePolygon implements Serializable {
 		b.setOnAction(new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
-            	visible=!visible;
-            	for(Anchor a:anchors) {
-            		a.setVisible(visible);
-            	}
-            	if(visible) 
-            		b.setText("Stop Editing");
-            	else
-            		b.setText("Resume Edit");
+            	triggerAnchor();
             } 
         });
 		return b;

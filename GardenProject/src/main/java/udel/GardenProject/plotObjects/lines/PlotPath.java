@@ -92,4 +92,10 @@ public class PlotPath extends GenericLine implements Serializable {
 				i.getWidth() * minScale, i.getHeight() * minScale);
 	}
 
+	@Override
+	public void triggerAnchor() {
+		this.getAdjustablePolygon().triggerAnchor();
+		
+	}
+
 }

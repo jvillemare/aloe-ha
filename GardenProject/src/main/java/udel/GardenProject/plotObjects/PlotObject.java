@@ -96,6 +96,8 @@ public abstract class PlotObject implements Serializable {
 		this.useDefaultDragHandler = false;
 	}
 	
+	public abstract void triggerAnchor();
+	
 	/**
 	 * Abstract. All Plot Objects must specify how they will appear on a plot.
 	 * @return	Node object

@@ -74,4 +74,10 @@ public class GenericSpecial extends PlotObject implements Serializable {
 		
 	}
 
+	@Override
+	public void triggerAnchor() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -88,5 +88,11 @@ public class PlotFence extends GenericLine implements Serializable {
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
 				i.getWidth() * minScale, i.getHeight() * minScale);
 	}
+
+	@Override
+	public void triggerAnchor() {
+		this.getAdjustablePolygon().triggerAnchor();
+		
+	}
 	
 }

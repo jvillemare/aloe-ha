@@ -55,6 +55,12 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 		n.getChildren().add(this.p.getPolygon());
 		return n;
 	}
+	/**
+	 * Trigger the hide and show of the anchor.
+	 */
+	public void triggerAnchor() {
+		this.p.triggerAnchor();
+	}
 	
 	/**
 	 * Getter.

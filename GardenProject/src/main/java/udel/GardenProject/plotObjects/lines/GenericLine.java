@@ -60,8 +60,7 @@ public abstract class GenericLine extends PlotObject implements Serializable {
 	 *         the different points of the polygon.
 	 */
 	public final ObservableList<Anchor> getAnchors() {
-		// TODO: Implement and change return type
-		return null;
+		return this.l.getLine().getAnchors();
 	}
 
 }

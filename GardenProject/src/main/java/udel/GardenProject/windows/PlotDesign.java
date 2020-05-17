@@ -766,6 +766,7 @@ public class PlotDesign extends Window {
 	 * @param po PlotObject being added to the plot.
 	 * @param x  Horizontal coordinate for the image.
 	 * @param y  Vertical coordinate for the image.
+	 * @param background If this is a background object.
 	 */
 	public void addPlotObjectToInterface(PlotObject po, double x, double y) {
 		po.setPlotX(x);
@@ -790,16 +791,18 @@ public class PlotDesign extends Window {
 				}
 			});
 			plotObjectRepresentation.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			  @Override
-		  	public void handle(MouseEvent event) {
-				  Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
-			  }
-		  });
+				@Override
+				public void handle(MouseEvent event) {
+					Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
+				}
+			});
 		  group.getChildren().add(plotObjectRepresentation);
 		}
 		else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
 		}
+		
+		 
 	}
 
 	/**
@@ -939,6 +942,10 @@ public class PlotDesign extends Window {
 		for (PlotObject po : getSession().getPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
+		/*for (PlotObject po : getSession().getBluePrintPlot()) {
+			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY(),true);
+		}*/
+		group.getChildren().add(new ImageView(getSession().getImg()));
 
 		// TODO: Remove stuff from auto rate box and add back in
 	}

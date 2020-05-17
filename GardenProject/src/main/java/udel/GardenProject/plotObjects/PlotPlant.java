@@ -185,4 +185,10 @@ public class PlotPlant extends PlotObject implements Serializable {
 				i.getWidth() * minScale * yearScale, i.getHeight() * minScale * yearScale);
 	}
 
+	@Override
+	public void triggerAnchor() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -136,6 +136,11 @@ public class Session implements Serializable {
 	private ArrayList<PlotObject> bluePrintPlot = new ArrayList<PlotObject>();
 	
 	/**
+	 * SnapShot of the node from blueprint.
+	 */
+	private WritableImage img;
+	
+	/**
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
@@ -238,17 +243,40 @@ public class Session implements Serializable {
 		unsaved = true;
 		this.plotName = plotName;
 	}
-
+	
+	/**
+	 * Get the plot arraylist which contains all the plotObject in the plot design.
+	 * @return plot
+	 */
 	public ArrayList<PlotObject> getPlot() {
 		unsaved = true;
 		return plot;
 	}
 	
+	/**
+	 * Get the bluePrintPlot arraylist which contains all the plotObject in the blueprint.
+	 * @return bluePrintPlot
+	 */
 	public ArrayList<PlotObject> getBluePrintPlot() {
 		unsaved = true;
 		return bluePrintPlot;
 	}
-
+	
+	/**
+	 * Get the image of blueprint
+	 * @return img
+	 */
+	public WritableImage getImg() {
+		return img;
+	}
+	
+	/**
+	 * Sets the image of the blueprint to given writableimage.
+	 * @param img
+	 */
+	public void setImg(WritableImage img) {
+		this.img=img;
+	}
 	public void setPlot(ArrayList<PlotObject> plot) {
 		unsaved = true;
 		this.plot = plot;

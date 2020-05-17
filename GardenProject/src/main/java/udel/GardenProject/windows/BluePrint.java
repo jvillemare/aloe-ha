@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +19,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -99,7 +101,8 @@ public class BluePrint extends Window {
 	 * Used to hold text, for top panel.
 	 */
 	private VBox vbox;
-	private int rectWidth = View.getCanvasWidth() / 9 * 8;
+	private int backgroundWidthAndHeight = 100;
+	private int rectWidth = View.getCanvasWidth() / 5 * 3;
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
 	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9;
 	private int gapBetweenButtons = 100;
@@ -123,23 +126,26 @@ public class BluePrint extends Window {
 		
 		group = new Group();
 		vbox = new VBox();
+		tilePane = new TilePane();
+		borderPane = new BorderPane();
 		vbox.setPadding(new Insets(0, 0, 0, inset5));
 		vbox.getChildren().addAll(text);
 		createCenterBox();
 		setPlotObjects();
 		//vbox.setPadding(new Insets(0, 0, 0, inset5));
 		//vbox.getChildren().addAll(text);
-		tilePane = new TilePane();
 		createButtons();
 		tilePane.setAlignment(Pos.CENTER);
 		tilePane.setPadding(new Insets(inset5));
 		tilePane.setHgap(gapBetweenButtons);
-		tilePane.getChildren().addAll(backButton, mainMenu, nextButton);
-		borderPane = new BorderPane();
+		tilePane.getChildren().addAll(backButton, mainMenu, nextButton);	
 		borderPane.setTop(vbox);
 		borderPane.setLeft(scrollpane);
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
+		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
+		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
+		borderPane.setBackground(View.getBackgroundScreen());
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
@@ -184,6 +190,7 @@ public class BluePrint extends Window {
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
 		group.getChildren().add(box);
+		
 	}
 	
 	/**
@@ -211,6 +218,7 @@ public class BluePrint extends Window {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				takeSnapShot();
 				switchToWindow(Windows.PlotDesign);
 			}
 		});
@@ -282,12 +290,12 @@ public class BluePrint extends Window {
 				}
 			});
 			plotObjectRepresentation.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			  @Override
-		  	public void handle(MouseEvent event) {
-				  Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
-			  }
-		  });
-		  group.getChildren().add(plotObjectRepresentation);
+				@Override
+			  	public void handle(MouseEvent event) {
+					Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
+				}
+			});
+			group.getChildren().add(plotObjectRepresentation);
 		}
 		else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
@@ -357,6 +365,16 @@ public class BluePrint extends Window {
 	public EventHandler getHandlerForDrag() {
 		return event -> dragTemporaryImage((MouseEvent) event);
 	}
+	
+	public void takeSnapShot() {
+		for (PlotObject po : getSession().getBluePrintPlot()) {
+			if(po.getUseDefaultDragHandler()) {
+				po.triggerAnchor();
+			}
+		}
+		WritableImage image=group.snapshot(new SnapshotParameters(), null);
+		getSession().setImg(image);
+	}
 
 	@Override
 	public Scene getScene() {
@@ -365,7 +383,14 @@ public class BluePrint extends Window {
 	
 	@Override
 	public void refresh() {
-		
+		group.getChildren().clear();
+		createCenterBox();
+		for (PlotObject po : getSession().getBluePrintPlot()) {
+			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
+			if(po.getUseDefaultDragHandler()) {
+				po.triggerAnchor();
+			}
+		}
 	}
 	
 }
