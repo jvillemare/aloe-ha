@@ -164,6 +164,8 @@ public class PlotDesign extends Window {
 	private int inset10 = 10;
 	private int inset20 = 20;
 	private int inset5 = 5;
+	double tmpWidth = 0;
+	double tmpHeight = 0;
 
 	/**
 	 * Create a new PlotDesign window instance.
@@ -825,13 +827,16 @@ public class PlotDesign extends Window {
 			getModel().setPlotDesignDraggingPlant(p);
 
 		ImageView n = (ImageView) event.getSource();
+		
 		if (create) {
+			tmpWidth = n.getImage().getWidth()/2;
+			tmpHeight = n.getImage().getHeight()/2;
 			tmp = new ImageView(n.getImage());
 			root.getChildren().add(tmp);
 			create = false;
 		}
-		tmp.setLayoutX(n.getLayoutX() + event.getX());
-		tmp.setLayoutY(n.getLayoutY() + event.getY());
+		tmp.setLayoutX(n.getLayoutX() + event.getSceneX() - tmpWidth);
+		tmp.setLayoutY(n.getLayoutY() + event.getSceneY() - tmpHeight);
 	}
 
 	public EventHandler getHandlerForDrag() {
@@ -852,8 +857,8 @@ public class PlotDesign extends Window {
 	public void releaseTemporaryImage(MouseEvent event, PlotObjects po) {
 		ImageView n = (ImageView) event.getSource();
 		create = true;
-		double newX = tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth();
-		double newY = tmp.getLayoutY() - vbox.getLayoutBounds().getHeight();
+		double newX = tmp.getLayoutX() - n.getParent().getLayoutBounds().getWidth() * 2;
+		double newY = tmp.getLayoutY();
 		if (group.contains(newX, newY)) {
 			PlotObject plotObjectToAdd;
 			if (po == null) {
