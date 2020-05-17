@@ -3,7 +3,6 @@ package udel.GardenProject.windows;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,8 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -34,7 +31,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.Colors;
 import udel.GardenProject.enums.Moisture;
@@ -109,11 +105,6 @@ public class PlantSelection extends Window {
 	private ArrayList<Plant> nativePlants = getModel().getNativePlants();
 	
 	/**
-	 * True if there are no plants to choose from, false otherwise.
-	 */
-	private boolean plantSelEmpty = true;
-	
-	/**
 	 * List holding each tilepane for each layer of the accordion.
 	 */
 	private List<TitledPane> accArr;
@@ -147,6 +138,7 @@ public class PlantSelection extends Window {
 	private int borderSideMargins = 80;
 	private int gapBetweenButtons = 100;
 	private int borderTopMargin = 15;
+	private int butSpacingForButtons = 110;
 	private int borderBottomMargin = 20;
 	private int backgroundScreenWidthAndHeight = 100;
 	private int prefScrollWidth = View.getCanvasWidth() / 3 + 30;
@@ -233,7 +225,7 @@ public class PlantSelection extends Window {
 		setFilter();
 
 		for(TitledPane t : accArr) {
-			populateTile(t, 0);
+			populateTiles(t, 0);
 		}
 		
 		scrollCanopies.setContent(canopySelection);
@@ -272,7 +264,7 @@ public class PlantSelection extends Window {
 				+ "\n\t- Click Ok to continue anyways"
 				+ "\n\t- Click Easy Plant Button to automatically ease \n\t   the inputs");
 		
-		if(plantSelEmpty) {
+		if(filter.isEmpty()) {
 			warning.showAndWait().ifPresent(response -> {
 			     if (response == automatic) {
 			         easeSelection();
@@ -296,34 +288,25 @@ public class PlantSelection extends Window {
 	}
 	
 	/**
-	 * Populates a canopy level with plants that match from the users desires in Questionnaire.
-	 * 
-	 * @param List<TiledPane>
-	 * @throws Exception 
-	 */
-	public void populateTile(TitledPane t, int pageNum){
-		createFlowPane(t, pageNum);
-	}
-	
-	/**
-	 * Filters the native plants to find those that fit.
+	 * Filters the native plants to find those that fit. Also used to checks if
+	 * there are no plants in the list for alert purposes.
 	 */
 	public void setFilter(){
 		filter.clear();
 		
-		Moisture m = getSession().getMoistureOfPlot();
-		SoilTypes s = getSession().getSoilTypeOfPlot();
-		Sunlight sun = getSession().getSunlightOfPlot();
+		Moisture desiredMoisture = getSession().getMoistureOfPlot();
+		SoilTypes desiredSoil = getSession().getSoilTypeOfPlot();
+		Sunlight desiredSun = getSession().getSunlightOfPlot();
 		
-		HashSet<Colors> selected = this.getModel().getSession().getColorsUserSelected();
+		HashSet<Colors> selectedColors = this.getModel().getSession().getColorsUserSelected();
 		
 		for (Plant p : nativePlants) {
 			boolean fits = false;
 			
 			Sunlight pSun = Sunlight.getSunlightByDouble(p.getLight());
-			if(p.getMoisture() == m || p.getMoisture() == null || m == null) {
-				if(p.getSoilType() == s || p.getSoilType() == SoilTypes.ANY || s == SoilTypes.ANY) {
-					if(sun == Sunlight.ANY || pSun == sun) { 
+			if(p.getMoisture() == desiredMoisture || p.getMoisture() == null || desiredMoisture == null) {
+				if(p.getSoilType() == desiredSoil || p.getSoilType() == SoilTypes.ANY || desiredSoil == SoilTypes.ANY) {
+					if(desiredSun == Sunlight.ANY || pSun == desiredSun) { 
 						fits = true;
 					}
 				} 
@@ -338,11 +321,10 @@ public class PlantSelection extends Window {
 			}
 			
 			if (fits) {
-				fits = checkColors(p, selected);
+				fits = checkColors(p, selectedColors);
 			}
 			
 			if(fits) {
-				plantSelEmpty = false;
 				filter.add(p);
 			}
 			
@@ -355,40 +337,40 @@ public class PlantSelection extends Window {
 	 * @param TitledPane
 	 * @param page
 	 */
-	public void createFlowPane(TitledPane t, int page){
-		VBox show = new VBox();
-		HBox but = new HBox();
+	public void populateTiles(TitledPane t, int page){
+		VBox showBox = new VBox();
+		HBox buttonBox = new HBox();
 				
-		but.setPadding(new Insets(25));
+		buttonBox.setPadding(new Insets(25));
 		
 		Canopy canopy = Canopy.getCanopyByContains(t.getText());
 		
 		FlowPane canopyFlow = new FlowPane();
 		
-		if(plantSelEmpty) {
+		if(filter.isEmpty()) {
 			t.setContent(canopyFlow);
 		}else {
 			int forward = page + 1;
 			int backward = page - 1;
-			Button backBut = new Button("Previous");
-			backBut.setOnAction(new EventHandler<ActionEvent>() {
+			Button backButton = new Button("Previous");
+			backButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					populateTile(t, backward);
+					populateTiles(t, backward);
 				}
 			});
-			Button nextBut = new Button("More Plants");
-			nextBut.setOnAction(new EventHandler<ActionEvent>() {
+			Button nextButton = new Button("More Plants");
+			nextButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					populateTile(t, forward);
+					populateTiles(t, forward);
 				}
 			});
 		
-			formatButton(backBut);
-			formatButton(nextBut);
+			formatButton(backButton);
+			formatButton(nextButton);
 					
 			canopyPlant.clear();
 			for(Plant p : filter) {
@@ -398,27 +380,27 @@ public class PlantSelection extends Window {
 			}
 			
 			if(canopyPlant.isEmpty()) {
-				nextBut.setVisible(false);
+				nextButton.setVisible(false);
 			}else {
 				int startpage = page * maxPlantsPerPage;
 				for(int i = startpage; i < startpage + maxPlantsPerPage && i < canopyPlant.size(); i++) {
 					canopyFlow.getChildren().add(createPlantBox(canopyPlant.get(i)));
 					if(i == canopyPlant.size() - 1) {
-						nextBut.setVisible(false);
+						nextButton.setVisible(false);
 					}else {
-						nextBut.setVisible(true);
+						nextButton.setVisible(true);
 					}
 				}
 				
 				if(page == 0) {
-					backBut.setVisible(false);
+					backButton.setVisible(false);
 				}else {
-					backBut.setVisible(true);
+					backButton.setVisible(true);
 				}
 				
-				but.getChildren().addAll(backBut, nextBut);
-				show.getChildren().addAll(canopyFlow, but);
-				t.setContent(show);
+				buttonBox.getChildren().addAll(backButton, nextButton);
+				showBox.getChildren().addAll(canopyFlow, buttonBox);
+				t.setContent(showBox);
 			}
 		}
 	}
@@ -669,12 +651,13 @@ public class PlantSelection extends Window {
 	public void refresh() {
 		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
 				getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
-			plantSelEmpty = true;
+			
 			try {
 				displaySelection();
 			}catch(Exception e) {
 				e.getMessage();
 			}
+			
 			selectedPlantsBox.getChildren().clear();
 			addSelected();
 			if(getModel().getLastWindow().getEnum() == Windows.Questionnaire) {
