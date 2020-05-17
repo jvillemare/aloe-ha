@@ -132,7 +132,7 @@ public class Download extends Window {
 
 		saveOptions.setPadding(new Insets(inset10));
 
-		text = new Text("Congrats! You've created your Garden! How would you like to save?");
+		text = new Text("Congrats! You've created your Garden! You can 'Save Image', or you can 'Download' your project!");
 		text.setWrappingWidth(View.getCanvasWidth() - topTextWidthAdjustment);
 		text.setFont(getModel().getHackBold20());
 		vbox.getChildren().addAll(text);

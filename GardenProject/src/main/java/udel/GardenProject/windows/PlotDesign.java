@@ -172,12 +172,12 @@ public class PlotDesign extends Window {
 		createCenterBox();
 
 		text = new Text(
-				"Welcome to the Plot Design! Place all of your plants and objects on your plot to complete your garden!");
+				"Drag and Drop your plants and objects from the drop-downs on the left to build your garden. Click next to see your garden in a different season, age, and view, or you can save your garden project here.");
 		text.setWrappingWidth(View.getCanvasWidth());
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
 
-		vbox.setPadding(new Insets(0, 0, inset20, inset5));
+		vbox.setPadding(new Insets(0, 0, 0, inset5));
 		vbox.getChildren().addAll(text);
 
 		animalsFedTxt = new Text("Animals Fed");
@@ -266,7 +266,7 @@ public class PlotDesign extends Window {
 
 		borderPane.setBackground(View.getBackgroundScreen());
 		BorderPane.setMargin(box,
-				new Insets(borderTopAndBottonMargin, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
+				new Insets(0, borderSideMargins, borderTopAndBottonMargin, borderSideMargins));
 		borderPane.setPadding(new Insets(inset10));
 		borderPane.setTop(vbox);
 		borderPane.setRight(autoRateVBox);
@@ -377,6 +377,7 @@ public class PlotDesign extends Window {
 	 * @param plants HashSet of Plants.
 	 * @return FlowPane
 	 */
+  
 	public FlowPane createPlantFlow(HashSet<Plant> plants, String category) {
 
 		FlowPane flow = new FlowPane();
@@ -389,6 +390,7 @@ public class PlotDesign extends Window {
 		if (!plants.isEmpty()) {
 			Thread.currentThread().getStackTrace();
 			System.out.println("starting with plants.size=" + plants.size());
+
 
 			Iterator<Plant> plantIter = plants.iterator();
 			System.out.println("after creating iterator");
@@ -452,8 +454,6 @@ public class PlotDesign extends Window {
 
 				File file = fileChooser.showSaveDialog(scene2);
 				if (file != null) {
-
-					System.out.println(getModel().saveSession(file.getAbsolutePath()));
 					getModel().saveSession(file.getAbsolutePath());
 				}
 			}
