@@ -45,6 +45,7 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 			AdjustablePolygon p, String windowPath, String plotPath, String name) {
 		super(model, x, y, height, 5.0, windowPath, plotPath, name);
 		this.p = p;
+		this.setUseDefaultDragHandler(true);
 	}
 	
 	@Override

@@ -77,8 +77,7 @@ public class PlotDesign extends Window {
 	private VBox vbox, autoRateVBox;
 
 	/**
-	 * TODO: What is this? Change the variable name to something other than text
-	 * since it's not that helpful.
+	 * Title text for the window.
 	 */
 	private Text text;
 
@@ -429,7 +428,7 @@ public class PlotDesign extends Window {
 		backButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				switchToWindow(Windows.PlantSelection);
+				switchToWindow(Windows.BluePrint);
 			}
 		});
 
@@ -913,7 +912,6 @@ public class PlotDesign extends Window {
 	 * TODO: ...?
 	 * 
 	 * @param po
-	 * @param principal
 	 * @return
 	 */
 	public EventHandler getHandlerForRelease(PlotObjects po) {

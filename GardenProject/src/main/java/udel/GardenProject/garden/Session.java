@@ -131,6 +131,11 @@ public class Session implements Serializable {
 	private ArrayList<PlotObject> plot = new ArrayList<PlotObject>();
 	
 	/**
+	 * Objects in the plot from blueprint, to be displayed in PlotDesign.
+	 */
+	private ArrayList<PlotObject> bluePrintPlot = new ArrayList<PlotObject>();
+	
+	/**
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
@@ -237,6 +242,11 @@ public class Session implements Serializable {
 	public ArrayList<PlotObject> getPlot() {
 		unsaved = true;
 		return plot;
+	}
+	
+	public ArrayList<PlotObject> getBluePrintPlot() {
+		unsaved = true;
+		return bluePrintPlot;
 	}
 
 	public void setPlot(ArrayList<PlotObject> plot) {
