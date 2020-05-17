@@ -310,15 +310,18 @@ public class PlotDesign extends Window {
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
 		System.out.println("POPULATE TILES CALLED");
-		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(), "existing");
+		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(), 
+				"No plants were selected \nfrom the Existing Plants screen.");
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
 		accArr.add(existing);
 
-		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants(), "selected");
+		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants(), 
+				"To add more plants, click on \nthe Plant Database button on the right\n or go back to the Plant Selection Screen.");
 		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
 		accArr.add(selected);
 
-		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects());
+		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects(),
+				"No obstacles were selected from \nQuestionnaire. Go back to add \nmore objects.");
 		TitledPane obstacles = new TitledPane("Garden Objects", obstaclesFlow);
 		accArr.add(obstacles);
 	}
@@ -339,10 +342,11 @@ public class PlotDesign extends Window {
 	/**
 	 * Creates the flow pane for the PlotObjects (non-PlotPlants) the user chose.
 	 * 
-	 * @param obj ArrayList of Plot Objects.
+	 * @param obj 			ArrayList of Plot Objects.
+	 * @param fallBackText 	Text that appears if obj parameter is empty.
 	 * @return Flow Pane.
 	 */
-	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj) {
+	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj, String fallBackText) {
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -350,23 +354,23 @@ public class PlotDesign extends Window {
 		flow.setHgap(inset10);
 		flow.setAlignment(Pos.BASELINE_CENTER);
 
-		if (!obj.isEmpty()) {
-		PlotObjectsFactory pof = new PlotObjectsFactory();
-
-		for (PlotObjects p : obj) {
-			Node renderedPlotObject = pof.renderInAccordion(p);
-			
-			String name = p.name();
-			Tooltip.install(renderedPlotObject, new Tooltip(name));
-
-			renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
-			renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
-
-			VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
-			flow.getChildren().add(renderedPlotObjectVBox);
-		}
+		if (obj.isEmpty() == false) {
+			PlotObjectsFactory pof = new PlotObjectsFactory();
+	
+			for (PlotObjects p : obj) {
+				Node renderedPlotObject = pof.renderInAccordion(p);
+				
+				String name = p.name();
+				Tooltip.install(renderedPlotObject, new Tooltip(name));
+	
+				renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
+				renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
+	
+				VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
+				flow.getChildren().add(renderedPlotObjectVBox);
+			}
 		} else {
-			flow.getChildren().add(new Text("No obstacles were selected from \nQuestionnaire. Go back to add \nmore objects."));
+			flow.getChildren().add(new Text(fallBackText));
 		}
 		return flow;
 	}
@@ -374,11 +378,12 @@ public class PlotDesign extends Window {
 	/**
 	 * Creates Flow Pane for a HashSet of Plants.
 	 * 
-	 * @param plants HashSet of Plants.
+	 * @param plants 			HashSet of Plants.
+	 * @param fallBackText 		Text that appears if obj parameter is empty.
 	 * @return FlowPane
 	 */
   
-	public FlowPane createPlantFlow(HashSet<Plant> plants, String category) {
+	public FlowPane createPlantFlow(HashSet<Plant> plants, String fallBackText) {
 
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
@@ -387,10 +392,9 @@ public class PlotDesign extends Window {
 		flow.setHgap(inset10);
 		flow.setAlignment(Pos.BASELINE_CENTER);
 
-		if (!plants.isEmpty()) {
+		if (plants.isEmpty() == false) {
 			Thread.currentThread().getStackTrace();
 			System.out.println("starting with plants.size=" + plants.size());
-
 
 			Iterator<Plant> plantIter = plants.iterator();
 			System.out.println("after creating iterator");
@@ -410,11 +414,7 @@ public class PlotDesign extends Window {
 				flow.getChildren().add(imageAndNameHolder);
 			}
 		} else {
-			if (category.equals("existing")) {
-				flow.getChildren().add(new Text("No plants were selected \nfrom the Existing Plants screen."));
-			} else if (category.equals("selected")) {
-				flow.getChildren().add(new Text("To add more plants, click on \nthe Plant Database button on the right\n or go back to the Plant Selection Screen."));
-			}
+			flow.getChildren().add(new Text(fallBackText));
 		}
 
 		return flow;
