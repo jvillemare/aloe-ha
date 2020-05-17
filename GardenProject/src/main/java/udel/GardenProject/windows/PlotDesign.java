@@ -77,8 +77,8 @@ public class PlotDesign extends Window {
 	private VBox vbox, autoRateVBox;
 
 	/**
-	 * TODO: What is this? Change the variable name to something other than
-	 * text since it's not that helpful.
+	 * TODO: What is this? Change the variable name to something other than text
+	 * since it's not that helpful.
 	 */
 	private Text text;
 
@@ -117,7 +117,7 @@ public class PlotDesign extends Window {
 	 * their plot.
 	 */
 	private boolean create = true;
-	
+
 	/**
 	 * Use in drag for control between different handler.
 	 */
@@ -304,26 +304,31 @@ public class PlotDesign extends Window {
 
 	/**
 	 * Creates the Titled panes that need to be added in the accordion.
+	 * 
 	 * @param accArr ArrayList of TitledPanes.
 	 * @throws Exception.
 	 */
 	public void populateTiles(List<TitledPane> accArr) {
-		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants());
+		System.out.println("POPULATE TILES CALLED");
+		FlowPane existingFlow = createPlantFlow(getSession().getExistingPlants(), 
+				"No plants were selected \nfrom the Existing Plants screen.");
 		TitledPane existing = new TitledPane("Existing Plants  ", existingFlow);
 		accArr.add(existing);
 
-		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants());
+		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants(), 
+				"To add more plants, click on \nthe Plant Database button on the right\n or go back to the Plant Selection Screen.");
 		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
 		accArr.add(selected);
 
-		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects());
+		FlowPane obstaclesFlow = createObstacleFlow(getSession().getSelectedPlotObjects(),
+				"No obstacles were selected from \nQuestionnaire. Go back to add \nmore objects.");
 		TitledPane obstacles = new TitledPane("Garden Objects", obstaclesFlow);
 		accArr.add(obstacles);
 	}
 
 	/**
-	 * Sets the specification for the titled pane and sets it into the 
-	 * accordion.
+	 * Sets the specification for the titled pane and sets it into the accordion.
+	 * 
 	 * @param s    The title of the drop down menu.
 	 * @param flow The Flow Pane of plant or objects.
 	 */
@@ -335,32 +340,37 @@ public class PlotDesign extends Window {
 	}
 
 	/**
-	 * Creates the flow pane for the PlotObjects (non-PlotPlants) the user 
-	 * chose.
+	 * Creates the flow pane for the PlotObjects (non-PlotPlants) the user chose.
 	 * 
-	 * @param obj ArrayList of Plot Objects.
+	 * @param obj 			ArrayList of Plot Objects.
+	 * @param fallBackText 	Text that appears if obj parameter is empty.
 	 * @return Flow Pane.
 	 */
-	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj) {
+	public FlowPane createObstacleFlow(ArrayList<PlotObjects> obj, String fallBackText) {
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
 		flow.setHgap(inset10);
 		flow.setHgap(inset10);
-		
-		PlotObjectsFactory pof = new PlotObjectsFactory();
+		flow.setAlignment(Pos.BASELINE_CENTER);
 
-		for (PlotObjects p : obj) {
-			Node renderedPlotObject = pof.renderInAccordion(p);
-			
-			String name = p.name();
-			Tooltip.install(renderedPlotObject, new Tooltip(name));
-
-			renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
-			renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
-
-			VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
-			flow.getChildren().add(renderedPlotObjectVBox);
+		if (obj.isEmpty() == false) {
+			PlotObjectsFactory pof = new PlotObjectsFactory();
+	
+			for (PlotObjects p : obj) {
+				Node renderedPlotObject = pof.renderInAccordion(p);
+				
+				String name = p.name();
+				Tooltip.install(renderedPlotObject, new Tooltip(name));
+	
+				renderedPlotObject.setOnMouseDragged(getHandlerForDrag());
+				renderedPlotObject.setOnMouseReleased(getHandlerForRelease(p));
+	
+				VBox renderedPlotObjectVBox = new VBox(renderedPlotObject, new Text(name));
+				flow.getChildren().add(renderedPlotObjectVBox);
+			}
+		} else {
+			flow.getChildren().add(new Text(fallBackText));
 		}
 		return flow;
 	}
@@ -368,35 +378,45 @@ public class PlotDesign extends Window {
 	/**
 	 * Creates Flow Pane for a HashSet of Plants.
 	 * 
-	 * @param plants HashSet of Plants.
+	 * @param plants 			HashSet of Plants.
+	 * @param fallBackText 		Text that appears if obj parameter is empty.
 	 * @return FlowPane
 	 */
-	public FlowPane createPlantFlow(HashSet<Plant> plants) {
-		Thread.currentThread().getStackTrace();
+  
+	public FlowPane createPlantFlow(HashSet<Plant> plants, String fallBackText) {
+
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
 		flow.setHgap(inset10);
 		flow.setHgap(inset10);
+		flow.setAlignment(Pos.BASELINE_CENTER);
 
-		Iterator<Plant> plantIter = plants.iterator();
-		while (plantIter.hasNext()) {
-			Plant p = plantIter.next();
-			Node plantRepresentation = p.renderInAccordion(
-					getSession().getWidthOfUserPlot(), 
-					getSession().getLengthOfUserPlot());
+		if (plants.isEmpty() == false) {
+			Thread.currentThread().getStackTrace();
+			System.out.println("starting with plants.size=" + plants.size());
 
-			String name = p.getLatinName();
-			Tooltip.install(plantRepresentation, new Tooltip(name));
+			Iterator<Plant> plantIter = plants.iterator();
+			System.out.println("after creating iterator");
+			while (plantIter.hasNext()) {
+				Plant p = plantIter.next();
+				System.out.println("PlotDesign.createPlantFlow: adding " + p.getLatinName());
+				Node plantRepresentation = p.renderInAccordion(getSession().getWidthOfUserPlot(),
+						getSession().getLengthOfUserPlot());
 
-			plantRepresentation.setOnMouseDragged(getHandlerForDrag(p));
-			plantRepresentation.setOnMouseReleased(getHandlerForRelease(null));
+				String name = p.getLatinName();
+				Tooltip.install(plantRepresentation, new Tooltip(name));
 
-			VBox imageAndNameHolder = new VBox(plantRepresentation, new Text(name));
-			flow.getChildren().add(imageAndNameHolder);
+				plantRepresentation.setOnMouseDragged(getHandlerForDrag(p));
+				plantRepresentation.setOnMouseReleased(getHandlerForRelease(null));
+
+				VBox imageAndNameHolder = new VBox(plantRepresentation, new Text(name));
+				flow.getChildren().add(imageAndNameHolder);
+			}
+		} else {
+			flow.getChildren().add(new Text(fallBackText));
 		}
-		//if(plants.size() == 0)
-			//
+
 		return flow;
 	}
 
@@ -476,205 +496,204 @@ public class PlotDesign extends Window {
 			});
 		}
 	}
-	
+
 	/**
-	 * Determine what percentage of plants have food sources for any animal. 
-	 * Looks at the plant descriptions to see if the plant has seeds, nuts, or
-	 * fruits that animals could feed on.
+	 * Determine what percentage of plants have food sources for any animal. Looks
+	 * at the plant descriptions to see if the plant has seeds, nuts, or fruits that
+	 * animals could feed on.
 	 * 
-	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
-	 * 			0.0 means no plants feed animals, and 1.0 means all plants in
-	 * 			the plot feeds animals.
+	 * @return Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%). 0.0
+	 *         means no plants feed animals, and 1.0 means all plants in the plot
+	 *         feeds animals.
 	 */
 	protected double evaluateAnimalsFed() {
 		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
 		PlotPlant p;
-		
+
 		int plantCount = 0;
 		int animalsFed = 0;
-		
-		for(PlotObject pObject : thePlot) {
+
+		for (PlotObject pObject : thePlot) {
 			// This is a little bit hacky, but you tell me what's a better
 			// solution. I thought about it for a few hours but couldn't come up
 			// with anything better.
 			try {
-				p = (PlotPlant)pObject;
-			} catch(ClassCastException e) {
+				p = (PlotPlant) pObject;
+			} catch (ClassCastException e) {
 				continue;
 			}
-			
+
 			plantCount++;
-			
+
 			// TODO: What if it does not even have "Berry...Product" in description?
-			if(isAnimalFed(p.getPlant()))
+			if (isAnimalFed(p.getPlant()))
 				animalsFed++;
 		}
-		
+
 		// garbage collector cleanup
 		thePlot = null;
 		p = null;
-		
-		return (double)animalsFed / (double)plantCount;
+
+		return (double) animalsFed / (double) plantCount;
 	}
-	
+
 	/**
-	 * Abstracted out animal fed characteristic of a plot so plant PlotObjects
-	 * that don't feed animals can be highlighted specifically.
-	 * @param p	Plant object to check.
-	 * @return	True if a plant feeds an animal, False if not.
+	 * Abstracted out animal fed characteristic of a plot so plant PlotObjects that
+	 * don't feed animals can be highlighted specifically.
+	 * 
+	 * @param p Plant object to check.
+	 * @return True if a plant feeds an animal, False if not.
 	 */
 	protected boolean isAnimalFed(Plant p) {
 		return p.getDescription().contains("Berry/Nut/Seed Product: Yes");
 	}
-	
+
 	/**
-	 * Determine what percentage of the year has plants in bloom. Plants have 
-	 * bloom time stored as a 12 element boolean array, where every month
-	 * corresponds to a month of the year.<br><br>
+	 * Determine what percentage of the year has plants in bloom. Plants have bloom
+	 * time stored as a 12 element boolean array, where every month corresponds to a
+	 * month of the year.<br>
+	 * <br>
 	 * 
 	 * This method ORs all the booleans in the Plant's bloom time into a master
 	 * boolean array, and this method determines what percentage of the latter
 	 * boolean array is true.
 	 * 
-	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
-	 * 			0.0 means there's no bloom in the plot, and 1.0 every month of
-	 * 			the year has a plant in bloom.
+	 * @return Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%). 0.0
+	 *         means there's no bloom in the plot, and 1.0 every month of the year
+	 *         has a plant in bloom.
 	 */
 	protected double evaluateContinousBloom() {
 		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
-		
+
 		boolean[] bloom = new boolean[12];
 		PlotPlant p;
 		boolean[] plantsBloom;
-		
-		for(PlotObject pObject : thePlot) {
+
+		for (PlotObject pObject : thePlot) {
 			// Hacky solution that works. Check out explanation in
-			//		evaluatedAnimalsFed()
+			// evaluatedAnimalsFed()
 			try {
-				p = (PlotPlant)pObject;
-			} catch(ClassCastException e) {
+				p = (PlotPlant) pObject;
+			} catch (ClassCastException e) {
 				continue;
 			}
-			
+
 			plantsBloom = p.getPlant().getBloomTime();
-			
-			for(int i = 0; i < plantsBloom.length; i++) {
+
+			for (int i = 0; i < plantsBloom.length; i++) {
 				bloom[i] = bloom[i] || plantsBloom[i];
 			}
 		}
-		
+
 		double monthsPlantsInBloom = 0.0;
-		
-		for(boolean monthHasPlantInBloom : bloom)
-			if(monthHasPlantInBloom)
+
+		for (boolean monthHasPlantInBloom : bloom)
+			if (monthHasPlantInBloom)
 				monthsPlantsInBloom += 1.0;
-		
+
 		// garbage collector cleanup
 		thePlot = null;
 		bloom = null;
 		p = null;
 		plantsBloom = null;
-		
+
 		return monthsPlantsInBloom / 12.0;
 	}
-	
+
 	/**
 	 * Determine the percentage of plants and the percentage of each plant that
 	 * matches the chosen plot characteristics specified by the user in the
-	 * Questionnaire. Meaning, for every single Plant, what percentage of that
-	 * plant matches what the user is looking for?<br><br>
+	 * Questionnaire. Meaning, for every single Plant, what percentage of that plant
+	 * matches what the user is looking for?<br>
+	 * <br>
 	 * 
 	 * If a user wants a yellow plant that blooms all year round, and there is a
-	 * plant matching that description, that plant has a score of 
-	 * <code>1.0</code>. If its a yellow plant that blooms only part of the
-	 * year, it has a score of <code>0.5</code>. The average of these plant
-	 * scores is calculated for every plant.
+	 * plant matching that description, that plant has a score of <code>1.0</code>.
+	 * If its a yellow plant that blooms only part of the year, it has a score of
+	 * <code>0.5</code>. The average of these plant scores is calculated for every
+	 * plant.
 	 * 
-	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * @return Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
 	protected double evaluateMatchesGarden() {
 		return 0.0;
 	}
-	
+
 	/**
-	 * <b>NOTE:</b> This method should only be run every so often because of its 
-	 * complexity and cost.<br><br>
+	 * <b>NOTE:</b> This method should only be run every so often because of its
+	 * complexity and cost.<br>
+	 * <br>
 	 *
-	 * Checks every plant in the plot, and determines all the PlotObjects that 
-	 * are closest and furthest away to that plant. Assume that an 
-	 * <i>average</i> plant requires about 4 hours of sun light a day.
+	 * Checks every plant in the plot, and determines all the PlotObjects that are
+	 * closest and furthest away to that plant. Assume that an <i>average</i> plant
+	 * requires about 4 hours of sun light a day.
 	 * 
-	 *  ...Based on the angle of the sun
-	 * and the surrounding plan ... if any PlotObject is greater than the Plants
-	 * height * 2 then say its transition isn't good.
+	 * ...Based on the angle of the sun and the surrounding plan ... if any
+	 * PlotObject is greater than the Plants height * 2 then say its transition
+	 * isn't good.
 	 * 
-	 * @return	Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
+	 * @return Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
 	protected double evaluateTransition() {
 		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
-		
+
 		double degreesToNorth = 0.0; // where is true north?
 		double sunlightWindow = 15.0; // how much does the sun-rise/set amplitude vary?
 		double windowResolution = 5.0; // increment of vectors to take for window intersection
-		
+
 		int plantCount = 0;
 		double averageLight = 0.0;
-		
+
 		PlotPlant p;
-		
-		for(PlotObject pObject : thePlot) {
+
+		for (PlotObject pObject : thePlot) {
 			// Hacky solution that works. Check out explanation in
-			//		evaluatedAnimalsFed()
+			// evaluatedAnimalsFed()
 			try {
-				p = (PlotPlant)pObject;
-			} catch(ClassCastException e) {
+				p = (PlotPlant) pObject;
+			} catch (ClassCastException e) {
 				continue;
 			}
-			
+
 			// how much light do the plot objects block
 			double totalShadeEffect = 0.0;
-			
-			for(PlotObject obstacle : thePlot) {
-				if(obstacle.equals(p))
+
+			for (PlotObject obstacle : thePlot) {
+				if (obstacle.equals(p))
 					continue; // don't compare P against itself
-				double obstacleDistance = distanceIn2d(p.getPlotX(), 
-						p.getPlotY(), obstacle.getPlotX(), obstacle.getPlotY());
-				if(obstacleDistance > obstacle.getHeight())
+				double obstacleDistance = distanceIn2d(p.getPlotX(), p.getPlotY(), obstacle.getPlotX(),
+						obstacle.getPlotY());
+				if (obstacleDistance > obstacle.getHeight())
 					continue; // is the obstacle within shadow range?
-				
+
 				double currentVector = windowResolution;
 				boolean isIntersecting = false;
-				
-				while(currentVector > 0.0) {
-					if(lineIntersectsCircle(p.getPlotX(), p.getPlotY(),
+
+				while (currentVector > 0.0) {
+					if (lineIntersectsCircle(p.getPlotX(), p.getPlotY(),
 							// TODO: line below has to change according to currentVector
-							obstacle.getPlotX(), obstacle.getPlotY(), 
-							obstacle.getPlotX(), obstacle.getPlotY(), 
+							obstacle.getPlotX(), obstacle.getPlotY(), obstacle.getPlotX(), obstacle.getPlotY(),
 							obstacle.getRadius())) {
 						isIntersecting = true;
 						break;
 					}
 					currentVector -= windowResolution;
 				}
-				
-				if(isIntersecting) {
+
+				if (isIntersecting) {
 					// as obstacle height increases, so does its shadow
-					double obstacleShadeEffect = 
-							(1 - (p.getHeight() / obstacle.getHeight()));
+					double obstacleShadeEffect = (1 - (p.getHeight() / obstacle.getHeight()));
 					// the closer the obstacle, the more effect its shadow has
-					obstacleShadeEffect *= Math.cos(
-							((obstacleDistance/obstacle.getHeight()) * Math.PI)/2.0
-							);
+					obstacleShadeEffect *= Math.cos(((obstacleDistance / obstacle.getHeight()) * Math.PI) / 2.0);
 					// what percentage of sunlight view does this object block?
-					obstacleShadeEffect *= (180 * obstacle.getRadius()) / 
-							(Math.PI * obstacleDistance);
+					obstacleShadeEffect *= (180 * obstacle.getRadius()) / (Math.PI * obstacleDistance);
 					// plot object can only block sunlight from east/west, not both
 					obstacleShadeEffect *= 0.5;
 					totalShadeEffect += obstacleShadeEffect;
 				}
 			}
-			
-			if(1.0 - totalShadeEffect < p.getPlant().getLight()) {
+
+			if (1.0 - totalShadeEffect < p.getPlant().getLight()) {
 				// plant is getting less light than it needs
 				// calculate what percentage of light it is getting
 				averageLight += (1.0 - totalShadeEffect) / p.getPlant().getLight();
@@ -684,48 +703,47 @@ public class PlotDesign extends Window {
 			}
 			plantCount++;
 		}
-		
+
 		// garbage collector cleanup
 		thePlot = null;
 		p = null;
-		
-		if(averageLight != 0.0)
-			return averageLight / (double)plantCount;
+
+		if (averageLight != 0.0)
+			return averageLight / (double) plantCount;
 		else
 			return 0.0; // no plants to check
 	}
-	
+
 	/**
 	 * Determine if a line intersects a circle.
-	 * @param x1	X point of the first line.
-	 * @param y1	Y point of the first line.
-	 * @param x2	X point of the second line.
-	 * @param y2	Y point of the second line.
+	 * 
+	 * @param x1      X point of the first line.
+	 * @param y1      Y point of the first line.
+	 * @param x2      X point of the second line.
+	 * @param y2      Y point of the second line.
 	 * @param circleX
 	 * @param circleY
 	 * @param circleR
 	 * @return True if the line intersects a circle, False if not.
 	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
 	 */
-	private boolean lineIntersectsCircle(double x1, double y1, double x2, 
-			double y2, double circleX, double circleY, double circleR) {
-		return (Math.abs((x2 - x1)*circleY +  circleX*(y1 -     
-			       y2) + (x1 - x2)*y1 +
-			       (y1 - y2)*x1)/ Math.sqrt(Math.pow((x2 - x1), 2) +
-			       Math.pow((y1 - y2), 2)) <= circleR);
+	private boolean lineIntersectsCircle(double x1, double y1, double x2, double y2, double circleX, double circleY,
+			double circleR) {
+		return (Math.abs((x2 - x1) * circleY + circleX * (y1 - y2) + (x1 - x2) * y1 + (y1 - y2) * x1)
+				/ Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y1 - y2), 2)) <= circleR);
 	}
-	
+
 	/**
 	 * Determine distance between two points.
-	 * @param x1	X of first point.
-	 * @param y1	Y of first point.
-	 * @param x2	X of second point.
-	 * @param y2	Y of second point.
+	 * 
+	 * @param x1 X of first point.
+	 * @param y1 Y of first point.
+	 * @param x2 X of second point.
+	 * @param y2 Y of second point.
 	 * @return Distance between two points as a double.
 	 * @see <code>windows.PlotDesign.evaluateTransition()</code>
 	 */
-	public double distanceIn2d(double x1, double y1,
-			double x2, double y2) {       
+	public double distanceIn2d(double x1, double y1, double x2, double y2) {
 		return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 	}
 
@@ -736,18 +754,19 @@ public class PlotDesign extends Window {
 
 	/**
 	 * <b>NOTE:</b> Does NOT add PlotObject to <code>plot</code> attribute in
-	 * Session. Only adds a plot object to the interface. This is because if
-	 * this method did add the passed PlotObject to the <code>plot</code>, then
+	 * Session. Only adds a plot object to the interface. This is because if this
+	 * method did add the passed PlotObject to the <code>plot</code>, then
 	 * PlotDesign's <code>refresh()</code> would not work because it add already
-	 * existing PlotObjects to the plot.<br><br>
+	 * existing PlotObjects to the plot.<br>
+	 * <br>
 	 * 
 	 * Take in a PlotObject, call its <code>render()</code> method, and set the
 	 * returned Node's position and attach the necessary handlers to update its
 	 * position.
 	 * 
-	 * @param po  PlotObject being added to the plot.
-	 * @param x   Horizontal coordinate for the image.
-	 * @param y   Vertical coordinate for the image.
+	 * @param po PlotObject being added to the plot.
+	 * @param x  Horizontal coordinate for the image.
+	 * @param y  Vertical coordinate for the image.
 	 */
 	public void addPlotObjectToInterface(PlotObject po, double x, double y) {
 		po.setPlotX(x);
@@ -755,7 +774,7 @@ public class PlotDesign extends Window {
 		Node plotObjectRepresentation = po.render();
 		plotObjectRepresentation.setTranslateX(x);
 		plotObjectRepresentation.setTranslateY(y);
-		if(!po.getUseDefaultDragHandler()){
+		if (!po.getUseDefaultDragHandler()) {
 			plotObjectRepresentation.setOnMouseDragged(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
@@ -786,12 +805,13 @@ public class PlotDesign extends Window {
 
 	/**
 	 * Create a temporary ImageView to follow around the mouse during drag.
+	 * 
 	 * @param event
 	 */
 	public void dragTemporaryImage(MouseEvent event, Plant p) {
-		if(p != null && getModel().getPlotDesignDraggingPlant() == null)
+		if (p != null && getModel().getPlotDesignDraggingPlant() == null)
 			getModel().setPlotDesignDraggingPlant(p);
-		
+
 		ImageView n = (ImageView) event.getSource();
 		if (create) {
 			tmp = new ImageView(n.getImage());
@@ -805,16 +825,17 @@ public class PlotDesign extends Window {
 	public EventHandler getHandlerForDrag() {
 		return event -> dragTemporaryImage((MouseEvent) event, null);
 	}
-	
+
 	public EventHandler getHandlerForDrag(Plant p) {
 		return event -> dragTemporaryImage((MouseEvent) event, p);
 	}
 
 	/**
-	 * When user lets go of mouse on drag event, drop in a new plot object
-	 * where they released their mouse.
-	 * @param event		...
-	 * @param po		...
+	 * When user lets go of mouse on drag event, drop in a new plot object where
+	 * they released their mouse.
+	 * 
+	 * @param event ...
+	 * @param po    ...
 	 */
 	public void releaseTemporaryImage(MouseEvent event, PlotObjects po) {
 		ImageView n = (ImageView) event.getSource();
@@ -823,64 +844,64 @@ public class PlotDesign extends Window {
 		double newY = tmp.getLayoutY() - vbox.getLayoutBounds().getHeight();
 		if (group.contains(newX, newY)) {
 			PlotObject plotObjectToAdd;
-			if(po == null) {
+			if (po == null) {
 				plotObjectToAdd = new PlotPlant(getModel(), getModel().getPlotDesignDraggingPlant(), newX, newY);
 				getModel().setPlotDesignDraggingPlant(null);
 			} else {
-				switch(po) {
-					case Bench:
-						plotObjectToAdd = new PlotBench(getModel(), newX, newY);
-						break;
-					case BirdBath:
-						plotObjectToAdd = new PlotBirdBath(getModel(), newX, newY);
-						break;
-					case Fence: // assume 6.0 foot high fence
-						plotObjectToAdd = new PlotFence(getModel(), newX, newY, 6.0);
-						break;
-					case Flamingo:
-						plotObjectToAdd = new PlotFlamingo(getModel(), newX, newY);
-						break;
-					case Forest:
-						plotObjectToAdd = new PlotForest(getModel(), newX, newY);
-						break;
-					case Gnome:
-						plotObjectToAdd = new PlotGnome(getModel(), newX, newY);
-						break;
-					case Other:
-						plotObjectToAdd = new PlotOther(getModel(), newX, newY);
-						break;
-					case Path:
-						plotObjectToAdd = new PlotPath(getModel(), newX, newY);
-						break;
-					case Patio:
-						plotObjectToAdd = new PlotPatio(getModel(), newX, newY);
-						break;
-					case Playground:
-						plotObjectToAdd = new PlotPlayground(getModel(), newX, newY);
-						break;
-					case Pool:
-						plotObjectToAdd = new PlotPool(getModel(), newX, newY);
-						break;
-					case Road:
-						plotObjectToAdd = new PlotRoad(getModel(), newX, newY);
-						break;
-					case Rock:
-						plotObjectToAdd = new PlotRock(getModel(), newX, newY);
-						break;
-					case Shed:
-						plotObjectToAdd = new PlotShed(getModel(), newX, newY);
-						break;
-					case TextLabel:
-						// TODO: Prompt a user with a textbox in a separate stage
-						//			window asking what they would like the text
-						//			label to say
-						plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
-						break;
-					default:
-						plotObjectToAdd = new PlotOther(getModel(), newX, newY);
-						break;
+				switch (po) {
+				case Bench:
+					plotObjectToAdd = new PlotBench(getModel(), newX, newY);
+					break;
+				case BirdBath:
+					plotObjectToAdd = new PlotBirdBath(getModel(), newX, newY);
+					break;
+				case Fence: // assume 6.0 foot high fence
+					plotObjectToAdd = new PlotFence(getModel(), newX, newY, 6.0);
+					break;
+				case Flamingo:
+					plotObjectToAdd = new PlotFlamingo(getModel(), newX, newY);
+					break;
+				case Forest:
+					plotObjectToAdd = new PlotForest(getModel(), newX, newY);
+					break;
+				case Gnome:
+					plotObjectToAdd = new PlotGnome(getModel(), newX, newY);
+					break;
+				case Other:
+					plotObjectToAdd = new PlotOther(getModel(), newX, newY);
+					break;
+				case Path:
+					plotObjectToAdd = new PlotPath(getModel(), newX, newY);
+					break;
+				case Patio:
+					plotObjectToAdd = new PlotPatio(getModel(), newX, newY);
+					break;
+				case Playground:
+					plotObjectToAdd = new PlotPlayground(getModel(), newX, newY);
+					break;
+				case Pool:
+					plotObjectToAdd = new PlotPool(getModel(), newX, newY);
+					break;
+				case Road:
+					plotObjectToAdd = new PlotRoad(getModel(), newX, newY);
+					break;
+				case Rock:
+					plotObjectToAdd = new PlotRock(getModel(), newX, newY);
+					break;
+				case Shed:
+					plotObjectToAdd = new PlotShed(getModel(), newX, newY);
+					break;
+				case TextLabel:
+					// TODO: Prompt a user with a textbox in a separate stage
+					// window asking what they would like the text
+					// label to say
+					plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
+					break;
+				default:
+					plotObjectToAdd = new PlotOther(getModel(), newX, newY);
+					break;
 				}
-				
+
 			}
 			getSession().getPlot().add(plotObjectToAdd);
 			addPlotObjectToInterface(plotObjectToAdd, newX, newY);
@@ -890,6 +911,7 @@ public class PlotDesign extends Window {
 
 	/**
 	 * TODO: ...?
+	 * 
 	 * @param po
 	 * @param principal
 	 * @return
@@ -899,7 +921,7 @@ public class PlotDesign extends Window {
 	}
 
 	/**
-	 * Remove everything from the flow panes, the center box, and the auto rate 
+	 * Remove everything from the flow panes, the center box, and the auto rate
 	 * boxes and add info back in again for the correct session
 	 */
 	@Override
@@ -907,7 +929,7 @@ public class PlotDesign extends Window {
 		accArr.clear();
 		choicesAccordian.getPanes().clear();
 		populateTiles(accArr);
-		
+
 		for (TitledPane t : accArr) {
 			t.setFont(getModel().getHackBold20());
 			choicesAccordian.getPanes().add(t);
@@ -919,7 +941,7 @@ public class PlotDesign extends Window {
 		for (PlotObject po : getSession().getPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
-		
+
 		// TODO: Remove stuff from auto rate box and add back in
 	}
 

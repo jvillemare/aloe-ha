@@ -373,6 +373,8 @@ public class ExistingPlants extends Window {
 										true, true);
 							} catch (NullPointerException Exception) {
 								plantImage = defaultImg;
+							}catch(ArrayIndexOutOfBoundsException outOfBounds) {
+								plantImage = defaultImg;
 							}
 
 						} else {
