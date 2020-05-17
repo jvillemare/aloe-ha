@@ -373,7 +373,7 @@ public class ExistingPlants extends Window {
 										true, true);
 							} catch (NullPointerException Exception) {
 								plantImage = defaultImg;
-							}catch(ArrayIndexOutOfBoundsException outOfBounds) {
+							} catch(ArrayIndexOutOfBoundsException outOfBounds) {
 								plantImage = defaultImg;
 							}
 
@@ -389,7 +389,7 @@ public class ExistingPlants extends Window {
 						imageView.setCache(true);
 						imageView.setCacheHint(CacheHint.SPEED);
 						tooltipPick.setGraphic(imageView);
-						// TODO: tooltipPick.setShowDelay(Duration.seconds(2));
+						tooltipPick.setShowDelay(Duration.seconds(2));
 					}
 				});
 
