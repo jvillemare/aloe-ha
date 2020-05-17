@@ -941,7 +941,7 @@ public class PlotDesign extends Window {
 
 		if(getModel().getImg()!=null) {
 			ImageView img=getModel().getImg();
-			//img.toFront();
+			img.setOpacity(0.4);
 			group.getChildren().add(img);
 		}
 		for (PlotObject po : getSession().getPlot()) {

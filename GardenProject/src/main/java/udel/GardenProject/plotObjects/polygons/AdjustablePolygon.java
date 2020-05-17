@@ -56,6 +56,9 @@ public class AdjustablePolygon implements Serializable {
 	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty,
 			double height, double width) {
 		for(Colors c:Colors.values()) {
+			if(c.getColor()==null) {
+				continue;
+			}
 			if(c.getColor().equals(color)) {
 				this.color=c;
 			}
