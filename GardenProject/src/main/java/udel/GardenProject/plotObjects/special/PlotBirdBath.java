@@ -27,7 +27,16 @@ public class PlotBirdBath extends GenericSpecial implements Serializable {
 	 * Path to an image of a bird bath for plot design.
 	 */
 	private static String plotBirdBath= "/viewImages/plotBirdbath.png";
+
+	/**
+	 * Render Width of the object
+	 */
+	private static double width=40.0;
 	
+	/**
+	 * Render Height of the object
+	 */
+	private static double height=40.0;
 	/**
 	 * Constructor.
 	 * @param x	Horizontal position.
@@ -40,13 +49,13 @@ public class PlotBirdBath extends GenericSpecial implements Serializable {
 	@Override
 	public double getRenderWidth() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return width;
 	}
 
 	@Override
 	public double getRenderHeight() {
 		// TODO Auto-generated method stub
-		return 40.0;
+		return height;
 	}
 
 }
