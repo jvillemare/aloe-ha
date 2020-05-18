@@ -1,13 +1,16 @@
 package udel.GardenProject.plotObjects;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import udel.GardenProject.garden.Model;
 
 /**
@@ -31,8 +34,10 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param y Vertical position.
 	 */
 	public PlotTextLabel(Model model, double x, double y) {
-		super(model, x, y, 0.0, 0.0, "", "", "");
-		this.text = promptUserForLabelText();
+		this(model, x, y, "Empty Text Label");
+		//super(model, x, y, 0.0, 0.0, "", "", "");
+		//this.text = promptUserForLabelText();
+		//this(model, x, y, "Empty Text Label");
 	}
 
 	/**
@@ -42,9 +47,9 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param y Vertical position.
 	 * @param text	Text to display
 	 */
-	public PlotTextLabel(Model model, double x, double y, String text) {
+	public PlotTextLabel(Model model, double x, double y, String fallBackText) {
 		super(model, x, y, 0.0, 0.0, "", "", "Text");
-		this.text = text;
+		this.text = promptUserForLabelText(fallBackText);;
 	}
 	
 	public String getText() {
@@ -56,14 +61,21 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * the user can enter the text of what they want the label to say.
 	 * @return	Unformatted user input text for label.
 	 */
-	public String promptUserForLabelText() {
-		// TODO: Implement
-		return "";
+	public String promptUserForLabelText(String fallBackText) {
+		TextInputDialog td = new TextInputDialog("Put text here..."); 
+        td.setHeaderText("Enter what you want this text label to say");
+        
+        Optional<String> result = td.showAndWait();
+		
+        if(result.isPresent())
+        	return result.get();
+        else
+        	return fallBackText;
 	}
 
 	@Override
 	public Node render() {
-		return null; // use this.text
+		return new Text(this.text); // use this.text
 	}
 
 	@Override
@@ -87,7 +99,6 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	@Override
 	public void setVisible(boolean vis) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

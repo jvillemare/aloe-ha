@@ -894,6 +894,8 @@ public class PlotDesign extends Window {
 	 * @param background If this is a background object.
 	 */
 	public void addPlotObjectToInterface(PlotObject po, double x, double y) {
+		po.setModel(getModel()); // for when reloading a save file, point to
+			// new model instance
 		po.setPlotX(x);
 		po.setPlotY(y);
 		Node plotObjectRepresentation = po.render();
@@ -1024,7 +1026,7 @@ public class PlotDesign extends Window {
 					// TODO: Prompt a user with a textbox in a separate stage
 					// window asking what they would like the text
 					// label to say
-					plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
+					plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "Empty Text Label");
 					break;
 				default:
 					plotObjectToAdd = new PlotOther(getModel(), newX, newY);

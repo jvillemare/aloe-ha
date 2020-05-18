@@ -221,8 +221,8 @@ public class PlantSelection extends Window {
 	 * @throws Exception 
 	 */
 	public void displaySelection() {
-		
 		setFilter();
+		addSelected();
 
 		for(TitledPane t : accArr) {
 			populateTiles(t, 0);
@@ -230,7 +230,7 @@ public class PlantSelection extends Window {
 		
 		scrollCanopies.setContent(canopySelection);
 		
-		addSelected();
+		//addSelected();
 		
 		scrollSelected.setContent(selectedPlantsBox);
 		
@@ -249,7 +249,6 @@ public class PlantSelection extends Window {
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
-		
 	}
 
 	/**
@@ -349,7 +348,7 @@ public class PlantSelection extends Window {
 		
 		if(filter.isEmpty()) {
 			t.setContent(canopyFlow);
-		}else {
+		} else {
 			int forward = page + 1;
 			int backward = page - 1;
 			Button backButton = new Button("Previous");
@@ -374,7 +373,7 @@ public class PlantSelection extends Window {
 					
 			canopyPlant.clear();
 			for(Plant p : filter) {
-				if(p.getCanopy() == canopy) {
+				if(p.getCanopy() == canopy && !getSession().getSelectedPlants().contains(p)) {
 					canopyPlant.add(p);
 				}
 			}
@@ -649,10 +648,14 @@ public class PlantSelection extends Window {
 	}
 	
 	public void refresh() {
+		System.out.println("PlantSelection: refresh() triggered");
 		if(getModel().getLastWindow().getEnum() == Windows.Questionnaire || 
-				getModel().getLastWindow().getEnum() == Windows.PlotDesign) {
+				getModel().getLastWindow().getEnum() == Windows.PlotDesign ||
+				getModel().getLastWindow().getEnum() == Windows.BluePrint) {
 			
 			try {
+				selectedPlantsBox.getChildren().clear();
+				addSelected();
 				displaySelection();
 			}catch(Exception e) {
 				e.getMessage();

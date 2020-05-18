@@ -265,6 +265,8 @@ public class BluePrint extends Window {
 	 * @param y  Vertical coordinate for the image.
 	 */
 	public void addPlotObjectToInterface(PlotObject po, double x, double y) {
+		po.setModel(getModel()); // for when reloading a save file, point to
+			// new model instance
 		po.setPlotX(x);
 		po.setPlotY(y);
 		Node plotObjectRepresentation = po.render();
@@ -293,12 +295,10 @@ public class BluePrint extends Window {
 				}
 			});
 			group.getChildren().add(plotObjectRepresentation);
-		}
-		else {
+		} else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
 			((GenericPolygon)po).setX(x);
 			((GenericPolygon)po).setX(y);
-
 		}
 	}
 	/**
@@ -327,7 +327,7 @@ public class BluePrint extends Window {
 				// TODO: Prompt a user with a textbox in a separate stage
 				// window asking what they would like the text
 				// label to say
-				plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "FIX ME");
+				plotObjectToAdd = new PlotTextLabel(getModel(), newX, newY, "Empty Text Label");
 				break;
 			default:
 				plotObjectToAdd = new PlotOther(getModel(), newX, newY);
