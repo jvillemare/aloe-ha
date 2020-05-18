@@ -185,6 +185,11 @@ public enum Colors {
 	 */
 	private String name;
 	
+	/**
+	 * Constructor.
+	 * @param c		Color of this enum, null if it's any color.
+	 * @param name	Friendly name of the color.
+	 */
 	private Colors(Color c, String name) {
 		this.c = c;
 		this.name = name;

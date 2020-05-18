@@ -2,31 +2,35 @@
 
 ![Java CI with Maven](https://github.com/CISC275-S2020/team-11-0/workflows/Java%20CI%20with%20Maven/badge.svg)
 
-This semester's project will involve working in a team composed of students from your 275 lecture section. Teams will design and implement software for a client of the professor's choosing. The project grade will be composed of a number of parts, including multiple presentations, all parts of the software engineering cycle, quality of teamwork and team evaluations, and final presentation. Projects which pass the final presentation may present their work to faculty, administration, and adoring fans. Client may select any or all software to use in presentations and distribute from their website.
-
-Coronavirus or not, this project is being accomplished.
-
 ---
 
-## Garden Project
+## Aloe-Ha: Garden Project
 
-**Application Name**: Aloe-Ha/Aloeha (Aloe + Aloha).
+Welcome to your personal garden plot designer.
 
-**Purpose** (paraphrased from [Client Meet Notes](docs/client-meet-notes.md)): Software for individual homeowners to learn how to better integrate their land with the neighboring lands to make a continuous canopy and forest stage developments. Largely, to better support the local ecosystem, native plants, and a diversity of flora and fauna life.
+![Java CI with Maven](docs/readme-screenshots/screenshot1.png)
 
-**Idea** (big picture overview of how the project will be directed; [email](docs/march-18-2020-email-client-powerpoint.md)): Simple and approachable with a design software focus. It should allow a user with no gardening experience to pick up this app, and creatively use it to design their optimal garden to better serve the community.
+Built from the ground up to flexible, dynamic, and responsive, _Aloe-Ha_ is an open-source, light-weight, JavaFX application that works on any platform to help you design your dream garden.
 
-**Layout** (main windows and structure): See [docs/storyboard-revised-and-final.pdf](docs/storyboard-revised-and-final.pdf), where there are 9 main windows: Welcome, pre-existing plants, questionnaire, overview questions, selection, plot designer, all plants, plant info, season view, and the final print preview and exporter.
+![Java CI with Maven](docs/readme-screenshots/screenshot2.png)
 
-**Basic Features**: *Informally,*
- - Save and load plots.
- - Have a variety of native Delaware plants to choose from.
- - Be able to draw where shade occurs throughout the day.
- - User questions at the beginning adequately select relevant plants.
- - Automatic plant compability detection based on plot.
- - Season and year preview up to 3 years.
+Using sophisticated algorithms and rendering technology, you can design your plot with a collection of over **4,000 plants** to choose from. All plant was obtained from [public sources](docs/plant-data-sources.md).
+
+![Java CI with Maven](docs/readme-screenshots/screenshot3.png)
+
+Start your new plot, today!
+
+## Downloads
+
+The latest packaged jars can be found [in the release page](releases). You may need to [download and install Java 11 in order to run it](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html). Simply double-clicking the jar should run it.
+
+## Work and Documentation
+
+The work that has been done for this project can be inspected in the [`docs` folder](docs/README.md).
 
 ### Team Members
+
+From the [University of Delaware](http://www1.udel.edu/CIS/275/tharvey/20S/) CISC 275 course of Spring, 2020:
 
  - Jiamian Wang
  - Viva Laas
@@ -34,7 +38,7 @@ Coronavirus or not, this project is being accomplished.
  - Brett Wagner
  - James Villemarette
 
-### Specifics
+#### Specifics
 
  - Pure Java 11 and JavaFX 11 implementation.
 	- Desktop/Laptop app.

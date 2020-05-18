@@ -14,22 +14,49 @@ package udel.GardenProject.enums;
  */
 public enum Moisture {
 	
+	/**
+	 * Like the Sahara.
+	 */
 	DRY("Dry"),
+	
+	/**
+	 * Like the Sahara with a drop of water.
+	 */
 	DRYMOIST("Dry Moist"),
+	
+	/**
+	 * Moist.
+	 */
 	MOIST("Moist"),
+	
+	/**
+	 * Extra moist.
+	 */
 	MOISTDAMP("Moist Damp"),
+	
+	/**
+	 * Think literally anywhere in central South-east Asia.
+	 */
 	DAMP("Damp");
 
+	/**
+	 * Friendly name of the enum for the UI.
+	 */
 	private String name;
 	
+	/**
+	 * Constructor.
+	 * @param name	Friendly name of the enum for the UI.
+	 */
 	private Moisture(String name) {
 		this.name = name;
 	}
 	
 	/**
-	 * Getter to Establish what String belongs to what moisture level.
-	 * @param s
-	 * @return Moisture enum level
+	 * Getter to Establish what String belongs to what moisture level. Similar 
+	 * to <code>valueOf()</code>.
+	 * @param s String that roughly resembles one of the enums.
+	 * @return Moisture enum level, null if there's no match.
 	 */
 	public Moisture getMoisture(String s) {
 		if (s.equalsIgnoreCase("Wet") || s.equalsIgnoreCase("Damp")){

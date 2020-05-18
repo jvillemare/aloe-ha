@@ -9,11 +9,30 @@ package udel.GardenProject.enums;
  */
 public enum Sunlight {
 	
-	FULLSUN("Full Sun"), //0.9-1.0
-	PARTIALSHADE("Partial Shade"), //0.5-0.9
-	PARTIALSUN("Partial Sun"), //3.0-5.0
-	FULLSHADE("Full Shade"), // 0.0-3.0
-	ANY("My Plot has different levels"); //-1.0
+	/**
+	 * 100% full sun all the time, <code>0.9</code> to <code>1.0</code>
+	 */
+	FULLSUN("Full-sun"),
+	
+	/**
+	 * 66% sun most of the time, <code>0.5</code> to <code>0.9</code>
+	 */
+	PARTIALSHADE("Partial-shade"),
+	
+	/**
+	 * 33% sun some of the time, <code>0.3</code> to <code>0.5</code>
+	 */
+	PARTIALSUN("Partial-sun"),
+	
+	/**
+	 * 0% sun none of the time, <code>0.0</code> to <code>0.3</code>.
+	 */
+	FULLSHADE("Full-shade"),
+
+	/**
+	 * Unknown level of shade, <code>-1.0</code>
+	 */
+	ANY("My Plot has different levels");
 	
 	private String sunlight = null;
 

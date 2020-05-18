@@ -27,9 +27,24 @@ import udel.GardenProject.enums.SoilTypes;
  */
 public class PlantLoader {
 
+	/**
+	 * {@link udel.GardenProject.enums.PlantDataSource#UDEL}
+	 */
 	public final InputStream floraPath = this.getClass().getResourceAsStream("/plantData/udel-flora.json");
+	
+	/**
+	 * {@link udel.GardenProject.enums.PlantDataSource#SUNNYEDGE}
+	 */
 	public final InputStream sunnyPath = this.getClass().getResourceAsStream("/plantData/sunny-edge-plants-data.json");
+	
+	/**
+	 * {@link udel.GardenProject.enums.PlantDataSource#NPC}
+	 */
 	public final InputStream nativePath = this.getClass().getResourceAsStream("/plantData/native-plant-center.json");
+	
+	/**
+	 * {@link udel.GardenProject.enums.PlantDataSource#NRCS}
+	 */
 	public final InputStream nrcsPath = this.getClass().getResourceAsStream("/plantData/nrcs-data.json");
 
 	private static final String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",

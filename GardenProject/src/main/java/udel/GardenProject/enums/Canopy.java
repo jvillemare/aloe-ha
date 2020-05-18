@@ -10,9 +10,24 @@ package udel.GardenProject.enums;
  */
 public enum Canopy {
 	
-	FLOOR(15, "Floor", "Plants and Srubs", "Requires the least amount of sunlight"), 
+	/**
+	 * Lowest layer.
+	 */
+	FLOOR(15, "Floor", "Plants and Shrubs", "Requires the least amount of sunlight"), 
+	
+	/**
+	 * Second lowest layer.
+	 */
 	UNDERSTORY(55, "Understory", "Small Trees", "Requires less than average amount of sunlight"), 
+	
+	/**
+	 * Second highest layer.
+	 */
 	CANOPY(95, "Canopy", "Medium-size Trees", "Requires more than average amount of sunlight"), 
+	
+	/**
+	 * Highest layer.
+	 */
 	EMERGENT(125, "Emergent", "Largest Trees", "Requires the most amount of sunlight");
 	
 	/**

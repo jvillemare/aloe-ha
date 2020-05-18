@@ -217,7 +217,6 @@ public class View {
 	 * Sets the background screen depending on the width and height
 	 */
 	public static void setBackgroundScreen(Image image, int width, int height) {
-
 		BackgroundSize backgroundSize = new BackgroundSize(width, height, true, true, true, false);
 		BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);

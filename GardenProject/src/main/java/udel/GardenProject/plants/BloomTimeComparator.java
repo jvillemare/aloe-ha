@@ -10,10 +10,14 @@ import java.util.Comparator;
  */
 public class BloomTimeComparator implements Comparator<Plant> {
 
+	/**
+	 * By default true.
+	 */
 	private boolean descending;
 
 	/**
-	 * By default, assume sorting a list of plants by bloom time, descending(December->January).
+	 * By default, assume sorting a list of plants by bloom time, 
+	 * descending(December->January).
 	 */
 	public BloomTimeComparator() {
 		this.descending = true;
@@ -29,7 +33,6 @@ public class BloomTimeComparator implements Comparator<Plant> {
 		this.descending = descending;
 	}
 
-	
 	public int compare(Plant a, Plant b) {
 		if (this.descending) {
 			int aInd = -1;
@@ -98,4 +101,5 @@ public class BloomTimeComparator implements Comparator<Plant> {
 			}
 		}
 	}
+	
 }

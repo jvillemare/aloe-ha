@@ -579,6 +579,8 @@ public class Model {
 			FileOutputStream file = new FileOutputStream(filepath);
 			ObjectOutputStream out = new ObjectOutputStream(file);
 
+			recentSessions.put(session.getID(), filepath);
+			session.setUnsaved(false);
 			session.setLastSavedFilepath(filepath);
 			out.writeObject(this.session);
 

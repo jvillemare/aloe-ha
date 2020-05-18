@@ -1,8 +1,8 @@
 ---
 name: Standard Internal Issue
-about: Default issue format as recommended by the Professor
+about: Default issue format for creating and tracking work
 title: ''
-labels: ''
+labels: 'enhancement'
 assignees: ''
 
 ---

@@ -385,6 +385,8 @@ public class PlotDesign extends Window {
 		} else {
 			flow.getChildren().add(new Text(fallBackText));
 		}
+		if(obj.size() == 0)
+			flow.getChildren().add(new Text(fallBackText));
 		return flow;
 	}
 
@@ -397,7 +399,6 @@ public class PlotDesign extends Window {
 	 */
   
 	public FlowPane createPlantFlow(HashSet<Plant> plants, String fallBackText) {
-
 		FlowPane flow = new FlowPane();
 		flow.setMaxWidth(flowPaneWidthAdjustment);
 		flow.setPrefWidth(flowPaneWidthAdjustment);
@@ -429,7 +430,6 @@ public class PlotDesign extends Window {
 		} else {
 			flow.getChildren().add(new Text(fallBackText));
 		}
-
 		return flow;
 	}
 
