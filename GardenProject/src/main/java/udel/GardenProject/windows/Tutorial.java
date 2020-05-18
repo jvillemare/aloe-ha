@@ -1,5 +1,9 @@
 package udel.GardenProject.windows;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -7,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.effect.DropShadow;
@@ -18,6 +23,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -219,7 +226,7 @@ public class Tutorial extends Window {
 		createTitledPane("About the Load and Save Plot Screen", createDownload());
 		createTitledPane("About the Plant Database", createPlantDatabase());
 		createTitledPane("About the Plant Info Screen", createPlantInfo());
-		createTitledPane("About Adding Obstacles to Your Plot", createObstacles());
+		createTitledPane("About Adding Labels to Your Plot", createObstacles());
 		createTitledPane("Where the Plant Information Comes From", createAbout());
 
 	}
@@ -333,9 +340,14 @@ public class Tutorial extends Window {
 	public VBox createQuestionnaireTutorial() {
 		VBox contentBox = new VBox();
 		createContentText(
-				"Answer all the questions to the best of your ability. Your answers will help us filter out plants that cannot be placed in your garden and help you select plants that are native to your area.",
+				"Answer all the questions to the best of your ability. Your "
+				+ "answers will help us filter out plants that cannot be placed"
+				+ " in your garden and help you select plants that are native to your area.",
 				contentBox);
 		createContentImage("/tutorialImages/Question.png", contentBox);
+		createContentText("If your answers are too specific an alert will warn you. "
+				+ "You can press Easy Plant to add some plants in and ease your specifications.", contentBox);
+		createContentImage("/tutorialImages/EasyPlant.png", contentBox);
 		return contentBox;
 	}
 
@@ -347,7 +359,7 @@ public class Tutorial extends Window {
 	public VBox createSelectingPlants() {
 		VBox contentBox = new VBox();
 		createContentText(
-				"On the Plant Selection screen, you will see 4 options corresponding to different canopy levels.",
+				"On the Plant Selection screen, you will see 4 options corresponding to different plant types.",
 				contentBox);
 		createContentImage("/tutorialImages/Plant_Selection.png", contentBox); // image of the 4 canopies
 		createContentText(
@@ -372,15 +384,20 @@ public class Tutorial extends Window {
 
 		VBox contentBox = new VBox();
 		createContentText(
-				"Your house is located at the bottom edge of the screen as if you are looking at your garden with a bird's eye view.",
+				"Your house is located at the bottom edge of the screen as if you "
+				+ "are looking at your garden with a bird's eye view.",
 				contentBox);
-		createContentText("Click and drag your plants from the Existing Plants and Selected Plants drop down menus.",
+		createContentText("Click and drag your plants from the Existing Plants "
+				+ "and Selected Plants drop down menus.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the drop down menu and clicking and
+		createContentImage("/tutorialImages/PlotDesign.png", contentBox); // image of the drop down menu and clicking and
 																		// dragging
 		createContentText(
-				"The Obstacles drop down menu has buttons that you can click on to make the object appear on your plot. Each of the obstacles in the drop down menu are selected from your answers in the Questionnnaire screen.",
+				"The Garden Objects drop down menu allows you to drag and drop your objects."
+				+ " Each of the objects "
+				+ "in the drop down menu are selected from your answers in the Questionnnaire screen.",
 				contentBox);
+		createContentImage("/tutorialImages/GardenObject.png", contentBox);
 		return contentBox;
 	}
 
@@ -393,17 +410,14 @@ public class Tutorial extends Window {
 
 		VBox contentBox = new VBox();
 		createContentText("Select the season you would like to view your garden in.", contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the season toggles
+		createContentImage("/tutorialImages/SeasonView.png", contentBox); // image of the season toggles
 		createContentText(
 				"Selecting the different years will give you a view of how your garden would look in 0, 1, or 2 years.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the year toggles
 		createContentText(
-				"The different views will also allow your to see different perspectives of your plot. The TOP VIEW will show you a view of your garden in a 'bird's eye view', and the WINDOW VIEW will show you a view of your garden looking out the window from your house.",
+				"The different views will also allow your to see different perspectives of your plot. It will give you a window view of your garden.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the view toggles
-		createContentText("Click SAVE to see the new image appear.", contentBox);
-		// add image of different view examples?
+		createContentImage("/tutorialImages/WinterView.png", contentBox); // image of the view toggles
 		return contentBox;
 	}
 
@@ -418,7 +432,7 @@ public class Tutorial extends Window {
 		createContentText(
 				"You can load your plot to access and edit it at a later time. You can also select how you would like to download the image of your plot from the selection chosen from the previous screen. ",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the how downloading works
+		createContentImage("/tutorialImages/DownLoad.png", contentBox); // image of the how downloading works
 		return contentBox;
 	}
 
@@ -459,9 +473,11 @@ public class Tutorial extends Window {
 	public VBox createObstacles() {
 		VBox contentBox = new VBox();
 		createContentText(
-				"Add the obstacles from the buttons in the drop down menu in the Plot Design screen. You can adjust the object by clicking the corresponding Resume Edit/Complete Edit Button. The yellow dots on the object will allow you to change the size and/or shape of the object to your desire.",
+				"After completing Plant Selection, you are brought to a screen where you can label "
+				+ "different parts of your garden such as road and forest in this screen."
+				+ " You can choose to add labels or ignore them and continue to your plot.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of adding an obstacle
+		createContentImage("/tutorialImages/BluePrint.png", contentBox); // image of adding an obstacle
 		return contentBox;
 	}
 
@@ -474,11 +490,27 @@ public class Tutorial extends Window {
 	public VBox createAbout() {
 		VBox contentBox = new VBox();
 		createContentText("This project was created from the following data bases.", contentBox);
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
+		
+		
+		createHyperLink("https://plants.sc.egov.usda.gov/java/characteristics", contentBox); // hyperlink?
+		createHyperLink("http://www.wrc.udel.edu/de-flora/", contentBox); // hyperlink?
+		createHyperLink("http://www.nativeplantcenter.net/plants/", contentBox); // hyperlink?
+		createContentText("Client given Microsoft Word table.", contentBox); // hyperlink?
 		return contentBox;
+	}
+	
+	/**
+	 * Creates a functional url that fits the style of other accordion slides.
+	 * @param url
+	 * @param contentBox
+	 */
+	public void createHyperLink(String url, VBox contentBox) {
+		Hyperlink link = new Hyperlink();
+		link.setText(url);
+		link.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), infoTextSize));
+		link.setMaxWidth(messageWrapWidth);
+		
+		contentBox.getChildren().add(link);
 	}
 
 }
