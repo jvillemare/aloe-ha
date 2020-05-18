@@ -259,7 +259,7 @@ public class Tutorial extends Window {
 		 * TODO: may have to add parameters for width and height for each image. Blocked
 		 * until program is finished an we can start taking screenshots of the screens
 		 */
-		if(img.equals("/buttonImages/fiveleaf.png")) {
+		if(img.equals("/buttonImages/fiveLeaf.png")) {
 			iv.setFitHeight(70);
 			iv.setFitWidth(150);
 		}else {
@@ -295,7 +295,7 @@ public class Tutorial extends Window {
 		createContentText(
 				"Click on the buttons at the bottom of the screen to either go back to the previous screen or move on to the next one.",
 				contentBox);
-		createContentImage("/buttonImages/fiveleaf.png", contentBox); // image of the Go Back and Next Buttons
+		createContentImage("/buttonImages/fiveLeaf.png", contentBox); // image of the Go Back and Next Buttons
 		return contentBox;
 	}
 
