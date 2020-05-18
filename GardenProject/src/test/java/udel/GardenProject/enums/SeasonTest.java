@@ -11,7 +11,7 @@ import udel.GardenProject.enums.Seasons;
 public class SeasonTest {
 
 
-	@Test(expected = Exception.class)
+	@Test
 	public void testSeason() throws Exception {
 		boolean[] year1={false,false,true,false,false,true,false,false,true,false,false,true};
 		boolean[] year2={true,false,false,true,false,false,true,false,false,true,false,false};
