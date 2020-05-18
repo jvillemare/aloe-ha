@@ -389,7 +389,7 @@ public class ExistingPlants extends Window {
 						imageView.setCache(true);
 						imageView.setCacheHint(CacheHint.SPEED);
 						tooltipPick.setGraphic(imageView);
-						//tooltipPick.setShowDelay(Duration.seconds(2));
+						tooltipPick.setShowDelay(Duration.seconds(2));
 					}
 				});
 
