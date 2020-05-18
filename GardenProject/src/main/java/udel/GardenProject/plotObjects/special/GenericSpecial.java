@@ -51,9 +51,6 @@ public class GenericSpecial extends PlotObject implements Serializable {
 	public double getRenderWidth() {
 		int min = 20;
 		double width = Math.min(this.getHeight(), min);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(getModel());
-		System.out.println(getModel().getSession());
 		return width/this.getModel().getSession().getWidthOfUserPlot() * 
 				this.getModel().getPlotDesignWidth();
 	}
