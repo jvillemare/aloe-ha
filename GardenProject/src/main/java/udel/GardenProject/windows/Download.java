@@ -194,7 +194,7 @@ public class Download extends Window {
 			File f1 = imageSaver.showSaveDialog(null);
 			if(f1 != null){
 				imageSaver.setInitialDirectory(f1.getParentFile());
-	            ImageIO.write(getSession().getScreenShot(), "png", f1);
+	            ImageIO.write(getModel().getScreenShot(), "png", f1);
 	        }
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -393,9 +393,9 @@ public class Download extends Window {
 	 */
 	public void refresh() {
 
-		writableImage = new WritableImage(getSession().getScreenShot().getWidth(),
-				getSession().getScreenShot().getHeight());
-		Image i = SwingFXUtils.toFXImage(getSession().getScreenShot(), writableImage);
+		writableImage = new WritableImage(getModel().getScreenShot().getWidth(),
+				getModel().getScreenShot().getHeight());
+		Image i = SwingFXUtils.toFXImage(getModel().getScreenShot(), writableImage);
 		imageHolder = new VBox();
 		imageHolder.setPrefSize(imageBoxWidth, imageBoxHeight);
 		imView = new ImageView(i);

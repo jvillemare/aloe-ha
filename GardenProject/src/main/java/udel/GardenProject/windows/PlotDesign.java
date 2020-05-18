@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
@@ -32,6 +33,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.PlotObjectsFactory;
 import udel.GardenProject.enums.Windows;
@@ -76,7 +79,17 @@ public class PlotDesign extends Window {
 	/**
 	 * Used to hold text, left and right panels.
 	 */
-	private VBox vbox, autoRateVBox;
+	private VBox vbox, autoRateVBox, autoRatingsSpecifically;
+	
+	/**
+	 * Helpful tool tips for the auto ratings.
+	 */
+	private Tooltip[] autoRatingTooltips = {
+		new Tooltip("Percentage of your plot plants that feeds animals"),
+		new Tooltip("How much of the year has a plant constantly in bloom"),
+		new Tooltip("How much of your garden matches your Questionnaire criteria"),
+		new Tooltip("Percentage of plants next to similarly tall plants")
+	};
 
 	/**
 	 * Title text for the window.
@@ -195,28 +208,26 @@ public class PlotDesign extends Window {
 		matchTxt = new Text("Matches Garden");
 		transitionTxt = new Text("Transition");
 
-		ArrayList<Text> autoRatings = new ArrayList<Text>();
-		autoRatings.add(animalsFedTxt);
-		autoRatings.add(contBloomTxt);
-		autoRatings.add(matchTxt);
-		autoRatings.add(transitionTxt);
-
 		autoRateVBox = new VBox();
 		autoRateVBox.setPrefWidth(autoRateBoxWidth);
 		autoRateVBox.setPrefHeight(autoRateBoxHeight);
 		autoRateVBox.setPadding(new Insets(inset5));
-
-		for (Text t : autoRatings) {
-			t.setStyle("-fx-font-size: 20px;");
-			Rectangle r = new Rectangle(autoRateBarWidth, autoRateBarHeight);
-			r.setStroke(Color.BLACK);
-			r.setFill(Color.WHITE);
-			autoRateVBox.getChildren().addAll(t, r);
-		}
+		
+		autoRatingsSpecifically = new VBox();
+		autoRateVBox.getChildren().add(autoRatingsSpecifically);
+		
+		for(Tooltip autoRateTip : autoRatingTooltips)
+			autoRateTip.setShowDelay(Duration.seconds(0));
+		
+		generateAutoRatings(); // evaluate garden, used in refrehs method, as well
 
 		Text goToPlantData = new Text("\nGet More Plants");
 		goToPlantData.setStyle("-fx-font-size: 20px;");
+		
 		Button plantDataButton = new Button("Plant Database");
+		Tooltip plantDataButtonTooltip = new Tooltip("Click here to add more selected plants");
+		plantDataButtonTooltip.setShowDelay(Duration.seconds(0));
+		plantDataButton.setTooltip(plantDataButtonTooltip);
 
 		plantDataButton
 				.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), allPlantsButtonFontSize));
@@ -287,6 +298,48 @@ public class PlotDesign extends Window {
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
+	}
+	
+	/**
+	 * Replaces the auto ratings in Plot Design with the current evaluated
+	 * values based on the position and placement of plants in the plot.
+	 */
+	private void generateAutoRatings() {
+		Text[] autoRatings = {
+			animalsFedTxt,
+			contBloomTxt,
+			matchTxt,
+			transitionTxt,
+		};
+			
+		double[] autoRatingsValues = {
+			evaluateAnimalsFed(),
+			evaluateContinousBloom(),
+			evaluateMatchesGarden(),
+			evaluateTransition()
+		};
+		
+		System.out.println("PlotDesign: evaluated plot with " + autoRatingsValues[0]);
+		System.out.println("PlotDesign: evaluated plot with " + autoRatingsValues[1]);
+		System.out.println("PlotDesign: evaluated plot with " + autoRatingsValues[2]);
+		System.out.println("PlotDesign: evaluated plot with " + autoRatingsValues[3]);
+
+		autoRatingsSpecifically.getChildren().clear();
+		
+		for (int i = 0; i < autoRatings.length; i++) {
+			autoRatings[i].setStyle("-fx-font-size: 20px;");
+			ProgressBar progressBar = new ProgressBar(autoRatingsValues[i]);
+			
+			// make progress bar take full width, and proper styling
+			progressBar.prefWidthProperty().bind(
+					autoRatingsSpecifically.widthProperty().subtract(75));
+			progressBar.setStyle(
+					"-bar-color: green;" +
+					"-fx-text-box-border: black;" + 
+					"-fx-control-inner-background: white;");
+			progressBar.setTooltip(autoRatingTooltips[i]);
+			autoRatingsSpecifically.getChildren().addAll(autoRatings[i], progressBar);
+		}
 	}
 
 	/**
@@ -547,7 +600,10 @@ public class PlotDesign extends Window {
 		thePlot = null;
 		p = null;
 
-		return (double) animalsFed / (double) plantCount;
+		if(plantCount == 0)
+			return 0.0;
+		else
+			return (double) animalsFed / (double) plantCount;
 	}
 
 	/**
@@ -558,7 +614,12 @@ public class PlotDesign extends Window {
 	 * @return True if a plant feeds an animal, False if not.
 	 */
 	protected boolean isAnimalFed(Plant p) {
-		return p.getDescription().contains("Berry/Nut/Seed Product: Yes");
+		if(p.getCanopy() != null) {
+			if(p.getCanopy().equals(Canopy.EMERGENT)) // assume tall plants have seeds
+				return true;
+		}
+		
+		return p.getDescription().toLowerCase().indexOf("berry/nut/seed product: yes") >= 0;
 	}
 
 	/**
@@ -629,7 +690,60 @@ public class PlotDesign extends Window {
 	 * @return Percentage expressed as a decimal from 0.0 (0%) to 1.0 (100%).
 	 */
 	protected double evaluateMatchesGarden() {
-		return 0.0;
+		ArrayList<PlotObject> thePlot = getModel().getSession().getPlot();
+
+		PlotPlant p;
+		double totalPercentageMatched = 0.0;
+		int plantCount = 0;
+
+		for (PlotObject pObject : thePlot) {
+			// Hacky solution that works. Check out explanation in
+			// evaluatedAnimalsFed()
+			try {
+				p = (PlotPlant) pObject;
+			} catch (ClassCastException e) {
+				continue;
+			}
+			
+			totalPercentageMatched = calculatePlantMatchPercentage(p.getPlant());
+			
+			plantCount++;
+		}
+
+		// garbage collector cleanup
+		thePlot = null;
+		p = null;
+
+		if(plantCount == 0)
+			return 0.0;
+		else
+			return totalPercentageMatched / (double)plantCount;
+	}
+	
+	/**
+	 * Helper method. Calculates what percentage of the plant's characteristics
+	 * match the user's specified characteristics from Session.
+	 * @param p	Plant object in question.
+	 * @return	Percentage of the plant that matches, from 0.0 to 1.0.
+	 */
+	protected double calculatePlantMatchPercentage(Plant p) {
+		double percentageMatched = 0.0;
+		
+		// check against moisture
+		if(p.getMoisture() != null && getSession().getMoistureOfPlot() != null)
+			if(p.getMoisture().equals(getSession().getMoistureOfPlot()))
+				percentageMatched += 0.3; // this is 1/3 of the characteristics
+					
+		// check against soil type
+		if(p.getSoilType() != null && getSession().getSoilTypeOfPlot() != null)
+			if(p.getSoilType().equals(getSession().getSoilTypeOfPlot()))
+				percentageMatched += 0.3;
+					
+		// check against sun light
+		if(p.getLight() < getSession().getSunlightOfPlot().getMinimumLight())
+			percentageMatched += 0.3;
+					
+		return percentageMatched;
 	}
 
 	/**
@@ -721,10 +835,10 @@ public class PlotDesign extends Window {
 		thePlot = null;
 		p = null;
 
-		if (averageLight != 0.0)
-			return averageLight / (double) plantCount;
+		if (plantCount == 0)
+			return 0.0;
 		else
-			return 0.0; // no plants to check
+			return averageLight / (double) plantCount; // no plants to check
 	}
 
 	/**
@@ -810,13 +924,12 @@ public class PlotDesign extends Window {
 					Tooltip.install(plotObjectRepresentation, new Tooltip(po.getName()));
 				}
 			});
-		  group.getChildren().add(plotObjectRepresentation);
-		}
-		else {
+			group.getChildren().add(plotObjectRepresentation);
+		} else {
 			group.getChildren().addAll(((Group)plotObjectRepresentation).getChildren());
 		}
 		
-		 
+		generateAutoRatings();
 	}
 
 	/**
@@ -956,20 +1069,20 @@ public class PlotDesign extends Window {
 		group.getChildren().clear();
 		createCenterBox();
 
-		if(getModel().getImg()!=null) {
-			ImageView img=getModel().getImg();
+		if(getModel().getImg() != null) {
+			ImageView img = getModel().getImg();
 			img.setOpacity(0.4);
 			group.getChildren().add(img);
 		}
+		
 		for (PlotObject po : getSession().getPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY());
 		}
 		/*for (PlotObject po : getSession().getBluePrintPlot()) {
 			addPlotObjectToInterface(po, po.getPlotX(), po.getPlotY(),true);
 		}*/
-	
 
-		// TODO: Remove stuff from auto rate box and add back in
+		generateAutoRatings();
 	}
 
 }

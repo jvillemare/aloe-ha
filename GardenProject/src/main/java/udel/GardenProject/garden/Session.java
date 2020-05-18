@@ -153,7 +153,7 @@ public class Session implements Serializable {
 	/**
 	 * Type of view selected by user from SeasonView
 	 */
-	private GardenView viewInput = GardenView.TOPVIEW;
+	private GardenView viewInput = GardenView.WINDOWVIEW;
 
 	/**
 	 * The user's selection to how they want to save on the download screen
@@ -494,28 +494,6 @@ public class Session implements Serializable {
 	 */
 	public HashSet<Plant> getSelectedPlants() {
 		return selectedPlants;
-	}
-	
-	/**
-	 * Screen shot from SeasonView
-	 */
-	private BufferedImage screenShot = null;
-	
-	/**
-	 * Getter for the screenshot in SeasonView
-	 * @return BufferedImage
-	 */
-	public BufferedImage getScreenShot() {
-		return screenShot;
-	}
-
-	/**
-	 * Setter for the screenshot in SeasonView.
-	 * @param capture A screen capture of the user's screen.
-	 */
-	public void setScreenShot(BufferedImage capture) {
-		this.unsaved = true;
-		this.screenShot = capture;
 	}
 	
 }
