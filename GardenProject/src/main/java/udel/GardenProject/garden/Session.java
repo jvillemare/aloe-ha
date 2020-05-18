@@ -153,7 +153,7 @@ public class Session implements Serializable {
 	/**
 	 * Type of view selected by user from SeasonView
 	 */
-	private GardenView viewInput = GardenView.TOPVIEW;
+	private GardenView viewInput = GardenView.WINDOWVIEW;
 
 	/**
 	 * The user's selection to how they want to save on the download screen
