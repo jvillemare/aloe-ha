@@ -485,7 +485,6 @@ public class SeasonView extends Window {
 			toggle.setToggleGroup(viewGroup);
 			viewHBox.getChildren().add(toggle);
 			toggle.setOnAction((ActionEvent e) -> {
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				chosenView = v;
 				switch(v) {
 					case TOPVIEW:
@@ -509,7 +508,6 @@ public class SeasonView extends Window {
 	 * @param b Each toggle button
 	 */
 	public void createToggleEvent(ToggleButton b) {
-
 		DropShadow shadow = new DropShadow();
 		String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
 				+ "-fx-outer-border: #63A331;";
