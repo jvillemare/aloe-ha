@@ -9,11 +9,6 @@ package udel.GardenProject.enums;
 public enum GardenView {
 	
 	/**
-	 * View a garden from the top, down.
-	 */
-	TOPVIEW("Top View"),
-	
-	/**
 	 * View a garden from out a window, horizontally out.
 	 */
 	WINDOWVIEW("Window View");
