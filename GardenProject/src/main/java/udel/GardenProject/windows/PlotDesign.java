@@ -382,7 +382,7 @@ public class PlotDesign extends Window {
 		accArr.add(existing);
 
 		FlowPane selectedFlow = createPlantFlow(getSession().getSelectedPlants(), 
-				"To add more plants, click on \nthe Plant Database button on the right\n or go back to the Plant Selection Screen.");
+				"To add more plants, click on \nthe Plant Database button on the right\nor go back to the Plant Selection Screen.");
 		TitledPane selected = new TitledPane("Selected Plants", selectedFlow);
 		accArr.add(selected);
 
@@ -461,13 +461,10 @@ public class PlotDesign extends Window {
 
 		if (plants.isEmpty() == false) {
 			Thread.currentThread().getStackTrace();
-			System.out.println("starting with plants.size=" + plants.size());
 
 			Iterator<Plant> plantIter = plants.iterator();
-			System.out.println("after creating iterator");
 			while (plantIter.hasNext()) {
 				Plant p = plantIter.next();
-				System.out.println("PlotDesign.createPlantFlow: adding " + p.getLatinName());
 				Node plantRepresentation = p.renderInAccordion(getSession().getWidthOfUserPlot(),
 						getSession().getLengthOfUserPlot());
 

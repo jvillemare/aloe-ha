@@ -488,9 +488,6 @@ public class SeasonView extends Window {
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				chosenView = v;
 				switch(v) {
-					case TOPVIEW:
-						imageVBox.getChildren().set(0, square);
-						break;
 					case WINDOWVIEW:
 						showWindowView();
 						break;
