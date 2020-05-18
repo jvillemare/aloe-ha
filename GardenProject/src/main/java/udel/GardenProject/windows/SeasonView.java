@@ -487,9 +487,6 @@ public class SeasonView extends Window {
 			toggle.setOnAction((ActionEvent e) -> {
 				chosenView = v;
 				switch(v) {
-					case TOPVIEW:
-						imageVBox.getChildren().set(0, square);
-						break;
 					case WINDOWVIEW:
 						showWindowView();
 						break;

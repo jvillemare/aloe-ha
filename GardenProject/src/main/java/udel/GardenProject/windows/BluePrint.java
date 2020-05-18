@@ -86,13 +86,16 @@ public class BluePrint extends Window {
 	 * Used to hold text, for top panel.
 	 */
 	private VBox vbox;
-	private int backgroundWidthAndHeight = 100;
+	private int backgroundWidth = 50;
+	private int backgroundHeight = 140;
 	private int rectWidth = View.getCanvasWidth() / 5 * 3;
 	private int rectHeight = View.getCanvasHeight() / 7 * 6;
-	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9;
+	private int flowPaneWidthAdjustment = View.getCanvasWidth() / 9 + 20;
 	private int gapBetweenButtons = 100;
 	private int inset10 = 10;
 	private int inset5 = 5;
+	private int inset15 = 15;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -103,7 +106,7 @@ public class BluePrint extends Window {
 		// TODO Auto-generated constructor stub
 		text=new Text("Drag and Drop the given garden objects from the left pane to build "
 				+ "a blue print for your garden."
-				+ " Click on the next to start design your gradan.");
+				+ " Click on the next to start design your gardan.");
 		text.setWrappingWidth(View.getCanvasWidth());
 		text.setFont(
 				Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), View.getTextSizeForButtonsAndText()));
@@ -117,11 +120,9 @@ public class BluePrint extends Window {
 		vbox.getChildren().addAll(text);
 		createCenterBox();
 		setPlotObjects();
-		//vbox.setPadding(new Insets(0, 0, 0, inset5));
-		//vbox.getChildren().addAll(text);
 		createButtons();
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(inset5));
+		tilePane.setPadding(new Insets(inset15));
 		tilePane.setHgap(gapBetweenButtons);
 		tilePane.getChildren().addAll(backButton, mainMenu, nextButton);	
 		borderPane.setTop(vbox);
@@ -129,13 +130,18 @@ public class BluePrint extends Window {
 		borderPane.setBottom(tilePane);
 		borderPane.setCenter(group);
 		Image image = new Image(getClass().getResourceAsStream(View.getBackgroundScreenPath()));
-		View.setBackgroundScreen(image, backgroundWidthAndHeight, backgroundWidthAndHeight);
+		View.setBackgroundScreen(image, backgroundWidth, backgroundHeight);
+		BorderPane.setMargin(scrollpane,
+				new Insets(0, 0, 0, 60));
 		borderPane.setBackground(View.getBackgroundScreen());
 		this.root = new Group();
 		root.getChildren().add(borderPane);
 		this.scene = new Scene(this.root, View.getCanvasWidth(), View.getCanvasHeight());
 	}
 
+	/**
+	 * Creates the flow pane of objects on the left
+	 */
 	public void setPlotObjects() {
 		objects = new ArrayList<PlotObjects>();
 		for(PlotObjects o:PlotObjects.values()) {
@@ -146,6 +152,11 @@ public class BluePrint extends Window {
 		createFlow(objects);
 		
 	}
+	
+	/**
+	 * Objects in the box on the left to be placed in the plot
+	 * @param obj Plot objects
+	 */
 	public void createFlow(ArrayList<PlotObjects> obj) {
 		bluePrintObjects = new FlowPane();
 		bluePrintObjects.setMaxWidth(flowPaneWidthAdjustment);
@@ -153,6 +164,7 @@ public class BluePrint extends Window {
 		bluePrintObjects.setHgap(inset10);
 		bluePrintObjects.setHgap(inset10);
 		bluePrintObjects.setAlignment(Pos.BASELINE_CENTER);
+		scrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scrollpane.setContent(bluePrintObjects);
 		PlotObjectsFactory pof = new PlotObjectsFactory();
 		for(PlotObjects p:obj) {
@@ -357,6 +369,9 @@ public class BluePrint extends Window {
 		return event -> dragTemporaryImage((MouseEvent) event);
 	}
 	
+	/**
+	 * Takes picture of plot
+	 */
 	public void takeSnapShot() {
 		for (PlotObject po : getSession().getBluePrintPlot()) {
 			if(po.getUseDefaultDragHandler()) {
