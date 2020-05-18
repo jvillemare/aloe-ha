@@ -95,6 +95,9 @@ public class BluePrint extends Window {
 	private int inset10 = 10;
 	private int inset5 = 5;
 	private int inset15 = 15;
+	private int houseTextX = 360;
+	private int houseTextY = 595;
+	
 	
 	/**
 	 * Constructor.
@@ -186,7 +189,11 @@ public class BluePrint extends Window {
 		box = new Rectangle(rectWidth, rectHeight);
 		box.setStroke(Color.BLACK);
 		box.setFill(Color.WHITE);
-		group.getChildren().add(box);
+		
+		Text houseText = new Text("Your House is Here");
+		houseText.setLayoutX(houseTextX);
+		houseText.setLayoutY(houseTextY);
+		group.getChildren().addAll(box, houseText);
 		
 	}
 	
