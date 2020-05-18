@@ -1,5 +1,6 @@
 package udel.GardenProject.garden;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -162,6 +163,11 @@ public class Model {
 	private ImageView img;
 	
 	/**
+	 * Screen shot from SeasonView.
+	 */
+	private BufferedImage screenShot = null;
+	
+	/**
 	 * Returns the set Default Image used.
 	 * @return defaultImage
 	 */
@@ -204,7 +210,7 @@ public class Model {
 	}
 
 	/**
-	 * Creates the list of all Native plants
+	 * Creates the list of all Native plants.
 	 */
 	public void createNativeList() {
 		for(Plant p : plants) {
@@ -262,6 +268,22 @@ public class Model {
 		currentWindow = lastWindow;
 		lastWindow = temp;
 		c.update(currentWindow);
+	}
+	
+	/**
+	 * Getter for the screenshot in SeasonView
+	 * @return BufferedImage
+	 */
+	public BufferedImage getScreenShot() {
+		return screenShot;
+	}
+
+	/**
+	 * Setter for the screenshot in SeasonView.
+	 * @param capture A screen capture of the user's screen.
+	 */
+	public void setScreenShot(BufferedImage capture) {
+		this.screenShot = capture;
 	}
 	
 	/**

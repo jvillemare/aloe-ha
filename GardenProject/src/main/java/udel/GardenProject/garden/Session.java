@@ -496,26 +496,4 @@ public class Session implements Serializable {
 		return selectedPlants;
 	}
 	
-	/**
-	 * Screen shot from SeasonView
-	 */
-	private BufferedImage screenShot = null;
-	
-	/**
-	 * Getter for the screenshot in SeasonView
-	 * @return BufferedImage
-	 */
-	public BufferedImage getScreenShot() {
-		return screenShot;
-	}
-
-	/**
-	 * Setter for the screenshot in SeasonView.
-	 * @param capture A screen capture of the user's screen.
-	 */
-	public void setScreenShot(BufferedImage capture) {
-		this.unsaved = true;
-		this.screenShot = capture;
-	}
-	
 }

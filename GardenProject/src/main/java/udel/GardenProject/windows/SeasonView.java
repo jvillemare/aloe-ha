@@ -360,7 +360,7 @@ public class SeasonView extends Window {
 			        java.awt.Rectangle screenRect = new java.awt.Rectangle(x, y, width, height);
 			        BufferedImage capture = new Robot().createScreenCapture(screenRect);
 			        capture = capture.getSubimage(subImageX, subImageY, subImageWidth, subImageHeight);
-			        getSession().setScreenShot(capture);
+			        getModel().setScreenShot(capture);
 			    } catch (AWTException ex) {
 			        ex.printStackTrace();
 			    }
@@ -487,15 +487,16 @@ public class SeasonView extends Window {
 			toggle.setOnAction((ActionEvent e) -> {
 				chosenView = v;
 				switch(v) {
-				case WINDOWVIEW:
-					imageVBox.getChildren().set(0, canvas);
-					break;
+					case WINDOWVIEW:
+						showWindowView();
+						break;
 				}
 			});
+			if(v.equals(getSession().getViewInput()))
+				toggle.setSelected(true);
 		}
 
 		viewGroup.getSelectedToggle();
-
 	}
 
 	/**
@@ -504,7 +505,6 @@ public class SeasonView extends Window {
 	 * @param b Each toggle button
 	 */
 	public void createToggleEvent(ToggleButton b) {
-
 		DropShadow shadow = new DropShadow();
 		String notHover = "-fx-base: #76C327;" + View.getBlackTextFill() + "-fx-focus-color: #3D6447;"
 				+ "-fx-outer-border: #63A331;";
@@ -535,15 +535,26 @@ public class SeasonView extends Window {
 	 * Refreshes the screen to clear any of the toggles chosen.
 	 */
 	public void refresh() {
+		chosenView = getSession().getViewInput();
+		showWindowView();
 		/**
 		 * TODO: Clear screen (Plot image) and add back in from session
 		 */
 		ToggleGroup[] tg = { seasonGroup, yearGroup, viewGroup };
 		for (ToggleGroup group : tg) {
-			if (group.getSelectedToggle() != null) {
+			if (group.getSelectedToggle() != null && 
+					group.getSelectedToggle().isSelected() == false) {
 				group.getSelectedToggle().setSelected(false);
 			}
 		}
+		drawCanvas();
+	}
+	
+	/**
+	 * Helper method, triggers showing of out the window view.
+	 */
+	private void showWindowView() {
+		imageVBox.getChildren().set(0, canvas);
 		drawCanvas();
 	}
 
@@ -561,7 +572,6 @@ public class SeasonView extends Window {
 			po.windowRender(gc, gb, minScale, MAXDEPTH, MAXWIDTH, viewDepth, viewWidth, curYearScale, this.effect);
 		}
 		gc.setEffect(null);
-
 	}
 	
 	/**
