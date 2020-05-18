@@ -10,6 +10,9 @@ import java.util.Comparator;
  */
 public class CanopyComparator implements Comparator<Plant> {
 
+	/**
+	 * By default true.
+	 */
 	private boolean descending;
 
 	/**

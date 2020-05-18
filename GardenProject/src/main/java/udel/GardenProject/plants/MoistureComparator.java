@@ -10,6 +10,9 @@ import java.util.Comparator;
  */
 public class MoistureComparator implements Comparator<Plant> {
 	
+	/**
+	 * By default true.
+	 */
 	private boolean descending;
 
 	/**

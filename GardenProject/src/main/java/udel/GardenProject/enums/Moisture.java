@@ -20,16 +20,24 @@ public enum Moisture {
 	MOISTDAMP("Moist Damp"),
 	DAMP("Damp");
 
+	/**
+	 * Friendly name of the enum for the UI.
+	 */
 	private String name;
 	
+	/**
+	 * Constructor.
+	 * @param name	Friendly name of the enum for the UI.
+	 */
 	private Moisture(String name) {
 		this.name = name;
 	}
 	
 	/**
-	 * Getter to Establish what String belongs to what moisture level.
-	 * @param s
-	 * @return Moisture enum level
+	 * Getter to Establish what String belongs to what moisture level. Similar 
+	 * to <code>valueOf()</code>.
+	 * @param s String that roughly resembles one of the enums.
+	 * @return Moisture enum level, null if there's no match.
 	 */
 	public Moisture getMoisture(String s) {
 		if (s.equalsIgnoreCase("Wet") || s.equalsIgnoreCase("Damp")){

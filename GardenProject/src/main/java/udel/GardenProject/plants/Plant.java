@@ -95,6 +95,9 @@ public class Plant implements Serializable {
 	 */
 	private String[] images;
 	
+	/**
+	 * The width and height of an image in an accordion.
+	 */
 	private double imageInAccordionWidthAndHeight = 140;
 
 	/**

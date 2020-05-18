@@ -21,8 +21,10 @@ public class PlotObjectsFactory {
 	/**
 	 * How should the specified PlotObject be rendered in an accordion or any
 	 * other UI container.
-	 * @param po	PlotObject to render.
-	 * @return Rendered PlotObject.
+	 * @param po	PlotObject to render. Assumes the given enum has a valid
+	 * 				{@link udel.GardenProject.enums.PlotObjects.getImageFilePath}
+	 * 				method.
+	 * @return Rendered PlotObject. Never returns null.
 	 */
 	public Node renderInAccordion(PlotObjects po) {
 		Image objectImage;

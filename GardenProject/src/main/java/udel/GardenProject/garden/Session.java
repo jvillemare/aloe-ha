@@ -78,9 +78,13 @@ public class Session implements Serializable {
 	private String plotName = "My Garden Plot";
 
 	/**
-	 * Width and Length of the users plot in feet
+	 * Width of the user's plot in feet.
 	 */
 	private int widthOfUserPlot = 25;
+	
+	/**
+	 * Length of the user's plot in feet.
+	 */
 	private int lengthOfUserPlot = 25;
 
 	/**
@@ -133,7 +137,6 @@ public class Session implements Serializable {
 	 * Season selected by user from SeasonView
 	 */
 	private Seasons seasonInput = Seasons.SPRING;
-	// TODO: Does spring make sense as a default?
 
 	/**
 	 * Year selected by user from SeasonView
@@ -196,23 +199,50 @@ public class Session implements Serializable {
 		return this.id;
 	}
 
+	/**
+	 * Getter.
+	 * @return	PlotObjects the user selected to be in their plot.
+	 */
 	public ArrayList<PlotObjects> getSelectedPlotObjects() {
 		return this.selectedPlotObjects;
 	}
 
+	/**
+	 * Getter. If any setter has been called by any other class, this boolean
+	 * automatically becomes true. It does not become true if any getter 
+	 * (including for any of the complex objects like ArrayLists or otherwise
+	 * are called.) Helpful for knowing if to indicate to the user that they
+	 * should save their unsaved work.
+	 * @return	True if this session has unsaved work, false if not.
+	 */
 	public boolean isUnsaved() {
 		return unsaved;
 	}
 
-	public void setUnsaved(boolean unsaved) {
+	/**
+	 * If this Session was recently serialized (saved), use this method to 
+	 * update its saved status.
+	 * @param unsaved	True if the session has been saved, false if not.
+	 */
+	protected void setUnsaved(boolean unsaved) {
 		this.unsaved = unsaved;
 	}
 
+	/**
+	 * Getter.
+	 * @return	Full file path to where this session was last saved to.
+	 */
 	public String getLastSavedFilepath() {
 		return lastSavedFilepath;
 	}
 
+	/**
+	 * Setter.
+	 * @param lastSavedFilepath	Full file path to where this session was last
+	 * 							saved to.
+	 */
 	public void setLastSavedFilepath(String lastSavedFilepath) {
+		this.unsaved = true;
 		this.lastSavedFilepath = lastSavedFilepath;
 	}
 
@@ -229,17 +259,25 @@ public class Session implements Serializable {
 	 * @param plotName The name entered in the TextField in Q1 of Questionnaire 
 	 */
 	public void setPlotName(String plotName) {
-		unsaved = true;
+		this.unsaved = true;
 		this.plotName = plotName;
 	}
 
+	/**
+	 * Getter.
+	 * @return	The user's plot in the PlotDesign window.
+	 */
 	public ArrayList<PlotObject> getPlot() {
-		unsaved = true;
+		this.unsaved = true;
 		return plot;
 	}
 
+	/**
+	 * Setter.
+	 * @param plot	The user's plot in the PlotDesign window.
+	 */
 	public void setPlot(ArrayList<PlotObject> plot) {
-		unsaved = true;
+		this.unsaved = true;
 		this.plot = plot;
 	}
 
@@ -248,6 +286,7 @@ public class Session implements Serializable {
 	 * @param w
 	 */
 	public void setWidthOfUserPlot(int w) {
+		this.unsaved = true;
 		this.widthOfUserPlot = w;
 	}
 
@@ -264,6 +303,7 @@ public class Session implements Serializable {
 	 * @param w
 	 */
 	public void setLengthOfUserPlot(int w) {
+		this.unsaved = true;
 		this.lengthOfUserPlot = w;
 	}
 
@@ -288,6 +328,7 @@ public class Session implements Serializable {
 	 * @param m Text chosen from the drop down in Questionnaire 
 	 */
 	public void setMoistureOfPlot(Moisture m) {
+		this.unsaved = true;
 		this.moistureOfPlot = m;
 	}
 
@@ -304,6 +345,7 @@ public class Session implements Serializable {
 	 * @param st The String input from Questionnaire 
 	 */
 	public void setSoilTypeOfPlot(SoilTypes st) {
+		this.unsaved = true;
 		this.soilTypeOfPlot = st;
 	}
 
@@ -320,6 +362,7 @@ public class Session implements Serializable {
 	 * @param sun String input from the Questionnaire 
 	 */
 	public void setSunlightOfPlot(double sun) {
+		this.unsaved = true;
 		this.sunlightOfPlot = sun;
 	}
 
@@ -328,6 +371,7 @@ public class Session implements Serializable {
 	 * @param season Arraylist of selected seasons from the checkboxes in Questionnaire 
 	 */
 	public void setSeasonsUserSelected(ArrayList<Seasons> season) {
+		this.unsaved = true;
 		this.seasonsUserSelected = season;
 	}
 
@@ -344,6 +388,7 @@ public class Session implements Serializable {
 	 * @param color An ArrayList of Colors (colors from the Colors Enum) 
 	 */
 	public void setColorsUserWants(HashSet<Colors> color) {
+		this.unsaved = true;
 		this.colorsUserSelected = color;
 	}
 
@@ -368,11 +413,12 @@ public class Session implements Serializable {
 	 * @param chooseSeason The season chosen from the Toggle Button 
 	 */
 	public void setSeasonInput(Seasons chooseSeason) {
+		this.unsaved = true;
 		this.seasonInput = chooseSeason;
 	}
 
 	/**
-	 * 
+	 * Getter.
 	 * @return The amount of time gone from the start of the user's garden 
 	 */
 	public Year getYearInput() {
@@ -384,6 +430,7 @@ public class Session implements Serializable {
 	 * @param y Year from the toggles in SeasonView
 	 */
 	public void setYearInput(Year y) {
+		this.unsaved = true;
 		this.yearInput = y;
 	}
 
@@ -400,14 +447,24 @@ public class Session implements Serializable {
 	 * @param v View type from the toggles in SeasonView 
 	 */
 	public void setViewInput(GardenView v) {
+		this.unsaved = true;
 		this.viewInput = v;
 	}
 
+	/**
+	 * Getter.
+	 * @return	What type of saving method does the user want to use.
+	 */
 	public String getSaveOption() {
 		return saveOption;
 	}
 
+	/**
+	 * Setter.
+	 * @param so	What type of saving method does the user want to use.
+	 */
 	public void setSaveOption(String so) {
+		this.unsaved = true;
 		this.saveOption = so;
 	}
 
@@ -442,10 +499,11 @@ public class Session implements Serializable {
 	}
 
 	/**
-	 * Setter for the screenshot in SeasonView
-	 * @param capture A screen capture of the user's screen
+	 * Setter for the screenshot in SeasonView.
+	 * @param capture A screen capture of the user's screen.
 	 */
 	public void setScreenShot(BufferedImage capture) {
+		this.unsaved = true;
 		this.screenShot = capture;
 	}
 	

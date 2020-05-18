@@ -14,13 +14,25 @@ public enum PlantDataSource {
 	SUNNYEDGE("Sunny Edge Plants in Arden, Newark"),
 	NRCS("USDA's Natural Resources Conservation Service");
 	
+	/**
+	 * Friendly name of the enum data source for the UI.
+	 */
 	private String source;
 	
+	/**
+	 * Constructor.
+	 * @param source	Friendly name of the enum data source for the UI.
+	 */
 	private PlantDataSource(String source) {
 		this.source = source;
 	}
 	
+	/**
+	 * Getter.
+	 * @return	Friendly name of the enum for the UI.
+	 */
 	public String getSource() {
 		return this.source;
 	}
+	
 }

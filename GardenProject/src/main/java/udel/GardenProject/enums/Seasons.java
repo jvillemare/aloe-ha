@@ -17,12 +17,23 @@ public enum Seasons {
 	FALL("Fall"), 
 	YEARROUND("Year Round");
 	
-	
+	/**
+	 * Friendly name of the enum for the UI.
+	 */
 	private String season = null;
 	
+	/**
+	 * Constructor.
+	 * @param s	Friendly name of the enum for the UI.
+	 */
 	private Seasons(String s){
 		season = s;
 	}
+	
+	/**
+	 * Getter.
+	 * @return	Friendly name of the enum for the UI.
+	 */
 	public String getSeason() {
 		return season;
 	}
