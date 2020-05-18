@@ -288,8 +288,8 @@ public class ExistingPlants extends Window {
 				container.getChildren().remove(1);
 			}
 			container.add(populateDropDownMenu(newValue), 0, 1);
-
 		});
+		text.setPromptText("Search by latin or common name...");
 
 		containerScroll = new ScrollPane();
 		containerScroll.setPrefSize(containerScrollPrefWidth, containerScrollPrefHeight);

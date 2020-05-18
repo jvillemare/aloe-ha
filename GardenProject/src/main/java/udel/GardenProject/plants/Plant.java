@@ -30,6 +30,8 @@ import udel.GardenProject.plotObjects.PlotPlant;
  * @author Team 0
  */
 public class Plant implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Common names of a plant. Can be null, or empty.
@@ -433,6 +435,10 @@ public class Plant implements Serializable {
 		else {
 			return -1;
 		}
+	}
+	
+	public int hashCode() {
+		return this.latinName.hashCode();
 	}
 
 }

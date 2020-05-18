@@ -216,12 +216,4 @@ public class Welcome extends Window {
 		}
 	}
 
-	/**
-	 * Refreshes the screen each time the user opens this up. Screen does not
-	 * refresh on initial startup
-	 */
-	public void refresh() {
-		
-	}
-
 }

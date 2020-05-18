@@ -197,6 +197,14 @@ public abstract class PlotObject implements Serializable {
 	public final Model getModel() {
 		return this.model;
 	}
+	
+	/**
+	 * Setter. Critical for a session that was reloaded from a save file.
+	 * @param model	Updates the model reference.
+	 */
+	public final void setModel(Model model) {
+		this.model = model;
+	}
     
 	/**
 	 * Setter.
