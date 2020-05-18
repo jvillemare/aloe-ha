@@ -27,6 +27,8 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	private static final long serialVersionUID = 1L;
 	private AdjustablePolygon p;
 	
+	private static String name = "";
+	
 	/**
 	 * Constructor. Every GenericPolygon is a PlotObject (x, y, height), but
 	 * must also specify its changing bounds which is reprsented on the plot as
@@ -40,17 +42,34 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 	 * @param imagePath	Plot object's path to image representation
 	 */
 	public GenericPolygon(Model model, double x, double y, double height, 
-			AdjustablePolygon p, String windowPath, String plotPath) {
-		super(model, x, y, height, 5.0, windowPath, plotPath);
+			AdjustablePolygon p, String windowPath, String plotPath, String name) {
+		super(model, x, y, height, 5.0, windowPath, plotPath, name);
 		this.p = p;
+		this.setUseDefaultDragHandler(true);
 	}
 	
 	@Override
 	public Node render() {
 		Group n=new Group();
+		if(this.p.getAnchors()==null) {
+			this.p.regen();
+		}
+
 		n.getChildren().addAll(this.p.getAnchors());
 		n.getChildren().add(this.p.getPolygon());
 		return n;
+	}
+	public void setX(double x) {
+		this.p.setX(x);
+	}
+	public void setY(double y) {
+		this.p.setY(y);
+	}
+	/**
+	 * Trigger the hide and show of the anchor.
+	 */
+	public void setVisible(boolean vis) {
+		this.p.setVisible(vis);
 	}
 	
 	/**
@@ -77,6 +96,7 @@ public abstract class GenericPolygon extends PlotObject implements Serializable 
 		if (this.getPlotY() / maxDepth > minScale) {
 			minScale = this.getPlotY() / maxDepth;
 		}
+		gc.setEffect(null);
 		Image i = new Image(this.getWindowImage());
 		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,

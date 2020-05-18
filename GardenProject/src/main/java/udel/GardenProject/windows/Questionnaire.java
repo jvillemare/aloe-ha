@@ -37,6 +37,7 @@ import udel.GardenProject.enums.Moisture;
 import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.enums.Seasons;
 import udel.GardenProject.enums.SoilTypes;
+import udel.GardenProject.enums.Sunlight;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -167,14 +168,7 @@ public class Questionnaire extends Window {
 	private int borderTopAndBottonMargin = 40;
 	private int backgroundWidthAndHeight = 100;
 	private int textWrapWidth = View.getCanvasWidth() / 2;
-
-	/**
-	 * Adjustments for the Alert class: for the pop up screen
-	 */
-	private static int inset10 = 20;
-	private static int messageFontSize = 15;
-	private static int alertScreenWidth = 400;
-	private static int alertScreenHeight = 150;
+	private static int inset20 = 20;
 
 	public Questionnaire(Model m) {
 		super(m, "Questions About Your Garden...", Windows.Questionnaire);
@@ -185,22 +179,25 @@ public class Questionnaire extends Window {
 		tilePane = new TilePane();
 
 		text = new Text(
-				"Welcome to the Aloe-ha questionnaire! Please fill out the questions below.\n");
+				"Welcome to the Aloe-ha questionnaire! Please fill out the questions " + 
+				"below for better suggestions on which plants would be best suited for your " +
+				"garden and for your preferences. You can always come back to this page if " +
+				"you need to make any changes. Click 'Next' to see the your plant suggestions!");
 		text.setFont(getModel().getHackBold20());
 		topBox.getChildren().add(text);
 		topBox.setStyle(View.getPinkBackgroundStyle());
-		topBox.setPadding(new Insets(inset10));
+		topBox.setPadding(new Insets(inset20));
 
 		vbox.setStyle("-fx-background-color: #F6DCDA;");
 		vbox.getChildren().add(topBox);
-		vbox.setPadding(new Insets(inset10));
+		vbox.setPadding(new Insets(inset20));
 		//vbox.setMinWidth(100);
 
 		populateQuestionnaire();
 		createButtons();
 
 		tilePane.setAlignment(Pos.CENTER);
-		tilePane.setPadding(new Insets(0, inset5, inset10, inset5));
+		tilePane.setPadding(new Insets(0, inset5, inset20, inset5));
 		tilePane.setHgap(buttonGap);
 		tilePane.getChildren().addAll(backToExistingPlants, mainMenu, toPlotDesign);
 
@@ -272,7 +269,7 @@ public class Questionnaire extends Window {
 		textField.setPromptText("My Garden");
 		hbname = new HBox();
 		hbname.getChildren().addAll(gardenLabel, textField);
-		hbname.setSpacing(inset10);
+		hbname.setSpacing(inset20);
 		vbox.getChildren().addAll(hbname);
 	}
 
@@ -299,7 +296,7 @@ public class Questionnaire extends Window {
 		setHBoxAttributes.add(hbLength);
 
 		for (HBox hb : setHBoxAttributes) {
-			hb.setSpacing(inset10);
+			hb.setSpacing(inset20);
 		}
 		vbox.getChildren().addAll(hbWidth, hbLength);
 	}
@@ -326,7 +323,7 @@ public class Questionnaire extends Window {
 		q2ListView = new ListView<>();
 		q2ListView.setItems(q2items); // add the items in the observable array to the listView
 		q2ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems));
+		q2ListView.prefHeightProperty().bind(Bindings.size(q2items).multiply(numberOfItems * 2 - 6));
 		vbox.getChildren().addAll(q2ListView);
 
 	}
@@ -365,12 +362,10 @@ public class Questionnaire extends Window {
 		createText(
 				"6) Does your entire plot receive the same amount of sunlight? If yes, to what degree of lighing does your garden get?");
 		q6ChoiceBox = new ChoiceBox<>();
-		for (double s = 0.0; s <= 1.0; s += 0.2) {
-			double rounded1 = Math.round(s * 10) / 10.0;
-			q6ChoiceBox.getItems().add(Double.toString(rounded1));
+		for (Sunlight s : Sunlight.values()) {
+			q6ChoiceBox.getItems().add(s.getSunlight());
 		}
-		q6ChoiceBox.getItems().add("My plot receives different levels of sunlight");
-		q6ChoiceBox.setValue("0.0");
+		q6ChoiceBox.setValue(Sunlight.FULLSUN.getSunlight());
 		vbox.getChildren().addAll(q6ChoiceBox);
 	}
 
@@ -405,7 +400,7 @@ public class Questionnaire extends Window {
 	 * garden
 	 */
 	public void createQ8() {
-
+		int numberOfItems = 0;
 		createText("8) What color blooms would you like to see in your garden? (Please select all that apply)");
 
 		List<Colors> colorsWanted = new ArrayList<Colors>();
@@ -417,10 +412,12 @@ public class Questionnaire extends Window {
 			CheckBox c = new CheckBox(colorEnum.getFriendlyName());
 			q8items.add(c); // added to this list to view
 			colorWant.add(c); // added to this arrayList for future checking purposes when user clicks next
+			numberOfItems++;
 		}
 		q8ListView = new ListView<>();
 		q8ListView.setItems(q8items); // add the items in the observable array to the listView
 		q8ListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		q8ListView.prefHeightProperty().bind(Bindings.size(q7items).multiply(numberOfItems * 5 - 5));
 		vbox.getChildren().addAll(q8ListView);
 
 	}
@@ -518,9 +515,9 @@ public class Questionnaire extends Window {
 					getSession().setSoilTypeOfPlot(SoilTypes.ANY);
 				}
 				try {
-					getSession().setSunlightOfPlot(Double.parseDouble(getChoice(q6ChoiceBox)));
-				} catch (NumberFormatException e) {
-					getSession().setSunlightOfPlot(-1.0);
+					getSession().setSunlightOfPlot(Sunlight.valueOf(getChoice(q6ChoiceBox).replace(" ", "").toUpperCase()));
+				} catch (IllegalArgumentException e) {
+					getSession().setSunlightOfPlot(Sunlight.ANY);
 				}
 				checkSelectedSeasons(seasonWant);
 				checkSelectedColor(colorWant);
@@ -691,7 +688,7 @@ public class Questionnaire extends Window {
 		q5ChoiceBox.setValue(getSession().getSoilTypeOfPlot().getName());
 
 		// Sunlight
-		q6ChoiceBox.setValue(String.valueOf(getSession().getSunlightOfPlot()));
+		q6ChoiceBox.setValue(getSession().getSunlightOfPlot().getSunlight());
 
 		// Seasons Selected
 		clearCheckBoxes(q7items);

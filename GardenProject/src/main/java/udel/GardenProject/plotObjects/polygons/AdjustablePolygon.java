@@ -1,7 +1,7 @@
 package udel.GardenProject.plotObjects.polygons;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -18,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeType;
+import udel.GardenProject.enums.Colors;
 
 /**
  * Arbitrary polygon that can be moved around within a Scene.
@@ -29,10 +30,17 @@ import javafx.scene.shape.StrokeType;
 public class AdjustablePolygon implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private Polygon polygon;
-	private ObservableList<Anchor> anchors;
+	private transient Polygon polygon;
+	private transient ObservableList<Anchor> anchors;
 	private boolean visible=true;
-	private Button b;
+	private transient Button b;
+	private Colors color;
+	private Colors anchorColor;
+	private double startx;
+	private double starty;
+	private double height;
+	private double width;
+	private ArrayList<Double> pointarr = new ArrayList<Double>();
 	
 	/**
 	 * Constructor. Represent an object on a plot in PlotDesign with an 
@@ -47,6 +55,21 @@ public class AdjustablePolygon implements Serializable {
 	 */
 	public AdjustablePolygon(Color color, Color anchorColor, double startx, double starty,
 			double height, double width) {
+		for(Colors c:Colors.values()) {
+			if(c.getColor()==null) {
+				continue;
+			}
+			if(c.getColor().equals(color)) {
+				this.color=c;
+			}
+			if(c.getColor().equals(anchorColor)) {
+				this.anchorColor=c;
+			}
+		}
+		this.startx = startx;
+		this.starty = starty;
+		this.height = height;
+		this.width = width;
 		b = new Button();
 		polygon=new Polygon();
 		//set stroke color to black
@@ -69,6 +92,9 @@ public class AdjustablePolygon implements Serializable {
         	    width, 0.0,
         	    width/2, 0.0
         	    });
+		for (int i = 0; i < polygon.getPoints().size(); i ++ ) {
+			pointarr.add(polygon.getPoints().get(i));
+		}
 		polygon.setLayoutX(startx);
 		polygon.setLayoutY(starty);
         polygon.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -91,17 +117,10 @@ public class AdjustablePolygon implements Serializable {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() > 1) {
-                	visible = !visible;
-                	for(Anchor a:anchors)
-                		a.setVisible(visible);
-                	if(visible) 
-                		b.setText("Stop Editing");
-                	else
-                		b.setText("Resume Edit");
+                	triggerAnchor();
                 }
             }
         });
-
         //get the anchors list and set the color to given anchorColor
         if(anchorColor == null) {
         	anchorColor = Color.DARKRED;
@@ -109,6 +128,68 @@ public class AdjustablePolygon implements Serializable {
 		anchors = createAnchors(polygon, polygon.getPoints(),anchorColor);
 	}
 	
+	/**
+	 * Set up the polygon after reload
+	 */
+	public void setPolygon() {
+		polygon=new Polygon();
+		//set stroke color to black
+		polygon.setStroke(Color.BLACK);
+		polygon.setStrokeWidth(2);
+		polygon.setStrokeLineCap(StrokeLineCap.ROUND);
+		//fill the polygon with given color
+		if(color!=null) {
+			if(color.getColor()!=null) {
+				polygon.setFill(color.getColor());
+			}
+		}
+		else {
+			polygon.setFill(Color.AQUA);
+		}
+		polygon.getPoints().addAll(pointarr);
+		polygon.setLayoutX(startx);
+		polygon.setLayoutY(starty);
+        polygon.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				double x = mouseEvent.getX();
+				double y = mouseEvent.getY();
+				//System.out.println(polygon.getLayoutX()+x+":"+polygon.getScene().getWidth());
+				if(		polygon.getLayoutX() + x > 0 &&
+						polygon.getLayoutX() + x < polygon.getScene().getWidth()) {
+					polygon.setLayoutX(polygon.getLayoutX() + x);
+				}
+				if(		polygon.getLayoutY() + y > 0 &&
+						polygon.getLayoutY() + y < polygon.getScene().getHeight()) {
+					polygon.setLayoutY(polygon.getLayoutY() + y);
+				}
+			}
+		});
+        polygon.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() > 1) {
+                	triggerAnchor();
+                }
+            }
+        });
+	}
+	
+	/**
+	 * set the x position for polygon
+	 * @param x
+	 */
+	public void setX(double x) {
+		polygon.setLayoutX(x);
+	}
+	
+	/**
+	 * set the y position for polygon
+	 * @param y
+	 */
+	public void setY(double y) {
+		polygon.setLayoutY(y);
+	}
 	/**
 	 * Determines if a double point specified by an X and Y is within this
 	 * polygon.
@@ -122,10 +203,44 @@ public class AdjustablePolygon implements Serializable {
 	}
 	
 	/**
+	 * Trigger the hide and show of the anchor.
+	 */
+	public void triggerAnchor() {
+		visible = !visible;
+    	for(Anchor a:anchors)
+    		a.setVisible(visible);
+	}
+	/**
+	 * Set the visible value
+	 * @param vis
+	 */
+	public void setVisible(boolean vis) {
+		visible=vis;
+		for(Anchor a:anchors)
+    		a.setVisible(visible);
+	}
+	/**
+	 * regenerate the polygon and anchor after reload
+	 */
+	public void regen() {
+		setPolygon();
+		if(anchorColor!=null) {
+			if(anchorColor.getColor()!=null) {
+				anchors = createAnchors(polygon, polygon.getPoints(),anchorColor.getColor());
+			}
+		}
+		else {
+			anchors = createAnchors(polygon, polygon.getPoints(),Color.DARKRED);
+		}
+		
+	}
+	
+	/**
 	 * Getter.
 	 * @return The polygon.
 	 */
 	public Polygon getPolygon() {
+
 		return polygon;
 	}
 	
@@ -134,6 +249,7 @@ public class AdjustablePolygon implements Serializable {
 	 * @return List of anchors.
 	 */
 	public ObservableList<Anchor> getAnchors() {
+		
 		return anchors;
 	}
 	
@@ -150,14 +266,7 @@ public class AdjustablePolygon implements Serializable {
 		b.setOnAction(new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
-            	visible=!visible;
-            	for(Anchor a:anchors) {
-            		a.setVisible(visible);
-            	}
-            	if(visible) 
-            		b.setText("Stop Editing");
-            	else
-            		b.setText("Resume Edit");
+            	triggerAnchor();
             } 
         });
 		return b;
@@ -203,17 +312,19 @@ public class AdjustablePolygon implements Serializable {
             anchor.layoutXProperty().bindBidirectional(polygon.layoutXProperty());
             anchor.layoutYProperty().bindBidirectional(polygon.layoutYProperty());
             xProperty.addListener(new ChangeListener<Number>() {
-                @Override public void changed(
-                		ObservableValue<? extends Number> ov, Number oldX, 
+                @Override 
+                public void changed(ObservableValue<? extends Number> ov, Number oldX, 
                 		Number x) {
                   points.set(idx, (double) x);
+                  pointarr.set(idx, (double) x);
                 }
               });
             yProperty.addListener(new ChangeListener<Number>() {
-                @Override public void changed(
-                		ObservableValue<? extends Number> ov, Number oldY, 
+                @Override 
+                public void changed(ObservableValue<? extends Number> ov, Number oldY, 
                 		Number y) {
                   points.set(idx + 1, (double) y);
+                  pointarr.set(idx + 1, (double) y);
                 }
               });
             anchors.add(anchor);
@@ -231,7 +342,7 @@ public class AdjustablePolygon implements Serializable {
 
         Anchor(Color color, DoubleProperty x, DoubleProperty y) {
             super(x.get(), y.get(), 8);
-            setFill(color.deriveColor(1, 1, 1, 0.5));
+            //setFill(color.deriveColor(1, 1, 1, 0.5));
             setStroke(color);
             setStrokeWidth(2);
             setStrokeType(StrokeType.OUTSIDE);

@@ -17,6 +17,7 @@ import java.util.Map;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import udel.GardenProject.enums.Colors;
@@ -43,6 +44,16 @@ public class Model {
 	 * Suggested height of stage for Window objects.
 	 */
 	private int height;
+	
+	/**
+	 * Pixel width of garden in plot design.
+	 */
+	private int plotDesignWidth = 750;
+	
+	/**
+	 * Pixel height of garden in plot design.
+	 */
+	private int plotDesignHeight = 600;
 
 	/**
 	 * Where on the user's OS can we save Application
@@ -144,6 +155,11 @@ public class Model {
 	 * Default Image when a Plant has no images.
 	 */
 	private String defaultImage = "/buttonImages/tree.png";
+	
+	/**
+	 * SnapShot of the node from blueprint.
+	 */
+	private ImageView img;
 	
 	/**
 	 * Returns the set Default Image used.
@@ -292,6 +308,22 @@ public class Model {
 	 */
 	public int getHeight() {
 		return this.height;
+	}
+	
+	/**
+	 * Getter.
+	 * @return Pixel width of garden in plot design.
+	 */
+	public int getPlotDesignWidth() {
+		return this.plotDesignWidth;
+	}
+	
+	/**
+	 * Getter
+	 * @return Pixel height of garden in plot design.
+	 */
+	public int getPlotDesignHeight() {
+		return this.plotDesignHeight;
 	}
 
 	/**
@@ -760,6 +792,30 @@ public class Model {
 	 */
 	public HashSet<Colors> getIncludedColors() {
 		return this.colors;
+	}
+	
+	/**
+	 * Get the image of blueprint
+	 * @return img
+	 */
+	public ImageView getImg() {
+		return img;
+	}
+	
+	/**
+	 * Sets the image of the blueprint to given ImageView.
+	 * @param img
+	 */
+	public void setImg(ImageView img) {
+		this.img=img;
+	}
+	
+	/**
+	 * Refresh the window w.
+	 * @param w
+	 */
+	public void refreshWindow(Windows w) { 
+		windows[w.ordinal()].refresh();
 	}
 
 }

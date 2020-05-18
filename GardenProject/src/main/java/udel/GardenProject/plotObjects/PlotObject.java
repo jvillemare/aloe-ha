@@ -6,10 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.ImageView;
-import udel.GardenProject.enums.PlotObjects;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.garden.Session;
 
 /**
  * An object that can appear in PlotDesign must implement this interface.
@@ -58,12 +55,18 @@ public abstract class PlotObject implements Serializable {
 	 * is used for getting the current width and height of the plot, and other 
 	 * relevant factors for rendering Plot Objects.
 	 */
-	private transient Model model;
+	transient Model model;
 	
+	/**
+	 * The name of the plot object
+	 */
+	private String name = "";
+  
 	/**
 	 * Boolean value to determine if the plotobject use its own dragHandler
 	 */
 	private boolean useDefaultDragHandler;
+  
 	/**
 	 * Constructor. Every object on the Plot in PlotDesign must have an X and Y
 	 * position determined from a MouseRelease event, and a height for
@@ -78,7 +81,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param plotPath	String of path to plot design image.
 	 */
 	public PlotObject(Model model, double x, double y, 
-			double height, double radius, String imagePath, String plotPath) {
+			double height, double radius, String imagePath, String plotPath, String name) {
 		this.model = model;
 		this.x = x;
 		this.y = y;
@@ -86,8 +89,15 @@ public abstract class PlotObject implements Serializable {
 		this.radius = radius;
 		this.windowImage = imagePath;
 		this.plotImage = plotPath;
-		this.useDefaultDragHandler=false;
+		this.name = name;
+		this.useDefaultDragHandler = false;
 	}
+	
+	/**
+	 * Abstract。 Set the visible value for object related to adjustable polygon.
+	 * @param vis
+	 */
+	public abstract void setVisible(boolean vis);
 	
 	/**
 	 * Abstract. All Plot Objects must specify how they will appear on a plot.
@@ -179,6 +189,14 @@ public abstract class PlotObject implements Serializable {
 	public final double getRadius() {
 		return this.radius;
 	}
+	
+	/**
+	 * Getter.
+	 * @return Model of current session.
+	 */
+	public final Model getModel() {
+		return this.model;
+	}
     
 	/**
 	 * Setter.
@@ -213,6 +231,14 @@ public abstract class PlotObject implements Serializable {
 	}
 	
 	/**
+	 * All objects must be specified to what they are 
+	 * @return	Name of object
+	 */
+	public final String getName() {
+		return this.name;
+	}
+
+	/**
 	 * Getter.
 	 * @return Boolean value of useDefaultDragHandler;
 	 */
@@ -225,7 +251,7 @@ public abstract class PlotObject implements Serializable {
 	 * @param useDefault
 	 */
 	public void setUseDefaultDragHandler(boolean useDefault) {
-		useDefaultDragHandler=useDefault;
+		useDefaultDragHandler = useDefault;
 	}
 
 }

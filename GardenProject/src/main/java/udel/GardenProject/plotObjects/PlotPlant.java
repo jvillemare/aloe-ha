@@ -8,9 +8,9 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 import udel.GardenProject.enums.Canopy;
 import udel.GardenProject.garden.Model;
-import udel.GardenProject.garden.Session;
 import udel.GardenProject.plants.Plant;
 
 /**
@@ -38,6 +38,13 @@ public class PlotPlant extends PlotObject implements Serializable {
 	private Plant p;
 	
 	/**
+	 * Base scale for plot design placement.
+	 */
+	private final double BASE = 3;
+	
+	private final double SMALL = 20;
+	
+	/**
 	 * Plant that can appear on in the PlotDesign.
 	 * 
 	 * @param Session	T
@@ -49,7 +56,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// TODO: A plant is always about a foot wide? Let's say for simplicity.
 		// Fix later. Definitely a helper method in plant that reads the 
 		// description or calculates or something
-		super(model, x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p));
+		super(model, x, y, checkIfCanopy(p.getCanopy()), 5.0, chooseWindowImage(p), choosePlotImage(p), p.getLatinName());
 		this.p = p;
 	}
 	
@@ -133,7 +140,7 @@ public class PlotPlant extends PlotObject implements Serializable {
 		// Get the actual image if it exists
 		if (plantImg != null && plantImg.length > 0) {
 			String path = p.getImages()[0];
-			plantImage = new Image(path, 40.0, 40.0, true, true);
+			plantImage = new Image(path, getRenderWidth(), getRenderHeight(), true, true);
 		} else {
 			// get a default image
 			plantImage = new Image(getClass().getResourceAsStream(choosePlotImage(p)), 40.0, 40.0,
@@ -141,6 +148,8 @@ public class PlotPlant extends PlotObject implements Serializable {
 		}
 		
 		ImageView imageView = new ImageView();
+		Circle clip = new Circle(plantImage.getWidth() / 2, plantImage.getHeight() / 2, Math.min(plantImage.getWidth(), plantImage.getHeight()) / 2);
+		imageView.setClip(clip);
 		imageView.setImage(plantImage);
 				
 		return imageView;
@@ -153,14 +162,12 @@ public class PlotPlant extends PlotObject implements Serializable {
 
 	@Override
 	public double getRenderWidth() {
-		// TODO Auto-generated method stub
-		return 40.0;
+		return Math.max(BASE/this.getModel().getSession().getWidthOfUserPlot() * this.getModel().getPlotDesignWidth(), SMALL);
 	}
 
 	@Override
 	public double getRenderHeight() {
-		// TODO Auto-generated method stub
-		return 40.0;
+		return Math.max(BASE/this.getModel().getSession().getLengthOfUserPlot() * this.getModel().getPlotDesignWidth(), SMALL);
 	}
 	
 	@Override
@@ -183,6 +190,12 @@ public class PlotPlant extends PlotObject implements Serializable {
 		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale) + addWidth/2,
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2 + addDepth + 10,
 				i.getWidth() * minScale * yearScale, i.getHeight() * minScale * yearScale);
+	}
+
+	@Override
+	public void setVisible(boolean vis) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

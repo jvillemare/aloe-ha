@@ -33,6 +33,11 @@ public class PlotPath extends GenericLine implements Serializable {
 	 */
 	private static String plotPath = "/viewImages/plotPath.png";
 	
+  /**
+   * TODO: ?
+   */
+	private static String name = "Path";
+
 	/**
 	 * Render Width of the object
 	 */
@@ -50,14 +55,16 @@ public class PlotPath extends GenericLine implements Serializable {
 	 * @param y			Vertical position of first point in plot design.
 	 */
 	public PlotPath(Model model, double x, double y) {
-		super(model, x, y, 1.0, new AdjustableLine(Color.RED, height, width),
-				windowPath, plotPath);
+		super(model, x, y, 1.0, new AdjustableLine(Color.RED, height, width), windowPath, plotPath, name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Node render() {
 		Group n=new Group();
+		if(this.getAdjustablePolygon().getAnchors()==null) {
+			this.getAdjustablePolygon().regen();
+		}
 		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
 		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
 		return n;
@@ -81,10 +88,17 @@ public class PlotPath extends GenericLine implements Serializable {
 		if (this.getPlotY() / maxDepth > minScale) {
 			minScale = this.getPlotY() / maxDepth;
 		}
+		gc.setEffect(null);
 		Image i = new Image(this.getWindowImage());
 		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
 				i.getWidth() * minScale, i.getHeight() * minScale);
+	}
+
+	@Override
+	public void setVisible(boolean vis) {
+		this.getAdjustablePolygon().setVisible(vis);
+		
 	}
 
 }

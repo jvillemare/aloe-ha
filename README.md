@@ -37,3 +37,10 @@ From the [University of Delaware](http://www1.udel.edu/CIS/275/tharvey/20S/) CIS
  - Megha Patel
  - Brett Wagner
  - James Villemarette
+
+#### Specifics
+
+ - Pure Java 11 and JavaFX 11 implementation.
+	- Desktop/Laptop app.
+ - Group ID: `udel`, Artifact ID: `GardenProject`.
+ - Team 0 Name: The Nulls.

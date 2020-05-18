@@ -13,22 +13,22 @@ public enum Canopy {
 	/**
 	 * Lowest layer.
 	 */
-	FLOOR(15, "Floor", "Plants and Srubs"), 
+	FLOOR(15, "Floor", "Plants and Shrubs", "Requires the least amount of sunlight"), 
 	
 	/**
 	 * Second lowest layer.
 	 */
-	UNDERSTORY(55, "Understory", "Small Trees"), 
+	UNDERSTORY(55, "Understory", "Small Trees", "Requires less than average amount of sunlight"), 
 	
 	/**
 	 * Second highest layer.
 	 */
-	CANOPY(95, "Canopy", "Medium-size Trees"), 
+	CANOPY(95, "Canopy", "Medium-size Trees", "Requires more than average amount of sunlight"), 
 	
 	/**
 	 * Highest layer.
 	 */
-	EMERGENT(125, "Emergent", "Largest Trees");
+	EMERGENT(125, "Emergent", "Largest Trees", "Requires the most amount of sunlight");
 	
 	/**
 	 * Maximum height of a canopy layer in Imperial feet
@@ -41,14 +41,20 @@ public enum Canopy {
 	private String name;
 	
 	/**
+	 * The description for the tool tip used in Plant selection
+	 */
+	private String description;
+	
+	/**
 	 * String containing what plant is in each.
 	 */
 	private String contains;
 	
-	Canopy(int max, String name, String contains) {
+	Canopy(int max, String name, String contains, String description) {
 		this.maximumHeight = max;
 		this.name = name;
 		this.contains = contains;
+		this.description = description;
 	}
 	
 	/**
@@ -57,6 +63,14 @@ public enum Canopy {
 	 */
 	public int getMaximumHeight() {
 		return this.maximumHeight;
+	}
+	
+	/**
+	 * Getter.
+	 * @return The description of the canopy level.
+	 */
+	public String getDescription() {
+		return description;
 	}
 	
 	/**
@@ -126,5 +140,18 @@ public enum Canopy {
 	public String getContains() {
 		return contains;
 	}
-
+	
+	/**
+	 * Returns the desired canopy level by matching it with the contains name
+	 * @param name
+	 * @return Canopy level
+	 */
+	public static Canopy getCanopyByContains(String name) {
+		for(Canopy c : Canopy.values()) {
+			if(c.getContains().equals(name)){
+				return c;
+			}
+		}
+		return Canopy.FLOOR;
+	}
 }

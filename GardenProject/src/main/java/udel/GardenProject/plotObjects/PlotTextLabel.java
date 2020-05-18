@@ -31,7 +31,7 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param y Vertical position.
 	 */
 	public PlotTextLabel(Model model, double x, double y) {
-		super(model, x, y, 0.0, 0.0, "", "");
+		super(model, x, y, 0.0, 0.0, "", "", "");
 		this.text = promptUserForLabelText();
 	}
 
@@ -43,7 +43,7 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	 * @param text	Text to display
 	 */
 	public PlotTextLabel(Model model, double x, double y, String text) {
-		super(model, x, y, 0.0, 0.0, "", "");
+		super(model, x, y, 0.0, 0.0, "", "", "Text");
 		this.text = text;
 	}
 	
@@ -82,6 +82,12 @@ public class PlotTextLabel extends PlotObject implements Serializable {
 	public void windowRender(GraphicsContext gc, GaussianBlur gb, double minScale, int maxDepth, int maxWidth, double viewDepth, double viewWidth, double yearScale, Effect e) {
 		gc.setFill(Color.BLACK);
 		gc.fillText(this.text, this.getPlotX() / maxWidth * viewWidth - (this.getRenderWidth() / 2), this.getPlotY() / maxDepth * viewDepth - (this.getRenderHeight() / 2));
+	}
+
+	@Override
+	public void setVisible(boolean vis) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

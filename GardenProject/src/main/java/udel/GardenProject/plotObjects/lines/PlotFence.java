@@ -43,21 +43,26 @@ public class PlotFence extends GenericLine implements Serializable {
 	 */
 	private static double height=40.0;
 	
+	private static String name = "Fence";
+	
 	/**
 	 * Constructor.
+   * @param Model TODO: ?
 	 * @param x	Horizontal position of first point of fence.
 	 * @param y Vertical position of first point of fence.
 	 * @param height	Height in feet of fence.
 	 */
-	public PlotFence(Model model, double x, double y, double h) {
-		super(model, x, y, h, new AdjustableLine(Color.RED, height, width), 
-				windowFence, plotFence);
+	public PlotFence(Model model, double x, double y, double height) {
+		super(model, x, y, height, new AdjustableLine(Color.RED, height, width), windowFence, plotFence, name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Node render() {
 		Group n=new Group();
+		if(this.getAdjustablePolygon().getAnchors()==null) {
+			this.getAdjustablePolygon().regen();
+		}
 		n.getChildren().addAll(this.getAdjustablePolygon().getAnchors());
 		n.getChildren().add(this.getAdjustablePolygon().getPolygon());
 		return n;
@@ -80,10 +85,17 @@ public class PlotFence extends GenericLine implements Serializable {
 		if (this.getPlotY() / maxDepth > minScale) {
 			minScale = this.getPlotY() / maxDepth;
 		}
+		gc.setEffect(null);
 		Image i = new Image(this.getWindowImage());
 		gc.drawImage(i, this.getPlotX() / maxWidth * viewWidth - (i.getWidth() / 2 * minScale),
 				this.getPlotY() / maxDepth * (viewDepth / 3) - (i.getHeight() * minScale) + viewDepth / 3 * 2,
 				i.getWidth() * minScale, i.getHeight() * minScale);
 	}
 
+	@Override
+	public void setVisible(boolean vis) {
+		this.getAdjustablePolygon().setVisible(vis);
+		
+	}
+	
 }

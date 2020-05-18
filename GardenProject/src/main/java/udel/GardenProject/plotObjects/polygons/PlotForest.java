@@ -33,6 +33,11 @@ public class PlotForest extends GenericPolygon implements Serializable {
 	private static String plotForest = "/viewImages/plotForest.png";
 	
 	/**
+	 * Name of object
+	 */
+	private static String name = "Forest";
+
+  /**
 	 * Render Width of the object
 	 */
 	private static double width=40.0;
@@ -50,8 +55,7 @@ public class PlotForest extends GenericPolygon implements Serializable {
 	 */
 	public PlotForest(Model model, double x, double y) {
 		// TODO: A forest is always 100.0 feet tall?
-		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width), 
-				windowForest, plotForest);
+		super(model, x, y, 100.0, new AdjustablePolygon(null, null, 0, 0, height, width), windowForest, plotForest, name);
 		// TODO: Define the background and anchor color, and starting position
 		// of this polygon
 	}
@@ -67,5 +71,5 @@ public class PlotForest extends GenericPolygon implements Serializable {
 		// TODO Auto-generated method stub
 		return height;
 	}
-
+	
 }
