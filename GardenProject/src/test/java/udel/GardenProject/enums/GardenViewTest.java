@@ -8,8 +8,8 @@ public class GardenViewTest {
 
 	@Test
 	public void test() {
-		GardenView g=GardenView.TOPVIEW;
-		assertTrue(g.getView().equals("Top View"));
+		GardenView g=GardenView.WINDOWVIEW;
+		assertTrue(g.getView().equals("Window View"));
 	}
 
 }
