@@ -1,4 +1,4 @@
-package udel.GardenProject.plotObjects;
+package udel.GardenProject.plotObjects.lines;
 
 import static org.junit.Assert.*;
 
@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import udel.GardenProject.plotObjects.polygons.PlotPool;
+import udel.GardenProject.plotObjects.polygons.AdjustablePolygon;
 
-public class PlotObjectTest {
+public class AdjustableLineTest {
 	public static class AsNonApp extends Application {
 	    @Override
 	    public void start(Stage primaryStage) throws Exception {
@@ -29,16 +29,8 @@ public class PlotObjectTest {
 	}
 	@Test
 	public void test() {
-		PlotPool plot = new PlotPool(null, 0, 0);
-		assertTrue(plot.getPlotX()==0);
-		assertTrue(plot.getPlotY()==0);
-		plot.setPlotX(1);
-		plot.setPlotY(1);
-		assertTrue(plot.getPlotX()==1);
-		assertTrue(plot.getPlotY()==1);
-		assertTrue(plot.getWindowImage().equals("/viewImages/pool.png"));
-		assertTrue(plot.getPlotImage().equals("/viewImages/plotPool.png"));
-		assertTrue(plot.getHeight()==100);
+		AdjustableLine l=new AdjustableLine(null, 50, 50);
+		assertTrue(l.getLine() instanceof AdjustablePolygon);
 	}
 
 }
