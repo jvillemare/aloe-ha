@@ -1,5 +1,9 @@
 package udel.GardenProject.windows;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -7,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.effect.DropShadow;
@@ -18,6 +23,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import udel.GardenProject.enums.Windows;
 import udel.GardenProject.garden.Model;
 import udel.GardenProject.garden.View;
@@ -483,11 +490,27 @@ public class Tutorial extends Window {
 	public VBox createAbout() {
 		VBox contentBox = new VBox();
 		createContentText("This project was created from the following data bases.", contentBox);
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
-		createContentText("Add link", contentBox); // hyperlink?
+		
+		
+		createHyperLink("https://plants.sc.egov.usda.gov/java/characteristics", contentBox); // hyperlink?
+		createHyperLink("http://www.wrc.udel.edu/de-flora/", contentBox); // hyperlink?
+		createHyperLink("http://www.nativeplantcenter.net/plants/", contentBox); // hyperlink?
+		createContentText("Client given Microsoft Word table.", contentBox); // hyperlink?
 		return contentBox;
+	}
+	
+	/**
+	 * Creates a functional url that fits the style of other accordion slides.
+	 * @param url
+	 * @param contentBox
+	 */
+	public void createHyperLink(String url, VBox contentBox) {
+		Hyperlink link = new Hyperlink();
+		link.setText(url);
+		link.setFont(Font.loadFont(getClass().getResourceAsStream(View.getHackBold()), infoTextSize));
+		link.setMaxWidth(messageWrapWidth);
+		
+		contentBox.getChildren().add(link);
 	}
 
 }
