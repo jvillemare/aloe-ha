@@ -11,7 +11,14 @@ import java.util.Comparator;
  */
 public class PlantNameComparator implements Comparator<Plant> {
 
+	/**
+	 * Search from A to Z if true, Z to A if false.
+	 */
 	private boolean az;
+	
+	/**
+	 * Search by common names if true, latin names if false.
+	 */
 	private boolean common;
 
 	/**

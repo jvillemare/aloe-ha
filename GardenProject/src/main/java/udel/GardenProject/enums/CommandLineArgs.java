@@ -9,6 +9,9 @@ package udel.GardenProject.enums;
  */
 public enum CommandLineArgs {
 	
+	/**
+	 * Open a project from a file.
+	 */
 	OpenProject;
 
 }

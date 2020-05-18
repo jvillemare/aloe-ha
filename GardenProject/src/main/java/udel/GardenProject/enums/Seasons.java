@@ -11,10 +11,29 @@ import java.util.ArrayList;
  */
 public enum Seasons {
 
+	/**
+	 * December to February.
+	 */
 	WINTER("Winter"), 
+	
+	/**
+	 * March to May.
+	 */
 	SPRING("Spring"), 
+	
+	/**
+	 * June to August.
+	 */
 	SUMMER("Summer"), 
+	
+	/**
+	 * September to November.
+	 */
 	FALL("Fall"), 
+	
+	/**
+	 * All the months of the year.
+	 */
 	YEARROUND("Year Round");
 	
 	/**

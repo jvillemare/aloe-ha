@@ -5,11 +5,38 @@ package udel.GardenProject.enums;
  * screen
  * 
  * @author Team 0
- *
  */
 public enum ImageFileType {
 
-	PNG("*.png"), JPG("*.jpg"), JPEG("*.jpeg"), BMP("*.bmp"), GIF("*.gif"), TIF("*.tif");
+	/**
+	 * Portable Network Graphic image format.
+	 */
+	PNG("*.png"), 
+	
+	/**
+	 * Abbreviated form of the Joint Photographic Expert Group image format.
+	 */
+	JPG("*.jpg"), 
+	
+	/**
+	 * Joint Photographic Expert Group image format.
+	 */
+	JPEG("*.jpeg"), 
+	
+	/**
+	 * Bitmap image format.
+	 */
+	BMP("*.bmp"), 
+	
+	/**
+	 * Graphics Interchange Format image format.
+	 */
+	GIF("*.gif"), 
+	
+	/**
+	 * Tagged Image Format File image format.
+	 */
+	TIF("*.tif");
 
 	/**
 	 * File type regular expression as a string.

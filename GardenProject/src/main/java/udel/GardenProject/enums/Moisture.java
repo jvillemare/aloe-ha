@@ -14,10 +14,29 @@ package udel.GardenProject.enums;
  */
 public enum Moisture {
 	
+	/**
+	 * Like the Sahara.
+	 */
 	DRY("Dry"),
+	
+	/**
+	 * Like the Sahara with a drop of water.
+	 */
 	DRYMOIST("Dry Moist"),
+	
+	/**
+	 * Moist.
+	 */
 	MOIST("Moist"),
+	
+	/**
+	 * Extra moist.
+	 */
 	MOISTDAMP("Moist Damp"),
+	
+	/**
+	 * Think literally anywhere in central South-east Asia.
+	 */
 	DAMP("Damp");
 
 	/**

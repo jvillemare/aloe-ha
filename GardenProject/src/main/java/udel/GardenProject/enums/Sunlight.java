@@ -9,9 +9,24 @@ package udel.GardenProject.enums;
  */
 public enum Sunlight {
 	
+	/**
+	 * 100% full sun all the time.
+	 */
 	FULLSUN("Full-sun"),
+	
+	/**
+	 * 66% sun most of the time.
+	 */
 	PARTIALSHADE("Partial-shade"),
+	
+	/**
+	 * 33% sun some of the time.
+	 */
 	PARTIALSUN("Partial-sun"),
+	
+	/**
+	 * 0% sun none of the time.
+	 */
 	FULLSHADE("Full-shade");
 	
 	private String sunlight = null;

@@ -7,8 +7,19 @@ package udel.GardenProject.enums;
  */
 public enum Year {
 	
+	/**
+	 * What a user's plot will look like now, out the window.
+	 */
 	YEAR0("0 Years"),
+	
+	/**
+	 * What a user's plot will look like a year from now, out the window.
+	 */
 	YEAR1("1 Year"),
+	
+	/**
+	 * What a user's plot will look like two years from now, out the window.
+	 */
 	YEAR2("2 Years");
 
 	/**

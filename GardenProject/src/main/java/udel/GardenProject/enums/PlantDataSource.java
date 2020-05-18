@@ -9,9 +9,31 @@ package udel.GardenProject.enums;
  */
 public enum PlantDataSource {
 	
+	/**
+	 * Plant data originated from the 
+	 * <a href="http://www.wrc.udel.edu/de-flora/">University of Delaware Flora 
+	 * Database</a>.
+	 */
 	UDEL("University of Delaware Flora Database"), 
+	
+	/**
+	 * Plant data originated from the 
+	 * <a href="http://www.nativeplantcenter.net/plants/">Cheasapeake Bay Native
+	 * Plant Center</a>.
+	 */
 	NPC("Chesapeake Bay Native Plant Center"), 
+	
+	/**
+	 * Plant data originated from a spreadsheet on native forest edge plants
+	 * provided by a client.
+	 */
 	SUNNYEDGE("Sunny Edge Plants in Arden, Newark"),
+	
+	/**
+	 * Plant data originated from the 
+	 * <a href="https://plants.sc.egov.usda.gov/java/characteristics">USDA's
+	 * Natural Resource Conservation Service</a>.
+	 */
 	NRCS("USDA's Natural Resources Conservation Service");
 	
 	/**

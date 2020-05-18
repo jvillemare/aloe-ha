@@ -10,6 +10,9 @@ import java.util.Comparator;
  */
 public class SoilTypeComparator implements Comparator<Plant>{
 
+	/**
+	 * Search by descending if true, ascending if false.
+	 */
 	private boolean descending;
 	
 	/**

@@ -14,6 +14,9 @@ import udel.GardenProject.plotObjects.polygons.PlotPool;
  */
 public class YDistanceComparator implements Comparator<PlotObject>{
 	
+	/**
+	 * Sort by ascending if true, false if not.
+	 */
 	private boolean ascending;
 
 	/**
