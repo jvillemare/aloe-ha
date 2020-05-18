@@ -14,10 +14,8 @@ public class PlotPlantTest {
 
 	@Test
 	public void testGetPlant() {
-		Controller c = new Controller();
-		Model m = new Model(c, 0, 1);
 		Plant p=new Plant(null, null, null, null, 0, null, null, Canopy.CANOPY, false, false, null, null);
-		PlotPlant plot = new PlotPlant(m, p, 1, 2);
+		PlotPlant plot = new PlotPlant(null, p, 1, 2);
 		assertTrue(plot.getPlant().equals(p));
 	}
 
