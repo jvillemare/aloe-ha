@@ -1,4 +1,4 @@
-package udel.GardenProject.plotObjects.lines;
+package udel.GardenProject.plotObjects.polygons;
 
 import static org.junit.Assert.*;
 
@@ -7,11 +7,9 @@ import org.junit.Test;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import udel.GardenProject.garden.Controller;
-import udel.GardenProject.garden.Model;
 
+public class PlotPoolTest {
 
-public class PlotFenceTest {
 	public static class AsNonApp extends Application {
 	    @Override
 	    public void start(Stage primaryStage) throws Exception {
@@ -30,14 +28,14 @@ public class PlotFenceTest {
 	    t.start();
 	}
 	@Test
-	public void testPlotFence() {
-
-		PlotFence p = new PlotFence(null, 0, 0, 10);
-		assertTrue(p.getWindowImage().equals("/viewImages/fence.png"));
-		assertTrue(p.getPlotImage().equals("/viewImages/plotFence.png"));
-		assertTrue(p.getPlotX()==0);
-		assertTrue(p.getPlotY()==0);
-		assertTrue(p.getHeight()==10);
+	public void test() {
+		
+		PlotPatio p=new PlotPatio(null,50,50);
+		assertTrue(p.getRenderHeight()==40);
+		assertTrue(p.getRenderWidth()==40);
+		assertTrue(p.getPlotImage().equals("/viewImages/plotPatio.png"));
+		assertTrue(p.getWindowImage().equals("/viewImages/patio.png"));
+		assertTrue(p.getName().equals("Patio"));
 	}
 
 }
