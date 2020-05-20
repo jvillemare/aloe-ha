@@ -210,7 +210,7 @@ public class PlotDesign extends Window {
 		autoRateVBox.getChildren().add(autoRatingsSpecifically);
 		
 		for(Tooltip autoRateTip : autoRatingTooltips)
-			autoRateTip.setShowDelay(Duration.seconds(0));
+			//autoRateTip.setShowDelay(Duration.seconds(0));
 		
 		generateAutoRatings(); // evaluate garden, used in refrehs method, as well
 
@@ -219,7 +219,7 @@ public class PlotDesign extends Window {
 		
 		Button plantDataButton = new Button("Plant Database");
 		Tooltip plantDataButtonTooltip = new Tooltip("Click here to add more selected plants");
-		plantDataButtonTooltip.setShowDelay(Duration.seconds(0));
+		//plantDataButtonTooltip.setShowDelay(Duration.seconds(0));
 		plantDataButton.setTooltip(plantDataButtonTooltip);
 
 		plantDataButton
