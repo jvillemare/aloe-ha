@@ -1,6 +1,6 @@
 # How to ACTUALLY use JavaFX 11 with Eclipse
 
-JavaFX 11 is a major pain to setup correctly. Here's the easy way to do it right:
+JavaFX 11 is a major pain to setup correctly. Here's the "easy" way to do it right:
 
  1. [Install JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
  2. [Find where JDK 11 is installed for your Operating System](https://www.google.com/search?q=where+is+jdk+11+installed)
@@ -47,6 +47,10 @@ JavaFX 11 is a major pain to setup correctly. Here's the easy way to do it right
 
 Congratulations, you survived the gauntlet. It took me 20 hours to figure this
 out. I hope it helps.
+
+If someone could explain why pointing Eclipse to the Maven dependencies, but it
+why it doesn't use the maven dependencies all the time, I would be happy to
+update this.
 
 ---
 

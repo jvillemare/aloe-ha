@@ -1,4 +1,4 @@
-# cisc275-011-team-0
+# aloe-ha
 
 ![Java CI with Maven](https://github.com/CISC275-S2020/team-11-0/workflows/Java%20CI%20with%20Maven/badge.svg)
 
@@ -26,21 +26,21 @@ The latest packaged jars can be found [in the release page](releases). You may n
 
 ## Work and Documentation
 
-The work that has been done for this project can be inspected in the [`docs` folder](docs/README.md).
+The work that has been done for this project can be inspected in the [`docs` folder](docs).
 
 ### Team Members
 
 From the [University of Delaware](http://www1.udel.edu/CIS/275/tharvey/20S/) CISC 275 course of Spring, 2020:
 
- - Jiamian Wang
- - Viva Laas
- - Megha Patel
- - Brett Wagner
- - James Villemarette
+ - Jiamian Wang (@wjm2038)
+ - Viva Laas (@vivatheest)
+ - Megha Patel (@mpatel-2022)
+ - Brett Wagner (@wagnerb3)
+ - James Villemarette (@jvillemare)
 
 #### Specifics
 
  - Pure Java 11 and JavaFX 11 implementation.
 	- Desktop/Laptop app.
  - Group ID: `udel`, Artifact ID: `GardenProject`.
- - Team 0 Name: The Nulls.
+ - Team Name: The Nulls.

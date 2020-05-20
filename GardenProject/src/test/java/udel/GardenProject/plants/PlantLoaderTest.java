@@ -201,7 +201,7 @@ public class PlantLoaderTest {
 				+ "State Status: Non-indigenous" + System.lineSeparator() + "Piedmont Status: Non-indigenous"
 				+ System.lineSeparator() + "Coastal Plain Status: --" + System.lineSeparator() + "Global Status: --"
 				+ System.lineSeparator() + "Federal Status: --" + System.lineSeparator() + "Invasive Watchlist: --"
-				+ System.lineSeparator() + "Physiographic Province: ☑Piedmont☐Coastal Plain" + System.lineSeparator()
+				+ System.lineSeparator() + "Physiographic Province: \u2611Piedmont\u2610Coastal Plain" + System.lineSeparator()
 				+ "Additional Info: --";
 		assertTrue(p.getDescription().equals(p.getDescription()));
 		assertTrue(p.getCanopy() == Canopy.FLOOR);

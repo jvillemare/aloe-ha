@@ -403,8 +403,8 @@ public class Plant implements Serializable {
 			if (ht.isEmpty()) {
 				return -1;
 			}
-			if (ht.contains("”")) {
-				ht = ht.replace("”", "");
+			if (ht.contains("\u201D")) {
+				ht = ht.replace("\u201D", "");
 				inches = true;
 			}
 			if (ht.contains("\u2019")) {
